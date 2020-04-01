@@ -4,6 +4,7 @@
     <e p="C:\Users\User\.Rider2019.3\system\extResources" t="IncludeRecursive" />
     <e p="C:\Users\User\.Rider2019.3\system\resharper-host\local\Transient\ReSharperHost\v193\SolutionCaches\_Unity-Dots-Spline.-1030499177.00" t="ExcludeRecursive" />
     <e p="C:\Users\User\Unity Projects\Unity-Dots-Spline" t="IncludeRecursive">
+      <e p=".git\info\exclude" t="IncludeRecursive" />
       <e p="Assets" t="Include">
         <e p="Package" t="Include">
           <e p="Benchmark" t="Include">
@@ -31,16 +32,16 @@
             <e p="Spline2DVariance.cs" t="Include" />
             <e p="Spline2DVarianceTraverser.cs" t="Include" />
           </e>
-          <e p="Dots_Spline.asmdef" t="Include" />
+          <e p="crener.dots.spline.asmdef" t="Include" />
           <e p="Editor" t="Include">
-            <e p="Game.Spline2.Editor.asmdef" t="Include" />
+            <e p="crener.dots.spline.Editor.asmdef" t="Include" />
             <e p="Spline2DSimpleEditor.cs" t="Include" />
             <e p="Spline2DVarianceEditor.cs" t="Include" />
           </e>
           <e p="Enums.cs" t="Include" />
           <e p="Interfaces.cs" t="Include" />
           <e p="Test" t="Include">
-            <e p="Game.Spline2.Test.asmdef" t="Include" />
+            <e p="crener.dots.spline.Test.asmdef" t="Include" />
             <e p="Simple" t="Include">
               <e p="Spline2DJobTest.cs" t="Include" />
               <e p="Spline2DSimpleTest.cs" t="Include" />
@@ -52,9 +53,9 @@
           </e>
         </e>
       </e>
-      <e p="Dots.Spline.csproj" t="IncludeRecursive" />
-      <e p="Game.Spline2.Editor.csproj" t="IncludeRecursive" />
-      <e p="Game.Spline2.Test.csproj" t="IncludeRecursive" />
+      <e p="crener.dots.spline.csproj" t="IncludeRecursive" />
+      <e p="crener.dots.spline.editor.csproj" t="IncludeRecursive" />
+      <e p="crener.dots.spline.test.csproj" t="IncludeRecursive" />
       <e p="obj" t="ExcludeRecursive" />
       <e p="Packages" t="ExcludeRecursive" />
       <e p="Temp\bin" t="ExcludeRecursive" />

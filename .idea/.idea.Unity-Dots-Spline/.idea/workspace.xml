@@ -1,20 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="13c07038-7caf-46c3-88ba-45ca6dcf7630" name="Default Changelist" comment="" />
+    <list default="true" id="13c07038-7caf-46c3-88ba-45ca6dcf7630" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Unity-Dots-Spline/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Unity-Dots-Spline/.idea/contentModel.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Unity-Dots-Spline/.idea/indexLayout.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Unity-Dots-Spline/.idea/indexLayout.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Unity-Dots-Spline/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Unity-Dots-Spline/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Package/Dots_Spline.asmdef" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Package/Dots_Spline.asmdef.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Package/Editor/Dots-Spline.Editor.asmdef" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Package/Editor/Dots-Spline.Editor.asmdef.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Package/Test/Dots-Spline.Test.asmdef" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Package/Test/Dots-Spline.Test.asmdef.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Package/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Package/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Package/package.json.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Package/package.json.meta" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.entities@0.8.0-preview.8/package.json" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Packages/manifest.json" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.jobs@0.2.7-preview.11/package.json" root0="FORCE_HIGHLIGHTING" />
+  </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
+        <option value="$PROJECT_DIR$/Packages/manifest.json" />
         <option value="$PROJECT_DIR$/Assets/Package/package.json" />
       </list>
     </option>
   </component>
   <component name="ProjectId" id="1ZxCXn3D07d1Pbx3BB1CqRSBznC" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showExcludedFiles" value="true" />
@@ -24,6 +46,7 @@
     <property name="Discover.Launch.Via.Unity" value="true" />
     <property name="Rider.SolutionExplorerActivator" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="TWShift.3" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -54,7 +77,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1585771400926</updated>
-      <workItem from="1585771405893" duration="2026000" />
+      <workItem from="1585771405893" duration="5274000" />
     </task>
     <servers />
   </component>
