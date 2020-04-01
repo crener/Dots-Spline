@@ -1,0 +1,12 @@
+{
+  "name": "com.crener.dots-splines",
+  "displayName": "DOTS Splines",
+  "version": "0.8.0",
+  "unity": "2019.3",
+  "description": "Performant Dots Splines",
+  "keywords": [
+    "spline",
+    "unity"
+  ],
+  "category": "DOTS"
+}

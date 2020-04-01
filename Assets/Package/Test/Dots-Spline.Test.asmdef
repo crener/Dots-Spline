@@ -1,0 +1,23 @@
+{
+    "name": "Dots.Spline.Test",
+    "references": [
+        "GUID:fa04c97a3414f49458d045d5b69d4778",
+        "GUID:d8b63aba1907145bea998dd612889d6b",
+        "GUID:0acc523941302664db1f4e527237feb3",
+        "GUID:6cd15e6b079550542a25a0f7fedd9b22",
+        "GUID:8819f35a0fc84499b990e90a4ca1911f"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

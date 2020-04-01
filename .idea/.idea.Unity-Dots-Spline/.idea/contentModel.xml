@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ContentModelStore">
+    <e p="C:\Users\User\.Rider2019.3\system\extResources" t="IncludeRecursive" />
+    <e p="C:\Users\User\.Rider2019.3\system\resharper-host\local\Transient\ReSharperHost\v193\SolutionCaches\_Unity-Dots-Spline.-1030499177.00" t="ExcludeRecursive" />
+    <e p="C:\Users\User\Unity Projects\Unity-Dots-Spline" t="IncludeRecursive">
+      <e p="Assets" t="Include">
+        <e p="Package" t="Include">
+          <e p="Benchmark" t="Include">
+            <e p="Spline2DBenchmark.cs" t="Include" />
+            <e p="Spline2DBenchmarkData.cs" t="Include" />
+            <e p="Spline2DBenchmarkSystem.cs" t="Include" />
+            <e p="Spline2DVarianceBenchmark.cs" t="Include" />
+            <e p="Spline2DVarianceBenchmarkSystem.cs" t="Include" />
+          </e>
+          <e p="BezierSpline" t="Include">
+            <e p="Entity" t="Include">
+              <e p="Spline2DData.cs" t="Include" />
+              <e p="Spline2DTraverserSystem.cs" t="Include" />
+              <e p="Spline2DVarianceData.cs" t="Include" />
+              <e p="Spline2DVarianceTraverserSystem.cs" t="Include" />
+              <e p="SplineTraversal.cs" t="Include" />
+            </e>
+            <e p="Jobs" t="Include">
+              <e p="Spline2DJobs.cs" t="Include" />
+              <e p="Spline2DVarianceJobs.cs" t="Include" />
+              <e p="SplineCommonJobs.cs" t="Include" />
+            </e>
+            <e p="Spline2DSimple.cs" t="Include" />
+            <e p="Spline2DTraverser.cs" t="Include" />
+            <e p="Spline2DVariance.cs" t="Include" />
+            <e p="Spline2DVarianceTraverser.cs" t="Include" />
+          </e>
+          <e p="Dots_Spline.asmdef" t="Include" />
+          <e p="Editor" t="Include">
+            <e p="Game.Spline2.Editor.asmdef" t="Include" />
+            <e p="Spline2DSimpleEditor.cs" t="Include" />
+            <e p="Spline2DVarianceEditor.cs" t="Include" />
+          </e>
+          <e p="Enums.cs" t="Include" />
+          <e p="Interfaces.cs" t="Include" />
+          <e p="Test" t="Include">
+            <e p="Game.Spline2.Test.asmdef" t="Include" />
+            <e p="Simple" t="Include">
+              <e p="Spline2DJobTest.cs" t="Include" />
+              <e p="Spline2DSimpleTest.cs" t="Include" />
+            </e>
+            <e p="TestInterfaces.cs" t="Include" />
+            <e p="Variance" t="Include">
+              <e p="Spline2DVarianceTest.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+      </e>
+      <e p="Dots.Spline.csproj" t="IncludeRecursive" />
+      <e p="Game.Spline2.Editor.csproj" t="IncludeRecursive" />
+      <e p="Game.Spline2.Test.csproj" t="IncludeRecursive" />
+      <e p="obj" t="ExcludeRecursive" />
+      <e p="Packages" t="ExcludeRecursive" />
+      <e p="Temp\bin" t="ExcludeRecursive" />
+      <e p="Unity-Dots-Spline.sln" t="IncludeFlat" />
+    </e>
+  </component>
+</project>
