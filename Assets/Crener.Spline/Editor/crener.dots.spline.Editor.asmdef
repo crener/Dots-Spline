@@ -2,7 +2,8 @@
     "name": "crener.dots.spline.editor",
     "references": [
         "GUID:fa04c97a3414f49458d045d5b69d4778",
-        "GUID:d8b63aba1907145bea998dd612889d6b"
+        "GUID:d8b63aba1907145bea998dd612889d6b",
+        "GUID:8819f35a0fc84499b990e90a4ca1911f"
     ],
     "includePlatforms": [
         "Editor"

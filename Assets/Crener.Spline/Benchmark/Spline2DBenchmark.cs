@@ -2,6 +2,7 @@ using Crener.Spline.BezierSpline;
 using Crener.Spline.BezierSpline.Entity;
 using Unity.Entities;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Crener.Spline.Benchmark
 {
@@ -12,7 +13,8 @@ namespace Crener.Spline.Benchmark
     public class Spline2DBenchmark : MonoBehaviour, IConvertGameObjectToEntity
     {
         public int Quantity = 1000;
-        public Spline2DSimple Spline;
+        [FormerlySerializedAs("BezierSpline")]
+        public ISpline2D Spline;
         public GameObject Prefab;
         public GameObject Parent;
 

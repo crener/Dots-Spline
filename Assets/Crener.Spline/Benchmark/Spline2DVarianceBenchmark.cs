@@ -2,6 +2,7 @@ using Crener.Spline.BezierSpline;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Random = Unity.Mathematics.Random;
 
 namespace Crener.Spline.Benchmark
@@ -9,7 +10,7 @@ namespace Crener.Spline.Benchmark
     public class Spline2DVarianceBenchmark : MonoBehaviour, IConvertGameObjectToEntity
     {
         public int Quantity = 10000;
-        public Spline2DVariance Spline;
+        public ISimpleSpline2DVariance BezierSpline;
         public GameObject Prefab;
         public GameObject Parent;
 
@@ -24,7 +25,7 @@ namespace Crener.Spline.Benchmark
                 GameObject example = Instantiate(Prefab, Parent.transform, true);
 
                 Spline2DVarianceTraverser mover = example.GetComponent<Spline2DVarianceTraverser>();
-                mover.Spline = Spline;
+                mover.Spline = BezierSpline;
                 mover.Progress = rand.NextFloat(0f, 1f);
 #if UNITY_EDITOR
                 mover.transform.name = "Mover " + (i + 1);
@@ -48,14 +49,14 @@ namespace Crener.Spline.Benchmark
                 Prefab = converted
             });
 
-            if(Spline != null)
+            if(BezierSpline != null)
             {
-                if(!Spline.SplineEntityData.HasValue)
+                if(!BezierSpline.SplineVarianceEntityData.HasValue)
                 {
-                    Spline.Convert(dstManager.CreateEntity(), dstManager, conversionSystem);
+                    BezierSpline.Convert(dstManager.CreateEntity(), dstManager, conversionSystem);
                 }
 
-                dstManager.AddSharedComponentData(entity, Spline.SplineEntityData.Value);
+                dstManager.AddSharedComponentData(entity, BezierSpline.SplineVarianceEntityData.Value);
             }
         }
     }

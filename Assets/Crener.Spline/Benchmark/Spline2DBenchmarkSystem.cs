@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Crener.Spline.BezierSpline.Entity;
+using Crener.Spline.Common;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Jobs;
@@ -28,7 +29,7 @@ namespace Crener.Spline.Benchmark
 
                 JobHandle splineHandle;
                 NativeArray<Spline2DBenchmarkData> benchData =
-                    query.ToComponentDataArray<Spline2DBenchmarkData>(Allocator.TempJob, out splineHandle);
+                    query.ToComponentDataArrayAsync<Spline2DBenchmarkData>(Allocator.TempJob, out splineHandle);
                 splineHandle.Complete();
 
                 //create the traverser for the spline

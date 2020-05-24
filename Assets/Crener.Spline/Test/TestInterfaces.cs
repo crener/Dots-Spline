@@ -3,7 +3,7 @@ using Unity.Mathematics;
 
 namespace Crener.Spline.Test
 {
-    public interface ISimpleTestSpline : ISimpleSpline2DEditor
+    public interface ISimpleTestSpline : ISimpleSpline2D
     {
         IReadOnlyList<float2> ControlPoints { get; }
         IReadOnlyList<float> Times { get; }
@@ -15,7 +15,7 @@ namespace Crener.Spline.Test
         void RemoveControlPoint(int index);
     }
     
-    public interface IVarianceTestSpline : ISimpleSpline2DVarianceEditor
+    public interface IVarianceTestSpline : ISimpleSpline2DVariance
     {
         IReadOnlyList<float2> ControlPoints { get; }
         IReadOnlyList<float> Times { get; }
