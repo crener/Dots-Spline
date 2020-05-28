@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Crener.Spline.BezierSpline.Jobs;
 using Crener.Spline.Common;
+using Crener.Spline.Common.DataStructs;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;

@@ -1,5 +1,6 @@
 using Crener.Spline.BezierSpline.Entity;
 using Crener.Spline.Common;
+using Crener.Spline.Common.Interfaces;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;

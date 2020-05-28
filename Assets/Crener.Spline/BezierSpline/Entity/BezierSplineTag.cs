@@ -1,3 +1,5 @@
+using Crener.Spline.Common;
+using Crener.Spline.Common.DataStructs;
 using Unity.Entities;
 
 namespace Crener.Spline.BezierSpline.Entity

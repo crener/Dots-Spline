@@ -3,6 +3,7 @@ using Crener.Spline.BezierSpline;
 using Crener.Spline.BezierSpline.Entity;
 using Crener.Spline.BezierSpline.Jobs;
 using Crener.Spline.Common;
+using Crener.Spline.Common.DataStructs;
 using NUnit.Framework;
 using Unity.Mathematics;
 

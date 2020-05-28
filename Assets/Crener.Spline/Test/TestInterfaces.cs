@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using Crener.Spline.Common;
+using Crener.Spline.Common.Interfaces;
 using Unity.Mathematics;
 
 namespace Crener.Spline.Test
@@ -8,11 +10,6 @@ namespace Crener.Spline.Test
         IReadOnlyList<float2> ControlPoints { get; }
         IReadOnlyList<float> Times { get; }
         IReadOnlyList<SplineEditMode> Modes { get; }
-
-        float2 GetPoint(float progress);
-        void AddControlPoint(float2 point);
-        void InsertControlPoint(int index, float2 point);
-        void RemoveControlPoint(int index);
     }
     
     public interface IVarianceTestSpline : ISimpleSpline2DVariance

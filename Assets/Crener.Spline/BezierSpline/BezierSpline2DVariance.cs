@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Crener.Spline.BezierSpline.Entity;
+using Crener.Spline.Common;
+using Crener.Spline.Common.DataStructs;
+using Crener.Spline.Common.Interfaces;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;

@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Crener.Spline.Common;
+using Crener.Spline.Common.DataStructs;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
