@@ -151,7 +151,7 @@ namespace Crener.Spline.Test.Simple
             right1 = spline.GetPoint(0.9f);
             right2 = spline.GetPoint(1f);
             right = math.distance(right1, right2);
-            Assert.Less(left, right, $"Left Delta '{left}' should be less than '{right}'");
+            Assert.LessOrEqual(left, right, $"Left Delta '{left}' should be less than '{right}'");
         }
 
         [Test]

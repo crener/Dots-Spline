@@ -165,13 +165,13 @@ MonoBehaviour:
     y: 16.752028
   - x: 24.256725
     y: 14.422679
-  PointEdit: 000000000100000000000000
   SegmentLength:
   - 0.54166704
   - 1
-  arkParameterization: 0
-  ArkLength: 0.1
   LengthCache: 25.23782
+  PointEdit: 000000000100000000000000
+  arkParameterization: 1
+  arkLength: 0.1
 --- !u!4 &526519236
 Transform:
   m_ObjectHideFlags: 0
@@ -216,16 +216,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Points:
-  - x: -10.090898
-    y: 12.505435
+  - x: -17.016441
+    y: 24.117432
   - x: -7.0945625
     y: 15.771381
+  - x: 1.6490006
+    y: 23.322384
+  - x: 11.80299
+    y: 16.55306
+  - x: 12.740286
+    y: 25.8739
   - x: 21.690084
     y: 20.523918
   SegmentLength:
-  - 0.13188514
-  - 0.99999994
-  LengthCache: 33.60653
+  - 0.22940806
+  - 0.43382293
+  - 0.6497522
+  - 0.8155062
+  - 1
+  LengthCache: 56.516514
 --- !u!4 &544166360
 Transform:
   m_ObjectHideFlags: 0
@@ -238,7 +247,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &705507993
 GameObject:
@@ -332,64 +341,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
---- !u!1 &711318639
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 711318641}
-  - component: {fileID: 711318640}
-  m_Layer: 0
-  m_Name: Bezier Spline (2)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &711318640
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 711318639}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 567aba01402d32e40af5fe1389e1b8e3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Points:
-  - x: 10
-    y: 10
-  - x: 18.997047
-    y: 10
-  - x: 19
-    y: 10.000001
-  - x: 20
-    y: 10
-  PointEdit: 0000000000000000
-  SegmentLength:
-  - 1
-  arkParameterization: 0
-  ArkLength: 0.1
-  LengthCache: 10
---- !u!4 &711318641
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 711318639}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4, y: 7.65, z: -3.875}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -507,23 +458,23 @@ MonoBehaviour:
     y: 16.638672
   - x: 18.030079
     y: 19.548439
-  - x: 12.070082
-    y: 18.884432
-  - x: 13.9733095
-    y: 18.229122
-  - x: 16.171532
-    y: 17.472242
+  - x: 11.496378
+    y: 19.09305
+  - x: 13.399606
+    y: 18.43774
+  - x: 15.597826
+    y: 17.68086
   - x: 14.237227
     y: 20.472107
   - x: 16.374575
     y: 19.284565
-  PointEdit: 000000000000000000000000
   SegmentLength:
-  - 0.8741116
+  - 0.8645769
   - 0.99999994
+  LengthCache: 27.159473
+  PointEdit: 000000000000000000000000
   arkParameterization: 0
-  ArkLength: 0.1
-  LengthCache: 27.503166
+  arkLength: 0.1
 --- !u!4 &1109083493
 Transform:
   m_ObjectHideFlags: 0
