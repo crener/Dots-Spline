@@ -17,11 +17,11 @@ namespace Crener.Spline.BezierSpline
     /// <summary>
     /// Spline along the XY axis with variance as defined when edited in scene
     /// </summary>
-    public class BezierSpline2DVariance : MonoBehaviour, ISimpleSpline2DVariance, IDisposable
+    public class BezierSpline2DVariance : MonoBehaviour, ISimpleSpline2DVariance
     {
         private static readonly Color s_handleLeft = new Color(0.06f, 0.48f, 0f);
         private static readonly Color s_handleRight = new Color(0.48f, 0.13f, 0f);
-        private const int c_floatsPerControlPoint = 9;
+        protected const int FloatsPerControlPoint = 9;
 
         [SerializeField]
         protected List<float2> Points = new List<float2>();
@@ -89,6 +89,8 @@ namespace Crener.Spline.BezierSpline
         /// <returns>point on spline</returns>
         public float2 GetPoint(float progress, half variance)
         {
+            if(ControlPointCount == 0)
+                return float2.zero;
             if(ControlPointCount <= 1)
                 return GetControlPoint(0, SplinePointVariance.Point);
             progress = math.clamp(progress, 0f, 1f);
@@ -332,7 +334,7 @@ namespace Crener.Spline.BezierSpline
 
         public void RemoveControlPoint(int index)
         {
-            if(ControlPointCount == 0) return;
+            if(ControlPointCount == 0 || index < 0) return;
             if(ControlPointCount == 1)
             {
                 Points.Clear();
@@ -344,12 +346,15 @@ namespace Crener.Spline.BezierSpline
             if(index == 0)
             {
                 // remove from start
-                Points.RemoveRange(0, c_floatsPerControlPoint);
+                Points.RemoveRange(0, FloatsPerControlPoint);
             }
-            else if(index == ControlPointCount - 1)
+            else if(index >= ControlPointCount - 1)
             {
+                // fixes the index for later if it is greater than the amount of control points
+                index = ControlPointCount - 1;
+                
                 // remove from end
-                int startIndex = math.max(0, IndexMode(index - 1, SplinePointVariance.Post));
+                int startIndex = math.max(0, IndexMode(index-1, SplinePointVariance.Post));
                 Points.RemoveRange(startIndex, Points.Count - startIndex);
             }
             else
@@ -377,7 +382,7 @@ namespace Crener.Spline.BezierSpline
 #if UNITY_EDITOR
             if(index > Points.Count || index < 0)
             {
-                throw new IndexOutOfRangeException($"Index '{index}' can't be retieved from an array with {Points.Count} elements!");
+                throw new IndexOutOfRangeException($"Index '{index}' can't be retrieved from an array with {Points.Count} elements!");
             }
 #endif
             return Points[index];
@@ -396,25 +401,25 @@ namespace Crener.Spline.BezierSpline
             switch (point)
             {
                 case SplinePointVariance.Pre:
-                    return (i * c_floatsPerControlPoint) - 3;
+                    return (i * FloatsPerControlPoint) - 3;
                 case SplinePointVariance.PreLeft:
-                    return (i * c_floatsPerControlPoint) - 2;
+                    return (i * FloatsPerControlPoint) - 2;
                 case SplinePointVariance.PreRight:
-                    return (i * c_floatsPerControlPoint) - 1;
+                    return (i * FloatsPerControlPoint) - 1;
 
                 case SplinePointVariance.Point:
-                    return (i * c_floatsPerControlPoint);
+                    return (i * FloatsPerControlPoint);
                 case SplinePointVariance.PointLeft:
-                    return (i * c_floatsPerControlPoint) + 1;
+                    return (i * FloatsPerControlPoint) + 1;
                 case SplinePointVariance.PointRight:
-                    return (i * c_floatsPerControlPoint) + 2;
+                    return (i * FloatsPerControlPoint) + 2;
 
                 case SplinePointVariance.Post:
-                    return (i * c_floatsPerControlPoint) + 3;
+                    return (i * FloatsPerControlPoint) + 3;
                 case SplinePointVariance.PostLeft:
-                    return (i * c_floatsPerControlPoint) + 4;
+                    return (i * FloatsPerControlPoint) + 4;
                 case SplinePointVariance.PostRight:
-                    return (i * c_floatsPerControlPoint) + 5;
+                    return (i * FloatsPerControlPoint) + 5;
             }
 
             throw new ArgumentException("Unexpected enum value", nameof(point));

@@ -1,14 +1,10 @@
-using System;
-using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Crener.Spline.BaseSpline;
-using Crener.Spline.BezierSpline.Entity;
 using Crener.Spline.Common;
 using Crener.Spline.Common.DataStructs;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
-using UnityEngine;
 using UnityEngine.Assertions;
 
 namespace Crener.Spline.PointToPoint
@@ -19,7 +15,7 @@ namespace Crener.Spline.PointToPoint
     public class PointToPoint2DSpline : BaseSpline2D
     {
         public override SplineType SplineDataType => SplineType.PointToPoint;
-        
+
         /// <summary>
         /// Adds a point to the end of the spline
         /// </summary>
@@ -78,9 +74,9 @@ namespace Crener.Spline.PointToPoint
         /// <param name="index">control point index</param>
         public override void RemoveControlPoint(int index)
         {
-            if(ControlPointCount == 0) return;
+            if(ControlPointCount == 0 || index < 0) return;
 
-            Points.RemoveAt(index);
+            Points.RemoveAt(math.min(index, ControlPointCount - 1));
             RecalculateLengthBias();
         }
 
@@ -114,7 +110,7 @@ namespace Crener.Spline.PointToPoint
         public override void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
         {
             return;
-            
+
             //todo implement this for point to point
             dstManager.AddComponent<Spline2DData>(entity);
             Spline2DData splineData = ConvertData();

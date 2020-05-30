@@ -1,152 +1,18 @@
 using System;
-using System.Collections.Generic;
-using Crener.Spline.BezierSpline;
-using Crener.Spline.BezierSpline.Entity;
-using Crener.Spline.BezierSpline.Jobs;
 using Crener.Spline.Common;
-using Crener.Spline.Test.Helpers;
+using Crener.Spline.Test._2D;
 using NUnit.Framework;
 using Unity.Mathematics;
 using UnityEngine;
 
-namespace Crener.Spline.Test.Variance
+namespace Crener.Spline.Test.Variance.TestAdapter
 {
-    public class BezierSpline2DVarianceGameobjectTest : BezierSpline2DVarianceTest
-    {
-        protected override IVarianceTestSpline CreateSpline()
-        {
-            GameObject game = new GameObject();
-            BezierSpline2DVarianceInspector spline = game.AddComponent<BezierSpline2DVarianceInspector>();
-            Assert.IsNotNull(spline);
-
-            ClearSpline(spline);
-
-            m_disposables.Add(spline);
-            return spline;
-        }
-        
-        public class BezierSpline2DVarianceInspector : BezierSpline2DVariance, IVarianceTestSpline
-        {
-            public IReadOnlyList<float2> ControlPoints => Points;
-            public IReadOnlyList<float> Times
-            {
-                get
-                {
-                    if(SegmentLength.Length == 0) return new List<float>();
-
-                    List<float> data = new List<float>(SegmentLength.GetLength(1));
-                    for (int i = 0; i < SegmentLength.GetLength(1); i++)
-                        data.Add(SegmentLength[0, i]);
-
-                    return data;
-                }
-            }
-            public IReadOnlyList<SplineEditMode> Modes => PointMode;
-
-            public new void ClearData()
-            {
-                base.ClearData();
-                
-                Points.Clear();
-                SegmentLength = new float[0, 0];
-                PointMode.Clear();
-
-                RecalculateLengthBias();
-            }
-        }
-    }
-    
-    public class BezierSpline2DVarianceJobTest : BezierSpline2DVarianceTest
-    {
-        protected override IVarianceTestSpline CreateSpline()
-        {
-            GameObject game = new GameObject();
-            BezierSpline2DVarianceJobInspector spline = game.AddComponent<BezierSpline2DVarianceJobInspector>();
-            Assert.IsNotNull(spline);
-
-            ClearSpline(spline);
-
-            m_disposables.Add(spline);
-            return spline;
-        }
-        
-        public class BezierSpline2DVarianceJobInspector : BezierSpline2DVariance, IVarianceTestSpline
-        {
-            public IReadOnlyList<float2> ControlPoints => Points;
-            public IReadOnlyList<float> Times
-            {
-                get
-                {
-                    if(SegmentLength.Length == 0) return new List<float>();
-
-                    List<float> data = new List<float>(SegmentLength.GetLength(1));
-                    for (int i = 0; i < SegmentLength.GetLength(1); i++)
-                        data.Add(SegmentLength[0, i]);
-
-                    return data;
-                }
-            }
-            public IReadOnlyList<SplineEditMode> Modes => PointMode;
-
-            public new int ControlPointCount
-            {
-                get
-                {
-                    ClearData();
-                    ConvertSplineData();
-                    Assert.IsTrue(SplineVarianceEntityData.HasValue, "Failed to generate spline");
-
-                    return SplineVarianceEntityData.Value.ControlPointCount;
-                }
-            }
-            
-            protected new float Length()
-            {
-                ClearData();
-                ConvertSplineData();
-                Assert.IsTrue(SplineVarianceEntityData.HasValue, "Failed to generate spline");
-
-                return SplineVarianceEntityData.Value.Length[0];
-            }
-            
-            public new float2 GetPoint(float progress, half variance)
-            {
-                ClearData();
-                ConvertSplineData();
-                Assert.IsTrue(SplineVarianceEntityData.HasValue, "Failed to generate spline");
-
-                BezierSpline2DVariancePointJob job = new BezierSpline2DVariancePointJob()
-                {
-                    Spline = SplineVarianceEntityData.Value,
-                    SplineProgress = new SplineProgress() {Progress = progress},
-                    SplineVariance = new SplineVariance() {Variance = variance},
-                };
-                job.Execute();
-
-                return job.Result;
-            }
-            
-            public new void ClearData()
-            {
-                base.ClearData();
-                
-                RecalculateLengthBias();
-            }
-        }
-    }
-    
-    public abstract class BezierSpline2DVarianceTest : SelfCleanUpTestSet
+    public abstract class BaseVarianceTests : BaseSimpleSplineTests
     {
         [Test]
-        public void Basic()
+        public void VarianceAdd1()
         {
-            CreateSpline();
-        }
-
-        [Test]
-        public void Add1()
-        {
-            IVarianceTestSpline spline = CreateSpline();
+            IVarianceTestSpline spline = CreateVarianceSpline();
 
             float2 a = float2.zero;
             spline.AddControlPoint(a);
@@ -163,9 +29,9 @@ namespace Crener.Spline.Test.Variance
         }
 
         [Test]
-        public void Add2()
+        public void VarianceAdd2()
         {
-            IVarianceTestSpline spline = CreateSpline();
+            IVarianceTestSpline spline = CreateVarianceSpline();
 
             float2 a = float2.zero;
             spline.AddControlPoint(a);
@@ -185,9 +51,9 @@ namespace Crener.Spline.Test.Variance
         }
 
         [Test]
-        public void Remove()
+        public void VarianceRemove()
         {
-            IVarianceTestSpline spline = CreateSpline();
+            IVarianceTestSpline spline = CreateVarianceSpline();
 
             float2 a = float2.zero;
             spline.AddControlPoint(a);
@@ -220,9 +86,9 @@ namespace Crener.Spline.Test.Variance
         }
 
         [Test]
-        public void RemoveFromStart()
+        public void VarianceRemoveFromStart()
         {
-            IVarianceTestSpline spline = CreateSpline();
+            IVarianceTestSpline spline = CreateVarianceSpline();
 
             float2 a = float2.zero;
             spline.AddControlPoint(a);
@@ -253,7 +119,7 @@ namespace Crener.Spline.Test.Variance
         [Test]
         public void RemoveFromEnd()
         {
-            IVarianceTestSpline spline = CreateSpline();
+            IVarianceTestSpline spline = CreateVarianceSpline();
 
             float2 a = float2.zero;
             spline.AddControlPoint(a);
@@ -301,14 +167,13 @@ namespace Crener.Spline.Test.Variance
             Assert.AreEqual(0, spline.ControlPointCount);
             Assert.AreEqual(0, spline.Modes.Count);
             Assert.AreEqual(0, spline.ControlPoints.Count);
-            Assert.AreEqual(0, spline.Times.Count);
             Assert.AreEqual(0f, spline.Length());
         }
 
         [Test]
-        public void Point()
+        public void VariancePoint()
         {
-            IVarianceTestSpline spline = CreateSpline();
+            IVarianceTestSpline spline = CreateVarianceSpline();
 
             float2 a = float2.zero;
             spline.AddControlPoint(a);
@@ -325,9 +190,9 @@ namespace Crener.Spline.Test.Variance
         }
 
         [Test]
-        public void Point2()
+        public void VariancePoint2()
         {
-            IVarianceTestSpline spline = CreateSpline();
+            IVarianceTestSpline spline = CreateVarianceSpline();
 
             float2 a = float2.zero;
             spline.AddControlPoint(a);
@@ -349,9 +214,9 @@ namespace Crener.Spline.Test.Variance
         }
 
         [Test]
-        public void Point3()
+        public void VariancePoint3()
         {
-            IVarianceTestSpline spline = CreateSpline();
+            IVarianceTestSpline spline = CreateVarianceSpline();
 
             float2 a = float2.zero;
             spline.AddControlPoint(a);
@@ -380,9 +245,9 @@ namespace Crener.Spline.Test.Variance
         }
 
         [Test]
-        public void Point4()
+        public void VariancePoint4()
         {
-            IVarianceTestSpline spline = CreateSpline();
+            IVarianceTestSpline spline = CreateVarianceSpline();
 
             float2 a = new float2(3f, 3f);
             spline.AddControlPoint(a);
@@ -394,9 +259,9 @@ namespace Crener.Spline.Test.Variance
         }
 
         [Test]
-        public void Point5()
+        public void VariancePoint5()
         {
-            IVarianceTestSpline spline = CreateSpline();
+            IVarianceTestSpline spline = CreateVarianceSpline();
 
             float2 a = new float2(1f, 10f);
             spline.AddControlPoint(a);
@@ -412,9 +277,9 @@ namespace Crener.Spline.Test.Variance
         }
 
         [Test]
-        public void PointEnd()
+        public void VariancePointEnd()
         {
-            IVarianceTestSpline spline = CreateSpline();
+            IVarianceTestSpline spline = CreateVarianceSpline();
 
             float2 a = float2.zero;
             spline.AddControlPoint(a);
@@ -432,9 +297,9 @@ namespace Crener.Spline.Test.Variance
         }
 
         [Test]
-        public void Update()
+        public void VarianceUpdate()
         {
-            IVarianceTestSpline spline = CreateSpline();
+            IVarianceTestSpline spline = CreateVarianceSpline();
 
             float2 a = float2.zero;
             spline.AddControlPoint(a);
@@ -465,9 +330,9 @@ namespace Crener.Spline.Test.Variance
         }
 
         [Test]
-        public void Update2()
+        public void VarianceUpdate2()
         {
-            IVarianceTestSpline spline = CreateSpline();
+            IVarianceTestSpline spline = CreateVarianceSpline();
 
             float2 a = float2.zero;
             spline.AddControlPoint(a);
@@ -505,9 +370,9 @@ namespace Crener.Spline.Test.Variance
         }
 
         [Test]
-        public void Update3()
+        public void VarianceUpdate3()
         {
-            IVarianceTestSpline spline = CreateSpline();
+            IVarianceTestSpline spline = CreateVarianceSpline();
 
             float2 a = float2.zero;
             spline.AddControlPoint(a);
@@ -526,9 +391,9 @@ namespace Crener.Spline.Test.Variance
         }
 
         [Test]
-        public void Insert()
+        public void VarianceInsert()
         {
-            IVarianceTestSpline spline = CreateSpline();
+            IVarianceTestSpline spline = CreateVarianceSpline();
 
             float2 a = float2.zero;
             spline.AddControlPoint(a);
@@ -560,9 +425,9 @@ namespace Crener.Spline.Test.Variance
         }
 
         [Test]
-        public void InsertAtStart()
+        public void VarianceInsertAtStart()
         {
-            IVarianceTestSpline spline = CreateSpline();
+            IVarianceTestSpline spline = CreateVarianceSpline();
 
             float2 a = float2.zero;
             spline.AddControlPoint(a);
@@ -599,16 +464,15 @@ namespace Crener.Spline.Test.Variance
         }
 
         [Test]
-        public void PointCreation()
+        public void VariancePointCreation()
         {
-            IVarianceTestSpline spline = CreateSpline();
+            IVarianceTestSpline spline = CreateVarianceSpline();
 
             float2 a = new float2(0f, 0f);
             spline.AddControlPoint(a);
 
             Assert.AreEqual(1, spline.ControlPointCount);
             Assert.AreEqual(1, spline.Modes.Count);
-            Assert.AreEqual(0, spline.Times.Count);
             Assert.AreEqual(3, spline.ControlPoints.Count);
 
             CheckFloat2(a, spline.GetControlPoint(0, SplinePointVariance.Point));
@@ -632,9 +496,9 @@ namespace Crener.Spline.Test.Variance
         /// Make sure that the points are stored correctly
         /// </summary>
         [Test]
-        public void PointArrayVerification()
+        public void VariancePointArrayVerification()
         {
-            IVarianceTestSpline spline = CreateSpline();
+            IVarianceTestSpline spline = CreateVarianceSpline();
 
             float2 a = new float2(10f, 10f);
             spline.AddControlPoint(a);
@@ -742,7 +606,7 @@ namespace Crener.Spline.Test.Variance
         [Test]
         public void Variance()
         {
-            IVarianceTestSpline spline = CreateSpline();
+            IVarianceTestSpline spline = CreateVarianceSpline();
             const float y = 2f;
 
             float2 a = new float2(2f, y);
@@ -800,7 +664,7 @@ namespace Crener.Spline.Test.Variance
         [Test]
         public void VarianceLength()
         {
-            IVarianceTestSpline spline = CreateSpline();
+            IVarianceTestSpline spline = CreateVarianceSpline();
             const float y = 18f;
 
             float2 a = new float2(20f, y);
@@ -853,15 +717,7 @@ namespace Crener.Spline.Test.Variance
                 position.y + (math.cos(angleDegrees * Mathf.Deg2Rad) * magnitude));
         }
 
-        private void CheckFloat2(float2 expected, float2 reality, float tolerance = 0.00001f)
-        {
-            Assert.IsTrue(math.length(math.abs(expected.x - reality.x)) <= tolerance,
-                $"X axis is out of range!\n Expected: {expected.x:N4}\n Received: {reality.x:N4}\n Tolerance: {tolerance:N4}");
-            Assert.IsTrue(math.length(math.abs(expected.y - reality.y)) <= tolerance,
-                $"Y axis is out of range!\n Expected: {expected.y:N4}\n Received: {reality.y:N4}\n Tolerance: {tolerance:N4}");
-        }
-
-        protected abstract IVarianceTestSpline CreateSpline();
+        protected abstract IVarianceTestSpline CreateVarianceSpline();
 
         protected void ClearSpline(IVarianceTestSpline spline)
         {

@@ -1,9 +1,11 @@
+using System;
+
 namespace Crener.Spline.Common.Interfaces
 {
     /// <summary>
     /// basic spline behaviour
     /// </summary>
-    public interface ISpline
+    public interface ISpline : IDisposable
     {
         /// <summary>
         /// Amount of control points in the spline

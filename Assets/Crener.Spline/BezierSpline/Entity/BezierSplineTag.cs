@@ -1,4 +1,3 @@
-using Crener.Spline.Common;
 using Crener.Spline.Common.DataStructs;
 using Unity.Entities;
 

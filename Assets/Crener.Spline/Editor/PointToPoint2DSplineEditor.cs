@@ -1,12 +1,9 @@
-using System;
-using System.Runtime.CompilerServices;
 using Crener.Spline.BezierSpline;
+using Crener.Spline.Common;
 using Crener.Spline.PointToPoint;
 using Unity.Mathematics;
 using UnityEditor;
-using UnityEditor.Graphs;
 using UnityEngine;
-using UnityEngine.XR;
 
 namespace Crener.Spline.Editor
 {

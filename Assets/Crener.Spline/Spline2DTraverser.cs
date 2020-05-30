@@ -1,12 +1,11 @@
-using Crener.Spline.BezierSpline.Entity;
+using Crener.Spline.BezierSpline;
 using Crener.Spline.Common;
 using Crener.Spline.Common.Interfaces;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.Serialization;
 
-namespace Crener.Spline.BezierSpline
+namespace Crener.Spline
 {
     /// <summary>
     /// Moves the game object along a <see cref="BezierSpline2DSimple"/>

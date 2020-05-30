@@ -1,11 +1,7 @@
-using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using Crener.Spline.BezierSpline.Entity;
 using Crener.Spline.Common;
 using Crener.Spline.Common.Interfaces;
 using Unity.Entities;
-using Unity.Mathematics;
 using UnityEngine;
 
 namespace Crener.Spline.BaseSpline
@@ -13,7 +9,7 @@ namespace Crener.Spline.BaseSpline
     /// <summary>
     /// Base implementation which contains base functionality and reusable methods
     /// </summary>
-    public abstract class BaseSpline : MonoBehaviour, ISpline, IDisposable
+    public abstract class BaseSpline : MonoBehaviour, ISpline
     {
         [SerializeField]
         protected List<float> SegmentLength = new List<float>();

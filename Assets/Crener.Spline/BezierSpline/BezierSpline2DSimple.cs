@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Crener.Spline.BaseSpline;
-using Crener.Spline.BezierSpline.Entity;
 using Crener.Spline.Common;
 using Crener.Spline.Common.DataStructs;
 using Unity.Collections;
@@ -19,7 +18,7 @@ namespace Crener.Spline.BezierSpline
     /// </summary>
     public class BezierSpline2DSimple : BaseSpline2D
     {
-        private const int c_floatsPerControlPoint = 3;
+        protected const int c_floatsPerControlPoint = 3;
         
         [SerializeField]
         protected List<SplineEditMode> PointEdit = new List<SplineEditMode>();
@@ -167,7 +166,7 @@ namespace Crener.Spline.BezierSpline
         /// <param name="index">control point index</param>
         public override void RemoveControlPoint(int index)
         {
-            if(ControlPointCount == 0) return;
+            if(ControlPointCount == 0 || index < 0) return;
             if(ControlPointCount == 1)
             {
                 Points.RemoveAt(0);
@@ -179,10 +178,13 @@ namespace Crener.Spline.BezierSpline
             {
                 Points.RemoveRange(0, c_floatsPerControlPoint);
             }
-            else if(index == ControlPointCount - 1)
+            else if(index >= ControlPointCount - 1)
             {
                 int startIndex = math.max(0, IndexMode(ControlPointCount - 1, SplinePoint.Pre) - 1);
                 Points.RemoveRange(startIndex, c_floatsPerControlPoint);
+
+                // fixes the index for later if it is greater than the amount of control points
+                index = ControlPointCount - 1;
             }
             else
             {

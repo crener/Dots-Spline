@@ -1,5 +1,4 @@
 ﻿using System;
-using Crener.Spline.BezierSpline.Entity;
 using Crener.Spline.Common;
 using Crener.Spline.Common.DataStructs;
 using Unity.Burst;
@@ -35,7 +34,7 @@ namespace Crener.Spline.BezierSpline.Jobs
                 Result = Spline.Points[0];
                 return;
             }
-            
+
             int aIndex = SegmentIndex();
             Result = CubicBezierPoint(SegmentProgress(aIndex), aIndex, aIndex + 1);
         }
@@ -65,8 +64,10 @@ namespace Crener.Spline.BezierSpline.Jobs
 
         private float2 CubicBezierPoint(float t, int a, int b)
         {
+#if UNITY_EDITOR
             if(b <= 0)
                 throw new ArgumentOutOfRangeException($"B is {b} which isn't within the valid point range");
+#endif
 
             float2 p0 = Spline.Points[(a * 3)];
             float2 p1 = Spline.Points[(a * 3) + 1];

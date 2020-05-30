@@ -1,17 +1,17 @@
 using Crener.Spline.BezierSpline;
-using Crener.Spline.BezierSpline.Entity;
 using Crener.Spline.Common;
 using Crener.Spline.Common.DataStructs;
+using Crener.Spline.Test._2D.Bezier.TestAdapters;
 using NUnit.Framework;
 using Unity.Mathematics;
 
-namespace Crener.Spline.Test.Simple
+namespace Crener.Spline.Test._2D.Bezier
 {
     /// <summary>
     /// Tests the <see cref="BezierSpline2DSimple"/>s ability to convert from a Bezier spline to an ark parameterized
     /// point to point spline.
     /// </summary>
-    public class BezierSplineConversionTests : SharedBezierSplineTestBase
+    public class BezierSplineArkConversionTests : SharedBezierSplineTestBase
     {
         private const float c_requiredPrecision = 0.00001f;
 
@@ -133,7 +133,7 @@ namespace Crener.Spline.Test.Simple
             float2 right1 = spline.GetPoint(0.9f);
             float2 right2 = spline.GetPoint(1f);
             float right = math.distance(right1, right2);
-            Assert.Greater(left, right, $"Left Delta '{left}' should be grater than '{right}'");
+            Assert.Greater(left, right, $"Left Delta '{left}' should be grater than right delta '{right}'");
 
             // in sure that the point count is as expected
             // if there where multiple control points there might be more resulting points than just totalLength / ark length
@@ -153,7 +153,7 @@ namespace Crener.Spline.Test.Simple
             right1 = spline.GetPoint(0.9f);
             right2 = spline.GetPoint(1f);
             right = math.distance(right1, right2);
-            Assert.LessOrEqual(left, right, $"Left Delta '{left}' should be less than '{right}'");
+            Assert.AreEqual(left, right, $"Left Delta '{left}' should be the same as right delta '{right}'");
         }
 
         [Test]

@@ -1,11 +1,7 @@
-using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-using Crener.Spline.BezierSpline.Entity;
-using Crener.Spline.Common;
 using Crener.Spline.Common.DataStructs;
 using Crener.Spline.Common.Interfaces;
-using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -60,7 +56,9 @@ namespace Crener.Spline.BaseSpline
         /// <returns>point on spline</returns>
         public float2 GetPoint(float progress)
         {
-            if(progress == 0f || ControlPointCount <= 1)
+            if(ControlPointCount == 0)
+                return float2.zero;
+            else if(progress <= 0f || ControlPointCount == 1)
                 return GetControlPoint(0);
             else if(progress >= 1f)
                 return GetControlPoint(ControlPointCount - 1);

@@ -1,4 +1,4 @@
-namespace Crener.Spline
+namespace Crener.Spline.Common
 {
     /// <summary>
     /// Type of bezier point that is represented 
