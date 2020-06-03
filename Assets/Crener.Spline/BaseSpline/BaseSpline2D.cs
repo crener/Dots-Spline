@@ -41,7 +41,7 @@ namespace Crener.Spline.BaseSpline
         /// Retrieve a point on the spline at a specific control point
         /// </summary>
         /// <returns>point on spline segment</returns>
-        public float2 GetPoint(float progress, int index)
+        public virtual float2 GetPoint(float progress, int index)
         {
             return SplineInterpolation(progress, index, (index + 1) % ControlPointCount);
         }
@@ -54,7 +54,7 @@ namespace Crener.Spline.BaseSpline
         /// </summary>
         /// <param name="progress"></param>
         /// <returns>point on spline</returns>
-        public float2 GetPoint(float progress)
+        public virtual float2 GetPoint(float progress)
         {
             if(ControlPointCount == 0)
                 return float2.zero;

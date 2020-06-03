@@ -38,26 +38,6 @@ namespace Crener.Spline.Common.Interfaces
         /// <param name="index">segment index</param>
         /// <param name="point">location to insert</param>
         void InsertControlPoint(int index, float3 point);
-
-        /// <summary>
-        /// Remove existing control points data
-        /// </summary>
-        /// <param name="index">control point index</param>
-        void RemoveControlPoint(int index);
-
-        /// <summary>
-        /// Get the edit mode for a control point 
-        /// </summary>
-        /// <param name="index"> control point index</param>
-        /// <returns>edit mode for the control point</returns>
-        SplineEditMode GetEditMode(int index);
-
-        /// <summary>
-        /// Change the edit mode of a control point
-        /// </summary>
-        /// <param name="index">control point index</param>
-        /// <param name="mode">new control point edit mode</param>
-        void ChangeEditMode(int index, SplineEditMode mode);
     }
 
     /// <summary>

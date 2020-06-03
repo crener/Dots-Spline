@@ -1,3 +1,5 @@
+using Crener.Spline.Common.Interfaces;
+using Crener.Spline.Test._2D.Bezier.TestTypes;
 using Crener.Spline.Test.Helpers;
 using NUnit.Framework;
 using UnityEngine;
@@ -6,10 +8,10 @@ namespace Crener.Spline.Test._2D.Bezier.TestAdapters
 {
     public class SharedBezierSplineTestBase : SelfCleanUpTestSet
     {
-        protected BezierSpline2DJobTest.BezierSpline2DSimpleInspector CreateSpline()
+        protected ISimpleTestSpline CreateSpline()
         {
             GameObject game = new GameObject();
-            BezierSpline2DJobTest.BezierSpline2DSimpleInspector bezierSpline = game.AddComponent<BezierSpline2DJobTest.BezierSpline2DSimpleInspector>();
+            ISimpleTestSpline bezierSpline = game.AddComponent<MeaninglessTestWrapper2.TestBezierSpline2DSimpleJob>();
             Assert.IsNotNull(bezierSpline);
 
             TestHelpers.ClearSpline(bezierSpline);

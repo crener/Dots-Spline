@@ -1,30 +1,28 @@
 using Crener.Spline.Common.Interfaces;
 using NUnit.Framework;
+using Unity.Mathematics;
 
 namespace Crener.Spline.Test.Helpers
 {
     public static class TestHelpers
     {
-        public static void ClearSpline(ISpline2D bezierSpline)
+        public static void ClearSpline(ISpline spline)
         {
-            while (bezierSpline.ControlPointCount > 0)
+            while (spline.ControlPointCount > 0)
             {
-                bezierSpline.RemoveControlPoint(0);
+                spline.RemoveControlPoint(0);
             }
 
-            Assert.AreEqual(0f, bezierSpline.Length());
-            Assert.AreEqual(0, bezierSpline.ControlPointCount);
+            Assert.AreEqual(0f, spline.Length());
+            Assert.AreEqual(0, spline.ControlPointCount);
         }
-        
-        public static void ClearSpline(ISpline3D bezierSpline)
-        {
-            while (bezierSpline.ControlPointCount > 0)
-            {
-                bezierSpline.RemoveControlPoint(0);
-            }
 
-            Assert.AreEqual(0f, bezierSpline.Length());
-            Assert.AreEqual(0, bezierSpline.ControlPointCount);
+        public static void CheckFloat2(float2 expected, float2 reality, float tolerance = 0.00001f)
+        {
+            Assert.IsTrue(math.length(math.abs(expected.x - reality.x)) <= tolerance,
+                $"X axis is out of range!\n Expected: {expected.x}\n Received: {reality.x}\n Tolerance: {tolerance:N3}");
+            Assert.IsTrue(math.length(math.abs(expected.y - reality.y)) <= tolerance,
+                $"Y axis is out of range!\n Expected: {expected.x}\n Received: {reality.x}\n Tolerance: {tolerance:N3}");
         }
     }
 }

@@ -4,24 +4,25 @@ using Crener.Spline.BezierSpline.Jobs;
 using Crener.Spline.Common;
 using Crener.Spline.Common.DataStructs;
 using Crener.Spline.Test._2D.Bezier.TestAdapters;
+using Crener.Spline.Test.Helpers;
 using NUnit.Framework;
 using Unity.Mathematics;
 
-namespace Crener.Spline.Test._2D.Bezier
+namespace Crener.Spline.Test._2D
 {
     public class BezierSpline2DJobTest : SharedBezierSplineTestBase
     {
         [Test]
         public void Point()
         {
-            BezierSpline2DSimpleInspector bezierSpline = CreateSpline();
+            ISimpleTestSpline bezierSpline = CreateSpline();
 
             float2 a = float2.zero;
             bezierSpline.AddControlPoint(a);
             float2 b = new float2(1f, 0f);
             bezierSpline.AddControlPoint(b);
 
-            Spline2DData data = bezierSpline.ConvertJobData();
+            Spline2DData data = bezierSpline.SplineEntityData.Value;
             Assert.AreEqual(1f, bezierSpline.Length());
             Assert.AreEqual(1f, data.Length);
 
@@ -45,7 +46,7 @@ namespace Crener.Spline.Test._2D.Bezier
         [Test]
         public void Point2()
         {
-            BezierSpline2DSimpleInspector bezierSpline = CreateSpline();
+            ISimpleTestSpline bezierSpline = CreateSpline();
 
             float2 a = float2.zero;
             bezierSpline.AddControlPoint(a);
@@ -54,7 +55,7 @@ namespace Crener.Spline.Test._2D.Bezier
             float2 c = new float2(2f, 0f);
             bezierSpline.AddControlPoint(c);
 
-            Spline2DData data = bezierSpline.ConvertJobData();
+            Spline2DData data = bezierSpline.SplineEntityData.Value;
             Assert.AreEqual(2f, bezierSpline.Length());
             Assert.AreEqual(2f, data.Length);
 
@@ -83,7 +84,7 @@ namespace Crener.Spline.Test._2D.Bezier
         [Test]
         public void Point3()
         {
-            BezierSpline2DSimpleInspector bezierSpline = CreateSpline();
+            ISimpleTestSpline bezierSpline = CreateSpline();
 
             float2 a = float2.zero;
             bezierSpline.AddControlPoint(a);
@@ -94,7 +95,7 @@ namespace Crener.Spline.Test._2D.Bezier
             float2 d = new float2(10f, 0f);
             bezierSpline.AddControlPoint(d);
 
-            Spline2DData data = bezierSpline.ConvertJobData();
+            Spline2DData data = bezierSpline.SplineEntityData.Value;
             Assert.AreEqual(10f, bezierSpline.Length());
             Assert.AreEqual(10f, data.Length);
 
@@ -126,9 +127,9 @@ namespace Crener.Spline.Test._2D.Bezier
         [Test]
         public void DataEquality()
         {
-            BezierSpline2DSimpleInspector bezierSpline = CreateSpline();
+            ISimpleTestSpline bezierSpline = CreateSpline();
 
-            Spline2DData data = bezierSpline.ConvertJobData();
+            Spline2DData data = bezierSpline.SplineEntityData.Value;
             Assert.AreEqual(bezierSpline.Length(), data.Length);
             Assert.AreEqual(bezierSpline.Times.Count, data.Time.Length);
             Assert.AreEqual(bezierSpline.ControlPoints.Count, data.Points.Length);
@@ -138,7 +139,7 @@ namespace Crener.Spline.Test._2D.Bezier
                 float2 a = float2.zero;
                 bezierSpline.AddControlPoint(a);
 
-                data = bezierSpline.ConvertJobData();
+                data = bezierSpline.SplineEntityData.Value;
                 Assert.AreEqual(bezierSpline.Length(), data.Length);
                 Assert.AreEqual(bezierSpline.Times.Count, data.Time.Length);
                 for (int i = 0; i < bezierSpline.Times.Count; i++)
@@ -152,7 +153,7 @@ namespace Crener.Spline.Test._2D.Bezier
                 float2 b = new float2(2.5f, 0f);
                 bezierSpline.AddControlPoint(b);
 
-                data = bezierSpline.ConvertJobData();
+                data = bezierSpline.SplineEntityData.Value;
                 Assert.AreEqual(bezierSpline.Length(), data.Length);
                 Assert.AreEqual(bezierSpline.Times.Count, data.Time.Length);
                 for (int i = 0; i < bezierSpline.Times.Count; i++)
@@ -166,7 +167,7 @@ namespace Crener.Spline.Test._2D.Bezier
                 float2 c = new float2(7.5f, 0f);
                 bezierSpline.AddControlPoint(c);
 
-                data = bezierSpline.ConvertJobData();
+                data = bezierSpline.SplineEntityData.Value;
                 Assert.AreEqual(bezierSpline.Length(), data.Length);
                 Assert.AreEqual(bezierSpline.Times.Count, data.Time.Length);
                 for (int i = 0; i < bezierSpline.Times.Count; i++)
@@ -180,7 +181,7 @@ namespace Crener.Spline.Test._2D.Bezier
                 float2 d = new float2(10f, 0f);
                 bezierSpline.AddControlPoint(d);
 
-                data = bezierSpline.ConvertJobData();
+                data = bezierSpline.SplineEntityData.Value;
                 Assert.AreEqual(bezierSpline.Length(), data.Length);
                 Assert.AreEqual(bezierSpline.Times.Count, data.Time.Length);
                 for (int i = 0; i < bezierSpline.Times.Count; i++)
@@ -197,27 +198,7 @@ namespace Crener.Spline.Test._2D.Bezier
             job.SplineProgress = new SplineProgress() { Progress = progress };
             job.Execute();
 
-            CheckFloat2(expected, job.Result);
-        }
-
-        private void CheckFloat2(float2 expected, float2 reality, float tolerance = 0.00001f)
-        {
-            Assert.IsTrue(math.length(math.abs(expected.x - reality.x)) <= tolerance,
-                $"X axis is out of range!\n Expected: {expected.x}\n Received: {reality.x}\n Tolerance: {tolerance:N3}");
-            Assert.IsTrue(math.length(math.abs(expected.y - reality.y)) <= tolerance,
-                $"Y axis is out of range!\n Expected: {expected.x}\n Received: {reality.x}\n Tolerance: {tolerance:N3}");
-        }
-        
-        public class BezierSpline2DSimpleInspector : BezierSpline2DSimple
-        {
-            public IReadOnlyList<float2> ControlPoints => base.Points;
-            public IReadOnlyList<float> Times => base.SegmentLength;
-            public IReadOnlyList<SplineEditMode> Modes => base.PointEdit;
-
-            public Spline2DData ConvertJobData()
-            {
-                return ConvertData();
-            }
+            TestHelpers.CheckFloat2(expected, job.Result);
         }
     }
 }

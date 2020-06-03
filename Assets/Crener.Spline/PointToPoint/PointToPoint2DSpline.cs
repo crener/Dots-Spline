@@ -112,10 +112,10 @@ namespace Crener.Spline.PointToPoint
             return;
 
             //todo implement this for point to point
-            dstManager.AddComponent<Spline2DData>(entity);
+            /*dstManager.AddComponent<Spline2DData>(entity);
             Spline2DData splineData = ConvertData();
             SplineEntityData = splineData;
-            dstManager.SetSharedComponentData(entity, splineData);
+            dstManager.SetSharedComponentData(entity, splineData);*/
         }
 
         protected override Spline2DData ConvertData()

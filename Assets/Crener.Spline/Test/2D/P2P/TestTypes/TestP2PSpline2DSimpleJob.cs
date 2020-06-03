@@ -2,31 +2,32 @@ using System.Collections.Generic;
 using Crener.Spline.BezierSpline;
 using Crener.Spline.BezierSpline.Jobs;
 using Crener.Spline.Common;
+using Crener.Spline.PointToPoint;
 using NUnit.Framework;
 using Unity.Mathematics;
 
-namespace Crener.Spline.Test._2D.Bezier.TestTypes
+namespace Crener.Spline.Test._2D.P2P.TestTypes
 {
     /// <summary>
     /// Unity won't allow the creation of a component if it's inside the editor folder so this wraps the type to allow tests to run 
     /// </summary>
     public class MeaninglessTestWrapper2
     {
-        public class TestBezierSpline2DSimpleJob : BezierSpline2DSimple, ISimpleTestSpline
+        public class TestP2PSpline2DSimpleJob : PointToPoint2DSpline, ISimpleTestSpline
         {
             public IReadOnlyList<float2> ControlPoints => SplineEntityData.Value.Points.ToArray();
             public IReadOnlyList<float> Times => SplineEntityData.Value.Time.ToArray();
-            public IReadOnlyList<SplineEditMode> Modes => PointEdit;
-
-            public new float Length
+            public IReadOnlyList<SplineEditMode> Modes
             {
                 get
                 {
-                    ClearData();
-                    ConvertData();
+                    List<SplineEditMode> mode = new List<SplineEditMode>(ControlPointCount);
+                    for (int i = 0; i < ControlPointCount; i++)
+                    {
+                        mode.Add(GetEditMode(i));
+                    }
 
-                    Assert.IsTrue(SplineEntityData.HasValue, "Failed to generate spline");
-                    return SplineEntityData.Value.Length;
+                    return mode;
                 }
             }
 
@@ -46,12 +47,9 @@ namespace Crener.Spline.Test._2D.Bezier.TestTypes
                 return job.Result;
             }
 
-            public override float2 GetControlPoint(int i) => SplineEntityData.Value.Points[i];
-
-            public int ExpectedPointCountPerControlPoint(int controlPoints)
-            {
-                return math.max(0, ((controlPoints - 1) * c_floatsPerControlPoint) + 1);
-            }
+            public int ExpectedPointCountPerControlPoint(int controlPoints) => controlPoints;
+            
+            public float2 GetControlPoint(int i, SplinePoint point) => GetControlPoint(i);
         }
     }
 }
