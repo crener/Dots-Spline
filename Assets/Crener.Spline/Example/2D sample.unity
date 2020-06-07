@@ -151,18 +151,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SegmentLength:
-  - 1
-  LengthCache: 13.670495
+  - 0.6617784
+  - 0.9999121
+  LengthCache: 44.66868
   Points:
-  - x: 10
-    y: 10
-  - x: 20
-    y: 10
-  - x: 10
-    y: 60
-  - x: 20
-    y: 60
-  PointEdit: 0000000000000000
+  - x: -8.384106
+    y: 5.979889
+  - x: -8.557264
+    y: 22.902481
+  - x: 2.7904441
+    y: 14.85258
+  - x: 13.335455
+    y: 15.585318
+  - x: 26.193361
+    y: 16.47877
+  - x: 5.617761
+    y: 21.00123
+  - x: 19.502361
+    y: 21.407766
+  PointEdit: 000000000000000000000000
   arkParameterization: 1
   arkLength: 0.1
 --- !u!4 &264029450
@@ -209,22 +216,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SegmentLength:
-  - 0.54166704
-  - 1
-  LengthCache: 25.23782
+  - 0.55670935
+  - 0.9999811
+  LengthCache: 24.4719
   Points:
   - x: 1.4499424
     y: 8.314529
-  - x: 2.4499424
-    y: 8.314529
-  - x: 7.7606807
-    y: 15.238014
+  - x: 15.641771
+    y: 9.351789
+  - x: 10.978849
+    y: 12.95072
   - x: 13.604984
     y: 12.741083
-  - x: 19.449287
-    y: 10.244152
-  - x: 19.062284
-    y: 16.752028
+  - x: 16.23112
+    y: 12.531446
+  - x: 19.594212
+    y: 14.78389
   - x: 24.256725
     y: 14.422679
   PointEdit: 000000000100000000000000
@@ -274,19 +281,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SegmentLength:
-  - 0.22940806
-  - 0.43382293
-  - 0.6497522
-  - 0.8155062
-  - 1
-  LengthCache: 56.516514
+  - 0.22156672
+  - 0.43800005
+  - 0.66172385
+  - 0.82181233
+  - 0.99999994
+  LengthCache: 58.516655
   Points:
   - x: -17.016441
     y: 24.117432
   - x: -7.0945625
     y: 15.771381
-  - x: 1.6490006
-    y: 23.322384
+  - x: 1.7027903
+    y: 24.88223
   - x: 11.80299
     y: 16.55306
   - x: 12.740286
@@ -512,14 +519,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SegmentLength:
-  - 0.8645769
-  - 0.99999994
-  LengthCache: 27.159473
+  - 0.8766441
+  - 0.999961
+  LengthCache: 29.825745
   Points:
   - x: -9.783965
     y: 16.638672
-  - x: 18.030079
-    y: 19.548439
+  - x: -2.811573
+    y: 28.399601
   - x: 11.496378
     y: 19.09305
   - x: 13.399606
@@ -531,7 +538,7 @@ MonoBehaviour:
   - x: 16.374575
     y: 19.284565
   PointEdit: 000000000000000000000000
-  arkParameterization: 0
+  arkParameterization: 1
   arkLength: 0.1
 --- !u!4 &1109083493
 Transform:
@@ -546,4 +553,58 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1393734955
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1393734957}
+  - component: {fileID: 1393734956}
+  m_Layer: 0
+  m_Name: bSpline
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1393734956
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1393734955}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32d1d5e2c7d84aebbd6739e11f35e1bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SegmentLength:
+  - 0.51284206
+  - 0.9999703
+  LengthCache: 1.5840852
+  Points:
+  - x: 15.001434
+    y: 35.00184
+  - x: 14.997512
+    y: 36.00143
+  - x: 16.005646
+    y: 35.994514
+--- !u!4 &1393734957
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1393734955}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 17.924658, y: 34.768726, z: -13.91087}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

@@ -3,6 +3,7 @@ using Crener.Spline.Common;
 using Crener.Spline.Common.Interfaces;
 using Unity.Entities;
 using Unity.Mathematics;
+using UnityEditor;
 using UnityEngine;
 
 namespace Crener.Spline.BaseSpline
@@ -33,11 +34,25 @@ namespace Crener.Spline.BaseSpline
         /// </summary>
         public abstract int ControlPointCount { get; }
         
+        /// <summary>
+        /// The amount of points that the internal workings of the spline should think there are.<para/>
+        /// This is useful if the curve loops back around on itself as the calculations to setup the curve can take reused points into account
+        /// </summary>
+        protected virtual int SegmentPointCount => ControlPointCount;
+        
         public abstract SplineType SplineDataType { get; }
 
         public abstract void RemoveControlPoint(int index);
-        public abstract SplineEditMode GetEditMode(int index);
-        public abstract void ChangeEditMode(int index, SplineEditMode mode);
+        
+        public virtual SplineEditMode GetEditMode(int index)
+        {
+            return SplineEditMode.Standard;
+        }
+
+        public virtual void ChangeEditMode(int index, SplineEditMode mode)
+        {
+            // just needed for interface, is overriden when required
+        }
 
         protected abstract float LengthBetweenPoints(int a, int b, int resolution = 64);
 
@@ -50,6 +65,7 @@ namespace Crener.Spline.BaseSpline
                 if(time >= progress) return i;
             }
 
+            // should never hit this point as the time segment should take care of things
             return 0;
         }
 
@@ -61,7 +77,7 @@ namespace Crener.Spline.BaseSpline
         /// <returns>segment progress</returns>
         protected float SegmentProgress(float progress, int index)
         {
-            if(ControlPointCount <= 2) return progress;
+            if(SegmentPointCount <= 2) return progress;
 
             if(index == 0)
             {
@@ -80,7 +96,7 @@ namespace Crener.Spline.BaseSpline
         {
             ClearData();
 
-            if(ControlPointCount <= 1)
+            if(SegmentPointCount <= 1)
             {
                 LengthCache = 0f;
                 return;
@@ -88,9 +104,9 @@ namespace Crener.Spline.BaseSpline
 
             // calculate the distance that the entire spline covers
             float currentLength = 0f;
-            for (int a = 0; a < ControlPointCount - 1; a++)
+            for (int a = 0; a < SegmentPointCount - 1; a++)
             {
-                int b = (a + 1) % ControlPointCount;
+                int b = (a + 1) % SegmentPointCount;
                 float length = LengthBetweenPoints(a, b, 128);
 
                 currentLength += length;
@@ -99,7 +115,7 @@ namespace Crener.Spline.BaseSpline
             LengthCache = currentLength;
 
             SegmentLength.Clear();
-            if(ControlPointCount == 2)
+            if(SegmentPointCount == 2)
             {
                 SegmentLength.Add(1f);
                 return;
@@ -107,9 +123,9 @@ namespace Crener.Spline.BaseSpline
 
             // calculate the distance that a single segment covers
             float segmentCount = 0f;
-            for (int a = 0; a < ControlPointCount - 1; a++)
+            for (int a = 0; a < SegmentPointCount - 1; a++)
             {
-                int b = (a + 1) % ControlPointCount;
+                int b = (a + 1) % SegmentPointCount;
                 float length = LengthBetweenPoints(a, b);
 
                 segmentCount = (length / LengthCache) + segmentCount;

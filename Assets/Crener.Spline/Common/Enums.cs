@@ -51,7 +51,8 @@ namespace Crener.Spline.Common
     public enum SplineType
     {
         Bezier,
-        PointToPoint
+        PointToPoint,
+        BSpline
     }
 
     public static class SplineEnumExtensions

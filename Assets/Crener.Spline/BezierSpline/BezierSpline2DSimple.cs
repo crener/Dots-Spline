@@ -52,7 +52,6 @@ namespace Crener.Spline.BezierSpline
                 if(arkLength != value)
                 {
                     arkLength = value;
-
                     ClearData();
                 }
             }
@@ -95,7 +94,7 @@ namespace Crener.Spline.BezierSpline
         /// <param name="index">control point index</param>
         /// <param name="point">location of the point</param>
         /// <param name="mode">type of point to update</param>
-        public void UpdateControlPoint(int index, float2 point, SplinePoint mode)
+        public override void UpdateControlPoint(int index, float2 point, SplinePoint mode)
         {
             Assert.IsTrue(index <= ControlPointCount);
 
@@ -309,6 +308,10 @@ namespace Crener.Spline.BezierSpline
             return SplineEntityData.Value;
         }
 
+        /// <summary>
+        /// c
+        /// </summary>
+        /// <returns></returns>
         private Spline2DData SplineArkConversion()
         {
             float previousTime = 0;
