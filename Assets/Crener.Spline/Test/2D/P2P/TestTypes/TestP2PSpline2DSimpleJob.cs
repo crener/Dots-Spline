@@ -3,7 +3,9 @@ using Crener.Spline.BezierSpline;
 using Crener.Spline.BezierSpline.Jobs;
 using Crener.Spline.Common;
 using Crener.Spline.PointToPoint;
+using Crener.Spline.PointToPoint.Jobs._2D;
 using NUnit.Framework;
+using Unity.Jobs;
 using Unity.Mathematics;
 
 namespace Crener.Spline.Test._2D.P2P.TestTypes
@@ -37,7 +39,7 @@ namespace Crener.Spline.Test._2D.P2P.TestTypes
                 ConvertData();
 
                 Assert.IsTrue(SplineEntityData.HasValue, "Failed to generate spline");
-                BezierSpline2DPointJob job = new BezierSpline2DPointJob()
+                PointToPointSpline2DPointJob job = new PointToPointSpline2DPointJob()
                 {
                     Spline = SplineEntityData.Value,
                     SplineProgress = new SplineProgress() {Progress = progress}

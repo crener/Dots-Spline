@@ -127,12 +127,12 @@ namespace Crener.Spline.Test._2D
             TestHelpers.CheckFloat2(a, testSpline.GetControlPoint(0, SplinePoint.Point));
             TestHelpers.CheckFloat2(c, testSpline.GetControlPoint(1, SplinePoint.Point));
         }
-
+        
         [Test]
         public void RemoveFromStart()
         {
             ISimpleTestSpline testSpline = PrepareSpline();
-
+            
             float2 a = float2.zero;
             testSpline.AddControlPoint(float2.zero);
             float2 b = new float2(1f, 0f);
@@ -429,8 +429,8 @@ namespace Crener.Spline.Test._2D
             TestHelpers.CheckFloat2(a, testSpline.GetPoint(0f));
             TestHelpers.CheckFloat2(new float2(2.5f, 0f), testSpline.GetPoint(0.25f));
             TestHelpers.CheckFloat2(new float2(5f, 0f), testSpline.GetPoint(0.5f));
-            //TestHelpers.CheckFloat2(new float2(9.9f, 0f), spline.GetPoint(0.99f)); // fails due to bezier point bunching issues
             TestHelpers.CheckFloat2(new float2(10f, 0f), testSpline.GetPoint(1f));
+            TestHelpers.CheckFloat2(new float2(10f, 0f), testSpline.GetPoint(1.5f));
             TestHelpers.CheckFloat2(new float2(10f, 0f), testSpline.GetPoint(5f));
         }
 
@@ -675,6 +675,18 @@ namespace Crener.Spline.Test._2D
             TestHelpers.CheckFloat2(c, testSpline.GetControlPoint(0, SplinePoint.Point));
             TestHelpers.CheckFloat2(a, testSpline.GetControlPoint(1, SplinePoint.Point));
             TestHelpers.CheckFloat2(b, testSpline.GetControlPoint(2, SplinePoint.Point));
+        }
+
+        [Test]
+        public void NoPoints()
+        {
+            ISimpleTestSpline testSpline = PrepareSpline();
+
+            Assert.AreEqual(0, testSpline.ControlPointCount);
+
+            TestHelpers.CheckFloat2(float2.zero, testSpline.GetPoint(0f));
+            TestHelpers.CheckFloat2(float2.zero, testSpline.GetPoint(1f));
+            TestHelpers.CheckFloat2(float2.zero, testSpline.GetPoint(0.5f));
         }
     }
 }

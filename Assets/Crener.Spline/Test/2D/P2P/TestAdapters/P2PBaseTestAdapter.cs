@@ -33,7 +33,8 @@ namespace Crener.Spline.Test._2D.P2P.TestAdapters
             testSpline.AddControlPoint(d);
 
             float length = math.distance(a, b) + math.distance(b, c) + math.distance(c, d);
-            Assert.AreEqual(length, testSpline.Length());
+            float spline = testSpline.Length();
+            Assert.IsTrue(math.abs(length - spline) <= 0.00005f, $"Expected: {length}, but received: {spline}");
         }
 
         [Test]
@@ -50,7 +51,8 @@ namespace Crener.Spline.Test._2D.P2P.TestAdapters
             testSpline.UpdateControlPoint(1, new float2(0f,3f),SplinePoint.Pre );
             
             float length = math.distance(a, b);
-            Assert.AreEqual(length, testSpline.Length());
+            float spline = testSpline.Length();
+            Assert.IsTrue(math.abs(length - spline) <= 0.00005f, $"Expected: {length}, but received: {spline}");
         }
     }
 }

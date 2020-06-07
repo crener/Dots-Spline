@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Crener.Spline.Common;
 using Crener.Spline.Common.Interfaces;
 using Unity.Entities;
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace Crener.Spline.BaseSpline
@@ -90,7 +91,7 @@ namespace Crener.Spline.BaseSpline
             for (int a = 0; a < ControlPointCount - 1; a++)
             {
                 int b = (a + 1) % ControlPointCount;
-                float length = LengthBetweenPoints(a, b);
+                float length = LengthBetweenPoints(a, b, 128);
 
                 currentLength += length;
             }

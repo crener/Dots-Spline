@@ -20,9 +20,9 @@ namespace Crener.Spline.Test.Helpers
         public static void CheckFloat2(float2 expected, float2 reality, float tolerance = 0.00001f)
         {
             Assert.IsTrue(math.length(math.abs(expected.x - reality.x)) <= tolerance,
-                $"X axis is out of range!\n Expected: {expected.x}\n Received: {reality.x}\n Tolerance: {tolerance:N3}");
+                $"X axis is out of range!\n Expected: {expected.x} Received: {reality.x} Tolerance: {tolerance:N5}");
             Assert.IsTrue(math.length(math.abs(expected.y - reality.y)) <= tolerance,
-                $"Y axis is out of range!\n Expected: {expected.x}\n Received: {reality.x}\n Tolerance: {tolerance:N3}");
+                $"Y axis is out of range!\n Expected: {expected.y} Received: {reality.y} Tolerance: {tolerance:N5}");
         }
     }
 }

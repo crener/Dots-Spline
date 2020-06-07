@@ -19,7 +19,7 @@ namespace Crener.Spline.BezierSpline
     public class BezierSpline2DSimple : BaseSpline2D
     {
         protected const int c_floatsPerControlPoint = 3;
-        
+
         [SerializeField]
         protected List<SplineEditMode> PointEdit = new List<SplineEditMode>();
         [SerializeField, Tooltip("Ensures constant length between points in spline"), FormerlySerializedAs("arkParameterization")]
@@ -29,7 +29,7 @@ namespace Crener.Spline.BezierSpline
 
         /// <inheritdoc cref="BaseSpline2D"/>
         public override int ControlPointCount => Points.Count == 0 ? 0 : (int) math.ceil(Points.Count / 3f);
-        
+
         public bool ArkParameterization
         {
             get => arkParameterization;
@@ -40,7 +40,6 @@ namespace Crener.Spline.BezierSpline
                     arkParameterization = value;
 
                     ClearData();
-                    ConvertData(); // create ark/bezier data
                 }
             }
         }
@@ -55,7 +54,6 @@ namespace Crener.Spline.BezierSpline
                     arkLength = value;
 
                     ClearData();
-                    ConvertData(); // create ark/bezier data
                 }
             }
         }
@@ -228,12 +226,12 @@ namespace Crener.Spline.BezierSpline
         public float2 GetControlPoint(int i, SplinePoint point)
         {
             int index = IndexMode(i, point);
-            
-            #if UNITY_EDITOR
-            Assert.IsTrue(index >= 0 && index < Points.Count, 
+
+#if UNITY_EDITOR
+            Assert.IsTrue(index >= 0 && index < Points.Count,
                 $"Index out of range! index: {index}, point Count: {Points.Count}");
-            #endif
-            
+#endif
+
             return Points[index];
         }
 
@@ -274,6 +272,7 @@ namespace Crener.Spline.BezierSpline
 
             return BezierMath.CubicBezierPoint(t, p0, p1, p2, p3);
         }
+
         public override SplineType SplineDataType => ArkParameterization ? SplineType.PointToPoint : SplineType.Bezier;
 
         public override void Convert(Unity.Entities.Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
@@ -287,7 +286,7 @@ namespace Crener.Spline.BezierSpline
         protected override Spline2DData ConvertData()
         {
             ClearData();
-            
+
             if(ArkParameterization)
             {
                 Assert.IsFalse(hasSplineEntityData);
@@ -315,9 +314,11 @@ namespace Crener.Spline.BezierSpline
             float previousTime = 0;
             float normalizedArkLength = math.max(0.001f, ArkLength);
             float splineLength = Length();
+            double splineCompleted = 0f;
             List<float2> points = new List<float2>((int) (splineLength / normalizedArkLength * 1.3f));
+            List<float> times = new List<float>(points.Count);
 
-            const int perPointIterationAttempts = 100;
+            const int perPointIterationAttempts = 100; // lower values = fast, high values = high precision but longer generation times
 
             for (int i = 0; i < ControlPointCount - 1; i++)
             {
@@ -329,7 +330,12 @@ namespace Crener.Spline.BezierSpline
                 double previousProgress = 0f;
                 float2 previous = GetPoint((float) previousProgress, i);
                 points.Add(previous); // directly add control point
-                
+
+                if(i > 0)
+                {
+                    times.Add((float) splineCompleted / splineLength);
+                }
+
                 double sectionLengthDone = 0f;
 
                 for (int j = 0; j < pointCount - 1; j++)
@@ -359,10 +365,12 @@ namespace Crener.Spline.BezierSpline
                         }
                         else currentProgress += currentSize;
                     }
-                    
+
                     sectionLengthDone += distance;
+                    splineCompleted += distance;
                     points.Add(point);
-                    
+                    times.Add((float) splineCompleted / splineLength);
+
                     previous = point;
                     previousProgress = currentProgress;
                 }
@@ -374,11 +382,13 @@ namespace Crener.Spline.BezierSpline
                 points.Add(Points[Points.Count - 1]);
             }
 
+            times.Add(1f);
+
             return new Spline2DData
             {
                 Length = Length(),
                 Points = new NativeArray<float2>(points.ToArray(), Allocator.Persistent),
-                Time = new NativeArray<float>(0, Allocator.Persistent)
+                Time = new NativeArray<float>(times.ToArray(), Allocator.Persistent)
             };
         }
     }

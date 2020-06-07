@@ -29,7 +29,7 @@ namespace Crener.Spline.PointToPoint.Jobs._2D
                 return;
             }
 
-            if(Spline.Points.Length >= 1)
+            if(Spline.Points.Length == 1)
             {
                 Result = Spline.Points[0];
                 return;
@@ -47,6 +47,14 @@ namespace Crener.Spline.PointToPoint.Jobs._2D
                 float time = Spline.Time[i];
                 if(time >= SplineProgress.Progress) return i;
             }
+
+#if UNITY_EDITOR
+            if(seg - 1 != Spline.Points.Length - 2)
+            {
+                // if the progress is greater than the spline time it should result in the last point being returned
+                throw new IndexOutOfRangeException("Spline time has less data than expected for the requested point range!");
+            }
+#endif
 
             return seg - 1;
         }
@@ -66,13 +74,14 @@ namespace Crener.Spline.PointToPoint.Jobs._2D
         {
 #if UNITY_EDITOR
             if(b <= 0)
-                throw new ArgumentOutOfRangeException($"B is {b} which isn't within the valid point range");
+                throw new ArgumentOutOfRangeException($"B is {b} which isn't within the valid point range! " +
+                                                      $"Actual Range '0 - {Spline.Points.Length}', requested range '{a} - {b}'");
 #endif
 
             float2 p0 = Spline.Points[a];
             float2 p1 = Spline.Points[b];
 
-            return math.lerp(p0, p1, t);
+            return math.lerp(p0, p1, math.clamp(t, 0f, 1f));
         }
     }
 }

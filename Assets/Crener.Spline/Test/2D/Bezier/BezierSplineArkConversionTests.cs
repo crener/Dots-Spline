@@ -1,11 +1,17 @@
+using System;
 using Crener.Spline.BezierSpline;
+using Crener.Spline.BezierSpline.Jobs;
 using Crener.Spline.Common;
 using Crener.Spline.Common.DataStructs;
+using Crener.Spline.Common.Interfaces;
+using Crener.Spline.PointToPoint;
 using Crener.Spline.PointToPoint.Jobs._2D;
 using Crener.Spline.Test._2D.Bezier.TestAdapters;
 using Crener.Spline.Test._2D.Bezier.TestTypes;
+using Crener.Spline.Test.Helpers;
 using NUnit.Framework;
 using Unity.Mathematics;
+using UnityEngine;
 
 namespace Crener.Spline.Test._2D.Bezier
 {
@@ -20,7 +26,8 @@ namespace Crener.Spline.Test._2D.Bezier
         [Test]
         public void SplineTypeTest()
         {
-            MeaninglessTestWrapper2.TestBezierSpline2DSimpleJob spline = (MeaninglessTestWrapper2.TestBezierSpline2DSimpleJob) CreateSpline();
+            MeaninglessTestWrapper2.TestBezierSpline2DSimpleJob spline =
+                (MeaninglessTestWrapper2.TestBezierSpline2DSimpleJob) CreateSpline();
 
             spline.ArkParameterization = false;
             Assert.IsFalse(spline.ArkParameterization);
@@ -34,7 +41,8 @@ namespace Crener.Spline.Test._2D.Bezier
         [Test]
         public void ConvertedLength()
         {
-            MeaninglessTestWrapper2.TestBezierSpline2DSimpleJob spline = (MeaninglessTestWrapper2.TestBezierSpline2DSimpleJob) CreateSpline();
+            MeaninglessTestWrapper2.TestBezierSpline2DSimpleJob spline =
+                (MeaninglessTestWrapper2.TestBezierSpline2DSimpleJob) CreateSpline();
 
             spline.AddControlPoint(new float2(10, 10));
             spline.AddControlPoint(new float2(20, 10));
@@ -53,7 +61,8 @@ namespace Crener.Spline.Test._2D.Bezier
         [Test]
         public void ConvertedDataLength()
         {
-            MeaninglessTestWrapper2.TestBezierSpline2DSimpleJob spline = (MeaninglessTestWrapper2.TestBezierSpline2DSimpleJob) CreateSpline();
+            MeaninglessTestWrapper2.TestBezierSpline2DSimpleJob spline =
+                (MeaninglessTestWrapper2.TestBezierSpline2DSimpleJob) CreateSpline();
 
             spline.AddControlPoint(new float2(10, 10));
             spline.AddControlPoint(new float2(20, 10));
@@ -79,7 +88,8 @@ namespace Crener.Spline.Test._2D.Bezier
         [Test]
         public void ConvertedDataRecalculated()
         {
-            MeaninglessTestWrapper2.TestBezierSpline2DSimpleJob spline = (MeaninglessTestWrapper2.TestBezierSpline2DSimpleJob) CreateSpline();
+            MeaninglessTestWrapper2.TestBezierSpline2DSimpleJob spline =
+                (MeaninglessTestWrapper2.TestBezierSpline2DSimpleJob) CreateSpline();
 
             spline.AddControlPoint(new float2(10, 10));
             spline.AddControlPoint(new float2(20, 10));
@@ -110,7 +120,8 @@ namespace Crener.Spline.Test._2D.Bezier
         [Test]
         public void ConvertedSpline()
         {
-            MeaninglessTestWrapper2.TestBezierSpline2DSimpleJob spline = (MeaninglessTestWrapper2.TestBezierSpline2DSimpleJob) CreateSpline();
+            MeaninglessTestWrapper2.TestBezierSpline2DSimpleJob spline =
+                (MeaninglessTestWrapper2.TestBezierSpline2DSimpleJob) CreateSpline();
 
             const float length = 10f;
             const float subDivision = 0.1f;
@@ -132,7 +143,7 @@ namespace Crener.Spline.Test._2D.Bezier
             float2 right2 = spline.GetPoint(1f);
             float right = math.distance(right1, right2);
             Assert.Greater(left, right, $"Left Delta '{left}' should be grater than right delta '{right}'");
-            
+
             // enable ark parameterization 
             spline.ArkParameterization = true;
             spline.ArkLength = subDivision;
@@ -150,34 +161,22 @@ namespace Crener.Spline.Test._2D.Bezier
             }
 
             // check that the left side doesn't converge and is separated uniformly
-            PointToPointSpline2DPointJob ptpSpline = new PointToPointSpline2DPointJob
-            {
-                Spline = spline.SplineEntityData.Value,
-                SplineProgress = new SplineProgress {Progress = 0f}
-            };
-
-            ptpSpline.Execute();
-            left1 = ptpSpline.Result;
-            ptpSpline.SplineProgress = new SplineProgress {Progress = 0.1f};
-            ptpSpline.Execute();
-            left2 = ptpSpline.Result;
+            left1 = getPointViaJob(spline, 0f);
+            left2 = getPointViaJob(spline, 0.1f);
             left = math.distance(left1, left2);
-            
-            ptpSpline.SplineProgress = new SplineProgress {Progress = 0.9f};
-            ptpSpline.Execute();
-            right1 = ptpSpline.Result;
-            ptpSpline.SplineProgress = new SplineProgress {Progress = 1f};
-            ptpSpline.Execute();
-            right2 = ptpSpline.Result;
+
+            right1 = getPointViaJob(spline, 0.9f);
+            right2 = getPointViaJob(spline, 1f);
             right = math.distance(right1, right2);
-            
+
             Assert.AreEqual(left, right, $"Left Delta '{left}' should be the same as right delta '{right}'");
         }
 
         [Test]
         public void ConvertedSpline3PointComparison()
         {
-            MeaninglessTestWrapper2.TestBezierSpline2DSimpleJob spline = (MeaninglessTestWrapper2.TestBezierSpline2DSimpleJob) CreateSpline();
+            MeaninglessTestWrapper2.TestBezierSpline2DSimpleJob spline =
+                (MeaninglessTestWrapper2.TestBezierSpline2DSimpleJob) CreateSpline();
 
             const float length = 10f;
             const float subDivision = length / 2f;
@@ -211,7 +210,8 @@ namespace Crener.Spline.Test._2D.Bezier
         [Test]
         public void ConvertedSpline4PointComparison()
         {
-            MeaninglessTestWrapper2.TestBezierSpline2DSimpleJob spline = (MeaninglessTestWrapper2.TestBezierSpline2DSimpleJob) CreateSpline();
+            MeaninglessTestWrapper2.TestBezierSpline2DSimpleJob spline =
+                (MeaninglessTestWrapper2.TestBezierSpline2DSimpleJob) CreateSpline();
 
             const float length = 10f;
             const float subDivision = length / 3f;
@@ -248,9 +248,87 @@ namespace Crener.Spline.Test._2D.Bezier
         }
 
         [Test]
+        public void Points()
+        {
+            MeaninglessTestWrapper2.TestBezierSpline2DSimpleJob spline =
+                (MeaninglessTestWrapper2.TestBezierSpline2DSimpleJob) CreateSpline();
+
+            const float subDivision = 0.2f;
+
+            float2 a = new float2(20f, 5f);
+            spline.AddControlPoint(a);
+            float2 b = new float2(10f, 5f);
+            spline.AddControlPoint(b);
+            Assert.AreEqual(2, spline.ControlPointCount);
+
+            spline.ArkParameterization = true;
+            spline.ArkLength = subDivision;
+            Assert.AreEqual(math.distance(a, b), spline.SplineEntityData?.Length, "unexpected length!");
+
+            // exact expected points from the conversion process
+            float2 point = getPointViaJob(spline, 0f);
+            Assert.AreEqual(a.x, point.x);
+            Assert.AreEqual(a.y, point.y);
+
+            point = getPointViaJob(spline, 0.5f);
+            Assert.AreEqual((b + ((a - b) / 2f)).x, point.x);
+            Assert.AreEqual((b + ((a - b) / 2f)).y, point.y);
+
+            point = getPointViaJob(spline, 1f);
+            Assert.AreEqual(b.x, point.x);
+            Assert.AreEqual(b.y, point.y);
+        }
+
+        [Test]
+        public void Points2()
+        {
+            PointTest(new float2(10f, 10f), new float2(20f, 20f));
+        }
+
+        //[Test]
+        public void Points3()
+        {
+            PointTest(new float2(10f, 10f), new float2(20f, 60f));
+        }
+
+        [Test]
+        public void Points4()
+        {
+            PointTest(new float2(-10f, -10f), new float2(0f, 0f));
+        }
+
+        public void PointTest(float2 a, float2 b)
+        {
+            MeaninglessTestWrapper2.TestBezierSpline2DSimpleJob spline =
+                (MeaninglessTestWrapper2.TestBezierSpline2DSimpleJob) CreateSpline();
+
+            const float subDivision = 0.1f;
+
+            // create a large 'S' via spline points
+            spline.AddControlPoint(a);
+            spline.AddControlPoint(b);
+            spline.UpdateControlPoint(0, new float2(b.x, a.x), SplinePoint.Post);
+            spline.UpdateControlPoint(1, new float2(a.x, b.x), SplinePoint.Pre);
+            Assert.AreEqual(2, spline.ControlPointCount);
+
+            spline.ArkLength = subDivision;
+            spline.ArkParameterization = true;
+            Assert.AreEqual(spline.Length, spline.SplineEntityData?.Length, "unexpected length!");
+
+            // exact expected points from the conversion process
+            TestHelpers.CheckFloat2(a, getPointViaJob(spline, 0f));
+            float2 point = getPointViaJob(spline, 0.5f);
+            TestHelpers.CheckFloat2((a + ((b - a) / 2f)), point, 0.001f);
+
+            TestHelpers.CheckFloat2(b, getPointViaJob(spline, 1f));
+            TestHelpers.CheckFloat2(b, getPointViaJob(spline, 2f));
+        }
+
+        [Test]
         public void ArkDistance()
         {
-            MeaninglessTestWrapper2.TestBezierSpline2DSimpleJob spline = (MeaninglessTestWrapper2.TestBezierSpline2DSimpleJob) CreateSpline();
+            MeaninglessTestWrapper2.TestBezierSpline2DSimpleJob spline =
+                (MeaninglessTestWrapper2.TestBezierSpline2DSimpleJob) CreateSpline();
 
             const float length = 10f;
             const float subDivision = 0.1f;
@@ -282,7 +360,8 @@ namespace Crener.Spline.Test._2D.Bezier
         [Test]
         public void ArkParameterizationDistanceChange()
         {
-            MeaninglessTestWrapper2.TestBezierSpline2DSimpleJob spline = (MeaninglessTestWrapper2.TestBezierSpline2DSimpleJob) CreateSpline();
+            MeaninglessTestWrapper2.TestBezierSpline2DSimpleJob spline =
+                (MeaninglessTestWrapper2.TestBezierSpline2DSimpleJob) CreateSpline();
 
             spline.AddControlPoint(new float2(10f, 10f));
             spline.AddControlPoint(new float2(20f, 10f));
@@ -297,6 +376,85 @@ namespace Crener.Spline.Test._2D.Bezier
             // more distance between points means less points in total
             spline.ArkLength = 1f;
             Assert.Less(spline.SplineEntityData.Value.Points.Length, dataCount);
+        }
+
+        private float2 getPointViaJob(ISpline2D spline, float progress)
+        {
+            switch (spline.SplineDataType)
+            {
+                case SplineType.Bezier:
+                    BezierSpline2DPointJob bzSpline = new BezierSpline2DPointJob
+                    {
+                        Spline = spline.SplineEntityData.Value,
+                        SplineProgress = new SplineProgress {Progress = progress}
+                    };
+                    bzSpline.Execute();
+                    return bzSpline.Result;
+                case SplineType.PointToPoint:
+                    PointToPointSpline2DPointJob pSpline = new PointToPointSpline2DPointJob
+                    {
+                        Spline = spline.SplineEntityData.Value,
+                        SplineProgress = new SplineProgress {Progress = progress}
+                    };
+                    pSpline.Execute();
+                    return pSpline.Result;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+
+        [Test]
+        public void PointGeneration()
+        {
+            MeaninglessTestWrapper2.TestBezierSpline2DSimpleJob spline =
+                (MeaninglessTestWrapper2.TestBezierSpline2DSimpleJob) CreateSpline();
+
+            float2 a = new float2(0f, 60f);
+            float2 b = new float2(100f, 60f);
+            spline.AddControlPoint(a);
+            spline.AddControlPoint(b);
+            Assert.AreEqual(2, spline.ControlPointCount);
+
+            spline.ArkLength = 1;
+            spline.ArkParameterization = true;
+
+            Assert.AreEqual(spline.Length, spline.SplineEntityData.Value.Length, "unexpected length!");
+            Assert.NotNull(spline.SplineEntityData);
+            Spline2DData splineData = spline.SplineEntityData.Value;
+
+            Assert.AreEqual(101, splineData.Points.Length);
+            for (int i = 0; i <= 100; i++)
+            {
+                float2 point = splineData.Points[i];
+                TestHelpers.CheckFloat2(new float2(i, 60f), point, 0.0001f);
+            }
+        }
+
+        [Test]
+        public void PointGeneration2()
+        {
+            MeaninglessTestWrapper2.TestBezierSpline2DSimpleJob spline =
+                (MeaninglessTestWrapper2.TestBezierSpline2DSimpleJob) CreateSpline();
+
+            float2 a = new float2(0f, 0f);
+            float2 b = new float2(100f, 100f);
+            spline.AddControlPoint(a);
+            spline.AddControlPoint(b);
+            spline.UpdateControlPoint(0, new float2(1f, 1f), SplinePoint.Post);
+            spline.UpdateControlPoint(1, new float2(99f, 99f), SplinePoint.Pre);
+            Assert.AreEqual(2, spline.ControlPointCount);
+
+            spline.ArkLength = math.length(new float2(1f, 1f));
+            spline.ArkParameterization = true;
+            Assert.NotNull(spline.SplineEntityData);
+            Spline2DData splineData = spline.SplineEntityData.Value;
+
+            Assert.AreEqual(101, splineData.Points.Length);
+            for (int i = 0; i <= 100; i++)
+            {
+                float2 point = splineData.Points[i];
+                TestHelpers.CheckFloat2(new float2(i, i), point, 0.0003f);
+            }
         }
     }
 }

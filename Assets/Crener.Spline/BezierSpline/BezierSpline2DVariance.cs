@@ -66,7 +66,7 @@ namespace Crener.Spline.BezierSpline
         {
             if(SegmentLength.Length == 0)
             {
-                // work around for Unity's lack of ability to save nested/multi-dimensional arrays
+                // work around for Unity's lack inability to save nested/multi-dimensional arrays
                 RecalculateLengthBias();
             }
         }

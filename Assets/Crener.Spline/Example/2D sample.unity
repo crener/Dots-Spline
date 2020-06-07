@@ -121,6 +121,64 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &264029448
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 264029450}
+  - component: {fileID: 264029449}
+  m_Layer: 0
+  m_Name: Bezier Spline (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &264029449
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 264029448}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 567aba01402d32e40af5fe1389e1b8e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SegmentLength:
+  - 1
+  LengthCache: 13.670495
+  Points:
+  - x: 10
+    y: 10
+  - x: 20
+    y: 10
+  - x: 10
+    y: 60
+  - x: 20
+    y: 60
+  PointEdit: 0000000000000000
+  arkParameterization: 1
+  arkLength: 0.1
+--- !u!4 &264029450
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 264029448}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 3.4499424, y: 8.314529, z: -3.875}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &526519234
 GameObject:
   m_ObjectHideFlags: 0
@@ -150,6 +208,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 567aba01402d32e40af5fe1389e1b8e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SegmentLength:
+  - 0.54166704
+  - 1
+  LengthCache: 25.23782
   Points:
   - x: 1.4499424
     y: 8.314529
@@ -165,10 +227,6 @@ MonoBehaviour:
     y: 16.752028
   - x: 24.256725
     y: 14.422679
-  SegmentLength:
-  - 0.54166704
-  - 1
-  LengthCache: 25.23782
   PointEdit: 000000000100000000000000
   arkParameterization: 1
   arkLength: 0.1
@@ -215,6 +273,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa93fc19479245c2a348d4ec3cc32060, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SegmentLength:
+  - 0.22940806
+  - 0.43382293
+  - 0.6497522
+  - 0.8155062
+  - 1
+  LengthCache: 56.516514
   Points:
   - x: -17.016441
     y: 24.117432
@@ -228,13 +293,6 @@ MonoBehaviour:
     y: 25.8739
   - x: 21.690084
     y: 20.523918
-  SegmentLength:
-  - 0.22940806
-  - 0.43382293
-  - 0.6497522
-  - 0.8155062
-  - 1
-  LengthCache: 56.516514
 --- !u!4 &544166360
 Transform:
   m_ObjectHideFlags: 0
@@ -453,6 +511,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 567aba01402d32e40af5fe1389e1b8e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SegmentLength:
+  - 0.8645769
+  - 0.99999994
+  LengthCache: 27.159473
   Points:
   - x: -9.783965
     y: 16.638672
@@ -468,10 +530,6 @@ MonoBehaviour:
     y: 20.472107
   - x: 16.374575
     y: 19.284565
-  SegmentLength:
-  - 0.8645769
-  - 0.99999994
-  LengthCache: 27.159473
   PointEdit: 000000000000000000000000
   arkParameterization: 0
   arkLength: 0.1
