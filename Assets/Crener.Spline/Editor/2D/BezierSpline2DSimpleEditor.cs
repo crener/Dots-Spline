@@ -11,15 +11,9 @@ namespace Crener.Spline.Editor._2D
     /// Editor for <see cref="BezierSpline2DSimple"/> which allows for adjusting control points.
     /// </summary>
     [CustomEditor(typeof(BezierSpline2DSimple))]
-    public class BezierSpline2DSimpleEditor : UnityEditor.Editor
+    public class BezierSpline2DSimpleEditor : Base2DEditor
     {
         private BezierSpline2DSimple bezierSpline = null;
-
-        private bool m_editing = false;
-        private int? m_editControlPoint = null;
-        private bool m_editMoveRelated = true;
-
-        private int m_debugPointQty = 0;
 
         public override void OnInspectorGUI()
         {
@@ -35,90 +29,8 @@ namespace Crener.Spline.Editor._2D
                 EditorGUILayout.LabelField($"Unknown Type inspected by '{nameof(BezierSpline2DSimpleEditor)}'");
                 return;
             }
-
-            if(GUILayout.Button("Edit Points"))
-            {
-                m_editing = !m_editing;
-                m_editControlPoint = null;
-                SceneView.RepaintAll();
-            }
-
-            if(!m_editing)
-            {
-                GUILayout.Space(5);
-                EditorGUILayout.HelpBox(
-                    $"Points: {bezierSpline.ControlPointCount}\n" +
-                    $"Length: {bezierSpline.Length().ToString("N3")}", MessageType.None);
-
-                EditorGUI.BeginChangeCheck();
-                bezierSpline.ArkParameterization = EditorGUILayout.Toggle("Ark Parametrization", bezierSpline.ArkParameterization);
-                if(EditorGUI.EndChangeCheck())
-                {
-                    EditorUtility.SetDirty(bezierSpline);
-                }
-
-                if(bezierSpline.ArkParameterization)
-                {
-                    EditorGUI.BeginChangeCheck();
-                    bezierSpline.ArkLength = EditorGUILayout.FloatField("Ark Length", bezierSpline.ArkLength);
-                    if(EditorGUI.EndChangeCheck())
-                    {
-                        EditorUtility.SetDirty(bezierSpline);
-                    }
-                }
-
-                GUILayout.Space(5);
-
-                // Draw spline points - Draw a point every set interval to illustrate where bezier points will be
-                EditorGUI.BeginChangeCheck();
-                m_debugPointQty = (int) EditorGUILayout.Slider("Draw points", m_debugPointQty, 0, 200);
-                if(EditorGUI.EndChangeCheck())
-                {
-                    SceneView.RepaintAll();
-                }
-            }
-            else
-            {
-                m_editMoveRelated = EditorGUILayout.Toggle("Move Related Points", m_editMoveRelated);
-
-                if(m_editControlPoint == null)
-                {
-                    EditorGUILayout.HelpBox($"No Control Point Selected!", MessageType.None);
-                }
-                else
-                {
-                    EditorGUILayout.LabelField($"Control Point: {m_editControlPoint}");
-
-                    SplineEditMode existingValue = bezierSpline.GetEditMode(m_editControlPoint.Value);
-                    SplineEditMode editMode = (SplineEditMode) EditorGUILayout.EnumPopup("Edit Mode", existingValue);
-                    if(editMode != existingValue)
-                    {
-                        Undo.RecordObject(bezierSpline, $"Change EditMode of Point {m_editControlPoint}");
-                        EditorUtility.SetDirty(bezierSpline);
-                        bezierSpline.ChangeEditMode(m_editControlPoint.Value, editMode);
-
-                        SceneView.RepaintAll();
-                    }
-
-                    GUILayout.Space(10);
-                    if(GUILayout.Button("Remove Point") ||
-                       Event.current.isKey && Event.current.type == EventType.KeyDown &&
-                       Event.current.keyCode == KeyCode.Delete)
-                    {
-                        bezierSpline.RemoveControlPoint(m_editControlPoint.Value);
-                        m_editControlPoint = null;
-
-                        SceneView.RepaintAll();
-
-                        if(Event.current.keyCode == KeyCode.Delete)
-                        {
-                            // Sadly this doesn't actually work :( dammit Unity
-                            GUIUtility.hotControl = 0;
-                            Event.current.Use();
-                        }
-                    }
-                }
-            }
+            
+            OnInspectorGUI(bezierSpline);
         }
         
         private void OnSceneGUI()
@@ -127,7 +39,7 @@ namespace Crener.Spline.Editor._2D
             {
                 if(m_debugPointQty > 0)
                 {
-                    RenderIntermediateSplinePoints(m_debugPointQty);
+                    RenderIntermediateSplinePoints(m_debugPointQty, bezierSpline);
                 }
 
                 return;
@@ -140,85 +52,14 @@ namespace Crener.Spline.Editor._2D
 
             if(InputAbstractions.AddPointMode())
             {
-                PointSelection();
+                PointSelection(bezierSpline);
 
                 if(Event.current.type == EventType.MouseMove)
                     SceneView.RepaintAll();
             }
         }
-
-        private void PointSelection()
-        {
-            if(bezierSpline.ControlPointCount < 2)
-            {
-                if(InputAbstractions.LeftClick())
-                {
-                    Vector3 pos = Input.mousePosition;
-                    bezierSpline.AddControlPoint(new float2(pos.x, pos.y));
-                }
-
-                return;
-            }
-
-            float2 mouse = InputAbstractions.MousePos();
-            int segmentIndex;
-            float2 createPoint = ClosestPointSelection(mouse, out segmentIndex);
-
-            Handles.color = Color.red;
-            Handles.DrawLine(
-                new Vector3(createPoint.x, createPoint.y, 0f),
-                new Vector3(mouse.x, mouse.y, 0f));
-
-            if(InputAbstractions.LeftClick())
-            {
-                Undo.RecordObject(bezierSpline, "Insert Spline Point");
-                EditorUtility.SetDirty(bezierSpline);
-
-                /*if (m_spline.IsLooped)
-                {
-                    //check if first or last point would result in a better insertion
-                    float2 firstPoint = m_spline.GetControlPoint(0, SplinePoint.Point);
-                    float2 lastPoint = m_spline.GetControlPoint(m_spline.ControlPointCount - 1, SplinePoint.Point);
-
-                    if (lastPoint.Equals(createPoint)) m_spline.AddControlPoint(mouse);
-                    if (firstPoint.Equals(createPoint)) m_spline.InsertControlPoint(0, mouse);
-                    else m_spline.InsertControlPoint(segmentIndex, mouse);
-                }
-                else*/
-                bezierSpline.InsertControlPoint(segmentIndex, mouse);
-
-                SceneView.RepaintAll();
-            }
-        }
-
-        private float2 ClosestPointSelection(float2 mouse, out int index)
-        {
-            index = 0;
-
-            float2 bestPoint = float2.zero;
-            float bestDistance = float.MaxValue;
-
-            for (int i = 1; i < bezierSpline.ControlPointCount; i++)
-            {
-                for (int s = 0; s <= 64; s++)
-                {
-                    float progress = s / 64f;
-                    float2 p = bezierSpline.GetPoint(progress, i - 1);
-
-                    float dist = math.distance(mouse, p);
-                    if(bestDistance > dist)
-                    {
-                        bestPoint = p;
-                        index = i;
-                        bestDistance = dist;
-                    }
-                }
-            }
-
-            return bestPoint;
-        }
-
-        private void RenderControlPoints()
+        
+        protected void RenderControlPoints()
         {
             for (int i = 0; i < bezierSpline.ControlPointCount; i++)
             {
@@ -383,26 +224,7 @@ namespace Crener.Spline.Editor._2D
             }
         }
 
-        private void RenderIntermediateSplinePoints(float quantity)
-        {
-            Handles.color = Color.red;
-            const float multiplier = 0.3f;
-
-            for (float i = 0; i <= quantity; i++)
-            {
-                HandleDrawCross(bezierSpline.GetPoint(i == 0f ? 0f : i / (quantity - 1)), multiplier);
-            }
-        }
-
-        private void HandleDrawCross(Vector2 location, float sizeMultiplier = 1f)
-        {
-            Vector3 worldLocation = new Vector3(location.x, location.y, 0f);
-            float handleSize = HandleUtility.GetHandleSize(worldLocation) * sizeMultiplier;
-
-            Handles.DrawLine(worldLocation + (Vector3.right * handleSize), worldLocation - (Vector3.right * handleSize));
-            Handles.DrawLine(worldLocation + (Vector3.up * handleSize), worldLocation - (Vector3.up * handleSize));
-        }
-
+        
         /// <summary>
         /// Updates point based on given <paramref name="magnitude"/>
         /// </summary>

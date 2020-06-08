@@ -13,7 +13,7 @@ namespace Crener.Spline.BaseSpline
     /// <summary>
     /// Base implementation which contains base functionality and reusable methods
     /// </summary>
-    public abstract class BaseSpline2D : BaseSpline, ISpline2D
+    public abstract class BaseSpline2D : BaseSpline, ISpline2DEditor
     {
         [SerializeField]
         protected List<float2> Points = new List<float2>();

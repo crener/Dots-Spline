@@ -4,6 +4,7 @@ using System.Runtime.CompilerServices;
 using Crener.Spline.BaseSpline;
 using Crener.Spline.Common;
 using Crener.Spline.Common.DataStructs;
+using Crener.Spline.Common.Interfaces;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
@@ -16,7 +17,7 @@ namespace Crener.Spline.BezierSpline
     /// <summary>
     /// Standard 2D spline along the XY axis
     /// </summary>
-    public class BezierSpline2DSimple : BaseSpline2D
+    public class BezierSpline2DSimple : BaseSpline2D, IArkableSpline
     {
         protected const int c_floatsPerControlPoint = 3;
 
