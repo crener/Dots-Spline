@@ -52,7 +52,8 @@ namespace Crener.Spline.Common
     {
         Bezier,
         PointToPoint,
-        BSpline
+        BSpline,
+        CatmullRom
     }
 
     public static class SplineEnumExtensions

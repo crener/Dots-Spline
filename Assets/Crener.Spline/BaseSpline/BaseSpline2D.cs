@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Crener.Spline.Common;
@@ -18,7 +17,7 @@ namespace Crener.Spline.BaseSpline
     {
         [SerializeField]
         protected List<float2> Points = new List<float2>();
-        
+
         private Spline2DData? m_splineData = null;
 
         public Spline2DData? SplineEntityData
@@ -30,7 +29,7 @@ namespace Crener.Spline.BaseSpline
             }
             protected set => m_splineData = value;
         }
-        
+
         /// <summary>
         /// true if Spline Entity Data has been initialized, calling <see cref="SplineEntityData"/> directly will automatically generate data
         /// </summary>
@@ -40,7 +39,7 @@ namespace Crener.Spline.BaseSpline
         /// Amount of control points in the spline
         /// </summary>
         public override int ControlPointCount => Points.Count;
-        
+
         /// <summary>
         /// Retrieve a point on the spline at a specific control point
         /// </summary>
@@ -87,7 +86,7 @@ namespace Crener.Spline.BaseSpline
 
             RecalculateLengthBias();
         }
-        
+
         /// <summary>
         /// Remove existing control points data
         /// </summary>
@@ -99,7 +98,7 @@ namespace Crener.Spline.BaseSpline
             Points.RemoveAt(math.min(index, ControlPointCount - 1));
             RecalculateLengthBias();
         }
-        
+
         /// <summary>
         /// Update an existing control points data
         /// </summary>
@@ -139,7 +138,7 @@ namespace Crener.Spline.BaseSpline
         {
             float currentLength = 0;
 
-            float2 aPoint =  SplineInterpolation(0f, a, b);
+            float2 aPoint = SplineInterpolation(0f, a, b);
             for (float i = 1; i <= resolution; i++)
             {
                 float2 bPoint = SplineInterpolation(i / resolution, a, b);
@@ -160,7 +159,7 @@ namespace Crener.Spline.BaseSpline
         {
             return Points[i];
         }
-        
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected abstract float2 SplineInterpolation(float t, int a, int b);
 

@@ -7,7 +7,7 @@ using Unity.Mathematics;
 using UnityEditor;
 using UnityEngine;
 
-namespace Crener.Spline.Editor
+namespace Crener.Spline.Editor._2D
 {
     /// <summary>
     /// Editor for <see cref="BezierSpline2DSimple"/> which allows for adjusting control points and control point variance as required.

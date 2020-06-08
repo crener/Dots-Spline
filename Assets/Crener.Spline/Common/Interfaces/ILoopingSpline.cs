@@ -7,6 +7,6 @@ namespace Crener.Spline.Common.Interfaces
         /// <summary>
         /// Is the spline looped
         /// </summary>
-        bool Looped { get; }
+        bool Looped { get; set; }
     }
 }

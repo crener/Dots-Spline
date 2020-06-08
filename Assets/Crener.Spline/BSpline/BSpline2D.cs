@@ -4,6 +4,7 @@ using Crener.Spline.Common;
 using Crener.Spline.Common.Interfaces;
 using Unity.Entities;
 using Unity.Mathematics;
+using UnityEngine;
 
 namespace Crener.Spline.BSpline
 {
@@ -12,6 +13,7 @@ namespace Crener.Spline.BSpline
     /// </summary>
     public class BSpline2D : BaseSpline2D, ILoopingSpline
     {
+        [SerializeField]
         private bool looped = false;
 
         public bool Looped

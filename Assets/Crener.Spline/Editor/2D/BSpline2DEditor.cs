@@ -1,13 +1,11 @@
 using Crener.Spline.BezierSpline;
 using Crener.Spline.BSpline;
 using Crener.Spline.Common;
-using Crener.Spline.Common.Interfaces;
-using Crener.Spline.PointToPoint;
 using Unity.Mathematics;
 using UnityEditor;
 using UnityEngine;
 
-namespace Crener.Spline.Editor
+namespace Crener.Spline.Editor._2D
 {
     /// <summary>
     /// Editor for <see cref="BezierSpline2DSimple"/> which allows for adjusting control points.
