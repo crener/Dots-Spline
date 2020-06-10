@@ -60,6 +60,54 @@ namespace Crener.Spline.BSpline
             int bIndex = (aIndex + 1) % SegmentPointCount;
             return SplineInterpolation(pointProgress, aIndex, bIndex);
         }
+        
+        protected override void RecalculateLengthBias()
+        {
+            ClearData();
+            SegmentLength.Clear();
+
+            if(ControlPointCount <= 1)
+            {
+                LengthCache = 0f;
+                SegmentLength.Add(1f);
+                return;
+            }
+            if(ControlPointCount == 2)
+            {
+                LengthCache = LengthBetweenPoints(0, 1, 128);;
+                SegmentLength.Add(1f);
+                return;
+            }
+
+            // calculate the distance that the entire spline covers
+            float currentLength = 0f;
+            for (int a = 0; a < SegmentPointCount - 1; a++)
+            {
+                int b = (a + 1) % SegmentPointCount;
+                float length = LengthBetweenPoints(a, b, 128);
+
+                currentLength += length;
+            }
+
+            LengthCache = currentLength;
+
+            if(SegmentPointCount == 2)
+            {
+                SegmentLength.Add(1f);
+                return;
+            }
+
+            // calculate the distance that a single segment covers
+            float segmentCount = 0f;
+            for (int a = 0; a < SegmentPointCount - 1; a++)
+            {
+                int b = (a + 1) % SegmentPointCount;
+                float length = LengthBetweenPoints(a, b);
+
+                segmentCount = (length / LengthCache) + segmentCount;
+                SegmentLength.Add(segmentCount);
+            }
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected override float2 SplineInterpolation(float t, int a, int b)

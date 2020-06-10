@@ -48,10 +48,12 @@ namespace Crener.Spline.Test._2D.Bezier.TestTypes
 
             public override float2 GetControlPoint(int i) => SplineEntityData.Value.Points[i];
 
-            public int ExpectedPointCountPerControlPoint(int controlPoints)
+            public int ExpectedControlPointCount(int controlPoints)
             {
                 return math.max(0, ((controlPoints - 1) * c_floatsPerControlPoint) + 1);
             }
+            
+            public int ExpectedTimeCount(int controlPoints) => math.max(1, controlPoints - 1);
         }
     }
 }

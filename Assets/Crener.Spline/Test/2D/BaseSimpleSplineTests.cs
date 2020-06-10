@@ -34,7 +34,7 @@ namespace Crener.Spline.Test._2D
         }
 
         [Test]
-        public void AddOne()
+        public void Add1()
         {
             ISimpleTestSpline testSpline = PrepareSpline();
 
@@ -42,7 +42,7 @@ namespace Crener.Spline.Test._2D
             testSpline.AddControlPoint(a);
 
             Assert.AreEqual(1, testSpline.ControlPointCount);
-            Assert.AreEqual(testSpline.ExpectedPointCountPerControlPoint(1), testSpline.ControlPoints.Count);
+            Assert.AreEqual(testSpline.ExpectedControlPointCount(1), testSpline.ControlPoints.Count);
             Assert.AreEqual(1, testSpline.Modes.Count);
             Assert.AreEqual(1, testSpline.Times.Count);
             Assert.AreEqual(0f, testSpline.Length());
@@ -51,7 +51,7 @@ namespace Crener.Spline.Test._2D
         }
 
         [Test]
-        public void AddTwo()
+        public void Add2()
         {
             ISimpleTestSpline testSpline = PrepareSpline();
 
@@ -61,7 +61,7 @@ namespace Crener.Spline.Test._2D
             testSpline.AddControlPoint(b);
 
             Assert.AreEqual(2, testSpline.ControlPointCount);
-            Assert.AreEqual(testSpline.ExpectedPointCountPerControlPoint(2), testSpline.ControlPoints.Count);
+            Assert.AreEqual(testSpline.ExpectedControlPointCount(2), testSpline.ControlPoints.Count);
             Assert.AreEqual(2, testSpline.Modes.Count);
             Assert.AreEqual(1, testSpline.Times.Count);
             Assert.AreEqual(1f, testSpline.Length());
@@ -71,7 +71,7 @@ namespace Crener.Spline.Test._2D
         }
 
         [Test]
-        public void AddThree()
+        public void Add3()
         {
             ISimpleTestSpline testSpline = PrepareSpline();
 
@@ -83,7 +83,7 @@ namespace Crener.Spline.Test._2D
             testSpline.AddControlPoint(c);
 
             Assert.AreEqual(3, testSpline.ControlPointCount);
-            Assert.AreEqual(testSpline.ExpectedPointCountPerControlPoint(3), testSpline.ControlPoints.Count);
+            Assert.AreEqual(testSpline.ExpectedControlPointCount(3), testSpline.ControlPoints.Count);
             Assert.AreEqual(3, testSpline.Modes.Count);
             Assert.AreEqual(2, testSpline.Times.Count);
             Assert.AreEqual(2f, testSpline.Length());
@@ -107,7 +107,7 @@ namespace Crener.Spline.Test._2D
 
             Assert.AreEqual(3, testSpline.ControlPointCount);
             Assert.AreEqual(3, testSpline.Modes.Count);
-            Assert.AreEqual(testSpline.ExpectedPointCountPerControlPoint(3), testSpline.ControlPoints.Count);
+            Assert.AreEqual(testSpline.ExpectedControlPointCount(3), testSpline.ControlPoints.Count);
             Assert.AreEqual(2, testSpline.Times.Count);
             Assert.AreEqual(2f, testSpline.Length());
 
@@ -120,7 +120,7 @@ namespace Crener.Spline.Test._2D
 
             Assert.AreEqual(2, testSpline.ControlPointCount);
             Assert.AreEqual(2, testSpline.Modes.Count);
-            Assert.AreEqual(testSpline.ExpectedPointCountPerControlPoint(2), testSpline.ControlPoints.Count);
+            Assert.AreEqual(testSpline.ExpectedControlPointCount(2), testSpline.ControlPoints.Count);
             Assert.AreEqual(1, testSpline.Times.Count);
             Assert.AreEqual(2f, testSpline.Length());
 
@@ -140,7 +140,7 @@ namespace Crener.Spline.Test._2D
 
             Assert.AreEqual(2, testSpline.ControlPointCount);
             Assert.AreEqual(2, testSpline.Modes.Count);
-            Assert.AreEqual(testSpline.ExpectedPointCountPerControlPoint(2), testSpline.ControlPoints.Count);
+            Assert.AreEqual(testSpline.ExpectedControlPointCount(2), testSpline.ControlPoints.Count);
             Assert.AreEqual(1, testSpline.Times.Count);
             Assert.AreEqual(1f, testSpline.Length());
 
@@ -152,7 +152,7 @@ namespace Crener.Spline.Test._2D
 
             Assert.AreEqual(1, testSpline.ControlPointCount);
             Assert.AreEqual(1, testSpline.Modes.Count);
-            Assert.AreEqual(testSpline.ExpectedPointCountPerControlPoint(1), testSpline.ControlPoints.Count);
+            Assert.AreEqual(testSpline.ExpectedControlPointCount(1), testSpline.ControlPoints.Count);
             Assert.AreEqual(1, testSpline.Times.Count);
             Assert.AreEqual(0f, testSpline.Length());
 
@@ -171,7 +171,7 @@ namespace Crener.Spline.Test._2D
 
             Assert.AreEqual(2, testSpline.ControlPointCount);
             Assert.AreEqual(2, testSpline.Modes.Count);
-            Assert.AreEqual(testSpline.ExpectedPointCountPerControlPoint(2), testSpline.ControlPoints.Count);
+            Assert.AreEqual(testSpline.ExpectedControlPointCount(2), testSpline.ControlPoints.Count);
             Assert.AreEqual(1, testSpline.Times.Count);
             Assert.AreEqual(1f, testSpline.Length());
 
@@ -183,7 +183,7 @@ namespace Crener.Spline.Test._2D
 
             Assert.AreEqual(1, testSpline.ControlPointCount);
             Assert.AreEqual(1, testSpline.Modes.Count);
-            Assert.AreEqual(testSpline.ExpectedPointCountPerControlPoint(1), testSpline.ControlPoints.Count);
+            Assert.AreEqual(testSpline.ExpectedControlPointCount(1), testSpline.ControlPoints.Count);
             Assert.AreEqual(1, testSpline.Times.Count);
             Assert.AreEqual(0f, testSpline.Length());
 
@@ -204,7 +204,7 @@ namespace Crener.Spline.Test._2D
 
             Assert.AreEqual(3, testSpline.ControlPointCount);
             Assert.AreEqual(3, testSpline.Modes.Count);
-            Assert.AreEqual(testSpline.ExpectedPointCountPerControlPoint(3), testSpline.ControlPoints.Count);
+            Assert.AreEqual(testSpline.ExpectedControlPointCount(3), testSpline.ControlPoints.Count);
             Assert.AreEqual(2, testSpline.Times.Count);
             Assert.AreEqual(10f, testSpline.Length());
 
@@ -217,7 +217,7 @@ namespace Crener.Spline.Test._2D
 
             Assert.AreEqual(2, testSpline.ControlPointCount);
             Assert.AreEqual(2, testSpline.Modes.Count);
-            Assert.AreEqual(testSpline.ExpectedPointCountPerControlPoint(2), testSpline.ControlPoints.Count);
+            Assert.AreEqual(testSpline.ExpectedControlPointCount(2), testSpline.ControlPoints.Count);
             Assert.AreEqual(1, testSpline.Times.Count);
             Assert.AreEqual(1f, testSpline.Length());
 
@@ -237,7 +237,7 @@ namespace Crener.Spline.Test._2D
 
             Assert.AreEqual(2, testSpline.ControlPointCount);
             Assert.AreEqual(2, testSpline.Modes.Count);
-            Assert.AreEqual(testSpline.ExpectedPointCountPerControlPoint(2), testSpline.ControlPoints.Count);
+            Assert.AreEqual(testSpline.ExpectedControlPointCount(2), testSpline.ControlPoints.Count);
             Assert.AreEqual(1, testSpline.Times.Count);
             Assert.AreEqual(1f, testSpline.Length());
 
@@ -249,7 +249,7 @@ namespace Crener.Spline.Test._2D
 
             Assert.AreEqual(1, testSpline.ControlPointCount);
             Assert.AreEqual(1, testSpline.Modes.Count);
-            Assert.AreEqual(testSpline.ExpectedPointCountPerControlPoint(1), testSpline.ControlPoints.Count);
+            Assert.AreEqual(testSpline.ExpectedControlPointCount(1), testSpline.ControlPoints.Count);
             Assert.AreEqual(1, testSpline.Times.Count);
             Assert.AreEqual(0f, testSpline.Length());
 
@@ -282,7 +282,7 @@ namespace Crener.Spline.Test._2D
 
             Assert.AreEqual(2, testSpline.ControlPointCount);
             Assert.AreEqual(2, testSpline.Modes.Count);
-            Assert.AreEqual(testSpline.ExpectedPointCountPerControlPoint(2), testSpline.ControlPoints.Count);
+            Assert.AreEqual(testSpline.ExpectedControlPointCount(2), testSpline.ControlPoints.Count);
             Assert.AreEqual(1, testSpline.Times.Count);
             Assert.AreEqual(1f, testSpline.Length());
 
@@ -294,7 +294,7 @@ namespace Crener.Spline.Test._2D
 
             Assert.AreEqual(1, testSpline.ControlPointCount);
             Assert.AreEqual(1, testSpline.Modes.Count);
-            Assert.AreEqual(testSpline.ExpectedPointCountPerControlPoint(1), testSpline.ControlPoints.Count);
+            Assert.AreEqual(testSpline.ExpectedControlPointCount(1), testSpline.ControlPoints.Count);
             Assert.AreEqual(1, testSpline.Times.Count);
             Assert.AreEqual(0f, testSpline.Length());
 
@@ -313,7 +313,7 @@ namespace Crener.Spline.Test._2D
 
             Assert.AreEqual(2, testSpline.ControlPointCount);
             Assert.AreEqual(2, testSpline.Modes.Count);
-            Assert.AreEqual(testSpline.ExpectedPointCountPerControlPoint(2), testSpline.ControlPoints.Count);
+            Assert.AreEqual(testSpline.ExpectedControlPointCount(2), testSpline.ControlPoints.Count);
             Assert.AreEqual(1, testSpline.Times.Count);
             Assert.AreEqual(1f, testSpline.Length());
 
@@ -325,7 +325,7 @@ namespace Crener.Spline.Test._2D
 
             Assert.AreEqual(2, testSpline.ControlPointCount);
             Assert.AreEqual(2, testSpline.Modes.Count);
-            Assert.AreEqual(testSpline.ExpectedPointCountPerControlPoint(2), testSpline.ControlPoints.Count);
+            Assert.AreEqual(testSpline.ExpectedControlPointCount(2), testSpline.ControlPoints.Count);
             Assert.AreEqual(1, testSpline.Times.Count);
             Assert.AreEqual(1f, testSpline.Length());
 
@@ -687,6 +687,29 @@ namespace Crener.Spline.Test._2D
             TestHelpers.CheckFloat2(float2.zero, testSpline.GetPoint(0f));
             TestHelpers.CheckFloat2(float2.zero, testSpline.GetPoint(1f));
             TestHelpers.CheckFloat2(float2.zero, testSpline.GetPoint(0.5f));
+        }
+
+        [Test]
+        public void SplineLengthRecalculation()
+        {
+            ISimpleTestSpline testSpline = PrepareSpline();
+
+            Assert.AreEqual(0, testSpline.ControlPointCount);
+            Assert.AreEqual(testSpline.ExpectedTimeCount(testSpline.ControlPointCount), testSpline.Times.Count);
+            
+            testSpline.AddControlPoint(new float2(0f,0f));
+            testSpline.AddControlPoint(new float2(1f,1f));
+            testSpline.AddControlPoint(new float2(2f,2f));
+            
+            Assert.AreEqual(3, testSpline.ControlPointCount);
+            Assert.AreEqual(testSpline.ExpectedTimeCount(3), testSpline.Times.Count);
+            
+            testSpline.RemoveControlPoint(0);
+            testSpline.RemoveControlPoint(0);
+            testSpline.RemoveControlPoint(0);
+
+            Assert.AreEqual(0, testSpline.ControlPointCount);
+            Assert.AreEqual(testSpline.ExpectedTimeCount(0), testSpline.Times.Count);
         }
     }
 }

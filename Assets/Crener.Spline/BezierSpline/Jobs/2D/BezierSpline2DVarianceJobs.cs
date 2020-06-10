@@ -136,8 +136,17 @@ namespace Crener.Spline.BezierSpline.Jobs
                     Spline.Points[(spline2 + 1) * 9 - 2],
                     Spline.Points[(spline2 + 1) * 9 + 1]);
             }
-
-            return BezierMath.CubicBezierPoint(t, a, b, variance);
+            
+            float2 oneMinusT = 1f - t;
+            return math.lerp(
+                (oneMinusT.x * oneMinusT.x * oneMinusT.x * a.c0) +
+                (3f * oneMinusT.x * oneMinusT.x * t.x * a.c1) +
+                (3f * oneMinusT.x * t.x * t.x * a.c2) +
+                (t.x * t.x * t.x * a.c3),
+                (oneMinusT.y * oneMinusT.y * oneMinusT.y * b.c0) +
+                (3f * oneMinusT.y * oneMinusT.y * t.y * b.c1) +
+                (3f * oneMinusT.y * t.y * t.y * b.c2) +
+                (t.y * t.y * t.y * b.c3), math.abs(variance));
         }
 
         /// <summary>

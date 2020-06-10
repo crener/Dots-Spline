@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using Crener.Spline.BezierSpline;
 using Crener.Spline.BSpline;
 using Crener.Spline.Common;
-using Crener.Spline.PointToPoint;
 using Unity.Mathematics;
 
 namespace Crener.Spline.Test._2D.BSpline.TestTypes
@@ -33,7 +32,15 @@ namespace Crener.Spline.Test._2D.BSpline.TestTypes
                 }
             }
             
-            public int ExpectedPointCountPerControlPoint(int controlPoints) => controlPoints;
+            public int ExpectedControlPointCount(int controlPoints) => controlPoints;
+
+            public int ExpectedTimeCount(int controlPoints)
+            {
+                //if(controlPoints <= 0) return 0;
+                if(controlPoints <= 3) return 1;
+                
+                return math.max(1, controlPoints - 1);
+            }
 
             public float2 GetControlPoint(int i, SplinePoint point) => GetControlPoint(i);
         }

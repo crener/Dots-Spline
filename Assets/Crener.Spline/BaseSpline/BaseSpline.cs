@@ -92,13 +92,15 @@ namespace Crener.Spline.BaseSpline
             return (progress - aLn) / (bLn - aLn);
         }
 
-        protected void RecalculateLengthBias()
+        protected virtual void RecalculateLengthBias()
         {
             ClearData();
+            SegmentLength.Clear();
 
             if(SegmentPointCount <= 1)
             {
                 LengthCache = 0f;
+                SegmentLength.Add(1f);
                 return;
             }
 
@@ -114,7 +116,6 @@ namespace Crener.Spline.BaseSpline
 
             LengthCache = currentLength;
 
-            SegmentLength.Clear();
             if(SegmentPointCount == 2)
             {
                 SegmentLength.Add(1f);

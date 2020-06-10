@@ -17,7 +17,14 @@ namespace Crener.Spline.Test
         /// </summary>
         /// <param name="controlPoints">Amount of control points</param>
         /// <returns>expected amount of points</returns>
-        int ExpectedPointCountPerControlPoint(int controlPoints);
+        int ExpectedControlPointCount(int controlPoints);
+        
+        /// <summary>
+        /// Translates the amount of <see cref="Times"/> items are expected from the given amount of <param name="controlPoints"/>
+        /// </summary>
+        /// <param name="controlPoints">amount of control points in the spline</param>
+        /// <returns>expected amount of time points</returns>
+        int ExpectedTimeCount(int controlPoints);
     }
     
     public interface ISimpleTestSpline : ISimpleSpline2D, ITestSpline { }

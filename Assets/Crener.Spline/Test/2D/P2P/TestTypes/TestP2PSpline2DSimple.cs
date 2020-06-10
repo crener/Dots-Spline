@@ -32,7 +32,9 @@ namespace Crener.Spline.Test._2D.P2P.TestTypes
                 }
             }
             
-            public int ExpectedPointCountPerControlPoint(int controlPoints) => controlPoints;
+            public int ExpectedControlPointCount(int controlPoints) => controlPoints;
+            
+            public int ExpectedTimeCount(int controlPoints) => math.max(1, controlPoints - 1);
 
             public float2 GetControlPoint(int i, SplinePoint point) => GetControlPoint(i);
         }

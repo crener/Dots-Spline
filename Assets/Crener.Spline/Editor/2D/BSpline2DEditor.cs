@@ -1,7 +1,5 @@
 using Crener.Spline.BezierSpline;
 using Crener.Spline.BSpline;
-using Crener.Spline.Common;
-using Unity.Mathematics;
 using UnityEditor;
 using UnityEngine;
 

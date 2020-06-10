@@ -31,10 +31,12 @@ namespace Crener.Spline.Test.Variance.TestTypes
                 }
             }
             public IReadOnlyList<SplineEditMode> Modes => PointMode;
-            public int ExpectedPointCountPerControlPoint(int controlPoints)
+            public int ExpectedControlPointCount(int controlPoints)
             {
                 return math.max(0, ((controlPoints - 1) * FloatsPerControlPoint) + 3);
             }
+            
+            public int ExpectedTimeCount(int controlPoints) => math.max(1, controlPoints - 1);
 
             public new void ClearData()
             {
