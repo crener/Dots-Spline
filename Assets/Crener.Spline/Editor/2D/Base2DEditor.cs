@@ -88,8 +88,14 @@ namespace Crener.Spline.Editor._2D
             else
             {
                 if(m_sourceTrans != null)
-                {
-                    m_editMoveWithTrans = EditorGUILayout.Toggle("Move Points with Transform", m_editMoveWithTrans);
+                { 
+                    bool value = EditorGUILayout.Toggle("Move Points with Transform", m_editMoveWithTrans);
+                    if(value != m_editMoveWithTrans)
+                    {
+                        m_editMoveWithTrans = value;
+                        m_lastTransPosition = m_sourceTrans.position;
+                    }
+
                     MoveWithTransform(spline);
                 }
 
@@ -141,7 +147,7 @@ namespace Crener.Spline.Editor._2D
 
         private void MoveWithTransform(ISpline2DEditor spline)
         {
-            if(m_editMoveWithTrans) return;
+            if(!m_editMoveWithTrans) return;
             
             Vector3 currentPosition = m_sourceTrans.position;
             if(currentPosition != m_lastTransPosition)

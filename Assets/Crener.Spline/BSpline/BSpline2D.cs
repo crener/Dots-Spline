@@ -30,7 +30,7 @@ namespace Crener.Spline.BSpline
         public override int SegmentPointCount => Looped ? ControlPointCount + 1 : ControlPointCount - 1;
 
         private const float c_splineMidPoint = 0.5f;
-        
+
         public override float2 GetPoint(float progress)
         {
             if(ControlPointCount == 0)
@@ -60,7 +60,7 @@ namespace Crener.Spline.BSpline
             int bIndex = (aIndex + 1) % SegmentPointCount;
             return SplineInterpolation(pointProgress, aIndex, bIndex);
         }
-        
+
         protected override void RecalculateLengthBias()
         {
             ClearData();
@@ -72,9 +72,10 @@ namespace Crener.Spline.BSpline
                 SegmentLength.Add(1f);
                 return;
             }
+
             if(ControlPointCount == 2)
             {
-                LengthCache = LengthBetweenPoints(0, 1, 128);;
+                LengthCache = LengthBetweenPoints(0, 1, 128);
                 SegmentLength.Add(1f);
                 return;
             }

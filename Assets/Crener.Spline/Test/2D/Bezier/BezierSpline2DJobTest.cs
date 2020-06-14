@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using Crener.Spline.BezierSpline;
 using Crener.Spline.BezierSpline.Jobs;
 using Crener.Spline.Common;
 using Crener.Spline.Common.DataStructs;
@@ -8,7 +6,7 @@ using Crener.Spline.Test.Helpers;
 using NUnit.Framework;
 using Unity.Mathematics;
 
-namespace Crener.Spline.Test._2D
+namespace Crener.Spline.Test._2D.Bezier
 {
     public class BezierSpline2DJobTest : SharedBezierSplineTestBase
     {

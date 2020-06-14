@@ -36,7 +36,6 @@ namespace Crener.Spline.Test._2D.BSpline.TestTypes
 
             public int ExpectedTimeCount(int controlPoints)
             {
-                //if(controlPoints <= 0) return 0;
                 if(controlPoints <= 3) return 1;
                 
                 return math.max(1, controlPoints - 1);
