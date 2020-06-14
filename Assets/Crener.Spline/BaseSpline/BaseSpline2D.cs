@@ -114,6 +114,20 @@ namespace Crener.Spline.BaseSpline
         }
 
         /// <summary>
+        /// Move all points by <paramref name="delta"/> amount
+        /// </summary>
+        /// <param name="delta">amount to move all point by</param>
+        public void MoveControlPoints(float2 delta)
+        {
+            for (int i = 0; i < Points.Count; i++)
+            {
+                // float2 is struct so it needs to override the stored value
+                float2 local = Points[i] += delta;
+                Points[i] = local;
+            }
+        }
+
+        /// <summary>
         /// Relieve a point on the spline
         /// </summary>
         /// <param name="progress"></param>

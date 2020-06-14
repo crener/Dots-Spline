@@ -11,6 +11,12 @@ namespace Crener.Spline.Common.Interfaces
         /// Amount of control points in the spline
         /// </summary>
         int ControlPointCount { get; }
+        
+        /// <summary>
+        /// Amount of points in the spline that can be interpolated
+        /// </summary>
+        /// <remarks>for most spline this will be equal to <see cref="ControlPointCount"/> unless it's looped</remarks>
+        int SegmentPointCount { get; }
 
         /// <summary>
         /// Length of the spline

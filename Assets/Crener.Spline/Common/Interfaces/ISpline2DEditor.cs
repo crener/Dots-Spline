@@ -18,5 +18,12 @@ namespace Crener.Spline.Common.Interfaces
         /// <param name="point">location of the point</param>
         /// <param name="mode">type of point to update</param>
         void UpdateControlPoint(int index, float2 point, SplinePoint mode);
+
+
+        /// <summary>
+        /// Move all points by <paramref name="delta"/> amount
+        /// </summary>
+        /// <param name="delta">amount to move all point by</param>
+        void MoveControlPoints(float2 delta);
     }
 }

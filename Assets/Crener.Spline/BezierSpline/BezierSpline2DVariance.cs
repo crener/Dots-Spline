@@ -33,6 +33,7 @@ namespace Crener.Spline.BezierSpline
         protected float[] LengthCache;
 
         public int ControlPointCount => Points.Count == 0 ? 0 : (int) math.ceil(Points.Count / 9f);
+        public int SegmentPointCount => ControlPointCount;
         public float Length() => LengthCache[(int) SplineSide.Center];
 
         public float Length(half variance)

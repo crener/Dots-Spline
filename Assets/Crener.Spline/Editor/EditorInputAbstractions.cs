@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Crener.Spline.Editor
 {
-    public static class InputAbstractions
+    public static class EditorInputAbstractions
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool AddPointMode()

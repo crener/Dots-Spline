@@ -19,7 +19,8 @@ namespace Crener.Spline.Editor._2D
         {
             if(target != bezierSpline)
             {
-                bezierSpline = target as BezierSpline2DSimple;
+                bezierSpline = (BezierSpline2DSimple) target;
+                ChangeTransform(bezierSpline.transform);
                 m_editing = false;
                 m_editControlPoint = null;
             }
@@ -45,12 +46,12 @@ namespace Crener.Spline.Editor._2D
                 return;
             }
 
-            if(m_editControlPoint.HasValue && InputAbstractions.AddPointMode())
+            if(m_editControlPoint.HasValue && EditorInputAbstractions.AddPointMode())
                 m_editControlPoint = null;
 
             RenderControlPoints();
 
-            if(InputAbstractions.AddPointMode())
+            if(EditorInputAbstractions.AddPointMode())
             {
                 PointSelection(bezierSpline);
 
@@ -146,7 +147,7 @@ namespace Crener.Spline.Editor._2D
                             float2 newPoint = new float2(pos.x, pos.y);
                             bezierSpline.UpdateControlPoint(i, newPoint, SplinePoint.Point);
 
-                            if(m_editMoveRelated)
+                            if(m_editMoveWithTrans)
                             {
                                 //move the other points relative to this
                                 float2 delta = newPoint - point;

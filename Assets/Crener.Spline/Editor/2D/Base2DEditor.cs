@@ -8,11 +8,19 @@ namespace Crener.Spline.Editor._2D
 {
     public abstract class Base2DEditor : UnityEditor.Editor
     {
-        protected bool m_editing = false;
-        protected int? m_editControlPoint = null;
-        protected bool m_editMoveRelated = true;
+        private Transform m_sourceTrans = null;
+        private Vector3 m_lastTransPosition = Vector3.zero;
 
+        // editor settings
+        protected bool m_editing = false;
+        protected bool m_editMoveWithTrans = true;
+
+        // viewing settings (not editing)
         protected int m_debugPointQty = 0;
+
+        // Editing states
+        private int m_editNewPointIndex = -1;
+        protected int? m_editControlPoint = null;
 
         /// <summary>
         /// Shared Inspector logic
@@ -24,6 +32,9 @@ namespace Crener.Spline.Editor._2D
             {
                 m_editing = !m_editing;
                 m_editControlPoint = null;
+                m_editNewPointIndex = -1;
+                m_lastTransPosition = m_sourceTrans?.position ?? Vector3.zero;
+
                 SceneView.RepaintAll();
             }
 
@@ -76,7 +87,16 @@ namespace Crener.Spline.Editor._2D
             }
             else
             {
-                m_editMoveRelated = EditorGUILayout.Toggle("Move Related Points", m_editMoveRelated);
+                if(m_sourceTrans != null)
+                {
+                    m_editMoveWithTrans = EditorGUILayout.Toggle("Move Points with Transform", m_editMoveWithTrans);
+                    MoveWithTransform(spline);
+                }
+
+                if(m_editNewPointIndex >= 0)
+                {
+                    EditorGUILayout.LabelField($"New At Index: {m_editNewPointIndex}");
+                }
 
                 if(m_editControlPoint == null)
                 {
@@ -84,6 +104,7 @@ namespace Crener.Spline.Editor._2D
                 }
                 else
                 {
+                    m_editNewPointIndex = -1;
                     EditorGUILayout.LabelField($"Control Point: {m_editControlPoint}");
 
                     SplineEditMode existingValue = spline.GetEditMode(m_editControlPoint.Value);
@@ -118,6 +139,27 @@ namespace Crener.Spline.Editor._2D
             }
         }
 
+        private void MoveWithTransform(ISpline2DEditor spline)
+        {
+            if(m_editMoveWithTrans) return;
+            
+            Vector3 currentPosition = m_sourceTrans.position;
+            if(currentPosition != m_lastTransPosition)
+            {
+                Vector3 delta = currentPosition - m_lastTransPosition;
+                m_lastTransPosition = currentPosition;
+
+                // move all the points by delta amount
+                spline.MoveControlPoints(new float2(delta.x, delta.y));
+            }
+        }
+
+        protected void ChangeTransform(Transform trans)
+        {
+            m_sourceTrans = trans;
+            m_lastTransPosition = trans.position;
+        }
+
         /// <summary>
         /// Handles the control logic for adding a point. This will draw a red line from the mouse position to the closest point along the
         /// curve
@@ -127,7 +169,7 @@ namespace Crener.Spline.Editor._2D
         {
             if(spline.ControlPointCount < 2)
             {
-                if(InputAbstractions.LeftClick())
+                if(EditorInputAbstractions.LeftClick())
                 {
                     Vector3 pos = Input.mousePosition;
                     spline.AddControlPoint(new float2(pos.x, pos.y));
@@ -136,21 +178,27 @@ namespace Crener.Spline.Editor._2D
                 return;
             }
 
-            float2 mouse = InputAbstractions.MousePos();
-            int segmentIndex;
-            float2 createPoint = ClosestPointSelection(mouse, spline, out segmentIndex);
+            float2 mouse = EditorInputAbstractions.MousePos();
+            int splineIndex;
+            float2 createPoint = ClosestPointSelection(mouse, spline, out splineIndex);
+
+            if(splineIndex != m_editNewPointIndex)
+            {
+                m_editNewPointIndex = splineIndex;
+                Repaint(); // force refresh inspector
+            }
 
             Handles.color = Color.red;
             Handles.DrawLine(
                 new Vector3(createPoint.x, createPoint.y, 0f),
                 new Vector3(mouse.x, mouse.y, 0f));
 
-            if(InputAbstractions.LeftClick() && spline is Object objSpline)
+            if(EditorInputAbstractions.LeftClick() && spline is Object objSpline)
             {
                 Undo.RecordObject(objSpline, "Insert Spline Point");
                 EditorUtility.SetDirty(objSpline);
 
-                spline.InsertControlPoint(segmentIndex, mouse);
+                spline.InsertControlPoint(m_editNewPointIndex, mouse);
 
                 SceneView.RepaintAll();
             }
@@ -208,14 +256,14 @@ namespace Crener.Spline.Editor._2D
         /// <param name="spline">spline to check</param>
         /// <param name="index">spline index of the closest point</param>
         /// <returns>closest point on the spline to the mouse</returns>
-        protected static float2 ClosestPointSelection(float2 mouse, ISpline2D spline, out int index)
+        protected virtual float2 ClosestPointSelection(float2 mouse, ISpline2D spline, out int index)
         {
             index = 0;
 
             float2 bestPoint = float2.zero;
             float bestDistance = float.MaxValue;
 
-            for (int i = 1; i < spline.ControlPointCount; i++)
+            for (int i = 1; i < spline.SegmentPointCount; i++)
             {
                 for (int s = 0; s <= 64; s++)
                 {

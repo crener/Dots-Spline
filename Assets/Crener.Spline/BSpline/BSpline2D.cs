@@ -27,7 +27,7 @@ namespace Crener.Spline.BSpline
         }
         public override SplineType SplineDataType => SplineType.BSpline;
 
-        protected override int SegmentPointCount => Looped ? ControlPointCount + 1 : ControlPointCount - 1;
+        public override int SegmentPointCount => Looped ? ControlPointCount + 1 : ControlPointCount - 1;
 
         private const float c_splineMidPoint = 0.5f;
         

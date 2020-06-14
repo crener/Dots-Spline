@@ -38,7 +38,7 @@ namespace Crener.Spline.BaseSpline
         /// The amount of points that the internal workings of the spline should think there are.<para/>
         /// This is useful if the curve loops back around on itself as the calculations to setup the curve can take reused points into account
         /// </summary>
-        protected virtual int SegmentPointCount => ControlPointCount;
+        public virtual int SegmentPointCount => ControlPointCount;
         
         public abstract SplineType SplineDataType { get; }
 

@@ -168,12 +168,12 @@ namespace Crener.Spline.Editor._2D
 
             if(m_editing)
             {
-                if(m_editControlPoint.HasValue && InputAbstractions.AddPointMode())
+                if(m_editControlPoint.HasValue && EditorInputAbstractions.AddPointMode())
                     m_editControlPoint = null;
 
                 RenderControlPoints();
 
-                if(InputAbstractions.AddPointMode())
+                if(EditorInputAbstractions.AddPointMode())
                 {
                     CheckPointCreation();
 
@@ -259,7 +259,7 @@ namespace Crener.Spline.Editor._2D
         {
             if(Spline.ControlPointCount < 2)
             {
-                if(InputAbstractions.LeftClick())
+                if(EditorInputAbstractions.LeftClick())
                 {
                     Vector3 pos = Input.mousePosition;
                     Spline.AddControlPoint(new float2(pos.x, pos.y));
@@ -268,7 +268,7 @@ namespace Crener.Spline.Editor._2D
                 return;
             }
 
-            float2 mouse = InputAbstractions.MousePos();
+            float2 mouse = EditorInputAbstractions.MousePos();
             int segmentIndex;
             float2 createPoint = ClosestPointSelection(mouse, out segmentIndex);
 
@@ -277,7 +277,7 @@ namespace Crener.Spline.Editor._2D
                 new Vector3(createPoint.x, createPoint.y, 0f),
                 new Vector3(mouse.x, mouse.y, 0f));
 
-            if(InputAbstractions.LeftClick())
+            if(EditorInputAbstractions.LeftClick())
             {
                 Undo.RecordObject(SplineObject, "Insert Spline Point");
                 EditorUtility.SetDirty(SplineObject);

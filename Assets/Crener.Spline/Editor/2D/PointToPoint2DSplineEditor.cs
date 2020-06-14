@@ -19,7 +19,8 @@ namespace Crener.Spline.Editor._2D
         {
             if(target != pointSpline)
             {
-                pointSpline = target as PointToPoint2DSpline;
+                pointSpline = (PointToPoint2DSpline) target;
+                ChangeTransform(pointSpline.transform);
                 m_editing = false;
                 m_editControlPoint = null;
             }
@@ -45,12 +46,12 @@ namespace Crener.Spline.Editor._2D
                 return;
             }
 
-            if(m_editControlPoint.HasValue && InputAbstractions.AddPointMode())
+            if(m_editControlPoint.HasValue && EditorInputAbstractions.AddPointMode())
                 m_editControlPoint = null;
 
             RenderControlPoints(pointSpline);
 
-            if(InputAbstractions.AddPointMode())
+            if(EditorInputAbstractions.AddPointMode())
             {
                 PointSelection(pointSpline);
 
