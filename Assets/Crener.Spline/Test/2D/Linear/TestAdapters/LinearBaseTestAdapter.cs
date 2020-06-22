@@ -4,7 +4,7 @@ using Unity.Mathematics;
 
 namespace Crener.Spline.Test._2D.P2P.TestAdapters
 {
-    public abstract class P2PBaseTestAdapter : BaseSimpleSplineTests
+    public abstract class LinearBaseTestAdapter : BaseSimpleSplineTests
     {
         [Test]
         public void NoEditModeChange([Values]SplineEditMode mode)

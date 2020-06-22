@@ -54,7 +54,7 @@ namespace Crener.Spline.BaseSpline
             // just needed for interface, is overriden when required
         }
 
-        protected abstract float LengthBetweenPoints(int a, int b, int resolution = 64);
+        protected abstract float LengthBetweenPoints(int a, int resolution = 64);
 
         protected int FindSegmentIndex(float progress)
         {
@@ -108,9 +108,7 @@ namespace Crener.Spline.BaseSpline
             float currentLength = 0f;
             for (int a = 0; a < SegmentPointCount - 1; a++)
             {
-                int b = (a + 1) % SegmentPointCount;
-                float length = LengthBetweenPoints(a, b, 128);
-
+                float length = LengthBetweenPoints(a, 128);
                 currentLength += length;
             }
 
@@ -126,9 +124,7 @@ namespace Crener.Spline.BaseSpline
             float segmentCount = 0f;
             for (int a = 0; a < SegmentPointCount - 1; a++)
             {
-                int b = (a + 1) % SegmentPointCount;
-                float length = LengthBetweenPoints(a, b);
-
+                float length = LengthBetweenPoints(a, 128);
                 segmentCount = (length / LengthCache) + segmentCount;
                 SegmentLength.Add(segmentCount);
             }

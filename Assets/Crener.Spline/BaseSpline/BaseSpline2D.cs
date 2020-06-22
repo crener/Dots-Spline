@@ -46,7 +46,7 @@ namespace Crener.Spline.BaseSpline
         /// <returns>point on spline segment</returns>
         public virtual float2 GetPoint(float progress, int index)
         {
-            return SplineInterpolation(progress, index, (index + 1) % SegmentPointCount);
+            return SplineInterpolation(progress, index);
         }
 
         /// <summary>
@@ -143,19 +143,17 @@ namespace Crener.Spline.BaseSpline
 
             int aIndex = FindSegmentIndex(progress);
             float pointProgress = SegmentProgress(progress, aIndex);
-
-            int bIndex = (aIndex + 1) % SegmentPointCount;
-            return SplineInterpolation(pointProgress, aIndex, bIndex);
+            return SplineInterpolation(pointProgress, aIndex);
         }
 
-        protected override float LengthBetweenPoints(int a, int b, int resolution = 64)
+        protected override float LengthBetweenPoints(int a, int resolution = 64)
         {
             float currentLength = 0;
 
-            float2 aPoint = SplineInterpolation(0f, a, b);
+            float2 aPoint = SplineInterpolation(0f, a);
             for (float i = 1; i <= resolution; i++)
             {
-                float2 bPoint = SplineInterpolation(i / resolution, a, b);
+                float2 bPoint = SplineInterpolation(i / resolution, a);
                 currentLength += math.distance(aPoint, bPoint);
                 aPoint = bPoint;
             }
@@ -175,7 +173,7 @@ namespace Crener.Spline.BaseSpline
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        protected abstract float2 SplineInterpolation(float t, int a, int b);
+        protected abstract float2 SplineInterpolation(float t, int a);
 
         public override void ClearData()
         {
@@ -199,6 +197,12 @@ namespace Crener.Spline.BaseSpline
         {
             Gizmos.color = Color.gray;
             const float pointDensity = 13;
+
+            if(SegmentPointCount > 0 && SegmentLength.Count == 0)
+            {
+                // needs to calculate length as it might not have been saved correctly after saving
+                RecalculateLengthBias();
+            }
 
             for (int i = 0; i < SegmentPointCount - 1; i++)
             {

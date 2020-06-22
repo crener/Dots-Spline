@@ -3,7 +3,7 @@ using Crener.Spline.Test.Helpers;
 using NUnit.Framework;
 using Unity.Mathematics;
 
-namespace Crener.Spline.Test._2D.BSpline.TestAdapters
+namespace Crener.Spline.Test._2D.Experimental.BSpline.TestAdapters
 {
     public abstract class BSplineTestAdapter : SelfCleanUpTestSet
     {

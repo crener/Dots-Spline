@@ -7,7 +7,7 @@ namespace Crener.Spline.Test._2D.P2P
     /// <summary>
     /// Tests Point to point implementation of basic 2D spline functionality
     /// </summary>
-    public class BaseP2PJobTests : P2PBaseTestAdapter
+    public class BaseLinearJobTests : LinearBaseTestAdapter
     {
         protected override ISimpleTestSpline CreateNewSpline()
         {

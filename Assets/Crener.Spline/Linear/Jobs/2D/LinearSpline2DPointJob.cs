@@ -6,13 +6,13 @@ using Unity.Collections;
 using Unity.Jobs;
 using Unity.Mathematics;
 
-namespace Crener.Spline.PointToPoint.Jobs._2D
+namespace Crener.Spline.Linear.Jobs._2D
 {
     /// <summary>
     /// Simple way of sampling a single point from a 2D spline via <see cref="Spline2DData"/>
     /// </summary>
     [BurstCompile]
-    public struct PointToPointSpline2DPointJob : IJob
+    public struct LinearSpline2DPointJob : IJob
     {
         [ReadOnly]
         public Spline2DData Spline;

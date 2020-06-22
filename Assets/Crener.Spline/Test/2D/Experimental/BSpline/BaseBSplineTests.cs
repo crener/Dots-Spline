@@ -1,13 +1,6 @@
-using Crener.Spline.Common;
-using Crener.Spline.Test._2D.BSpline.TestAdapters;
-using Crener.Spline.Test._2D.BSpline.TestTypes;
-using Crener.Spline.Test.Helpers;
-using NUnit.Framework;
-using Unity.Mathematics;
-using UnityEngine;
-
-namespace Crener.Spline.Test._2D.BSpline
+namespace Crener.Spline.Test._2D.Experimental.BSpline
 {
+    /*
     /// <summary>
     /// Tests Point to point implementation of basic 2D spline functionality
     /// </summary>
@@ -16,7 +9,7 @@ namespace Crener.Spline.Test._2D.BSpline
         protected override ISimpleTestSpline PrepareSpline()
         {
             GameObject game = new GameObject();
-            MeaninglessTestWrapper.TestBSpline2DSimple spline = game.AddComponent<MeaninglessTestWrapper.TestBSpline2DSimple>();
+            MeaninglessTestWrapper.TestCubicSpline2DSimple spline = game.AddComponent<MeaninglessTestWrapper.TestCubicSpline2DSimple>();
             Assert.IsNotNull(spline);
             spline.Looped = false;
 
@@ -25,5 +18,5 @@ namespace Crener.Spline.Test._2D.BSpline
 
             return spline;
         }
-    }
+    }*/
 }

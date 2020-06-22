@@ -1,7 +1,7 @@
 using System;
 using Crener.Spline.BezierSpline;
-using Crener.Spline.BSpline;
 using Crener.Spline.Common.Interfaces;
+using Crener.Spline.Linear;
 using Unity.Mathematics;
 using UnityEditor;
 using UnityEngine;
@@ -11,28 +11,28 @@ namespace Crener.Spline.Editor._2D
     /// <summary>
     /// Editor for <see cref="BezierSpline2DSimple"/> which allows for adjusting control points.
     /// </summary>
-    [CustomEditor(typeof(BSpline2D))]
-    public class BSpline2DEditor : Base2DEditor
+    [CustomEditor(typeof(LinearCubicSpline2D))]
+    public class LinearCubic2DEditor : Base2DEditor
     {
-        private BSpline2D bSpline = null;
+        private LinearCubicSpline2D cubicSpline = null;
 
         public override void OnInspectorGUI()
         {
-            if(target != bSpline)
+            if(target != cubicSpline)
             {
-                bSpline = (BSpline2D)target;
-                ChangeTransform(bSpline.transform);
+                cubicSpline = (LinearCubicSpline2D) target;
+                ChangeTransform(cubicSpline.transform);
                 m_editing = false;
                 m_editControlPoint = null;
             }
 
-            if(bSpline == null)
+            if(cubicSpline == null)
             {
-                EditorGUILayout.LabelField($"Unknown Type inspected by '{nameof(BSpline2DEditor)}'");
+                EditorGUILayout.LabelField($"Unknown Type inspected by '{nameof(Cubic2DEditor)}'");
                 return;
             }
 
-            OnInspectorGUI(bSpline);
+            OnInspectorGUI(cubicSpline);
         }
 
         private void OnSceneGUI()
@@ -41,7 +41,7 @@ namespace Crener.Spline.Editor._2D
             {
                 if(m_debugPointQty > 0)
                 {
-                    RenderIntermediateSplinePoints(m_debugPointQty, bSpline);
+                    RenderIntermediateSplinePoints(m_debugPointQty, cubicSpline);
                 }
 
                 return;
@@ -50,11 +50,11 @@ namespace Crener.Spline.Editor._2D
             if(m_editControlPoint.HasValue && EditorInputAbstractions.AddPointMode())
                 m_editControlPoint = null;
 
-            RenderControlPoints(bSpline);
+            RenderControlPoints(cubicSpline);
 
             if(EditorInputAbstractions.AddPointMode())
-            {   
-                PointSelection(bSpline);
+            {
+                PointSelection(cubicSpline);
 
                 if(Event.current.type == EventType.MouseMove)
                     SceneView.RepaintAll();
@@ -74,7 +74,7 @@ namespace Crener.Spline.Editor._2D
 
             float2 bestPoint = float2.zero;
             float bestDistance = float.MaxValue;
-            float progress2 = 0f;
+            //float progress2 = 0f;
 
             for (int i = 1; i < spline.SegmentPointCount; i++)
             {
@@ -88,7 +88,7 @@ namespace Crener.Spline.Editor._2D
                     {
                         bestPoint = p;
                         bestDistance = dist;
-                        progress2 = progress;
+                        //progress2 = progress;
 
                         if(progress > 0.5)
                         {
@@ -99,7 +99,7 @@ namespace Crener.Spline.Editor._2D
                 }
             }
 
-            Debug.Log(progress2);
+            //Debug.Log($"Failed to find closest point! (best progress: {progress2})");
             return bestPoint;
         }
     }

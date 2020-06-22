@@ -51,7 +51,9 @@ namespace Crener.Spline.Common
     public enum SplineType
     {
         Bezier,
-        PointToPoint,
+        Linear,
+        CubicLinear,
+        Cubic,
         BSpline,
         CatmullRom
     }

@@ -6,26 +6,26 @@ using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
 
-namespace Crener.Spline.BSpline
+namespace Crener.Spline.CubicSpline
 {
     /// <summary>
     /// Simple spline which directly follows a set of points
     /// </summary>
-    public class BSpline2D : BaseSpline2D, ILoopingSpline
+    public class CubicSpline2D : BaseSpline2D, ILoopingSpline
     {
         [SerializeField]
         private bool looped = false;
 
         public bool Looped
         {
-            get => looped;
+            get => looped && ControlPointCount > 2;
             set
             {
                 looped = value;
                 RecalculateLengthBias();
             }
         }
-        public override SplineType SplineDataType => SplineType.BSpline;
+        public override SplineType SplineDataType => SplineType.Cubic;
 
         public override int SegmentPointCount => Looped ? ControlPointCount + 1 : ControlPointCount - 1;
 
@@ -35,30 +35,16 @@ namespace Crener.Spline.BSpline
         {
             if(ControlPointCount == 0)
                 return float2.zero;
-            else if(ControlPointCount == 1)
+            else if(ControlPointCount == 1 || progress <= 0f)
                 return GetControlPoint(0);
             else if(ControlPointCount == 2)
                 return math.lerp(GetControlPoint(0), GetControlPoint(1), progress);
-            else if(progress <= 0f)
-            {
-                float2 a = GetControlPoint(0);
-                float2 b = GetControlPoint(1 % ControlPointCount);
-                return math.lerp(a, b, c_splineMidPoint);
-            }
-            else if(ControlPointCount == 1)
-                return GetControlPoint(0);
             else if(progress >= 1f)
-            {
-                float2 a = GetControlPoint(ControlPointCount - 1);
-                float2 b = GetControlPoint((ControlPointCount - 2) % ControlPointCount);
-                return math.lerp(a, b, c_splineMidPoint);
-            }
+                return GetControlPoint(ControlPointCount - 1);
 
             int aIndex = FindSegmentIndex(progress);
             float pointProgress = SegmentProgress(progress, aIndex);
-
-            int bIndex = (aIndex + 1) % SegmentPointCount;
-            return SplineInterpolation(pointProgress, aIndex, bIndex);
+            return SplineInterpolation(pointProgress, aIndex);
         }
 
         protected override void RecalculateLengthBias()
@@ -75,7 +61,7 @@ namespace Crener.Spline.BSpline
 
             if(ControlPointCount == 2)
             {
-                LengthCache = LengthBetweenPoints(0, 1, 128);
+                LengthCache = LengthBetweenPoints(0, 128);
                 SegmentLength.Add(1f);
                 return;
             }
@@ -84,9 +70,7 @@ namespace Crener.Spline.BSpline
             float currentLength = 0f;
             for (int a = 0; a < SegmentPointCount - 1; a++)
             {
-                int b = (a + 1) % SegmentPointCount;
-                float length = LengthBetweenPoints(a, b, 128);
-
+                float length = LengthBetweenPoints(a, 128);
                 currentLength += length;
             }
 
@@ -102,20 +86,18 @@ namespace Crener.Spline.BSpline
             float segmentCount = 0f;
             for (int a = 0; a < SegmentPointCount - 1; a++)
             {
-                int b = (a + 1) % SegmentPointCount;
-                float length = LengthBetweenPoints(a, b);
-
+                float length = LengthBetweenPoints(a, 128);
                 segmentCount = (length / LengthCache) + segmentCount;
                 SegmentLength.Add(segmentCount);
             }
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        protected override float2 SplineInterpolation(float t, int a, int b)
+        protected override float2 SplineInterpolation(float t, int a)
         {
             float2 p0 = Points[a];
-            float2 p1 = Points[b % ControlPointCount];
-            float2 p2 = Points[(b + 1) % ControlPointCount];
+            float2 p1 = Points[(a + 1) % ControlPointCount];
+            float2 p2 = Points[(a + 2) % ControlPointCount];
 
             float2 i0 = math.lerp(p0, p1, c_splineMidPoint);
             float2 i1 = math.lerp(p1, p2, c_splineMidPoint);

@@ -1,6 +1,6 @@
 using Crener.Spline.BezierSpline;
 using Crener.Spline.Common;
-using Crener.Spline.PointToPoint;
+using Crener.Spline.Linear;
 using Unity.Mathematics;
 using UnityEditor;
 using UnityEngine;
@@ -8,18 +8,18 @@ using UnityEngine;
 namespace Crener.Spline.Editor._2D
 {
     /// <summary>
-    /// Editor for <see cref="PointToPoint2DSpline"/> which allows for adjusting control points.
+    /// Editor for <see cref="Linear2DSpline"/> which allows for adjusting control points.
     /// </summary>
-    [CustomEditor(typeof(PointToPoint2DSpline))]
-    public class PointToPoint2DSplineEditor : Base2DEditor
+    [CustomEditor(typeof(Linear2DSpline))]
+    public class Linear2DSplineEditor : Base2DEditor
     {
-        private PointToPoint2DSpline pointSpline = null;
+        private Linear2DSpline pointSpline = null;
 
         public override void OnInspectorGUI()
         {
             if(target != pointSpline)
             {
-                pointSpline = (PointToPoint2DSpline) target;
+                pointSpline = (Linear2DSpline) target;
                 ChangeTransform(pointSpline.transform);
                 m_editing = false;
                 m_editControlPoint = null;
@@ -27,7 +27,7 @@ namespace Crener.Spline.Editor._2D
 
             if(pointSpline == null)
             {
-                EditorGUILayout.LabelField($"Unknown Type inspected by '{nameof(PointToPoint2DSplineEditor)}'");
+                EditorGUILayout.LabelField($"Unknown Type inspected by '{nameof(Linear2DSplineEditor)}'");
                 return;
             }
             

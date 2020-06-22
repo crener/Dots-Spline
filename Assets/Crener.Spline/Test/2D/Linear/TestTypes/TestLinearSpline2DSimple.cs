@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using Crener.Spline.BezierSpline;
-using Crener.Spline.BSpline;
 using Crener.Spline.Common;
+using Crener.Spline.Linear;
 using Unity.Mathematics;
 
-namespace Crener.Spline.Test._2D.BSpline.TestTypes
+namespace Crener.Spline.Test._2D.P2P.TestTypes
 {
     /// <summary>
     /// Unity won't allow the creation of a component if it's inside the editor folder so this wraps the type to allow tests to run 
@@ -14,7 +14,7 @@ namespace Crener.Spline.Test._2D.BSpline.TestTypes
         /// <summary>
         /// override of <see cref="BezierSpline2DSimple"/> which implements the spline test interface
         /// </summary>
-        public class TestBSpline2DSimple : BSpline2D, ISimpleTestSpline
+        public class TestP2PSpline2DSimple : Linear2DSpline, ISimpleTestSpline
         {
             public IReadOnlyList<float2> ControlPoints => Points;
             public IReadOnlyList<float> Times => SegmentLength;
@@ -33,13 +33,8 @@ namespace Crener.Spline.Test._2D.BSpline.TestTypes
             }
             
             public int ExpectedControlPointCount(int controlPoints) => controlPoints;
-
-            public int ExpectedTimeCount(int controlPoints)
-            {
-                if(controlPoints <= 3) return 1;
-                
-                return math.max(1, controlPoints - 1);
-            }
+            
+            public int ExpectedTimeCount(int controlPoints) => math.max(1, controlPoints - 1);
 
             public float2 GetControlPoint(int i, SplinePoint point) => GetControlPoint(i);
         }

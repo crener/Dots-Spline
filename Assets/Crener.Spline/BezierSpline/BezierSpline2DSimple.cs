@@ -263,17 +263,17 @@ namespace Crener.Spline.BezierSpline
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        protected override float2 SplineInterpolation(float t, int a, int b)
+        protected override float2 SplineInterpolation(float t, int a)
         {
             float2 p0 = GetControlPoint(a, SplinePoint.Point);
             float2 p1 = GetControlPoint(a, SplinePoint.Post);
-            float2 p2 = GetControlPoint(b, SplinePoint.Pre);
-            float2 p3 = GetControlPoint(b, SplinePoint.Point);
+            float2 p2 = GetControlPoint((a + 1) % SegmentPointCount, SplinePoint.Pre);
+            float2 p3 = GetControlPoint((a + 1) % SegmentPointCount, SplinePoint.Point);
 
             return BezierMath.CubicBezierPoint(t, p0, p1, p2, p3);
         }
 
-        public override SplineType SplineDataType => ArkParameterization ? SplineType.PointToPoint : SplineType.Bezier;
+        public override SplineType SplineDataType => ArkParameterization ? SplineType.Linear : SplineType.Bezier;
 
         public override void Convert(Unity.Entities.Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
         {

@@ -4,8 +4,7 @@ using Crener.Spline.BezierSpline.Jobs;
 using Crener.Spline.Common;
 using Crener.Spline.Common.DataStructs;
 using Crener.Spline.Common.Interfaces;
-using Crener.Spline.PointToPoint;
-using Crener.Spline.PointToPoint.Jobs._2D;
+using Crener.Spline.Linear.Jobs._2D;
 using Crener.Spline.Test._2D.Bezier.TestAdapters;
 using Crener.Spline.Test._2D.Bezier.TestTypes;
 using Crener.Spline.Test.Helpers;
@@ -35,7 +34,7 @@ namespace Crener.Spline.Test._2D.Bezier
 
             spline.ArkParameterization = true;
             Assert.IsTrue(spline.ArkParameterization);
-            Assert.AreEqual(spline.SplineDataType, SplineType.PointToPoint);
+            Assert.AreEqual(spline.SplineDataType, SplineType.Linear);
         }
 
         [Test]
@@ -390,8 +389,8 @@ namespace Crener.Spline.Test._2D.Bezier
                     };
                     bzSpline.Execute();
                     return bzSpline.Result;
-                case SplineType.PointToPoint:
-                    PointToPointSpline2DPointJob pSpline = new PointToPointSpline2DPointJob
+                case SplineType.Linear:
+                    LinearSpline2DPointJob pSpline = new LinearSpline2DPointJob
                     {
                         Spline = spline.SplineEntityData.Value,
                         SplineProgress = new SplineProgress {Progress = progress}

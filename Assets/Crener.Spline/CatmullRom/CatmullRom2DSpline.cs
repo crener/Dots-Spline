@@ -18,7 +18,7 @@ namespace Crener.Spline.CatmullRom
         private const float c_alpha = 0.5f;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        protected override float2 SplineInterpolation(float t, int a, int b)
+        protected override float2 SplineInterpolation(float t, int a)
         {
             // todo get points based on actual a and b values
             float2 p0 = Points[0];

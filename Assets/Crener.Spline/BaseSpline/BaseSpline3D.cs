@@ -43,7 +43,7 @@ namespace Crener.Spline.BaseSpline
         /// <returns>point on spline segment</returns>
         public float3 GetPoint(float progress, int index)
         {
-            return SplineInterpolation(progress, index, (index + 1) % ControlPointCount);
+            return SplineInterpolation(progress, index);
         }
 
         public abstract void AddControlPoint(float3 point);
@@ -63,19 +63,17 @@ namespace Crener.Spline.BaseSpline
 
             int aIndex = FindSegmentIndex(progress);
             float pointProgress = SegmentProgress(progress, aIndex);
-
-            int bIndex = (aIndex + 1) % ControlPointCount;
-            return SplineInterpolation(pointProgress, aIndex, bIndex);
+            return SplineInterpolation(pointProgress, aIndex);
         }
 
-        protected override float LengthBetweenPoints(int a, int b, int resolution = 64)
+        protected override float LengthBetweenPoints(int a, int resolution = 64)
         {
             float currentLength = 0;
 
-            float3 aPoint =  SplineInterpolation(0f, a, b);
+            float3 aPoint =  SplineInterpolation(0f, a);
             for (float i = 1; i <= resolution; i++)
             {
-                float3 bPoint = SplineInterpolation(i / resolution, a, b);
+                float3 bPoint = SplineInterpolation(i / resolution, a);
                 currentLength += math.distance(aPoint, bPoint);
                 aPoint = bPoint;
             }
@@ -87,7 +85,7 @@ namespace Crener.Spline.BaseSpline
         public abstract float3 GetControlPoint(int i);
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        protected abstract float3 SplineInterpolation(float t, int a, int b);
+        protected abstract float3 SplineInterpolation(float t, int a);
 
         public override void ClearData()
         {
