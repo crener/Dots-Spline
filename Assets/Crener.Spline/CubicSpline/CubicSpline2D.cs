@@ -15,6 +15,8 @@ namespace Crener.Spline.CubicSpline
     {
         [SerializeField]
         private bool looped = false;
+        [SerializeField]
+        private int smoothing = 2;
 
         public bool Looped
         {
@@ -39,12 +41,20 @@ namespace Crener.Spline.CubicSpline
                 return GetControlPoint(0);
             else if(ControlPointCount == 2)
                 return math.lerp(GetControlPoint(0), GetControlPoint(1), progress);
+            else if(ControlPointCount == 3)
+                return Cubic3Point(0, 1, 2, progress);
+            else if(progress <= 0f)
+                return GetControlPoint(0);
             else if(progress >= 1f)
                 return GetControlPoint(ControlPointCount - 1);
 
-            int aIndex = FindSegmentIndex(progress);
-            float pointProgress = SegmentProgress(progress, aIndex);
-            return SplineInterpolation(pointProgress, aIndex);
+            const int precesion = 1000;
+            CubicSpline spline = new CubicSpline(Points.ToArray(), precesion, smoothing);
+            return spline.Interpolated[(int) (precesion * progress)];
+
+            //int aIndex = FindSegmentIndex(progress);
+            //float pointProgress = SegmentProgress(progress, aIndex);
+            //return SplineInterpolation(pointProgress, aIndex);
         }
 
         protected override void RecalculateLengthBias()
@@ -106,6 +116,18 @@ namespace Crener.Spline.CubicSpline
             float2 pp1 = math.lerp(p1, i1, t);
 
             return math.lerp(pp0, pp1, t);
+        }
+
+        private float2 Cubic3Point(int a, int b, int c, float t)
+        {
+            float2 p1 = Points[a];
+            float2 p2 = Points[b];
+            float2 p3 = Points[c];
+
+            float2 i0 = math.lerp(p1, p2, t);
+            float2 i1 = math.lerp(p2, p3, t);
+
+            return math.lerp(i0, i1, t);
         }
 
         public override void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)

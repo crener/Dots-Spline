@@ -13,22 +13,31 @@ namespace Crener.Spline.Benchmark
     public class Spline2DBenchmark : MonoBehaviour, IConvertGameObjectToEntity
     {
         public int Quantity = 1000;
-        [FormerlySerializedAs("BezierSpline")]
-        public ISpline2D Spline;
+        public MonoBehaviour Spline;
         public GameObject Prefab;
         public GameObject Parent;
+
+        private ISpline2D m_spline;
 
         private void Start()
         {
             if(Parent == null) Parent = gameObject;
             if(GetComponent<ConvertToEntity>() != null) return;
 
+            m_spline = Spline == null ? null : Spline.GetComponent<ISpline2D>();
+            if(m_spline == null)
+            {
+                Debug.LogError("Please assign a spline");
+                enabled = false;
+                return;
+            }
+
             for (int i = 0; i < Quantity; i++)
             {
                 GameObject example = Instantiate(Prefab, Parent.transform, true);
 
                 Spline2DTraverser mover = example.GetComponent<Spline2DTraverser>();
-                mover.Spline = Spline;
+                mover.Spline = m_spline;
                 mover.Progress = Random.Range(0f, 1f);
 #if UNITY_EDITOR
                 mover.transform.name = "Mover " + (i + 1);
@@ -53,12 +62,12 @@ namespace Crener.Spline.Benchmark
 
             if(Spline != null)
             {
-                if(!Spline.SplineEntityData.HasValue)
+                if(!m_spline.SplineEntityData.HasValue)
                 {
-                    Spline.Convert(dstManager.CreateEntity(), dstManager, conversionSystem);
+                    m_spline.Convert(dstManager.CreateEntity(), dstManager, conversionSystem);
                 }
 
-                dstManager.AddSharedComponentData(entity, Spline.SplineEntityData.Value);
+                dstManager.AddSharedComponentData(entity, m_spline.SplineEntityData.Value);
             }
         }
     }
