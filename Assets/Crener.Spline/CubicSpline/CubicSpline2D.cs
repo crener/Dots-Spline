@@ -13,32 +13,15 @@ namespace Crener.Spline.CubicSpline
     /// <summary>
     /// Simple spline which directly follows a set of points
     /// </summary>
-    public class CubicSpline2D : BaseSpline2D, ILoopingSpline
+    public class CubicSpline2D : BaseSpline2D
     {
-        [SerializeField]
-        private bool looped = false;
-        [SerializeField]
-        private int smoothing = 2;
-
-        public bool Looped
-        {
-            get => looped && ControlPointCount > 2;
-            set
-            {
-                looped = value;
-                RecalculateLengthBias();
-            }
-        }
         public override SplineType SplineDataType => SplineType.Cubic;
-
-        public override int SegmentPointCount => Looped ? ControlPointCount + 1 : ControlPointCount;
 
         const int c_precesion = 20;
 
-        private CubicSpline m_spline;
-        //private float2[] Interpolated;
-        //private Matrix m_matrix;
-        //private float[] a, b, c, d, h;
+        private Matrix m_matrix;
+        private float[] a, b, c, d, segmentDistance;
+        private int m_sourceLength = c_precesion;
 
         public override float2 GetPoint(float progress)
         {
@@ -55,20 +38,16 @@ namespace Crener.Spline.CubicSpline
             else if(progress >= 1f)
                 return GetControlPoint(ControlPointCount - 1);
 
-            int index = (int) ((c_precesion * (SegmentPointCount - 1)) * progress);
-            return m_spline.Interpolated[index];
-
-            //int aIndex = FindSegmentIndex(progress);
-            //float pointProgress = SegmentProgress(progress, aIndex);
-            //return SplineInterpolation(pointProgress, aIndex);
+            int aIndex = FindSegmentIndex(progress);
+            float pointProgress = SegmentProgress(progress, aIndex);
+            return SplineInterpolation(pointProgress, aIndex);
         }
 
         protected override void RecalculateLengthBias()
         {
             ClearData();
             SegmentLength.Clear();
-            m_spline = new CubicSpline(Points.ToArray(), c_precesion, smoothing);
-            //CalculateCubicParameters();
+            CalculateCubicParameters();
 
             if(ControlPointCount <= 1)
             {
@@ -77,18 +56,19 @@ namespace Crener.Spline.CubicSpline
                 return;
             }
 
+            const int res = 512;
             if(ControlPointCount == 2)
             {
-                LengthCache = LengthBetweenPoints(0, 128);
+                LengthCache = LengthBetweenPoints(0, res);
                 SegmentLength.Add(1f);
                 return;
             }
 
             // calculate the distance that the entire spline covers
             float currentLength = 0f;
-            for (int a = 0; a < SegmentPointCount - 1; a++)
+            for (int i = 0; i < SegmentPointCount - 1; i++)
             {
-                float length = LengthBetweenPoints(a, 128);
+                float length = LengthBetweenPoints(i, res);
                 currentLength += length;
             }
 
@@ -102,19 +82,25 @@ namespace Crener.Spline.CubicSpline
 
             // calculate the distance that a single segment covers
             float segmentCount = 0f;
-            for (int a = 0; a < SegmentPointCount - 1; a++)
+            for (int i = 0; i < SegmentPointCount - 1; i++)
             {
-                float length = LengthBetweenPoints(a, 128);
+                float length = LengthBetweenPoints(i, res);
                 segmentCount = (length / LengthCache) + segmentCount;
                 SegmentLength.Add(segmentCount);
             }
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        protected override float2 SplineInterpolation(float t, int a)
+        protected override float2 SplineInterpolation(float t, int segment)
         {
-            int index = (int) ((c_precesion * (SegmentPointCount - 1)) * t);
-            return m_spline.Interpolated[index];
+            float deltaX = t * segmentDistance[segment];
+            float termA = a[segment];
+            float termB = b[segment] * deltaX;
+            float termC = c[segment] * deltaX * deltaX;
+            float termD = d[segment] * deltaX * deltaX * deltaX;
+            return new float2(
+                deltaX + Points[segment].x,
+                termA + termB + termC + termD);
         }
 
         private float2 Cubic3Point(int a, int b, int c, float t)
@@ -129,43 +115,41 @@ namespace Crener.Spline.CubicSpline
             return math.lerp(i0, i1, t);
         }
 
-        /*private void CalculateCubicParameters()
+        private void CalculateCubicParameters()
         {
             if(ControlPointCount < 4)
             {
                 // not enough data to correctly initialize the cubic stuff so just try to save some memory...
-                Interpolated = new float2[0];
                 m_matrix = new Matrix(0);
 
                 a = new float[Points.Count];
                 b = new float[Points.Count];
                 c = new float[Points.Count];
                 d = new float[Points.Count];
-                h = new float[Points.Count - 1];
+                segmentDistance = new float[Points.Count - 1];
             }
             else
             {
-                Interpolated = new float2[Points.Count * c_precesion];
-                m_matrix = new Matrix(Points.Count - 1, smoothing);
+                m_sourceLength = Points.Count * c_precesion;
+                m_matrix = new Matrix(Points.Count - 1);
 
                 a = new float[Points.Count];
                 b = new float[Points.Count];
                 c = new float[Points.Count];
                 d = new float[Points.Count];
-                h = new float[Points.Count - 1];
+                segmentDistance = new float[Points.Count - 1];
 
                 CalcParameters();
-                Interpolate();
             }
         }
-        
+
         private void CalcParameters()
         {
             for (int i = 0; i < Points.Count; i++)
                 a[i] = Points[i].y;
 
             for (int i = 0; i < Points.Count - 1; i++)
-                h[i] = Points[i + 1].x - Points[i].x;
+                segmentDistance[i] = Points[i + 1].x - Points[i].x;
 
             for (int i = 0; i < Points.Count - 2; i++)
             {
@@ -181,19 +165,19 @@ namespace Crener.Spline.CubicSpline
             {
                 if(i == 0)
                 {
-                    m_matrix.a[i, 0] = 2f * (h[0] + h[1]);
-                    m_matrix.a[i, 1] = h[1];
+                    m_matrix.a[i, 0] = 2f * (segmentDistance[0] + segmentDistance[1]);
+                    m_matrix.a[i, 1] = segmentDistance[1];
                 }
                 else
                 {
-                    m_matrix.a[i, i - 1] = h[i];
-                    m_matrix.a[i, i] = 2f * (h[i] + h[i + 1]);
+                    m_matrix.a[i, i - 1] = segmentDistance[i];
+                    m_matrix.a[i, i] = 2f * (segmentDistance[i] + segmentDistance[i + 1]);
                     if(i < Points.Count - 3)
-                        m_matrix.a[i, i + 1] = h[i + 1];
+                        m_matrix.a[i, i + 1] = segmentDistance[i + 1];
                 }
 
-                if((h[i] != 0) && (h[i + 1] != 0))
-                    m_matrix.y[i] = ((a[i + 2] - a[i + 1]) / h[i + 1] - (a[i + 1] - a[i]) / h[i]) * 3f;
+                if((segmentDistance[i] != 0) && (segmentDistance[i + 1] != 0))
+                    m_matrix.y[i] = ((a[i + 2] - a[i + 1]) / segmentDistance[i + 1] - (a[i + 1] - a[i]) / segmentDistance[i]) * 3f;
                 else
                     m_matrix.y[i] = 0f;
             }
@@ -211,40 +195,13 @@ namespace Crener.Spline.CubicSpline
 
             for (int i = 0; i < Points.Count - 1; i++)
             {
-                if(h[i] != 0.0)
+                if(segmentDistance[i] != 0.0)
                 {
-                    d[i] = 1f / 3f / h[i] * (c[i + 1] - c[i]);
-                    b[i] = 1f / h[i] * (a[i + 1] - a[i]) - h[i] / 3f * (c[i + 1] + 2f * c[i]);
+                    d[i] = 1f / 3f / segmentDistance[i] * (c[i + 1] - c[i]);
+                    b[i] = 1f / segmentDistance[i] * (a[i + 1] - a[i]) - segmentDistance[i] / 3f * (c[i + 1] + 2f * c[i]);
                 }
             }
         }
-
-        private void Interpolate()
-        {
-            int resolution = Interpolated.Length / Points.Count;
-            for (int i = 0; i < h.Length; i++)
-            {
-                for (int k = 0; k < resolution; k++)
-                {
-                    float deltaX = (float) k / resolution * h[i];
-                    float termA = a[i];
-                    float termB = b[i] * deltaX;
-                    float termC = c[i] * deltaX * deltaX;
-                    float termD = d[i] * deltaX * deltaX * deltaX;
-                    int interpolatedIndex = i * resolution + k;
-                    Interpolated[interpolatedIndex] = new float2(deltaX + Points[i].x, termA + termB + termC + termD);
-                }
-            }
-
-            // After interpolation the last several values of the interpolated arrays
-            // contain uninitialized data. This section identifies the values which are
-            // populated with values and copies just the useful data into new arrays.
-            int pointsToKeep = resolution * (Points.Count - 1) + 1;
-            float2[] interpolatedCopy = new float2[pointsToKeep];
-            Array.Copy(Interpolated, 0, interpolatedCopy, 0, pointsToKeep - 1);
-            Interpolated = interpolatedCopy;
-            Interpolated[pointsToKeep - 1] = Points[Points.Count - 1];
-        }*/
 
         public override void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
         {
@@ -262,7 +219,7 @@ namespace Crener.Spline.CubicSpline
             Gizmos.color = Color.gray;
             const float pointDensity = 13;
 
-            if(SegmentPointCount > 0 && SegmentLength.Count == 0 || m_spline == null)
+            if(SegmentPointCount > 0 && SegmentLength.Count == 0)
             {
                 // needs to calculate length as it might not have been saved correctly after saving
                 RecalculateLengthBias();

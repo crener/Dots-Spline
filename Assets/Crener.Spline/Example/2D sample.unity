@@ -163,8 +163,6 @@ MonoBehaviour:
     y: 33.999683
   - x: 15.00007
     y: 35.999996
-  looped: 0
-  smoothing: 2
 --- !u!4 &246620988
 Transform:
   m_ObjectHideFlags: 0
@@ -287,8 +285,6 @@ MonoBehaviour:
     y: 37.027966
   - x: 11.138698
     y: 36.03266
-  looped: 0
-  smoothing: 2
 --- !u!4 &426229413
 Transform:
   m_ObjectHideFlags: 0
@@ -553,21 +549,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SegmentLength:
-  - 0.3333333
-  - 0.6666666
-  - 0.99999994
-  LengthCache: 16.518532
+  - 0.33713585
+  - 0.61618316
+  - 1
+  LengthCache: 4.9727283
   Points:
-  - x: 9.952876
-    y: 35.96024
-  - x: 11.039335
-    y: 33.995262
-  - x: 12.425712
-    y: 35.298603
-  - x: 13.590495
-    y: 35.44681
-  looped: 0
-  smoothing: 0
+  - x: 9.737881
+    y: 35.905594
+  - x: 10.461632
+    y: 34.400402
+  - x: 11.63413
+    y: 34.72561
+  - x: 13.426213
+    y: 35.29131
 --- !u!4 &918859708
 Transform:
   m_ObjectHideFlags: 0
@@ -845,8 +839,6 @@ MonoBehaviour:
     y: 35.982185
   - x: 16.46374
     y: 35.203194
-  looped: 1
-  smoothing: 2
 --- !u!4 &1393734957
 Transform:
   m_ObjectHideFlags: 0
@@ -961,8 +953,6 @@ MonoBehaviour:
     y: 35.173576
   - x: 13.544854
     y: 35.807682
-  looped: 0
-  smoothing: 2
 --- !u!4 &1932113534
 Transform:
   m_ObjectHideFlags: 0
@@ -1021,8 +1011,6 @@ MonoBehaviour:
     y: 34.900036
   - x: 9.876986
     y: 37.090424
-  looped: 1
-  smoothing: 2
 --- !u!4 &1985448741
 Transform:
   m_ObjectHideFlags: 0

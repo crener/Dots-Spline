@@ -5,7 +5,7 @@ namespace Crener.Spline.CubicSpline
 {
     // Based on the MIT licenced ScottPlot library
     // https://github.com/swharden/ScottPlot/tree/404105e5d7ae8399b2e40e9bd64b246d3b3b80dd/src/ScottPlot/Statistics/Interpolation
-    
+
     public class CubicSpline
     {
         public float2[] Given;
@@ -115,9 +115,10 @@ namespace Crener.Spline.CubicSpline
                     float termB = b[i] * deltaX;
                     float termC = c[i] * deltaX * deltaX;
                     float termD = d[i] * deltaX * deltaX * deltaX;
+                    
                     int interpolatedIndex = i * resolution + k;
                     Interpolated[interpolatedIndex] = new float2(
-                        deltaX + Given[i].x, 
+                        deltaX + Given[i].x,
                         termA + termB + termC + termD);
                 }
             }
