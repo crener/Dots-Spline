@@ -34,7 +34,7 @@ namespace Crener.Spline
             transform.position = new Vector3(pos.x, pos.y, 0f);
         }
 
-        public void Convert(Unity.Entities.Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
+        public void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
         {
             dstManager.AddComponent<SplineProgress>(entity);
             dstManager.SetComponentData(entity, new SplineProgress() {Progress = Progress});

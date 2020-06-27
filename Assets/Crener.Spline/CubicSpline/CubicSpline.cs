@@ -31,8 +31,7 @@ namespace Crener.Spline.CubicSpline
             m_n = points.Length;
 
             Interpolated = new float2[m_n * resolution];
-
-            m = new Matrix(m_n - 2, order);
+            m = new Matrix(m_n - 2);
 
             a = new float[m_n];
             b = new float[m_n];
@@ -117,7 +116,9 @@ namespace Crener.Spline.CubicSpline
                     float termC = c[i] * deltaX * deltaX;
                     float termD = d[i] * deltaX * deltaX * deltaX;
                     int interpolatedIndex = i * resolution + k;
-                    Interpolated[interpolatedIndex] = new float2(deltaX + Given[i].x, termA + termB + termC + termD);
+                    Interpolated[interpolatedIndex] = new float2(
+                        deltaX + Given[i].x, 
+                        termA + termB + termC + termD);
                 }
             }
 

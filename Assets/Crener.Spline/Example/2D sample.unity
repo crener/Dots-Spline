@@ -274,12 +274,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SegmentLength:
-  - 0.5007795
-  - 1.0000001
-  LengthCache: 2.6160498
+  - 0.33333334
+  - 0.6666667
+  - 1
+  LengthCache: 3.4245543
   Points:
-  - x: 8.8489685
-    y: 36.038933
+  - x: 8.472568
+    y: 36.00013
   - x: 8.96714
     y: 37.027157
   - x: 11.039634
@@ -552,20 +553,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SegmentLength:
-  - 0.49939376
-  - 1
-  LengthCache: 4.0519695
+  - 0.3333333
+  - 0.6666666
+  - 0.99999994
+  LengthCache: 16.518532
   Points:
-  - x: 10.003922
-    y: 35.00202
-  - x: 10.471426
-    y: 36.448753
-  - x: 13.518002
-    y: 36.43659
-  - x: 14.000471
-    y: 35.001995
+  - x: 9.952876
+    y: 35.96024
+  - x: 11.039335
+    y: 33.995262
+  - x: 12.425712
+    y: 35.298603
+  - x: 13.590495
+    y: 35.44681
   looped: 0
-  smoothing: 2
+  smoothing: 0
 --- !u!4 &918859708
 Transform:
   m_ObjectHideFlags: 0
@@ -574,7 +576,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 918859706}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 16.935, y: 38.04, z: -13.91087}
+  m_LocalPosition: {x: 16.802, y: 38.04, z: -13.91087}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1775453985}
@@ -615,8 +617,8 @@ Camera:
   m_GameObject: {fileID: 963194225}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0, g: 0.20545071, b: 0.5283019, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -631,9 +633,9 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60
-  orthographic: 0
-  orthographic size: 5
+  field of view: 1.4597833
+  orthographic: 1
+  orthographic size: 3.3062325
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -657,7 +659,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.069999695, y: 0.9399986, z: -10}
+  m_LocalPosition: {x: 12.44, y: 37.06, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -929,15 +931,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SegmentLength:
-  - 0.0780059
-  - 0.19933395
-  - 0.36062655
-  - 0.5701392
-  - 0.7046277
-  - 0.7741758
-  - 0.8875441
+  - 0.125
+  - 0.25
+  - 0.375
+  - 0.5
+  - 0.625
+  - 0.75
+  - 0.875
   - 1
-  LengthCache: 9.431676
+  LengthCache: 8.877242
   Points:
   - x: 11.52896
     y: 35.210033

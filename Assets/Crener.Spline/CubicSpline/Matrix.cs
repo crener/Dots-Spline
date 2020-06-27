@@ -4,17 +4,16 @@ namespace Crener.Spline.CubicSpline
 {
     public class Matrix
     {
-        public readonly int maxOrder;
+        private readonly int m_maxOrder;
         public bool calcError;
+        
         public float[,] a;
         public float[] y;
         public float[] x;
 
-        public Matrix(int size) : this(size, size) { }
-        
-        public Matrix(int size, int order)
+        public Matrix(int size)
         {
-            maxOrder = order;
+            m_maxOrder = size;
 
             a = new float[size, size];
             y = new float[size];
@@ -25,9 +24,9 @@ namespace Crener.Spline.CubicSpline
         {
             float tempD;
             int i, j;
-            for (i = n; i <= maxOrder - 2; i++)
+            for (i = n; i <= m_maxOrder - 2; i++)
             {
-                for (j = 0; j <= maxOrder - 1; j++)
+                for (j = 0; j <= m_maxOrder - 1; j++)
                 {
                     tempD = a[i, j];
                     a[i, j] = a[i + 1, j];
@@ -44,9 +43,9 @@ namespace Crener.Spline.CubicSpline
         {
             int i, k, l;
             calcError = false;
-            for (k = 0; k <= maxOrder - 2; k++)
+            for (k = 0; k <= m_maxOrder - 2; k++)
             {
-                for (i = k; i <= maxOrder - 2; i++)
+                for (i = k; i <= m_maxOrder - 2; i++)
                 {
                     if(math.abs(a[i + 1, i]) < 1e-8)
                     {
@@ -55,7 +54,7 @@ namespace Crener.Spline.CubicSpline
 
                     if(a[i + 1, k] != 0.0)
                     {
-                        for (l = k + 1; l <= maxOrder - 1; l++)
+                        for (l = k + 1; l <= m_maxOrder - 1; l++)
                         {
                             if(!calcError)
                             {
@@ -80,9 +79,9 @@ namespace Crener.Spline.CubicSpline
         public void Solve()
         {
             int k, l;
-            for (k = maxOrder - 1; k >= 0; k--)
+            for (k = m_maxOrder - 1; k >= 0; k--)
             {
-                for (l = maxOrder - 1; l >= k; l--)
+                for (l = m_maxOrder - 1; l >= k; l--)
                 {
                     y[k] = y[k] - x[l] * a[k, l];
                 }
