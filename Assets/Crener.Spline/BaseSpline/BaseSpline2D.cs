@@ -41,6 +41,11 @@ namespace Crener.Spline.BaseSpline
         public override int ControlPointCount => Points.Count;
 
         /// <summary>
+        /// Is the data in the spline initialized
+        /// </summary>
+        protected virtual bool DataInitialized => SegmentPointCount > 0 && SegmentLength.Count == 0;
+
+        /// <summary>
         /// Retrieve a point on the spline at a specific control point
         /// </summary>
         /// <returns>point on spline segment</returns>
@@ -149,7 +154,7 @@ namespace Crener.Spline.BaseSpline
         protected override float LengthBetweenPoints(int a, int resolution = 64)
         {
             float currentLength = 0;
-
+            
             float2 aPoint = SplineInterpolation(0f, a);
             for (float i = 1; i <= resolution; i++)
             {
@@ -198,7 +203,7 @@ namespace Crener.Spline.BaseSpline
             Gizmos.color = Color.gray;
             const float pointDensity = 13;
 
-            if(SegmentPointCount > 0 && SegmentLength.Count == 0)
+            if(!DataInitialized)
             {
                 // needs to calculate length as it might not have been saved correctly after saving
                 RecalculateLengthBias();

@@ -17,26 +17,25 @@ namespace Crener.Spline.CubicSpline
     {
         public override SplineType SplineDataType => SplineType.Cubic;
 
-        const int c_precesion = 20;
-
         private Matrix m_matrix;
         private float[] a, b, c, d, segmentDistance;
-        private int m_sourceLength = c_precesion;
+
+        protected override bool DataInitialized => segmentDistance != null && base.DataInitialized;
 
         public override float2 GetPoint(float progress)
         {
             if(ControlPointCount == 0)
                 return float2.zero;
+            else if(progress <= 0f)
+                return GetControlPoint(0);
+            else if(progress >= 1f)
+                return GetControlPoint(ControlPointCount - 1);
             else if(ControlPointCount == 1 || progress <= 0f)
                 return GetControlPoint(0);
             else if(ControlPointCount == 2)
                 return math.lerp(GetControlPoint(0), GetControlPoint(1), progress);
             else if(ControlPointCount == 3)
                 return Cubic3Point(0, 1, 2, progress);
-            else if(progress <= 0f)
-                return GetControlPoint(0);
-            else if(progress >= 1f)
-                return GetControlPoint(ControlPointCount - 1);
 
             int aIndex = FindSegmentIndex(progress);
             float pointProgress = SegmentProgress(progress, aIndex);
@@ -45,6 +44,8 @@ namespace Crener.Spline.CubicSpline
 
         protected override void RecalculateLengthBias()
         {
+            const int res = 512;
+
             ClearData();
             SegmentLength.Clear();
             CalculateCubicParameters();
@@ -56,8 +57,14 @@ namespace Crener.Spline.CubicSpline
                 return;
             }
 
-            const int res = 512;
             if(ControlPointCount == 2)
+            {
+                LengthCache = math.distance(GetControlPoint(0), GetControlPoint(1));
+                SegmentLength.Add(1f);
+                return;
+            }
+
+            if(ControlPointCount == 3)
             {
                 LengthCache = LengthBetweenPoints(0, res);
                 SegmentLength.Add(1f);
@@ -74,12 +81,6 @@ namespace Crener.Spline.CubicSpline
 
             LengthCache = currentLength;
 
-            if(SegmentPointCount == 2)
-            {
-                SegmentLength.Add(1f);
-                return;
-            }
-
             // calculate the distance that a single segment covers
             float segmentCount = 0f;
             for (int i = 0; i < SegmentPointCount - 1; i++)
@@ -88,6 +89,25 @@ namespace Crener.Spline.CubicSpline
                 segmentCount = (length / LengthCache) + segmentCount;
                 SegmentLength.Add(segmentCount);
             }
+        }
+
+        protected override float LengthBetweenPoints(int a, int resolution = 64)
+        {
+            if(ControlPointCount == 3)
+            {
+                float currentLength = 0;
+
+                float2 aPoint = Cubic3Point(0, 1, 2, 0f);
+                for (float i = 1; i <= resolution; i++)
+                {
+                    float2 bPoint = Cubic3Point(0, 1, 2, i / resolution);
+                    currentLength += math.distance(aPoint, bPoint);
+                    aPoint = bPoint;
+                }
+
+                return currentLength;
+            }
+            else return base.LengthBetweenPoints(a, resolution);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -117,20 +137,9 @@ namespace Crener.Spline.CubicSpline
 
         private void CalculateCubicParameters()
         {
-            if(ControlPointCount < 4)
+            if(ControlPointCount >= 4)
             {
-                // not enough data to correctly initialize the cubic stuff so just try to save some memory...
-                m_matrix = new Matrix(0);
-
-                a = new float[Points.Count];
-                b = new float[Points.Count];
-                c = new float[Points.Count];
-                d = new float[Points.Count];
-                segmentDistance = new float[Points.Count - 1];
-            }
-            else
-            {
-                m_sourceLength = Points.Count * c_precesion;
+                // Only initialize the data if there is enough to actually be useful in calculating the data
                 m_matrix = new Matrix(Points.Count - 1);
 
                 a = new float[Points.Count];
@@ -212,35 +221,6 @@ namespace Crener.Spline.CubicSpline
             Spline2DData splineData = ConvertData();
             SplineEntityData = splineData;
             dstManager.SetSharedComponentData(entity, splineData);*/
-        }
-
-        protected override void OnDrawGizmosSelected()
-        {
-            Gizmos.color = Color.gray;
-            const float pointDensity = 13;
-
-            if(SegmentPointCount > 0 && SegmentLength.Count == 0)
-            {
-                // needs to calculate length as it might not have been saved correctly after saving
-                RecalculateLengthBias();
-            }
-
-            for (int i = 0; i < ControlPointCount - 1; i++)
-            {
-                float2 f = GetPoint(0f, i);
-                Vector3 lp = new Vector3(f.x, f.y, 0f);
-                int points = (int) (pointDensity * (SegmentLength[i] * Length()));
-
-                for (int s = 0; s <= points; s++)
-                {
-                    float progress = s / (float) points;
-                    float2 p = GetPoint(progress, i);
-                    Vector3 point = new Vector3(p.x, p.y, 0f);
-
-                    Gizmos.DrawLine(lp, point);
-                    lp = point;
-                }
-            }
         }
     }
 }

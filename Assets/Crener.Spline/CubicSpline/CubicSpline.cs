@@ -6,7 +6,7 @@ namespace Crener.Spline.CubicSpline
     // Based on the MIT licenced ScottPlot library
     // https://github.com/swharden/ScottPlot/tree/404105e5d7ae8399b2e40e9bd64b246d3b3b80dd/src/ScottPlot/Statistics/Interpolation
 
-    public class CubicSpline
+    internal class CubicSpline
     {
         public float2[] Given;
         public float2[] Interpolated;

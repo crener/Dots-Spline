@@ -2,11 +2,11 @@ using Unity.Mathematics;
 
 namespace Crener.Spline.CubicSpline
 {
-    public class Matrix
+    internal class Matrix
     {
         private readonly int m_maxOrder;
         public bool calcError;
-        
+
         public float[,] a;
         public float[] y;
         public float[] x;
@@ -22,11 +22,10 @@ namespace Crener.Spline.CubicSpline
 
         void SwitchRows(int n)
         {
-            float tempD;
-            int i, j;
-            for (i = n; i <= m_maxOrder - 2; i++)
+            for (int i = n; i <= m_maxOrder - 2; i++)
             {
-                for (j = 0; j <= m_maxOrder - 1; j++)
+                float tempD;
+                for (int j = 0; j <= m_maxOrder - 1; j++)
                 {
                     tempD = a[i, j];
                     a[i, j] = a[i + 1, j];
@@ -41,11 +40,10 @@ namespace Crener.Spline.CubicSpline
 
         public bool Eliminate()
         {
-            int i, k, l;
             calcError = false;
-            for (k = 0; k <= m_maxOrder - 2; k++)
+            for (int k = 0; k <= m_maxOrder - 2; k++)
             {
-                for (i = k; i <= m_maxOrder - 2; i++)
+                for (int i = k; i <= m_maxOrder - 2; i++)
                 {
                     if(math.abs(a[i + 1, i]) < 1e-8)
                     {
@@ -54,7 +52,7 @@ namespace Crener.Spline.CubicSpline
 
                     if(a[i + 1, k] != 0.0)
                     {
-                        for (l = k + 1; l <= m_maxOrder - 1; l++)
+                        for (int l = k + 1; l <= m_maxOrder - 1; l++)
                         {
                             if(!calcError)
                             {
@@ -78,10 +76,9 @@ namespace Crener.Spline.CubicSpline
 
         public void Solve()
         {
-            int k, l;
-            for (k = m_maxOrder - 1; k >= 0; k--)
+            for (int k = m_maxOrder - 1; k >= 0; k--)
             {
-                for (l = m_maxOrder - 1; l >= k; l--)
+                for (int l = m_maxOrder - 1; l >= k; l--)
                 {
                     y[k] = y[k] - x[l] * a[k, l];
                 }
