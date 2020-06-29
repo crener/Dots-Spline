@@ -10,7 +10,7 @@ using Unity.Mathematics;
 namespace Crener.Spline.Linear.Jobs._2D
 {
     /// <summary>
-    /// Simple way of sampling a single point from a 2D spline via <see cref="Spline2DData"/>
+    /// Cubic linear with no looping support
     /// </summary>
     [BurstCompile]
     public struct LinearCubicSpline2DPointJob : IJob, ISplineJob2D
@@ -63,10 +63,11 @@ namespace Crener.Spline.Linear.Jobs._2D
         private int SegmentIndex()
         {
             int seg = Spline.Time.Length;
+            float tempProgress = math.clamp(SplineProgress.Progress, 0f, 1f);
             for (int i = 0; i < seg; i++)
             {
                 float time = Spline.Time[i];
-                if(time >= SplineProgress.Progress) return i;
+                if(time >= tempProgress) return i;
             }
 
 #if UNITY_EDITOR
@@ -82,23 +83,50 @@ namespace Crener.Spline.Linear.Jobs._2D
 
         private float SegmentProgress(int index)
         {
-            if(index == 0) return SplineProgress.Progress / Spline.Time[0];
-            if(Spline.Time.Length <= 1) return SplineProgress.Progress;
+            float tempProgress = math.clamp(SplineProgress.Progress, 0f, 1f);
+            
+            if(index == 0) return tempProgress / Spline.Time[0];
+            if(Spline.Time.Length <= 1) return tempProgress;
 
             float aLn = Spline.Time[index - 1];
             float bLn = Spline.Time[index];
 
-            return (SplineProgress.Progress - aLn) / (bLn - aLn);
+            return (tempProgress - aLn) / (bLn - aLn);
         }
 
         private float2 LinearLerp(float t, int a)
         {
             float2 p0 = Spline.Points[a];
-            float2 p1 = Spline.Points[a+1];
-            float2 p2 = Spline.Points[a+2];
-            
-            float2 i0 = math.lerp(p0, p1, t);
-            float2 i1 = math.lerp(p1, p2, t);
+            float2 p1 = Spline.Points[(a + 1) % Spline.Points.Length];
+            float2 p2 = Spline.Points[(a + 2) % Spline.Points.Length];
+
+            float2 i0, i1;
+            const float splineMidPoint = 0.5f;
+
+            if(Spline.Points.Length > 3)
+            {
+                // todo add an extra segment for the first and last segment of the spline so it doesn't get stretched
+                if(a == 0)
+                {
+                    i0 = math.lerp(p0, p1, t);
+                    i1 = math.lerp(p1, p2, splineMidPoint);
+                }
+                else if(a == Spline.Points.Length - 3)
+                {
+                    i0 = math.lerp(p0, p1, splineMidPoint);
+                    i1 = math.lerp(p1, p2, t);
+                }
+                else
+                {
+                    i0 = math.lerp(p0, p1, splineMidPoint);
+                    i1 = math.lerp(p1, p2, splineMidPoint);
+                }
+            }
+            else
+            {
+                i0 = math.lerp(p0, p1, t);
+                i1 = math.lerp(p1, p2, t);
+            }
 
             float2 pp0 = math.lerp(i0, p1, t);
             float2 pp1 = math.lerp(p1, i1, t);

@@ -34,8 +34,14 @@ namespace Crener.Spline.Test._2D.LinearCubic.TestTypes
             
             public int ExpectedControlPointCount(int controlPoints) => controlPoints;
             
-            public int ExpectedTimeCount(int controlPoints) => math.max(1, controlPoints - 1);
-
+            public int ExpectedTimeCount(int controlPoints)
+            {
+                if(controlPoints == 0) return 1;
+                if(controlPoints == 1) return 1;
+                if(controlPoints == 2) return 1;
+                
+                return math.max(1, controlPoints - 2);
+            }
             public float2 GetControlPoint(int i, SplinePoint point) => GetControlPoint(i);
         }
     }

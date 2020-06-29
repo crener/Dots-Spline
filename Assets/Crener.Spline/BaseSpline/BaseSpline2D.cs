@@ -59,9 +59,7 @@ namespace Crener.Spline.BaseSpline
         /// </summary>
         public virtual void AddControlPoint(float2 point)
         {
-            if(Points.Count == 0) Points.Add(point);
-            else Points.Add(point);
-
+            Points.Add(point);
             RecalculateLengthBias();
         }
 

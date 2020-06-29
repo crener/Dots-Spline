@@ -404,37 +404,6 @@ namespace Crener.Spline.Test._2D
         }
 
         [Test]
-        public void Point3()
-        {
-            ISimpleTestSpline testSpline = PrepareSpline();
-
-            float2 a = float2.zero;
-            testSpline.AddControlPoint(float2.zero);
-            float2 b = new float2(2.5f, 0f);
-            testSpline.AddControlPoint(b);
-            float2 c = new float2(7.5f, 0f);
-            testSpline.AddControlPoint(c);
-            float2 d = new float2(10f, 0f);
-            testSpline.AddControlPoint(d);
-
-            Assert.AreEqual(4, testSpline.ControlPointCount);
-            Assert.AreEqual(4, testSpline.Modes.Count);
-            Assert.AreEqual(10f, testSpline.Length());
-
-            Assert.AreEqual(3, testSpline.Times.Count);
-            Assert.AreEqual(0.25f, testSpline.Times[0]);
-            Assert.AreEqual(0.75f, testSpline.Times[1]);
-            Assert.AreEqual(1f, testSpline.Times[2]);
-
-            TestHelpers.CheckFloat2(a, testSpline.GetPoint(0f));
-            TestHelpers.CheckFloat2(new float2(2.5f, 0f), testSpline.GetPoint(0.25f));
-            TestHelpers.CheckFloat2(new float2(5f, 0f), testSpline.GetPoint(0.5f));
-            TestHelpers.CheckFloat2(new float2(10f, 0f), testSpline.GetPoint(1f));
-            TestHelpers.CheckFloat2(new float2(10f, 0f), testSpline.GetPoint(1.5f));
-            TestHelpers.CheckFloat2(new float2(10f, 0f), testSpline.GetPoint(5f));
-        }
-
-        [Test]
         public void Point4()
         {
             ISimpleTestSpline testSpline = PrepareSpline();
@@ -712,7 +681,7 @@ namespace Crener.Spline.Test._2D
             Assert.AreEqual(testSpline.ExpectedTimeCount(0), testSpline.Times.Count);
         }
         
-        //todo add test that has progress lower than 0 (with 1, 2, 3, 4 points)
-        //todo add test that has progress higher than 1 (with 1, 2, 3, 4 points)
+        //todo add test that has progress lower than 0 (with 1, 2, 3, 4, 5 points)
+        //todo add test that has progress higher than 1 (with 1, 2, 3, 4, 5 points)
     }
 }

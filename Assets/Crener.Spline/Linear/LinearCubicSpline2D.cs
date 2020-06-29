@@ -16,6 +16,7 @@ namespace Crener.Spline.Linear
     /// </summary>
     public class LinearCubicSpline2D : BaseSpline2D, ILoopingSpline
     {
+        [SerializeField]
         private bool looped = false;
 
         public bool Looped
@@ -40,8 +41,7 @@ namespace Crener.Spline.Linear
                 return GetControlPoint(0);
             else if(ControlPointCount == 2)
                 return math.lerp(GetControlPoint(0), GetControlPoint(1), progress);
-            else if(progress <= 0f)
-                return math.lerp(GetControlPoint(0), GetControlPoint(1 % ControlPointCount), 0);
+            else if(progress <= 0f) progress = 0f;
             else if(progress > 1f) progress = 1f;
 
             int aIndex = FindSegmentIndex(progress);
@@ -94,6 +94,50 @@ namespace Crener.Spline.Linear
             float2 pp1 = math.lerp(p1, i1, t);
 
             return math.lerp(pp0, pp1, t);
+        }
+        
+        protected override void RecalculateLengthBias()
+        {
+            ClearData();
+            SegmentLength.Clear();
+
+            if(ControlPointCount <= 1)
+            {
+                LengthCache = 0f;
+                SegmentLength.Add(1f);
+                return;
+            }
+            if(ControlPointCount == 2)
+            {
+                LengthCache = math.distance(Points[0], Points[1]);
+                SegmentLength.Add(1f);
+                return;
+            }
+
+            // calculate the distance that the entire spline covers
+            float currentLength = 0f;
+            for (int a = 0; a < SegmentPointCount - 1; a++)
+            {
+                float length = LengthBetweenPoints(a, 128);
+                currentLength += length;
+            }
+
+            LengthCache = currentLength;
+
+            if(SegmentPointCount == 2)
+            {
+                SegmentLength.Add(1f);
+                return;
+            }
+
+            // calculate the distance that a single segment covers
+            float segmentCount = 0f;
+            for (int a = 0; a < SegmentPointCount - 1; a++)
+            {
+                float length = LengthBetweenPoints(a, 128);
+                segmentCount = (length / LengthCache) + segmentCount;
+                SegmentLength.Add(segmentCount);
+            }
         }
 
         protected override float LengthBetweenPoints(int a, int resolution = 64)
