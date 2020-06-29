@@ -1,7 +1,6 @@
 using System.Runtime.CompilerServices;
 using Crener.Spline.BaseSpline;
 using Crener.Spline.Common;
-using Unity.Entities;
 using Unity.Mathematics;
 
 namespace Crener.Spline.Linear
@@ -12,7 +11,6 @@ namespace Crener.Spline.Linear
     public class Linear2DSpline : BaseSpline2D
     {
         public override SplineType SplineDataType => SplineType.Linear;
-        
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected override float2 SplineInterpolation(float t, int a)
@@ -20,15 +18,11 @@ namespace Crener.Spline.Linear
             return math.lerp(Points[a], Points[(a + 1) % SegmentPointCount], t);
         }
 
-        public override void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
+        protected override float LengthBetweenPoints(int a, int resolution = 64)
         {
-            return;
-
-            //todo implement this for point to point
-            /*dstManager.AddComponent<Spline2DData>(entity);
-            Spline2DData splineData = ConvertData();
-            SplineEntityData = splineData;
-            dstManager.SetSharedComponentData(entity, splineData);*/
+            return math.distance(
+                GetControlPoint(a),
+                GetControlPoint((a + 1) % SegmentPointCount));
         }
     }
 }

@@ -121,6 +121,59 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &34344835
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 34344836}
+  - component: {fileID: 34344837}
+  m_Layer: 0
+  m_Name: bSpline Circle (6)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &34344836
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 34344835}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 13.23, y: 35.57, z: -13.91087}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1775453985}
+  m_RootOrder: 12
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &34344837
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 34344835}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30fbfdc50ccc4e0aa46485e2191ae8f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SegmentLength:
+  - 1
+  LengthCache: 1.9495224
+  Points:
+  - x: 8.995671
+    y: 40.73984
+  - x: 10.353845
+    y: 40.864845
+  - x: 9.999963
+    y: 40.001175
 --- !u!1 &246620986
 GameObject:
   m_ObjectHideFlags: 0
@@ -151,9 +204,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SegmentLength:
-  - 0.5000911
-  - 1
-  LengthCache: 2.9549658
+  - 0.33954066
+  - 0.66065
+  - 0.99999994
+  LengthCache: 7.015192
   Points:
   - x: 18.00083
     y: 34.00186
@@ -207,9 +261,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SegmentLength:
-  - 0.6617784
-  - 0.9999121
-  LengthCache: 44.66868
+  - 0.6618034
+  - 1
+  LengthCache: 44.668674
   Points:
   - x: -8.384107
     y: 5.979889
@@ -242,6 +296,71 @@ Transform:
   m_Father: {fileID: 1775453985}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &305668847
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 305668848}
+  - component: {fileID: 305668849}
+  m_Layer: 0
+  m_Name: bSpline Circle (5)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &305668848
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 305668847}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 13.23, y: 35.57, z: -13.91087}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1775453985}
+  m_RootOrder: 11
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &305668849
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 305668847}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 567aba01402d32e40af5fe1389e1b8e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SegmentLength:
+  - 0.49962342
+  - 1
+  LengthCache: 3.936285
+  Points:
+  - x: 9.02511
+    y: 40.996292
+  - x: 10.02511
+    y: 40.996292
+  - x: 10.985178
+    y: 40.993412
+  - x: 10.493875
+    y: 40.496994
+  - x: 10.002571
+    y: 40.000576
+  - x: 10.9999275
+    y: 40.99412
+  - x: 11.9999275
+    y: 40.99412
+  PointEdit: 000000000100000000000000
+  arkParameterization: 0
+  arkLength: 0.1
 --- !u!1 &426229411
 GameObject:
   m_ObjectHideFlags: 0
@@ -272,10 +391,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SegmentLength:
-  - 0.33333334
-  - 0.6666667
+  - 0.12168728
+  - 0.8933751
   - 1
-  LengthCache: 3.4245543
+  LengthCache: 9.380786
   Points:
   - x: 8.472568
     y: 36.00013
@@ -329,8 +448,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SegmentLength:
-  - 0.55670935
-  - 0.9999811
+  - 0.5567259
+  - 1
   LengthCache: 24.4719
   Points:
   - x: 1.4499424
@@ -394,11 +513,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SegmentLength:
-  - 0.22156672
-  - 0.43800005
-  - 0.66172385
-  - 0.82181233
-  - 0.99999994
+  - 0.22156699
+  - 0.4380002
+  - 0.66172403
+  - 0.8218125
+  - 1.0000001
   LengthCache: 58.516655
   Points:
   - x: -17.016441
@@ -519,6 +638,80 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!1 &857546859
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 857546860}
+  - component: {fileID: 857546861}
+  m_Layer: 0
+  m_Name: bSpline Circle (4)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &857546860
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 857546859}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 13.23, y: 35.57, z: -13.91087}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1775453985}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &857546861
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 857546859}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30fbfdc50ccc4e0aa46485e2191ae8f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SegmentLength:
+  - 0.27816102
+  - 0.39809984
+  - 0.47227728
+  - 0.51645046
+  - 0.62851375
+  - 0.7561752
+  - 0.87438893
+  - 1.0000001
+  LengthCache: 3.48834
+  Points:
+  - x: 9.12712
+    y: 40.8745
+  - x: 9.127911
+    y: 40.113388
+  - x: 9.452422
+    y: 39.770123
+  - x: 9.78805
+    y: 39.606503
+  - x: 9.905302
+    y: 39.520733
+  - x: 10.082843
+    y: 39.557972
+  - x: 10.509349
+    y: 40.005657
+  - x: 10.101433
+    y: 40.31457
+  - x: 10.000554
+    y: 40.63833
+  - x: 9.88704
+    y: 40.882305
 --- !u!1 &918859706
 GameObject:
   m_ObjectHideFlags: 0
@@ -736,8 +929,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SegmentLength:
-  - 0.8766441
-  - 0.999961
+  - 0.8766726
+  - 1
   LengthCache: 29.825745
   Points:
   - x: -9.783965
@@ -801,19 +994,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SegmentLength:
-  - 0.055120934
-  - 0.113994144
-  - 0.17767262
-  - 0.2334756
-  - 0.27143496
-  - 0.33543694
-  - 0.41614023
-  - 0.50604266
-  - 0.5487412
-  - 0.6333478
-  - 0.79893947
-  - 1
-  LengthCache: 8.8214855
+  - 0.100519106
+  - 0.1421133
+  - 0.18794101
+  - 0.2363626
+  - 0.26216203
+  - 0.3437932
+  - 0.39754984
+  - 0.6899846
+  - 0.778318
+  - 0.81836903
+  - 0.99999994
+  LengthCache: 13.840042
   Points:
   - x: 13.521168
     y: 35.007366
@@ -890,6 +1082,9 @@ Transform:
   - {fileID: 1932113534}
   - {fileID: 918859708}
   - {fileID: 426229413}
+  - {fileID: 857546860}
+  - {fileID: 305668848}
+  - {fileID: 34344836}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -923,15 +1118,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SegmentLength:
-  - 0.125
-  - 0.25
-  - 0.375
-  - 0.5
-  - 0.625
-  - 0.75
-  - 0.875
+  - 0.03523473
+  - 0.09597564
+  - 0.20757931
+  - 0.37481222
+  - 0.5996251
+  - 0.7417092
+  - 0.8855382
+  - 0.9392352
   - 1
-  LengthCache: 8.877242
+  LengthCache: 32.896523
   Points:
   - x: 11.52896
     y: 35.210033
@@ -997,11 +1193,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SegmentLength:
-  - 0.253593
-  - 0.5005667
-  - 0.77703553
+  - 0.018595131
+  - 0.97120416
   - 1
-  LengthCache: 6.413491
+  LengthCache: 76.06873
   Points:
   - x: 12.059501
     y: 37.102726

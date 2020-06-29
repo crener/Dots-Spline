@@ -107,7 +107,7 @@ namespace Crener.Spline.CubicSpline
 
                 return currentLength;
             }
-            else return base.LengthBetweenPoints(a, resolution);
+            return base.LengthBetweenPoints(a, resolution);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -210,17 +210,6 @@ namespace Crener.Spline.CubicSpline
                     b[i] = 1f / segmentDistance[i] * (a[i + 1] - a[i]) - segmentDistance[i] / 3f * (c[i + 1] + 2f * c[i]);
                 }
             }
-        }
-
-        public override void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
-        {
-            return;
-
-            //todo implement this for b-spline
-            /*dstManager.AddComponent<Spline2DData>(entity);
-            Spline2DData splineData = ConvertData();
-            SplineEntityData = splineData;
-            dstManager.SetSharedComponentData(entity, splineData);*/
         }
     }
 }

@@ -63,7 +63,7 @@ namespace Crener.Spline.Test._2D
             Assert.AreEqual(2, testSpline.ControlPointCount);
             Assert.AreEqual(testSpline.ExpectedControlPointCount(2), testSpline.ControlPoints.Count);
             Assert.AreEqual(2, testSpline.Modes.Count);
-            Assert.AreEqual(1, testSpline.Times.Count);
+            Assert.AreEqual(testSpline.ExpectedTimeCount(testSpline.ControlPointCount), testSpline.Times.Count);
             Assert.AreEqual(1f, testSpline.Length());
 
             TestHelpers.CheckFloat2(a, testSpline.GetControlPoint(0, SplinePoint.Point));
@@ -711,5 +711,8 @@ namespace Crener.Spline.Test._2D
             Assert.AreEqual(0, testSpline.ControlPointCount);
             Assert.AreEqual(testSpline.ExpectedTimeCount(0), testSpline.Times.Count);
         }
+        
+        //todo add test that has progress lower than 0 (with 1, 2, 3, 4 points)
+        //todo add test that has progress higher than 1 (with 1, 2, 3, 4 points)
     }
 }

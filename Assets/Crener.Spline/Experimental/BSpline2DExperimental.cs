@@ -176,16 +176,5 @@ namespace Crener.Spline.Experimental
                 else m_knots.Add(Points[i]);
             }
         }
-
-        public override void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
-        {
-            return;
-
-            //to do implement this for b-spline
-            /*dstManager.AddComponent<Spline2DData>(entity);
-            Spline2DData splineData = ConvertData();
-            SplineEntityData = splineData;
-            dstManager.SetSharedComponentData(entity, splineData);*/
-        }
     }
 }

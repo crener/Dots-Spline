@@ -1,6 +1,7 @@
 ﻿using System;
 using Crener.Spline.Common;
 using Crener.Spline.Common.DataStructs;
+using Crener.Spline.Common.Interfaces;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Jobs;
@@ -12,31 +13,45 @@ namespace Crener.Spline.BezierSpline.Jobs
     /// Simple way of sampling a single point from a 2D spline via <see cref="Spline2DData"/>
     /// </summary>
     [BurstCompile]
-    public struct BezierSpline2DPointJob : IJob
+    public struct BezierSpline2DPointJob : IJob, ISplineJob2D
     {
         [ReadOnly]
         public Spline2DData Spline;
         [ReadOnly]
-        public SplineProgress SplineProgress;
+        private SplineProgress m_splineProgress;
         [WriteOnly]
-        public float2 Result;
+        private float2 m_result;
+        
+        #region Interface properties
+        public SplineProgress SplineProgress
+        {
+            get => m_splineProgress;
+            set => m_splineProgress = value;
+        }
+
+        public float2 Result
+        {
+            get => m_result;
+            set => m_result = value;
+        }
+        #endregion
 
         public void Execute()
         {
             if(Spline.Points.Length == 0)
             {
-                Result = new float2();
+                m_result = new float2();
                 return;
             }
 
             if(Spline.Points.Length == 1)
             {
-                Result = Spline.Points[0];
+                m_result = Spline.Points[0];
                 return;
             }
 
             int aIndex = SegmentIndex();
-            Result = CubicBezierPoint(SegmentProgress(aIndex), aIndex, aIndex + 1);
+            m_result = CubicBezierPoint(SegmentProgress(aIndex), aIndex, aIndex + 1);
         }
 
         private int SegmentIndex()
@@ -45,7 +60,7 @@ namespace Crener.Spline.BezierSpline.Jobs
             for (int i = 0; i < seg; i++)
             {
                 float time = Spline.Time[i];
-                if(time >= SplineProgress.Progress) return i;
+                if(time >= m_splineProgress.Progress) return i;
             }
 
             return seg - 1;
@@ -53,13 +68,13 @@ namespace Crener.Spline.BezierSpline.Jobs
 
         private float SegmentProgress(int index)
         {
-            if(index == 0) return SplineProgress.Progress / Spline.Time[0];
-            if(Spline.Time.Length <= 1) return SplineProgress.Progress;
+            if(index == 0) return m_splineProgress.Progress / Spline.Time[0];
+            if(Spline.Time.Length <= 1) return m_splineProgress.Progress;
 
             float aLn = Spline.Time[index - 1];
             float bLn = Spline.Time[index];
 
-            return (SplineProgress.Progress - aLn) / (bLn - aLn);
+            return (m_splineProgress.Progress - aLn) / (bLn - aLn);
         }
 
         private float2 CubicBezierPoint(float t, int a, int b)

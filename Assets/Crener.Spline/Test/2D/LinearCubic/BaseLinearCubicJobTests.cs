@@ -1,18 +1,19 @@
 using Crener.Spline.Test._2D.Linear.TestAdapters;
-using Crener.Spline.Test._2D.Linear.TestTypes;
+using Crener.Spline.Test._2D.LinearCubic.TestAdapters;
+using Crener.Spline.Test._2D.LinearCubic.TestTypes;
 using UnityEngine;
 
-namespace Crener.Spline.Test._2D.Linear
+namespace Crener.Spline.Test._2D.LinearCubic
 {
     /// <summary>
     /// Tests Point to point implementation of basic 2D spline functionality
     /// </summary>
-    public class BaseLinearJobTests : LinearBaseTestAdapter
+    public class BaseLinearCubicJobTests : LinearCubicBaseTestAdapter
     {
         protected override ISimpleTestSpline CreateNewSpline()
         {
             GameObject game = new GameObject();
-            ISimpleTestSpline spline = game.AddComponent<MeaninglessTestWrapper2.TestLinearSpline2DSimpleJob>();
+            ISimpleTestSpline spline = game.AddComponent<MeaninglessTestWrapper.TestLinearCubicSpline2DSimpleJob>();
 
             return spline;
         }

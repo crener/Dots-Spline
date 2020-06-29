@@ -10,6 +10,11 @@ namespace Crener.Spline.Common
     public struct SplineProgress : IComponentData
     {
         public float Progress;
+        
+        public SplineProgress(float progress)
+        {
+            Progress = progress;
+        }
     }
 
     /// <summary>

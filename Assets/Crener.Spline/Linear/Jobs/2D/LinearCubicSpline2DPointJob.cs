@@ -13,7 +13,7 @@ namespace Crener.Spline.Linear.Jobs._2D
     /// Simple way of sampling a single point from a 2D spline via <see cref="Spline2DData"/>
     /// </summary>
     [BurstCompile]
-    public struct LinearSpline2DPointJob : IJob, ISplineJob2D
+    public struct LinearCubicSpline2DPointJob : IJob, ISplineJob2D
     {
         [ReadOnly]
         public Spline2DData Spline;
@@ -50,8 +50,14 @@ namespace Crener.Spline.Linear.Jobs._2D
                 return;
             }
 
+            if(Spline.Points.Length == 2)
+            {
+                m_result = math.lerp(Spline.Points[0], Spline.Points[1], m_splineProgress.Progress);
+                return;
+            }
+
             int aIndex = SegmentIndex();
-            m_result = LinearLerp(SegmentProgress(aIndex), aIndex, aIndex + 1);
+            m_result = LinearLerp(SegmentProgress(aIndex), aIndex);
         }
 
         private int SegmentIndex()
@@ -85,18 +91,19 @@ namespace Crener.Spline.Linear.Jobs._2D
             return (SplineProgress.Progress - aLn) / (bLn - aLn);
         }
 
-        private float2 LinearLerp(float t, int a, int b)
+        private float2 LinearLerp(float t, int a)
         {
-#if UNITY_EDITOR
-            if(b <= 0)
-                throw new ArgumentOutOfRangeException($"B is {b} which isn't within the valid point range! " +
-                                                      $"Actual Range '0 - {Spline.Points.Length}', requested range '{a} - {b}'");
-#endif
-
             float2 p0 = Spline.Points[a];
-            float2 p1 = Spline.Points[b];
+            float2 p1 = Spline.Points[a+1];
+            float2 p2 = Spline.Points[a+2];
+            
+            float2 i0 = math.lerp(p0, p1, t);
+            float2 i1 = math.lerp(p1, p2, t);
 
-            return math.lerp(p0, p1, math.clamp(t, 0f, 1f));
+            float2 pp0 = math.lerp(i0, p1, t);
+            float2 pp1 = math.lerp(p1, i1, t);
+
+            return math.lerp(pp0, pp1, t);
         }
     }
 }

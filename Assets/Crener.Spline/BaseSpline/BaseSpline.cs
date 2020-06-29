@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Crener.Spline.Common;
 using Crener.Spline.Common.Interfaces;
@@ -142,6 +143,10 @@ namespace Crener.Spline.BaseSpline
 
         public abstract void ClearData();
 
-        public abstract void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem);
+        public virtual void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
+        {
+            System.Diagnostics.Debugger.Break();
+            throw new NotImplementedException("Attempted to convert Spline MonoBehaviour into Spline Entity");
+        }
     }
 }

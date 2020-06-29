@@ -2,7 +2,7 @@ using Crener.Spline.Common;
 using NUnit.Framework;
 using Unity.Mathematics;
 
-namespace Crener.Spline.Test._2D.P2P.TestAdapters
+namespace Crener.Spline.Test._2D.Linear.TestAdapters
 {
     public abstract class LinearBaseTestAdapter : BaseSimpleSplineTests
     {

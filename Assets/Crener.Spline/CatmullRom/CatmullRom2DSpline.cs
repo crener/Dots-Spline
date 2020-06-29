@@ -49,16 +49,5 @@ namespace Crener.Spline.CatmullRom
 
             return (b + t);
         }
-
-        public override void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
-        {
-            return;
-
-            //todo implement this for point to point
-            /*dstManager.AddComponent<Spline2DData>(entity);
-            Spline2DData splineData = ConvertData();
-            SplineEntityData = splineData;
-            dstManager.SetSharedComponentData(entity, splineData);*/
-        }
     }
 }

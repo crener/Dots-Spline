@@ -310,9 +310,9 @@ namespace Crener.Spline.BezierSpline
         }
 
         /// <summary>
-        /// c
+        /// Convert the spline into smaller linear segments with an equal distance between each point (see: <see cref="ArkLength"/>)
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Linear spline data</returns>
         private Spline2DData SplineArkConversion()
         {
             float previousTime = 0;
