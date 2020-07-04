@@ -38,23 +38,11 @@ namespace Crener.Spline.Linear.Jobs._2D
 
         public void Execute()
         {
-            if(Spline.Points.Length == 0)
-            {
-                m_result = new float2();
-                return;
-            }
-
-            if(Spline.Points.Length == 1)
-            {
-                m_result = Spline.Points[0];
-                return;
-            }
-
-            if(Spline.Points.Length == 2)
-            {
-                m_result = math.lerp(Spline.Points[0], Spline.Points[1], math.clamp(m_splineProgress.Progress, 0f, 1f));
-                return;
-            }
+#if UNITY_EDITOR
+            if(Spline.Points.Length == 0) throw new ArgumentException($"Should be using {nameof(Empty2DPointJob)}");
+            if(Spline.Points.Length == 1) throw new ArgumentException($"Should be using {nameof(SinglePoint2DPointJob)}");
+            if(Spline.Points.Length == 2) throw new ArgumentException($"Should be using {nameof(LinearSpline2DPointJob)}");
+#endif
 
             int aIndex = SegmentIndex();
             m_result = LinearLerp(SegmentProgress(aIndex), aIndex);

@@ -273,7 +273,17 @@ namespace Crener.Spline.BezierSpline
             return BezierMath.CubicBezierPoint(t, p0, p1, p2, p3);
         }
 
-        public override SplineType SplineDataType => ArkParameterization ? SplineType.Linear : SplineType.Bezier;
+        public override SplineType SplineDataType
+        {
+            get
+            {
+                if(ControlPointCount == 0) return SplineType.Empty;
+                if(ControlPointCount == 1) return SplineType.Single;
+
+                if(ArkParameterization) return SplineType.Linear;
+                else return SplineType.Bezier;
+            }
+        }
 
         public override void Convert(Unity.Entities.Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
         {

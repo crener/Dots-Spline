@@ -1,4 +1,5 @@
 using Crener.Spline.BezierSpline.Jobs;
+using Crener.Spline.Common.DataStructs;
 using Crener.Spline.Common.Interfaces;
 using Crener.Spline.Linear.Jobs._2D;
 
@@ -30,7 +31,7 @@ namespace Crener.Spline.Common
 
             return splineJob;
         }
-        
+
         /// <summary>
         /// Create a spline job from this spline
         /// </summary>
@@ -40,16 +41,14 @@ namespace Crener.Spline.Common
         {
             switch (spline.SplineDataType)
             {
+                case SplineType.Empty:
+                    return new Empty2DPointJob();
+                case SplineType.Single:
+                    return new SinglePoint2DPointJob {Spline = spline.SplineEntityData.Value};
                 case SplineType.Bezier:
-                    return new BezierSpline2DPointJob()
-                    {
-                        Spline = spline.SplineEntityData.Value
-                    };
+                    return new BezierSpline2DPointJob {Spline = spline.SplineEntityData.Value};
                 case SplineType.CubicLinear:
-                    return new LinearCubicSpline2DPointJob()
-                    {
-                        Spline = spline.SplineEntityData.Value
-                    };
+                    return new LinearCubicSpline2DPointJob {Spline = spline.SplineEntityData.Value};
                 case SplineType.Cubic:
                 //todo
                 case SplineType.BSpline:
@@ -58,10 +57,7 @@ namespace Crener.Spline.Common
                 //todo
                 case SplineType.Linear: // falls over to the default by design
                 default:
-                    return new LinearSpline2DPointJob()
-                    {
-                        Spline = spline.SplineEntityData.Value
-                    };
+                    return new LinearSpline2DPointJob {Spline = spline.SplineEntityData.Value};
             }
         }
     }

@@ -10,7 +10,15 @@ namespace Crener.Spline.Linear
     /// </summary>
     public class Linear2DSpline : BaseSpline2D
     {
-        public override SplineType SplineDataType => SplineType.Linear;
+        public override SplineType SplineDataType
+        {
+            get
+            {
+                if(ControlPointCount == 0) return SplineType.Empty;
+                if(ControlPointCount == 1) return SplineType.Single;
+                return SplineType.Linear;
+            }
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected override float2 SplineInterpolation(float t, int a)

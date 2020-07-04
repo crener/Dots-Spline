@@ -30,6 +30,14 @@ namespace Crener.Spline.Test._2D.Bezier
 
             spline.ArkParameterization = false;
             Assert.IsFalse(spline.ArkParameterization);
+            Assert.AreEqual(spline.SplineDataType, SplineType.Empty);
+            
+            spline.AddControlPoint(new float2(3));
+            Assert.IsFalse(spline.ArkParameterization);
+            Assert.AreEqual(spline.SplineDataType, SplineType.Single);
+            
+            spline.AddControlPoint(new float2(5));
+            Assert.IsFalse(spline.ArkParameterization);
             Assert.AreEqual(spline.SplineDataType, SplineType.Bezier);
 
             spline.ArkParameterization = true;

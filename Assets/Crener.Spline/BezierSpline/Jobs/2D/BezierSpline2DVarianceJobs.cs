@@ -1,6 +1,7 @@
 ﻿using System;
 using Crener.Spline.BezierSpline.Entity;
 using Crener.Spline.Common;
+using Crener.Spline.Common.DataStructs;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Jobs;
@@ -29,17 +30,10 @@ namespace Crener.Spline.BezierSpline.Jobs
 
         public void Execute()
         {
-            if(Spline.ControlPointCount == 0)
-            {
-                Result = float2.zero;
-                return;
-            }
-
-            if(Spline.ControlPointCount == 1)
-            {
-                Result = Spline.Points[0];
-                return;
-            }
+#if UNITY_EDITOR
+            if(Spline.Points.Length == 0) throw new ArgumentException($"Should be using {nameof(Empty2DPointJob)}");
+            if(Spline.Points.Length == 1) throw new ArgumentException($"Should be using {nameof(SinglePoint2DPointJob)}");
+#endif
 
             float progress = math.clamp(SplineProgress.Progress, 0f, 1f);
             int side = VarianceToSide(SplineVariance.Variance);
@@ -65,7 +59,7 @@ namespace Crener.Spline.BezierSpline.Jobs
         /// Find the segment index of the given <see cref="side"/> at <see cref="progress"/> of the entire spline
         /// </summary>
         /// <param name="progress">range from 0 to 1 of spline completion</param>
-        /// <param name="side">which spline to use <seealso cref="BezierSpline2DVariance.SplineSide"/></param>
+        /// <param name="side">which spline to use <seealso cref="SplineSide"/></param>
         /// <returns>segment index for <see cref="side"/> at according to total spline <see cref="progress"/></returns>
         private int FindSegmentIndex(float progress, int side)
         {
@@ -84,7 +78,7 @@ namespace Crener.Spline.BezierSpline.Jobs
         /// </summary>
         /// <param name="progress">progress for entire spline</param>
         /// <param name="index">index of spline segment</param>
-        /// <param name="side">which spline to use <seealso cref="BezierSpline2DVariance.SplineSide"/></param>
+        /// <param name="side">which spline to use <seealso cref="SplineSide"/></param>
         /// <returns>progress through spline segment</returns>
         private float SegmentProgress(float progress, int index, int side)
         {
@@ -152,7 +146,7 @@ namespace Crener.Spline.BezierSpline.Jobs
         /// <summary>
         /// Conversion of variance to a side int
         /// </summary>
-        /// <remarks>This is essentially performing the same function as the <see cref="BezierSpline2DVariance.SplineSide"/> enum</remarks>
+        /// <remarks>This is essentially performing the same function as the <see cref="SplineSide"/> enum</remarks>
         /// <param name="variance">variance to convert</param>
         /// <returns>int code for the spline</returns>
         private static int VarianceToSide(half variance)

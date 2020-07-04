@@ -50,6 +50,9 @@ namespace Crener.Spline.Common
 
     public enum SplineType
     {
+        Empty, // no point data
+        Single, // only a single point
+        
         Bezier,
         Linear,
         CubicLinear,

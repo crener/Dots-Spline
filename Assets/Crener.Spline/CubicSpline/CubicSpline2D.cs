@@ -11,12 +11,21 @@ using UnityEngine;
 namespace Crener.Spline.CubicSpline
 {
     /// <summary>
-    /// Simple spline which directly follows a set of points
+    /// Simple spline which directly follows a set of points with cubic interpolation
     /// </summary>
     public class CubicSpline2D : BaseSpline2D
     {
-        // todo change the spline type based on amount of control points
-        public override SplineType SplineDataType => SplineType.Cubic;
+        public override SplineType SplineDataType
+        {
+            get
+            {
+                if(ControlPointCount == 0) return SplineType.Empty;
+                if(ControlPointCount == 1) return SplineType.Single;
+                if(ControlPointCount == 2) return SplineType.Linear;
+                //if(ControlPointCount == 3) return SplineType.CubicLinear3; // todo implement maybe?
+                return SplineType.Cubic;
+            }
+        }
 
         private Matrix m_matrix;
         private float[] a, b, c, d, segmentDistance;
