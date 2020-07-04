@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Crener.Spline.Common;
+using Crener.Spline.Common.Interfaces;
 using Crener.Spline.Linear;
 using Crener.Spline.Linear.Jobs._2D;
 using NUnit.Framework;
@@ -36,11 +37,7 @@ namespace Crener.Spline.Test._2D.Linear.TestTypes
                 ConvertData();
 
                 Assert.IsTrue(SplineEntityData.HasValue, "Failed to generate spline");
-                LinearSpline2DPointJob job = new LinearSpline2DPointJob()
-                {
-                    Spline = SplineEntityData.Value,
-                    SplineProgress = new SplineProgress() {Progress = progress}
-                };
+                ISplineJob2D job = this.ExtractJob(progress);
                 job.Execute();
 
                 return job.Result;

@@ -177,8 +177,9 @@ namespace Crener.Spline.Editor._2D
             {
                 if(EditorInputAbstractions.LeftClick())
                 {
-                    Vector3 pos = Input.mousePosition;
-                    spline.AddControlPoint(new float2(pos.x, pos.y));
+                    Undo.RecordObject(spline as Object, "Add Spline Point");
+                    
+                    spline.AddControlPoint(EditorInputAbstractions.MousePos());
                 }
 
                 return;

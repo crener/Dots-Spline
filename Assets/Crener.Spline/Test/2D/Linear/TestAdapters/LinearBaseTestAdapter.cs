@@ -13,7 +13,7 @@ namespace Crener.Spline.Test._2D.Linear.TestAdapters
             ISimpleTestSpline testSpline = PrepareSpline();
 
             float2 a = float2.zero;
-            testSpline.AddControlPoint(float2.zero);
+            testSpline.AddControlPoint(a);
             float2 b = new float2(2.5f, 0f);
             testSpline.AddControlPoint(b);
             float2 c = new float2(7.5f, 0f);
@@ -39,7 +39,7 @@ namespace Crener.Spline.Test._2D.Linear.TestAdapters
         }
 
         [Test]
-        public void NoEditModeChange([Values]SplineEditMode mode)
+        public void NoEditModeChange([Values] SplineEditMode mode)
         {
             ISimpleTestSpline testSpline = PrepareSpline();
 
@@ -79,9 +79,9 @@ namespace Crener.Spline.Test._2D.Linear.TestAdapters
             float2 b = new float2(1f, 3f);
             testSpline.AddControlPoint(b);
 
-            testSpline.UpdateControlPoint(0, new float2(1f,0f),SplinePoint.Post );
-            testSpline.UpdateControlPoint(1, new float2(0f,3f),SplinePoint.Pre );
-            
+            testSpline.UpdateControlPoint(0, new float2(1f, 0f), SplinePoint.Post);
+            testSpline.UpdateControlPoint(1, new float2(0f, 3f), SplinePoint.Pre);
+
             float length = math.distance(a, b);
             float spline = testSpline.Length();
             Assert.IsTrue(math.abs(length - spline) <= 0.00005f, $"Expected: {length}, but received: {spline}");

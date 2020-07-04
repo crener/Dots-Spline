@@ -15,6 +15,7 @@ namespace Crener.Spline.CubicSpline
     /// </summary>
     public class CubicSpline2D : BaseSpline2D
     {
+        // todo change the spline type based on amount of control points
         public override SplineType SplineDataType => SplineType.Cubic;
 
         private Matrix m_matrix;
@@ -71,24 +72,8 @@ namespace Crener.Spline.CubicSpline
                 return;
             }
 
-            // calculate the distance that the entire spline covers
-            float currentLength = 0f;
-            for (int i = 0; i < SegmentPointCount - 1; i++)
-            {
-                float length = LengthBetweenPoints(i, res);
-                currentLength += length;
-            }
-
-            LengthCache = currentLength;
-
-            // calculate the distance that a single segment covers
-            float segmentCount = 0f;
-            for (int i = 0; i < SegmentPointCount - 1; i++)
-            {
-                float length = LengthBetweenPoints(i, res);
-                segmentCount = (length / LengthCache) + segmentCount;
-                SegmentLength.Add(segmentCount);
-            }
+            // fallback to known good code
+            base.RecalculateLengthBias();
         }
 
         protected override float LengthBetweenPoints(int a, int resolution = 64)
@@ -107,6 +92,7 @@ namespace Crener.Spline.CubicSpline
 
                 return currentLength;
             }
+
             return base.LengthBetweenPoints(a, resolution);
         }
 

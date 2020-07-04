@@ -150,7 +150,7 @@ namespace Crener.Spline.BezierSpline
                 if(time >= progress) return i;
             }
 
-            return 0;
+            return SegmentLength.Length - 1;
         }
 
         /// <summary>
@@ -221,7 +221,7 @@ namespace Crener.Spline.BezierSpline
 
             lastPost = new float2(
                 lastPoint.x + math.sin(angle),
-                lastPoint.y + math.cos(angle));
+                lastPoint.y - math.cos(angle));
             newPre = new float2(
                 point.x + math.sin(-angle),
                 point.y + math.cos(-angle));

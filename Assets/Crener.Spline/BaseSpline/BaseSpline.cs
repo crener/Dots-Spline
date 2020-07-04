@@ -24,27 +24,27 @@ namespace Crener.Spline.BaseSpline
         /// true if Spline Entity Data has been initialized, calling SplineEntityData directly will automatically generate data
         /// </summary>
         public abstract bool hasSplineEntityData { get; }
-        
+
         /// <summary>
         /// Length of the spline
         /// </summary>
         public float Length() => LengthCache;
-        
+
         /// <summary>
         /// Amount of control points in the spline
         /// </summary>
         public abstract int ControlPointCount { get; }
-        
+
         /// <summary>
         /// The amount of points that the internal workings of the spline should think there are.<para/>
         /// This is useful if the curve loops back around on itself as the calculations to setup the curve can take reused points into account
         /// </summary>
         public virtual int SegmentPointCount => ControlPointCount;
-        
+
         public abstract SplineType SplineDataType { get; }
 
         public abstract void RemoveControlPoint(int index);
-        
+
         public virtual SplineEditMode GetEditMode(int index)
         {
             return SplineEditMode.Standard;
@@ -67,7 +67,11 @@ namespace Crener.Spline.BaseSpline
             }
 
             // should never hit this point as the time segment should take care of things
-            return 0;
+            #if UNITY_EDITOR
+            throw new Exception($"Segment index is out of range! progress: '{progress}' could not be resolved");
+            #else
+            return SegmentLength.Count - 1;
+            #endif
         }
 
         /// <summary>
@@ -83,7 +87,6 @@ namespace Crener.Spline.BaseSpline
             if(index == 0)
             {
                 float segmentProgress = SegmentLength[0];
-
                 return progress / segmentProgress;
             }
 
@@ -129,13 +132,16 @@ namespace Crener.Spline.BaseSpline
                 segmentCount = (length / LengthCache) + segmentCount;
                 SegmentLength.Add(segmentCount);
             }
+
+            // double check that the last point is 1.0 cause sometimes floating point error seeps in
+            SegmentLength[SegmentLength.Count - 1] = 1.0f;
         }
-        
+
         public void Dispose()
         {
             ClearData();
         }
-        
+
         private void OnDestroy()
         {
             ClearData();

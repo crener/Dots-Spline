@@ -75,7 +75,7 @@ namespace Crener.Spline.BezierSpline
 
                 float2 lastPost = new float2(
                     lastPoint.x + math.sin(angle),
-                    lastPoint.y + math.cos(angle));
+                    lastPoint.y - math.cos(angle));
                 float2 newPre = new float2(
                     point.x + math.sin(-angle),
                     point.y + math.cos(-angle));

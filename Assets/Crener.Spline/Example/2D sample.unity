@@ -174,6 +174,7 @@ MonoBehaviour:
     y: 40.864845
   - x: 9.999963
     y: 40.001175
+  looped: 0
 --- !u!1 &246620986
 GameObject:
   m_ObjectHideFlags: 0
@@ -638,6 +639,58 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!1 &760857419
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 760857420}
+  - component: {fileID: 760857421}
+  m_Layer: 0
+  m_Name: Bezier Spline (3)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &760857420
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 760857419}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 3.9300003, y: 7.5899987, z: -3.875}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1775453985}
+  m_RootOrder: 14
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &760857421
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 760857419}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 567aba01402d32e40af5fe1389e1b8e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SegmentLength:
+  - 1
+  LengthCache: 0
+  Points:
+  - x: -1.9991367
+    y: 1.0002456
+  PointEdit: 00000000
+  arkParameterization: 0
+  arkLength: 0.1
 --- !u!1 &857546859
 GameObject:
   m_ObjectHideFlags: 0
@@ -712,6 +765,7 @@ MonoBehaviour:
     y: 40.63833
   - x: 9.88704
     y: 40.882305
+  looped: 0
 --- !u!1 &918859706
 GameObject:
   m_ObjectHideFlags: 0
@@ -1103,6 +1157,7 @@ MonoBehaviour:
     y: 40.01844
   - x: 9.97752
     y: 40.97903
+  looped: 0
 --- !u!1 &1775453984
 GameObject:
   m_ObjectHideFlags: 0
@@ -1144,6 +1199,7 @@ Transform:
   - {fileID: 305668848}
   - {fileID: 34344836}
   - {fileID: 1486884244}
+  - {fileID: 760857420}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

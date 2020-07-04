@@ -1,3 +1,4 @@
+using Crener.Spline.Test._2D.Linear.TestAdapters;
 using Crener.Spline.Test._2D.Linear.TestTypes;
 using UnityEngine;
 
@@ -6,7 +7,7 @@ namespace Crener.Spline.Test._2D.Linear
     /// <summary>
     /// Tests Point to point implementation of basic 2D spline functionality
     /// </summary>
-    public class BaseLinearTests : BaseSimpleSplineTests
+    public class BaseLinearTests : LinearBaseTestAdapter
     {
         protected override ISimpleTestSpline CreateNewSpline()
         {

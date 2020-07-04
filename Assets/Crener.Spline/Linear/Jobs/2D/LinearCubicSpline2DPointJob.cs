@@ -52,7 +52,7 @@ namespace Crener.Spline.Linear.Jobs._2D
 
             if(Spline.Points.Length == 2)
             {
-                m_result = math.lerp(Spline.Points[0], Spline.Points[1], m_splineProgress.Progress);
+                m_result = math.lerp(Spline.Points[0], Spline.Points[1], math.clamp(m_splineProgress.Progress, 0f, 1f));
                 return;
             }
 

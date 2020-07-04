@@ -82,31 +82,8 @@ namespace Crener.Spline.Experimental
                 return;
             }
 
-            // calculate the distance that the entire spline covers
-            float currentLength = 0f;
-            for (int a = 0; a < SegmentPointCount - 1; a++)
-            {
-                float length = LengthOfPoints(a, 128);
-                currentLength += length;
-            }
-
-            LengthCache = currentLength;
-
-            if(SegmentPointCount == 2)
-            {
-                SegmentLength.Add(1f);
-                return;
-            }
-
-            // calculate the distance that a single segment covers
-            float segmentCount = 0f;
-            for (int a = 0; a < SegmentPointCount - 1; a++)
-            {
-                float length = LengthOfPoints(a, 128);
-
-                segmentCount = (length / LengthCache) + segmentCount;
-                SegmentLength.Add(segmentCount);
-            }
+            // fallback to known good code
+            base.RecalculateLengthBias();
         }
 
         protected float LengthOfPoints(int a, int resolution)

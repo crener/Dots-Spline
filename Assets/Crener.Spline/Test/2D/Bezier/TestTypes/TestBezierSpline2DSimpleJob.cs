@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Crener.Spline.BezierSpline;
 using Crener.Spline.BezierSpline.Jobs;
 using Crener.Spline.Common;
+using Crener.Spline.Common.Interfaces;
 using NUnit.Framework;
 using Unity.Mathematics;
 
@@ -36,11 +37,7 @@ namespace Crener.Spline.Test._2D.Bezier.TestTypes
                 ConvertData();
 
                 Assert.IsTrue(SplineEntityData.HasValue, "Failed to generate spline");
-                BezierSpline2DPointJob job = new BezierSpline2DPointJob()
-                {
-                    Spline = SplineEntityData.Value,
-                    SplineProgress = new SplineProgress() {Progress = progress}
-                };
+                ISplineJob2D job = this.ExtractJob(new SplineProgress {Progress = progress});
                 job.Execute();
 
                 return job.Result;
@@ -52,7 +49,7 @@ namespace Crener.Spline.Test._2D.Bezier.TestTypes
             {
                 return math.max(0, ((controlPoints - 1) * c_floatsPerControlPoint) + 1);
             }
-            
+
             public int ExpectedTimeCount(int controlPoints) => math.max(1, controlPoints - 1);
         }
     }

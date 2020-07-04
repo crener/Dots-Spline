@@ -40,7 +40,7 @@ namespace Crener.Spline.Linear
             else if(ControlPointCount == 1)
                 return GetControlPoint(0);
             else if(ControlPointCount == 2)
-                return math.lerp(GetControlPoint(0), GetControlPoint(1), progress);
+                return math.lerp(GetControlPoint(0), GetControlPoint(1), math.clamp(progress, 0f, 1f));
             else if(progress <= 0f) progress = 0f;
             else if(progress > 1f) progress = 1f;
 
@@ -114,30 +114,8 @@ namespace Crener.Spline.Linear
                 return;
             }
 
-            // calculate the distance that the entire spline covers
-            float currentLength = 0f;
-            for (int a = 0; a < SegmentPointCount - 1; a++)
-            {
-                float length = LengthBetweenPoints(a, 128);
-                currentLength += length;
-            }
-
-            LengthCache = currentLength;
-
-            if(SegmentPointCount == 2)
-            {
-                SegmentLength.Add(1f);
-                return;
-            }
-
-            // calculate the distance that a single segment covers
-            float segmentCount = 0f;
-            for (int a = 0; a < SegmentPointCount - 1; a++)
-            {
-                float length = LengthBetweenPoints(a, 128);
-                segmentCount = (length / LengthCache) + segmentCount;
-                SegmentLength.Add(segmentCount);
-            }
+            // fallback to known good code
+            base.RecalculateLengthBias();
         }
 
         protected override float LengthBetweenPoints(int a, int resolution = 64)

@@ -1,3 +1,5 @@
+using System.IO;
+using System.Security.Cryptography.X509Certificates;
 using Crener.Spline.Common;
 using Crener.Spline.Test.Helpers;
 using NUnit.Framework;
@@ -680,8 +682,76 @@ namespace Crener.Spline.Test._2D
             Assert.AreEqual(0, testSpline.ControlPointCount);
             Assert.AreEqual(testSpline.ExpectedTimeCount(0), testSpline.Times.Count);
         }
-        
-        //todo add test that has progress lower than 0 (with 1, 2, 3, 4, 5 points)
-        //todo add test that has progress higher than 1 (with 1, 2, 3, 4, 5 points)
+
+        /// <summary>
+        /// Progress less than 0 should return first point
+        /// </summary>
+        [Test]
+        public void ProgressUnder([Range(1, 8)] int nodeAmount)
+        {
+            const float offsetX = 2f;
+            const float offsetY = 2f;
+            
+            ISimpleTestSpline testSpline = PrepareSpline();
+
+            float2 first = float2.zero;
+            for (int i = 0; i < nodeAmount; i++)
+            {
+                float2 pos = new float2(offsetX * (i + 1), offsetY * (i + 1));
+                if(i == 0) first = pos;
+                testSpline.AddControlPoint(pos);
+            }
+            
+            Assert.AreNotEqual(float2.zero, first, "Test likely misconfigured as the expects location has the default value");
+            Assert.AreEqual(nodeAmount, testSpline.ControlPointCount);
+            
+            Assert.AreEqual(first, testSpline.GetPoint(0f));
+            Assert.AreEqual(first, testSpline.GetPoint(-0.5f));
+            Assert.AreEqual(first, testSpline.GetPoint(-1f));
+        }
+
+        /// <summary>
+        /// Progress greater than 0 should return first point
+        /// </summary>
+        [Test]
+        public void ProgressOver([Range(1, 8)] int nodeAmount)
+        {
+            const float offsetX = 2f;
+            const float offsetY = 2f;
+            
+            ISimpleTestSpline testSpline = PrepareSpline();
+
+            float2 last = float2.zero;
+            for (int i = 0; i < nodeAmount; i++)
+            {
+                float2 pos = new float2(offsetX * (i + 1), offsetY * (i + 1));
+                last = pos;
+                testSpline.AddControlPoint(pos);
+            }
+            
+            Assert.AreNotEqual(float2.zero, last, "Test likely misconfigured as the expects location has the default value");
+            Assert.AreEqual(nodeAmount, testSpline.ControlPointCount);
+            
+            Assert.AreEqual(last, testSpline.GetPoint(1f));
+            Assert.AreEqual(last, testSpline.GetPoint(1.5f));
+            Assert.AreEqual(last, testSpline.GetPoint(2f));
+        }
+
+        [Test]
+        public void MultiMidPoint([Range(2, 12)] int points)
+        {
+            ISimpleTestSpline testSpline = PrepareSpline();
+
+            for (int i = 0; i < points; i++)
+            {
+                testSpline.AddControlPoint(new float2(i));
+            }
+
+            Assert.AreEqual(points, testSpline.ControlPointCount);
+            Assert.AreEqual(testSpline.ExpectedTimeCount(testSpline.ControlPointCount), testSpline.Times.Count);
+
+            float2 point = testSpline.GetPoint(0.5f);
+            TestHelpers.CheckFloat2(new float2((points - 1) / 2f), point);
+        }
     }
 }
