@@ -132,7 +132,7 @@ GameObject:
   - component: {fileID: 34344836}
   - component: {fileID: 34344837}
   m_Layer: 0
-  m_Name: bSpline Circle (6)
+  m_Name: linearCubic (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -186,7 +186,7 @@ GameObject:
   - component: {fileID: 246620988}
   - component: {fileID: 246620987}
   m_Layer: 0
-  m_Name: bSpline (1)
+  m_Name: cubic Spline (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -205,19 +205,39 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SegmentLength:
-  - 0.33954066
-  - 0.66065
-  - 0.99999994
-  LengthCache: 7.015192
+  - 1
+  LengthCache: 1.8769357
   Points:
-  - x: 18.00083
-    y: 34.00186
-  - x: 16.994276
-    y: 36.001347
-  - x: 16.004704
-    y: 33.999683
+  - x: 16.543116
+    y: 35.917957
+  - x: 15.794244
+    y: 35.003983
   - x: 15.00007
     y: 35.999996
+  a:
+  - 34.00186
+  - 36.001347
+  - 33.999683
+  - 35.999996
+  b:
+  - -3.3310812
+  - 0.7027631
+  - 0.69694895
+  - 0
+  c:
+  - 0
+  - -4.00758
+  - 4.013455
+  - 0
+  d:
+  - 1.3271623
+  - -2.7018518
+  - 1.3316476
+  - 0
+  segmentDistance:
+  - -1.0065536
+  - -0.9895725
+  - -1.0046339
 --- !u!4 &246620988
 Transform:
   m_ObjectHideFlags: 0
@@ -231,6 +251,36 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1775453985}
   m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &253328239
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 253328240}
+  m_Layer: 0
+  m_Name: 1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &253328240
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 253328239}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -13.99, y: 2.38, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 468772834}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &264029448
 GameObject:
@@ -362,6 +412,73 @@ MonoBehaviour:
   PointEdit: 000000000100000000000000
   arkParameterization: 0
   arkLength: 0.1
+--- !u!1 &414452516
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 414452517}
+  - component: {fileID: 414452518}
+  m_Layer: 0
+  m_Name: CatmullRom Spline
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &414452517
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 414452516}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 3.9300003, y: 7.5899987, z: -3.875}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1775453985}
+  m_RootOrder: 15
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &414452518
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 414452516}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d9ce971b42240939a88cdad7ec57c0b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SegmentLength:
+  - 0.20667838
+  - 0.41773915
+  - 0.7213966
+  - 0.8490339
+  - 1
+  LengthCache: 43.153996
+  Points:
+  - x: -9.774627
+    y: 10.046093
+  - x: -7.848062
+    y: 15.722149
+  - x: -4.2863326
+    y: 23.688171
+  - x: 3.8885777
+    y: 20.17688
+  - x: 13.29876
+    y: 28.405405
+  - x: 11.746958
+    y: 23.178928
+  - x: 15.8680935
+    y: 18.333965
+  - x: 23.341227
+    y: 16.688076
 --- !u!1 &426229411
 GameObject:
   m_ObjectHideFlags: 0
@@ -373,7 +490,7 @@ GameObject:
   - component: {fileID: 426229413}
   - component: {fileID: 426229412}
   m_Layer: 0
-  m_Name: bSpline Circle (3)
+  m_Name: cubic Spline (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -392,10 +509,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SegmentLength:
-  - 0.12168728
-  - 0.8933751
+  - 0.12168938
+  - 0.89337325
   - 1
-  LengthCache: 9.380786
+  LengthCache: 9.380623
   Points:
   - x: 8.472568
     y: 36.00013
@@ -405,6 +522,30 @@ MonoBehaviour:
     y: 37.027966
   - x: 11.138698
     y: 36.03266
+  a:
+  - 36.00013
+  - 37.027157
+  - 37.027966
+  - 36.03266
+  b:
+  - 1.7522584
+  - 2.7252684
+  - -9.526738
+  - 0
+  c:
+  - 0
+  - 1.9673753
+  - -7.879098
+  - 0
+  d:
+  - 1.3259766
+  - -1.5836757
+  - 26.511845
+  - 0
+  segmentDistance:
+  - 0.49457264
+  - 2.0724936
+  - 0.09906387
 --- !u!4 &426229413
 Transform:
   m_ObjectHideFlags: 0
@@ -419,6 +560,55 @@ Transform:
   m_Father: {fileID: 1775453985}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &468772833
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 468772834}
+  - component: {fileID: 468772835}
+  m_Layer: 0
+  m_Name: CatmullRom Spline (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &468772834
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 468772833}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 3.9300003, y: 7.5899987, z: -3.875}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 253328240}
+  - {fileID: 1841712623}
+  - {fileID: 1309914688}
+  - {fileID: 675989812}
+  m_Father: {fileID: 1775453985}
+  m_RootOrder: 16
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &468772835
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 468772833}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2a98930277a411686e70d90be983b3a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  points: []
+  alpha: 0.5
 --- !u!1 &526519234
 GameObject:
   m_ObjectHideFlags: 0
@@ -514,11 +704,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SegmentLength:
-  - 0.22156699
-  - 0.4380002
-  - 0.66172403
-  - 0.8218125
-  - 1.0000001
+  - 0.22156678
+  - 0.43800005
+  - 0.6617238
+  - 0.82181233
+  - 1
   LengthCache: 58.516655
   Points:
   - x: -17.016441
@@ -546,6 +736,36 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1775453985}
   m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &675989811
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 675989812}
+  m_Layer: 0
+  m_Name: 4
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &675989812
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 675989811}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 16.04, y: 2.4, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 468772834}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &705507993
 GameObject:
@@ -702,7 +922,7 @@ GameObject:
   - component: {fileID: 857546860}
   - component: {fileID: 857546861}
   m_Layer: 0
-  m_Name: bSpline Circle (4)
+  m_Name: linearCubic
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -742,7 +962,7 @@ MonoBehaviour:
   - 0.62851375
   - 0.7561752
   - 0.87438893
-  - 1.0000001
+  - 1
   LengthCache: 3.48834
   Points:
   - x: 9.12712
@@ -777,7 +997,7 @@ GameObject:
   - component: {fileID: 918859708}
   - component: {fileID: 918859707}
   m_Layer: 0
-  m_Name: bSpline Circle (2)
+  m_Name: cubic Spline (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -796,10 +1016,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SegmentLength:
-  - 0.33713585
-  - 0.61618316
+  - 0.33713663
+  - 0.6161824
   - 1
-  LengthCache: 4.9727283
+  LengthCache: 4.9727135
   Points:
   - x: 9.737881
     y: 35.905594
@@ -809,6 +1029,30 @@ MonoBehaviour:
     y: 34.72561
   - x: 13.426213
     y: 35.29131
+  a:
+  - 35.905594
+  - 34.400402
+  - 34.72561
+  - 35.29131
+  b:
+  - -2.5572789
+  - -1.1245701
+  - 0.76019764
+  - 0
+  c:
+  - 0
+  - 1.9795601
+  - -0.37207913
+  - 0
+  d:
+  - 0.9117132
+  - -0.66855544
+  - 0.069207914
+  - 0
+  segmentDistance:
+  - 0.72375107
+  - 1.1724977
+  - 1.7920837
 --- !u!4 &918859708
 Transform:
   m_ObjectHideFlags: 0
@@ -1018,6 +1262,36 @@ Transform:
   m_Father: {fileID: 1775453985}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1309914687
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1309914688}
+  m_Layer: 0
+  m_Name: 3
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1309914688
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1309914687}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 6.06, y: 12.38, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 468772834}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1393734955
 GameObject:
   m_ObjectHideFlags: 0
@@ -1029,7 +1303,7 @@ GameObject:
   - component: {fileID: 1393734957}
   - component: {fileID: 1393734956}
   m_Layer: 0
-  m_Name: bSpline
+  m_Name: cubic Spline
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1048,21 +1322,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SegmentLength:
-  - 0.100519106
-  - 0.1421133
-  - 0.18794101
-  - 0.2363626
-  - 0.26216203
-  - 0.3437932
-  - 0.39754984
-  - 0.6899846
-  - 0.778318
-  - 0.81836903
-  - 0.99999994
-  LengthCache: 13.840042
+  - 0.08093333
+  - 0.12441194
+  - 0.17238702
+  - 0.22173832
+  - 0.2480111
+  - 0.33124483
+  - 0.3860322
+  - 0.68404645
+  - 0.77407134
+  - 0.8148903
+  - 1
+  LengthCache: 13.579666
   Points:
-  - x: 13.521168
-    y: 35.007366
+  - x: 13.331674
+    y: 35.158962
   - x: 12.930081
     y: 35.241287
   - x: 13.144897
@@ -1085,6 +1359,70 @@ MonoBehaviour:
     y: 35.982185
   - x: 16.46374
     y: 35.203194
+  a:
+  - 35.158962
+  - 35.241287
+  - 35.76472
+  - 35.961105
+  - 36.600925
+  - 36.81533
+  - 36.531467
+  - 35.790157
+  - 36.590702
+  - 36.5319
+  - 35.982185
+  - 35.203194
+  b:
+  - -3.357942
+  - 6.100895
+  - 0.16782443
+  - 2.863329
+  - 2.0934143
+  - 1.8032442
+  - -10.302293
+  - -11.625351
+  - -1.9937781
+  - 9.685819
+  - 7.4803214
+  - 0
+  c:
+  - 0
+  - -23.553335
+  - -4.065966
+  - 9.537448
+  - -13.430686
+  - 12.339259
+  - -48.03317
+  - 27.056644
+  - -17.614319
+  - 50.79901
+  - -19.70732
+  - 0
+  d:
+  - 19.54996
+  - 30.238842
+  - 9.204316
+  - -38.71445
+  - 32.309753
+  - -59.337257
+  - 396.83978
+  - -14.597748
+  - 64.793205
+  - 331.3178
+  - 9.963921
+  - 0
+  segmentDistance:
+  - -0.40159225
+  - 0.2148161
+  - 0.49264622
+  - 0.19775677
+  - 0.26586342
+  - 0.33914852
+  - 0.06307316
+  - 1.0200424
+  - 0.35195732
+  - -0.07093525
+  - 0.65928936
 --- !u!4 &1393734957
 Transform:
   m_ObjectHideFlags: 0
@@ -1143,11 +1481,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SegmentLength:
-  - 0.24939212
-  - 0.49916986
-  - 0.75009435
+  - 0.49855015
   - 1
-  LengthCache: 3.0909708
+  LengthCache: 2.492528
   Points:
   - x: 9.02132
     y: 40.973885
@@ -1200,8 +1536,40 @@ Transform:
   - {fileID: 34344836}
   - {fileID: 1486884244}
   - {fileID: 760857420}
+  - {fileID: 414452517}
+  - {fileID: 468772834}
   m_Father: {fileID: 0}
   m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1841712622
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1841712623}
+  m_Layer: 0
+  m_Name: 2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1841712623
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1841712622}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -3.94, y: 12.41, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 468772834}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1932113532
 GameObject:
@@ -1214,7 +1582,7 @@ GameObject:
   - component: {fileID: 1932113534}
   - component: {fileID: 1932113533}
   m_Layer: 0
-  m_Name: bSpline Circle (1)
+  m_Name: cubic Spline (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1233,16 +1601,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SegmentLength:
-  - 0.03523473
-  - 0.09597564
-  - 0.20757931
-  - 0.37481222
-  - 0.5996251
-  - 0.7417092
-  - 0.8855382
-  - 0.9392352
+  - 0.035235725
+  - 0.09597587
+  - 0.20757896
+  - 0.37481076
+  - 0.59961915
+  - 0.74170494
+  - 0.8855358
+  - 0.9392344
   - 1
-  LengthCache: 32.896523
+  LengthCache: 32.89551
   Points:
   - x: 11.52896
     y: 35.210033
@@ -1264,6 +1632,60 @@ MonoBehaviour:
     y: 35.173576
   - x: 13.544854
     y: 35.807682
+  a:
+  - 35.210033
+  - 36.193348
+  - 35.846607
+  - 37.76233
+  - 38.23633
+  - 37.328148
+  - 36.607773
+  - 36.90936
+  - 35.173576
+  - 35.807682
+  b:
+  - -0.41947204
+  - -4.9038906
+  - -1.2753049
+  - -9.466881
+  - 0.34055844
+  - 10.199495
+  - -8.238701
+  - 7.033636
+  - 3.5141134
+  - 0
+  c:
+  - 0
+  - 8.73009
+  - -5.6220007
+  - 11.409973
+  - -5.6502066
+  - 10.235794
+  - 8.763759
+  - 4.332904
+  - 6.6078706
+  - 0
+  d:
+  - -5.6651325
+  - -4.0977926
+  - -4.011462
+  - -3.3397324
+  - 2.462965
+  - 0.5056173
+  - -1.2665473
+  - -2.3573174
+  - 2.3201728
+  - 0
+  segmentDistance:
+  - -0.5136738
+  - 1.1674652
+  - -1.4152756
+  - 1.7027493
+  - 2.1499834
+  - -0.9704542
+  - 1.1661243
+  - -0.32168865
+  - -0.94933605
 --- !u!4 &1932113534
 Transform:
   m_ObjectHideFlags: 0
@@ -1289,7 +1711,7 @@ GameObject:
   - component: {fileID: 1985448741}
   - component: {fileID: 1985448740}
   m_Layer: 0
-  m_Name: bSpline Circle
+  m_Name: cubic Spline (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1308,10 +1730,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SegmentLength:
-  - 0.018595131
-  - 0.97120416
+  - 0.01859558
+  - 0.97120345
   - 1
-  LengthCache: 76.06873
+  LengthCache: 76.06686
   Points:
   - x: 12.059501
     y: 37.102726
@@ -1321,6 +1743,30 @@ MonoBehaviour:
     y: 34.900036
   - x: 9.876986
     y: 37.090424
+  a:
+  - 37.102726
+  - 35.69651
+  - 34.900036
+  - 37.090424
+  b:
+  - 7.2074275
+  - 13.714893
+  - -113.6115
+  - 0
+  c:
+  - 0
+  - -43.391502
+  - 106.62812
+  - 0
+  d:
+  - 96.44421
+  - -24.835733
+  - 1865.5135
+  - 0
+  segmentDistance:
+  - -0.14997101
+  - -2.0134916
+  - -0.019052505
 --- !u!4 &1985448741
 Transform:
   m_ObjectHideFlags: 0

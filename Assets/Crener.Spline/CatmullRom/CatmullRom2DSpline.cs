@@ -14,31 +14,63 @@ namespace Crener.Spline.CatmullRom
     {
         public override SplineType SplineDataType => SplineType.CatmullRom;
 
+        public override int SegmentPointCount
+        {
+            get
+            {
+                if(ControlPointCount <= 3) return ControlPointCount;
+                return ControlPointCount - 2;
+            }
+        }
+
         // 0.0 for the uniform spline, 0.5 for the centripetal spline, 1.0 for the chordal spline
         private const float c_alpha = 0.5f;
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        protected override float2 SplineInterpolation(float t, int a)
+        public override float2 GetPoint(float progress)
         {
-            // todo get points based on actual a and b values
-            float2 p0 = Points[0];
-            float2 p1 = Points[1];
-            float2 p2 = Points[2];
-            float2 p3 = Points[3];
+            if(ControlPointCount == 0)
+                return float2.zero;
+            else if(progress <= 0f)
+                return GetControlPoint(ControlPointCount == 1 ? 0 : 1);
+            else if(progress >= 1f)
+                return GetControlPoint(ControlPointCount - 2);
+            else if(ControlPointCount == 1 || progress <= 0f)
+                return GetControlPoint(0);
+            //else if(ControlPointCount == 2)
+            //    return math.lerp(GetControlPoint(0), GetControlPoint(1), progress);
+            //else if(ControlPointCount == 3)
+            //    return Cubic3Point(0, 1, 2, progress);
 
-            float t0 = 0.0f;
-            float t1 = GetT(t0, p0, p1);
-            float t2 = GetT(t1, p1, p2);
-            float t3 = GetT(t2, p2, p3);
+            int aIndex = FindSegmentIndex(progress);
+            float pointProgress = SegmentProgress(progress, aIndex);
+            return SplineInterpolation(pointProgress, aIndex);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        protected override float2 SplineInterpolation(float progress, int a)
+        {
+            if(progress == 0f) return Points[(a + 1) % ControlPointCount];
+            if(progress == 1f) return Points[(a + 2) % ControlPointCount];
+            
+            float2 p0 = Points[a];
+            float2 p1 = Points[(a + 1) % ControlPointCount];
+            float2 p2 = Points[(a + 2) % ControlPointCount];
+            float2 p3 = Points[(a + 3) % ControlPointCount];
 
-            float2 a1 = (t1 - t) / (t1 - t0) * p0 + (t - t0) / (t1 - t0) * p1;
-            float2 a2 = (t2 - t) / (t2 - t1) * p1 + (t - t1) / (t2 - t1) * p2;
-            float2 a3 = (t3 - t) / (t3 - t2) * p2 + (t - t2) / (t3 - t2) * p3;
+            const float t0 = 0.0f;
+            float start = GetT(t0, p0, p1);
+            float end = GetT(start, p1, p2);
+            float t3 = GetT(end, p2, p3);
+            float t = start + ((end - start) * progress);
 
-            float2 b1 = (t2 - t) / (t2 - t0) * a1 + (t - t0) / (t2 - t0) * a2;
-            float2 b2 = (t3 - t) / (t3 - t1) * a2 + (t - t1) / (t3 - t1) * a3;
+            float2 a1 = (start - t) / (start - t0) * p0 + (t - t0) / (start - t0) * p1;
+            float2 a2 = (end - t) / (end - start) * p1 + (t - start) / (end - start) * p2;
+            float2 a3 = (t3 - t) / (t3 - end) * p2 + (t - end) / (t3 - end) * p3;
 
-            return (t2 - t) / (t2 - t1) * b1 + (t - t1) / (t2 - t1) * b2;
+            float2 b1 = (end - t) / (end - t0) * a1 + (t - t0) / (end - t0) * a2;
+            float2 b2 = (t3 - t) / (t3 - start) * a2 + (t - start) / (t3 - start) * a3;
+
+            return (end - t) / (end - start) * b1 + (t - start) / (end - start) * b2;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

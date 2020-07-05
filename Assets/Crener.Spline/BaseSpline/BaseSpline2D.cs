@@ -43,7 +43,7 @@ namespace Crener.Spline.BaseSpline
         /// <summary>
         /// Is the data in the spline initialized
         /// </summary>
-        protected virtual bool DataInitialized => SegmentPointCount > 0 && SegmentLength.Count == 0;
+        protected virtual bool DataInitialized => SegmentPointCount > 0 && SegmentLength.Count >= 0;
 
         /// <summary>
         /// Retrieve a point on the spline at a specific control point
@@ -200,6 +200,7 @@ namespace Crener.Spline.BaseSpline
         {
             Gizmos.color = Color.gray;
             const float pointDensity = 13;
+            const int maxPointAmount = 15000;
 
             if(!DataInitialized)
             {
@@ -211,9 +212,9 @@ namespace Crener.Spline.BaseSpline
             {
                 float2 f = GetPoint(0f, i);
                 Vector3 lp = new Vector3(f.x, f.y, 0f);
-                int points = (int) (pointDensity * (SegmentLength[i] * Length()));
+                int points = math.min((int) (pointDensity * (SegmentLength[i] * Length())), maxPointAmount);
 
-                for (int s = 0; s <= points; s++)
+                for (int s = 1; s <= points; s++)
                 {
                     float progress = s / (float) points;
                     float2 p = GetPoint(progress, i);

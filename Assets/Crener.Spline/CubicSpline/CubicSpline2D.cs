@@ -28,6 +28,7 @@ namespace Crener.Spline.CubicSpline
         }
 
         private Matrix m_matrix;
+        [SerializeField]
         private float[] a, b, c, d, segmentDistance;
 
         protected override bool DataInitialized => segmentDistance != null && base.DataInitialized;
@@ -203,6 +204,61 @@ namespace Crener.Spline.CubicSpline
                 {
                     d[i] = 1f / 3f / segmentDistance[i] * (c[i + 1] - c[i]);
                     b[i] = 1f / segmentDistance[i] * (a[i + 1] - a[i]) - segmentDistance[i] / 3f * (c[i + 1] + 2f * c[i]);
+                }
+            }
+        }
+
+        protected override void OnDrawGizmosSelected()
+        {
+            Gizmos.color = Color.gray;
+            const float pointDensity = 13;
+
+            if(!DataInitialized)
+            {
+                // needs to calculate length as it might not have been saved correctly after saving
+                RecalculateLengthBias();
+            }
+
+            if(ControlPointCount == 2)
+            {
+                float2 cp0 = GetControlPoint(0);
+                float2 cp1 = GetControlPoint(1);
+                Gizmos.DrawLine(new Vector3(cp0.x, cp0.y, 0f), new Vector3(cp1.x, cp1.y, 0f));
+                return;
+            }
+
+            if(ControlPointCount == 3)
+            {
+                float2 f = GetControlPoint(0);
+                Vector3 lp = new Vector3(f.x, f.y, 0f);
+                int points = (int) (pointDensity * (SegmentLength[0] * Length()));
+                for (int s = 1; s <= points; s++)
+                {
+                    float progress = s / (float) points;
+                    float2 p = Cubic3Point(0, 1, 2, progress);
+                    Vector3 point = new Vector3(p.x, p.y, 0f);
+
+                    Gizmos.DrawLine(lp, point);
+                    lp = point;
+                }
+                
+                return;
+            }
+
+            for (int i = 0; i < SegmentPointCount - 1; i++)
+            {
+                float2 f = GetPoint(0f, i);
+                Vector3 lp = new Vector3(f.x, f.y, 0f);
+                int points = (int) (pointDensity * (SegmentLength[i] * Length()));
+
+                for (int s = 1; s <= points; s++)
+                {
+                    float progress = s / (float) points;
+                    float2 p = GetPoint(progress, i);
+                    Vector3 point = new Vector3(p.x, p.y, 0f);
+
+                    Gizmos.DrawLine(lp, point);
+                    lp = point;
                 }
             }
         }
