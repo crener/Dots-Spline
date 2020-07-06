@@ -28,6 +28,7 @@ namespace Crener.Spline.Linear
                 RecalculateLengthBias();
             }
         }
+        
         public override SplineType SplineDataType
         {
             get

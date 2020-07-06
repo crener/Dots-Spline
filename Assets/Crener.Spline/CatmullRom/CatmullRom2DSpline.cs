@@ -1,6 +1,8 @@
 using System.Runtime.CompilerServices;
 using Crener.Spline.BaseSpline;
 using Crener.Spline.Common;
+using Crener.Spline.Common.Interfaces;
+using Unity.Assertions;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
@@ -10,16 +12,39 @@ namespace Crener.Spline.CatmullRom
     /// <summary>
     /// Centripetal Catmull-rom spline based on https://en.wikipedia.org/wiki/Centripetal_Catmull%E2%80%93Rom_spline implementation 
     /// </summary>
-    public class CatmullRom2DSpline : BaseSpline2D
+    public class CatmullRom2DSpline : BaseSpline2D, ILoopingSpline
     {
-        public override SplineType SplineDataType => SplineType.CatmullRom;
+        [SerializeField]
+        private bool looped = false;
+
+        public override SplineType SplineDataType
+        {
+            get
+            {
+                if(ControlPointCount == 0) return SplineType.Empty;
+                if(ControlPointCount == 1) return SplineType.Single;
+                //if(ControlPointCount <= 3) return SplineType.Linear;
+                return SplineType.CatmullRom;
+            }
+        }
 
         public override int SegmentPointCount
         {
             get
             {
-                if(ControlPointCount <= 3) return ControlPointCount;
-                return ControlPointCount - 2;
+                if(ControlPointCount < 3) return ControlPointCount + (looped ? 1 : 0);
+                if(ControlPointCount == 3) return (looped ? 4 : 3);
+                return ControlPointCount + (looped ? 1 : 0);
+            }
+        }
+
+        public bool Looped
+        {
+            get => looped;
+            set
+            {
+                looped = value;
+                RecalculateLengthBias();
             }
         }
 
@@ -45,17 +70,90 @@ namespace Crener.Spline.CatmullRom
             float pointProgress = SegmentProgress(progress, aIndex);
             return SplineInterpolation(pointProgress, aIndex);
         }
-        
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected override float2 SplineInterpolation(float progress, int a)
         {
-            if(progress == 0f) return Points[(a + 1) % ControlPointCount];
-            if(progress == 1f) return Points[(a + 2) % ControlPointCount];
-            
-            float2 p0 = Points[a];
-            float2 p1 = Points[(a + 1) % ControlPointCount];
-            float2 p2 = Points[(a + 2) % ControlPointCount];
-            float2 p3 = Points[(a + 3) % ControlPointCount];
+            float2 p0, p1;
+            if(ControlPointCount == 2)
+            {
+                p0 = Points[a];
+                p1 = Points[(a + 1) % ControlPointCount];
+                return math.lerp(p0, p1, progress);
+            }
+
+            float2 p2, p3;
+            if(looped)
+            {
+                // looped
+                p0 = Points[a];
+                p1 = Points[(a + 1) % ControlPointCount];
+                p2 = Points[(a + 2) % ControlPointCount];
+                p3 = Points[(a + 3) % ControlPointCount];
+            }
+            else
+            {
+                // not looped
+                if(ControlPointCount == 3)
+                {
+                    // 3 points require 2 of the points at the start and end to be fabricated
+                    if(progress == 0f) return Points[a];
+                    if(progress == 1f) return Points[(a + 1) % ControlPointCount];
+
+                    p1 = Points[a];
+                    p2 = Points[(a + 1) % ControlPointCount];
+
+                    float2 delta = p2 - p1;
+                    float angle = math.atan2(delta.y, delta.x) - (math.PI / 2);
+
+                    if(a == 0)
+                    {
+                        // need to create a fake point for p0
+                        p0 = new float2(p1.x + math.sin(angle), p1.y - math.cos(angle));
+                        p3 = Points[(a + 2) % ControlPointCount];
+                    }
+                    else
+                    {
+                        Assert.AreEqual(1, a);
+                        // need to create a fake point for p3
+
+                        p0 = Points[(a - 1) % ControlPointCount];
+                        p3 = new float2(p2.x + math.sin(-angle), p2.y + math.cos(-angle));
+                    }
+                }
+                else
+                {
+                    if(a == 0)
+                    {
+                        p1 = Points[a];
+                        p2 = Points[(a + 1) % ControlPointCount];
+                        p3 = Points[(a + 2) % ControlPointCount];
+
+                        float2 delta = p2 - p1;
+                        float angle = math.atan2(delta.y, delta.x) - (math.PI / 2);
+                        float size = math.distance(delta.x, delta.y) * 0.5f;
+                        p0 = new float2(p1.x + (math.sin(angle) * size), p1.y - (math.cos(angle) * size));
+                    }
+                    else if(a == ControlPointCount - 2)
+                    {
+                        p0 = Points[(a - 1) % ControlPointCount];
+                        p1 = Points[a];
+                        p2 = Points[(a + 1) % ControlPointCount];
+
+                        float2 delta = p2 - p1;
+                        float angle = math.atan2(delta.y, delta.x) - (math.PI / 2);
+                        float size = math.distance(delta.x, delta.y) * 0.5f;
+                        p3 = new float2(p2.x + (math.sin(-angle) * size), p2.y + (math.cos(-angle) * size));
+                    }
+                    else
+                    {
+                        p0 = Points[(a - 1) % ControlPointCount];
+                        p1 = Points[a];
+                        p2 = Points[(a + 1) % ControlPointCount];
+                        p3 = Points[(a + 2) % ControlPointCount];
+                    }
+                }
+            }
 
             const float t0 = 0.0f;
             float start = GetT(t0, p0, p1);

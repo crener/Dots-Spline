@@ -1,7 +1,9 @@
 using Crener.Spline.BezierSpline;
 using Crener.Spline.CatmullRom;
 using Crener.Spline.Common;
+using Crener.Spline.Common.Interfaces;
 using Crener.Spline.Linear;
+using NUnit.Framework;
 using Unity.Mathematics;
 using UnityEditor;
 using UnityEngine;
@@ -59,6 +61,22 @@ namespace Crener.Spline.Editor._2D
                 if(Event.current.type == EventType.MouseMove)
                     SceneView.RepaintAll();
             }
+        }
+
+        /// <summary>
+        /// Find the closest point to the spline
+        /// </summary>
+        /// <param name="mouse">mouse position</param>
+        /// <param name="spline">spline to check</param>
+        /// <param name="index">spline index of the closest point</param>
+        /// <returns>closest point on the spline to the mouse</returns>
+        protected override float2 ClosestPointSelection(float2 mouse, ISpline2D spline, out int index)
+        {
+            Assert.AreSame(pointSpline, spline, "Somehow the spline changed from the start point and the point sample point");
+
+            float2 closest = base.ClosestPointSelection(mouse, spline, out index);
+            index = pointSpline.Looped ? (index + 1) % spline.ControlPointCount : index;
+            return closest;
         }
     }
 }
