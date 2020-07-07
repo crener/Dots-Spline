@@ -59,12 +59,8 @@ namespace Crener.Spline.CatmullRom
                 return GetControlPoint(ControlPointCount == 1 ? 0 : 1);
             else if(progress >= 1f)
                 return GetControlPoint(ControlPointCount - 2);
-            else if(ControlPointCount == 1 || progress <= 0f)
+            else if(ControlPointCount == 1)
                 return GetControlPoint(0);
-            //else if(ControlPointCount == 2)
-            //    return math.lerp(GetControlPoint(0), GetControlPoint(1), progress);
-            //else if(ControlPointCount == 3)
-            //    return Cubic3Point(0, 1, 2, progress);
 
             int aIndex = FindSegmentIndex(progress);
             float pointProgress = SegmentProgress(progress, aIndex);
