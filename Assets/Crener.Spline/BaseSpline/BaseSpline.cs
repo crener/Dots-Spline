@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using Crener.Spline.Common;
 using Crener.Spline.Common.Interfaces;
 using Unity.Entities;
-using Unity.Mathematics;
-using UnityEditor;
 using UnityEngine;
 
 namespace Crener.Spline.BaseSpline

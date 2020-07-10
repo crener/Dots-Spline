@@ -112,7 +112,7 @@ namespace Crener.Spline.BezierSpline
         /// <param name="point">location to insert</param>
         public override void InsertControlPoint(int index, float2 point)
         {
-            if(Points.Count <= 1 || index >= ControlPointCount)
+            if(Points.Count < 1 || index >= ControlPointCount)
             {
                 // add as there aren't enough points to insert between
                 AddControlPoint(point);

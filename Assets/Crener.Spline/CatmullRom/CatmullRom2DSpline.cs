@@ -23,7 +23,8 @@ namespace Crener.Spline.CatmullRom
             {
                 if(ControlPointCount == 0) return SplineType.Empty;
                 if(ControlPointCount == 1) return SplineType.Single;
-                //if(ControlPointCount <= 3) return SplineType.Linear;
+                if(ControlPointCount == 2) return SplineType.Linear;
+                //if(ControlPointCount <= 3) return SplineType.CubicLinear;
                 return SplineType.CatmullRom;
             }
         }
@@ -56,9 +57,9 @@ namespace Crener.Spline.CatmullRom
             if(ControlPointCount == 0)
                 return float2.zero;
             else if(progress <= 0f)
-                return GetControlPoint(ControlPointCount == 1 ? 0 : 1);
+                return GetControlPoint(0);
             else if(progress >= 1f)
-                return GetControlPoint(ControlPointCount - 2);
+                return GetControlPoint(math.max(0, ControlPointCount - 1));
             else if(ControlPointCount == 1)
                 return GetControlPoint(0);
 
@@ -106,7 +107,7 @@ namespace Crener.Spline.CatmullRom
                     {
                         // need to create a fake point for p0
                         p0 = new float2(p1.x + math.sin(angle), p1.y - math.cos(angle));
-                        p3 = Points[(a + 2) % ControlPointCount];
+                        p3 = Points[2];
                     }
                     else
                     {
@@ -127,14 +128,18 @@ namespace Crener.Spline.CatmullRom
 
                         float2 delta = p2 - p1;
                         float angle = math.atan2(delta.y, delta.x) - (math.PI / 2);
-                        float size = math.distance(delta.x, delta.y) * 0.5f;
+                        float size = math.max(math.length(delta) * 0.5f, float.Epsilon);
                         p0 = new float2(p1.x + (math.sin(angle) * size), p1.y - (math.cos(angle) * size));
                     }
                     else if(a == ControlPointCount - 2)
                     {
-                        p0 = Points[(a - 1) % ControlPointCount];
                         p1 = Points[a];
+                        if(progress <= 0f) return p1;
+
                         p2 = Points[(a + 1) % ControlPointCount];
+                        if(progress >= 1f) return p2;
+
+                        p0 = Points[(a - 1) % ControlPointCount];
 
                         float2 delta = p2 - p1;
                         float angle = math.atan2(delta.y, delta.x) - (math.PI / 2);
@@ -160,6 +165,7 @@ namespace Crener.Spline.CatmullRom
             float2 a1 = (start - t) / (start - t0) * p0 + (t - t0) / (start - t0) * p1;
             float2 a2 = (end - t) / (end - start) * p1 + (t - start) / (end - start) * p2;
             float2 a3 = (t3 - t) / (t3 - end) * p2 + (t - end) / (t3 - end) * p3;
+            if(float.IsNaN(a3.x)) a3 = float2.zero;
 
             float2 b1 = (end - t) / (end - t0) * a1 + (t - t0) / (end - t0) * a2;
             float2 b2 = (t3 - t) / (t3 - start) * a2 + (t - start) / (t3 - start) * a3;

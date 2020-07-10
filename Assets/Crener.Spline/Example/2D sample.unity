@@ -426,14 +426,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SegmentLength:
-  - 0.07619667
-  - 0.18126915
-  - 0.3077483
-  - 0.5783953
-  - 0.6970753
-  - 0.83585787
+  - 0.07031449
+  - 0.16728432
+  - 0.28401005
+  - 0.5337862
+  - 0.64313954
+  - 0.72955775
   - 1
-  LengthCache: 46.8904
+  LengthCache: 50.80849
   Points:
   - x: -7.9662457
     y: 23.276966
@@ -447,8 +447,8 @@ MonoBehaviour:
     y: 28.405405
   - x: 11.746958
     y: 23.178928
-  - x: 15.8680935
-    y: 18.333965
+  - x: 14.467753
+    y: 19.865156
   - x: 23.341227
     y: 16.688076
   looped: 0
@@ -661,6 +661,64 @@ Transform:
   m_Father: {fileID: 1775453985}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &579615850
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 579615851}
+  - component: {fileID: 579615852}
+  m_Layer: 0
+  m_Name: CatmullRom Spline (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &579615851
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 579615850}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 3.9300003, y: 7.5899987, z: -3.875}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1775453985}
+  m_RootOrder: 16
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &579615852
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 579615850}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d9ce971b42240939a88cdad7ec57c0b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SegmentLength:
+  - 0.1735908
+  - 0.51178664
+  - 1
+  LengthCache: 34.89703
+  Points:
+  - x: -10.082474
+    y: 24.427896
+  - x: -9.242785
+    y: 18.57373
+  - x: 2.1523986
+    y: 18.293121
+  - x: 3.1308973
+    y: 23.71616
+  looped: 0
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -1401,6 +1459,7 @@ Transform:
   - {fileID: 1486884244}
   - {fileID: 760857420}
   - {fileID: 414452517}
+  - {fileID: 579615851}
   - {fileID: 1907465412}
   m_Father: {fileID: 0}
   m_RootOrder: 2
@@ -1434,7 +1493,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1775453985}
-  m_RootOrder: 16
+  m_RootOrder: 17
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1907465413
 MonoBehaviour:
@@ -1449,23 +1508,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SegmentLength:
-  - 0.052345272
-  - 0.097204015
-  - 0.19133939
-  - 0.27386895
-  - 0.33838695
-  - 0.39415225
-  - 0.44070554
-  - 0.48869565
-  - 0.53331774
-  - 0.57985145
-  - 0.6429881
-  - 0.70460284
-  - 0.77875006
-  - 0.84719235
-  - 0.9247782
+  - 0.052268162
+  - 0.095538
+  - 0.1923524
+  - 0.27478734
+  - 0.33922374
+  - 0.39491853
+  - 0.44141293
+  - 0.48934233
+  - 0.53390795
+  - 0.58038276
+  - 0.64343953
+  - 0.7049763
+  - 0.7790298
+  - 0.8473855
+  - 0.9248733
   - 1
-  LengthCache: 60.898033
+  LengthCache: 60.97515
   Points:
   - x: -9.589144
     y: 18.150856
@@ -1473,8 +1532,8 @@ MonoBehaviour:
     y: 21.000612
   - x: -3.7597713
     y: 19.01128
-  - x: -2.483013
-    y: 21.331913
+  - x: -2.6512578
+    y: 21.31322
   - x: 3.1666403
     y: 21.033276
   - x: -1.2427447

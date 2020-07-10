@@ -1,5 +1,6 @@
+using Crener.Spline.Test._2D.CatmullRom.TestAdapters;
+using Crener.Spline.Test._2D.CatmullRom.TestTypes;
 using Crener.Spline.Test._2D.Linear.TestAdapters;
-using Crener.Spline.Test._2D.Linear.TestTypes;
 using UnityEngine;
 
 namespace Crener.Spline.Test._2D.CatmullRom
@@ -7,12 +8,12 @@ namespace Crener.Spline.Test._2D.CatmullRom
     /// <summary>
     /// Tests Point to point implementation of basic 2D spline functionality
     /// </summary>
-    public class BaseCatmullTestsJob : LinearBaseTestAdapter
+    public class BaseCatmullTestsJob : CatmullBaseTestAdapter
     {
         protected override ISimpleTestSpline CreateNewSpline()
         {
             GameObject game = new GameObject();
-            ISimpleTestSpline spline = game.AddComponent<MeaninglessTestWrapper2.TestLinearSpline2DSimpleJob>();
+            ISimpleTestSpline spline = game.AddComponent<MeaninglessTestWrapper2.TestCatmullSpline2DSimpleJob>();
 
             return spline;
         }

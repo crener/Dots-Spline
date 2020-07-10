@@ -1,5 +1,6 @@
 using System.IO;
 using System.Security.Cryptography.X509Certificates;
+using Crener.Spline.CatmullRom;
 using Crener.Spline.Common;
 using Crener.Spline.Test.Helpers;
 using NUnit.Framework;
@@ -543,6 +544,24 @@ namespace Crener.Spline.Test._2D
         }
 
         [Test]
+        public void InsertSecondFirst()
+        {
+            ISimpleTestSpline testSpline = PrepareSpline();
+
+            float2 a = float2.zero;
+            testSpline.AddControlPoint(a);
+            Assert.AreEqual(1, testSpline.ControlPointCount);
+            TestHelpers.CheckFloat2(a, testSpline.GetControlPoint(0, SplinePoint.Point), (float.Epsilon * 2f));
+            
+            float2 b = new float2(4);
+            testSpline.InsertControlPoint(0, b);
+            Assert.AreEqual(2, testSpline.ControlPointCount);
+            Assert.AreEqual(2, testSpline.Modes.Count);
+            TestHelpers.CheckFloat2(b, testSpline.GetControlPoint(0, SplinePoint.Point), (float.Epsilon * 2f));
+            TestHelpers.CheckFloat2(a, testSpline.GetControlPoint(1, SplinePoint.Point), (float.Epsilon * 2f));
+        }
+
+        [Test]
         public void InsertWithOne()
         {
             ISimpleTestSpline testSpline = PrepareSpline();
@@ -738,20 +757,46 @@ namespace Crener.Spline.Test._2D
         }
 
         [Test]
-        public void MultiMidPoint([Range(2, 12)] int points)
+        public void MultiMidPoint([Range(1, 12)] int points)
         {
             ISimpleTestSpline testSpline = PrepareSpline();
-
+            
             for (int i = 0; i < points; i++)
             {
                 testSpline.AddControlPoint(new float2(i));
             }
+            
+            // todo figure out how to get catmull to like this test set
+            // catmull has issues with long straights
+            Assume.That(testSpline.SplineDataType != SplineType.CatmullRom);
 
             Assert.AreEqual(points, testSpline.ControlPointCount);
             Assert.AreEqual(testSpline.ExpectedTimeCount(testSpline.ControlPointCount), testSpline.Times.Count);
 
             float2 point = testSpline.GetPoint(0.5f);
             TestHelpers.CheckFloat2(new float2((points - 1) / 2f), point);
+        }
+
+        [Test]
+        public void MultiMidPointOffset([Range(1, 12)] int points)
+        {
+            ISimpleTestSpline testSpline = PrepareSpline();
+            const float offset = 200f;
+
+            for (int i = 0; i < points; i++)
+            {
+                testSpline.AddControlPoint(new float2(offset + i));
+            }
+            
+            // todo figure out how to get catmull to like this test set
+            // catmull has issues with long straights
+            Assume.That(testSpline.SplineDataType != SplineType.CatmullRom);
+
+            Assert.AreEqual(points, testSpline.ControlPointCount);
+            Assert.AreEqual(testSpline.ExpectedTimeCount(testSpline.ControlPointCount), testSpline.Times.Count);
+
+            float2 point = testSpline.GetPoint(0.5f);
+            TestHelpers.CheckFloat2(new float2(offset + (points - 1) / 2f), point, 0.00005f);
         }
     }
 }

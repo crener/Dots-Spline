@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Crener.Spline.Common.DataStructs;
 using Crener.Spline.Common.Interfaces;
+using Unity.Assertions;
+using Unity.Collections;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -13,7 +15,7 @@ namespace Crener.Spline.BaseSpline
     public abstract class BaseSpline3D : BaseSpline, ISpline3D
     {
         [SerializeField]
-        protected List<float2> Points = new List<float2>();
+        protected List<float3> Points = new List<float3>();
         
         private Spline3DData? m_splineData = null;
 
@@ -46,8 +48,53 @@ namespace Crener.Spline.BaseSpline
             return SplineInterpolation(progress, index);
         }
 
-        public abstract void AddControlPoint(float3 point);
-        public abstract void InsertControlPoint(int index, float3 point);
+        /// <summary>
+        /// Adds a point to the end of the spline
+        /// </summary>
+        public virtual void AddControlPoint(float3 point)
+        {
+            Points.Add(point);
+            RecalculateLengthBias();
+        }
+
+        /// <summary>
+        /// inserts a point before the specified segment index
+        /// </summary>
+        /// <param name="index">segment index</param>
+        /// <param name="point">location to insert</param>
+        public virtual void InsertControlPoint(int index, float3 point)
+        {
+            if(Points.Count <= 1 || index >= ControlPointCount)
+            {
+                // add as there aren't enough points to insert between
+                AddControlPoint(point);
+                return;
+            }
+
+            if(index == 0)
+            {
+                // replace the first node
+                Points.Insert(0, point);
+            }
+            else
+            {
+                Points.Insert(index, point);
+            }
+
+            RecalculateLengthBias();
+        }
+
+        /// <summary>
+        /// Remove existing control points data
+        /// </summary>
+        /// <param name="index">control point index</param>
+        public override void RemoveControlPoint(int index)
+        {
+            if(ControlPointCount == 0 || index < 0) return;
+
+            Points.RemoveAt(math.min(index, ControlPointCount - 1));
+            RecalculateLengthBias();
+        }
 
         /// <summary>
         /// Relieve a point on the spline
@@ -80,9 +127,17 @@ namespace Crener.Spline.BaseSpline
 
             return currentLength;
         }
-
+        
+        /// <summary>
+        /// Gets the given point from a point segment
+        /// </summary>
+        /// <param name="i">index of the segment</param>
+        /// <returns>World Space position for the point</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public abstract float3 GetControlPoint(int i);
+        public virtual float3 GetControlPoint(int i)
+        {
+            return Points[i];
+        }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected abstract float3 SplineInterpolation(float t, int a);
@@ -127,7 +182,22 @@ namespace Crener.Spline.BaseSpline
                 }
             }
         }
+        
+        protected virtual Spline3DData ConvertData()
+        {
+            ClearData();
+            NativeArray<float3> points = new NativeArray<float3>(Points.ToArray(), Allocator.Persistent);
+            NativeArray<float> time = new NativeArray<float>(SegmentLength.ToArray(), Allocator.Persistent);
 
-        protected abstract Spline3DData ConvertData();
+            Assert.IsFalse(hasSplineEntityData);
+            SplineEntityData = new Spline3DData
+            {
+                Length = Length(),
+                Points = points,
+                Time = time
+            };
+
+            return SplineEntityData.Value;
+        }
     }
 }

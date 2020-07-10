@@ -2,6 +2,7 @@
 using Crener.Spline.Common;
 using Crener.Spline.Common.DataStructs;
 using Crener.Spline.Common.Interfaces;
+using Crener.Spline.Linear.Jobs._2D;
 using Unity.Assertions;
 using Unity.Burst;
 using Unity.Collections;
@@ -45,8 +46,9 @@ namespace Crener.Spline.CatmullRom.Jobs
 #if UNITY_EDITOR
             if(Spline.Points.Length == 0) throw new ArgumentException($"Should be using {nameof(Empty2DPointJob)}");
             if(Spline.Points.Length == 1) throw new ArgumentException($"Should be using {nameof(SinglePoint2DPointJob)}");
+            if(Spline.Points.Length == 2) throw new ArgumentException($"Should be using {nameof(LinearSpline2DPointJob)}");
 #endif
-            
+
             if(m_splineProgress.Progress <= 0f)
                 m_result = Spline.Points[Spline.Points.Length == 1 ? 0 : 1];
             else if(m_splineProgress.Progress >= 1f)
@@ -91,15 +93,7 @@ namespace Crener.Spline.CatmullRom.Jobs
 
         private float2 SplineInterpolation(float progress, int a)
         {
-            float2 p0, p1;
-            if(Spline.Points.Length == 2)
-            {
-                p0 = Spline.Points[a];
-                p1 = Spline.Points[(a + 1) % Spline.Points.Length];
-                return math.lerp(p0, p1, progress);
-            }
-
-            float2 p2, p3;
+            float2 p0, p1, p2, p3;
             // not looped
             if(Spline.Points.Length == 3)
             {
@@ -117,7 +111,7 @@ namespace Crener.Spline.CatmullRom.Jobs
                 {
                     // need to create a fake point for p0
                     p0 = new float2(p1.x + math.sin(angle), p1.y - math.cos(angle));
-                    p3 = Spline.Points[(a + 2) % Spline.Points.Length];
+                    p3 = Spline.Points[2];
                 }
                 else
                 {
@@ -140,14 +134,18 @@ namespace Crener.Spline.CatmullRom.Jobs
 
                     float2 delta = p2 - p1;
                     float angle = math.atan2(delta.y, delta.x) - (math.PI / 2);
-                    float size = math.distance(delta.x, delta.y) * 0.5f;
+                    float size = math.max(math.length(delta) * 0.5f, float.Epsilon);
                     p0 = new float2(p1.x + (math.sin(angle) * size), p1.y - (math.cos(angle) * size));
                 }
                 else if(a == Spline.Points.Length - 2)
                 {
-                    p0 = Spline.Points[(a - 1) % Spline.Points.Length];
                     p1 = Spline.Points[a];
+                    if(progress <= 0f) return p1;
+
                     p2 = Spline.Points[(a + 1) % Spline.Points.Length];
+                    if(progress >= 1f) return p2;
+
+                    p0 = Spline.Points[(a - 1) % Spline.Points.Length];
 
                     float2 delta = p2 - p1;
                     float angle = math.atan2(delta.y, delta.x) - (math.PI / 2);

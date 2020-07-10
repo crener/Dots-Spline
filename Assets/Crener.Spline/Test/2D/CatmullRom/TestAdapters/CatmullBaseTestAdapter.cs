@@ -3,7 +3,7 @@ using Crener.Spline.Test.Helpers;
 using NUnit.Framework;
 using Unity.Mathematics;
 
-namespace Crener.Spline.Test._2D.Linear.TestAdapters
+namespace Crener.Spline.Test._2D.CatmullRom.TestAdapters
 {
     public abstract class CatmullBaseTestAdapter : BaseSimpleSplineTests
     {
@@ -52,25 +52,6 @@ namespace Crener.Spline.Test._2D.Linear.TestAdapters
 
         [Test]
         public void ZigZagLength()
-        {
-            ISimpleTestSpline testSpline = PrepareSpline();
-
-            float2 a = new float2(0f, 0f);
-            testSpline.AddControlPoint(a);
-            float2 b = new float2(10f, 10f);
-            testSpline.AddControlPoint(b);
-            float2 c = new float2(0f, 20f);
-            testSpline.AddControlPoint(c);
-            float2 d = new float2(20f, 30f);
-            testSpline.AddControlPoint(d);
-
-            float length = math.distance(a, b) + math.distance(b, c) + math.distance(c, d);
-            float spline = testSpline.Length();
-            Assert.IsTrue(math.abs(length - spline) <= 0.00005f, $"Expected: {length}, but received: {spline}");
-        }
-
-        [Test]
-        public void ZigZagLength2()
         {
             ISimpleTestSpline testSpline = PrepareSpline();
 

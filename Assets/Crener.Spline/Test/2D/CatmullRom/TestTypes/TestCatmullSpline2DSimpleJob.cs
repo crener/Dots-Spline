@@ -1,7 +1,7 @@
 using System.Collections.Generic;
+using Crener.Spline.CatmullRom;
 using Crener.Spline.Common;
 using Crener.Spline.Common.Interfaces;
-using Crener.Spline.Linear;
 using NUnit.Framework;
 using Unity.Mathematics;
 
@@ -12,7 +12,7 @@ namespace Crener.Spline.Test._2D.CatmullRom.TestTypes
     /// </summary>
     public class MeaninglessTestWrapper2
     {
-        public class TestCatmullSpline2DSimpleJob : Linear2DSpline, ISimpleTestSpline
+        public class TestCatmullSpline2DSimpleJob : CatmullRom2DSpline, ISimpleTestSpline
         {
             public IReadOnlyList<float2> ControlPoints => SplineEntityData.Value.Points.ToArray();
             public IReadOnlyList<float> Times => SplineEntityData.Value.Time.ToArray();
