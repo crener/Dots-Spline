@@ -2,12 +2,14 @@ using System.Runtime.CompilerServices;
 using Crener.Spline.BaseSpline;
 using Crener.Spline.Common;
 using Unity.Mathematics;
+using UnityEngine;
 
 namespace Crener.Spline.Linear
 {
     /// <summary>
     /// Simple spline which directly follows a set of points
     /// </summary>
+    [AddComponentMenu("Spline/2D/Linear Spline")]
     public class Linear2DSpline : BaseSpline2D
     {
         public override SplineType SplineDataType

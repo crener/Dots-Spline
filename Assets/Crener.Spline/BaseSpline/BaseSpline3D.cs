@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using Crener.Spline.Common;
 using Crener.Spline.Common.DataStructs;
 using Crener.Spline.Common.Interfaces;
 using Unity.Assertions;
@@ -12,7 +13,7 @@ namespace Crener.Spline.BaseSpline
     /// <summary>
     /// Base implementation which contains base functionality and reusable methods
     /// </summary>
-    public abstract class BaseSpline3D : BaseSpline, ISpline3D
+    public abstract class BaseSpline3D : BaseSpline, ISpline3DEditor
     {
         [SerializeField]
         protected List<float3> Points = new List<float3>();
@@ -64,7 +65,7 @@ namespace Crener.Spline.BaseSpline
         /// <param name="point">location to insert</param>
         public virtual void InsertControlPoint(int index, float3 point)
         {
-            if(Points.Count <= 1 || index >= ControlPointCount)
+            if(Points.Count < 1 || index >= ControlPointCount)
             {
                 // add as there aren't enough points to insert between
                 AddControlPoint(point);
@@ -97,13 +98,43 @@ namespace Crener.Spline.BaseSpline
         }
 
         /// <summary>
+        /// Update an existing control points data
+        /// </summary>
+        /// <param name="index">control point index</param>
+        /// <param name="point">location of the point</param>
+        /// <param name="mode">type of point to update</param>
+        public virtual void UpdateControlPoint(int index, float3 point, SplinePoint mode)
+        {
+            Assert.IsTrue(index <= ControlPointCount);
+
+            Points[index] = point;
+            RecalculateLengthBias();
+        }
+
+        /// <summary>
+        /// Move all points by <paramref name="delta"/> amount
+        /// </summary>
+        /// <param name="delta">amount to move all point by</param>
+        public void MoveControlPoints(float3 delta)
+        {
+            for (int i = 0; i < Points.Count; i++)
+            {
+                // float2 is struct so it needs to override the stored value
+                float3 local = Points[i] += delta;
+                Points[i] = local;
+            }
+        }
+
+        /// <summary>
         /// Relieve a point on the spline
         /// </summary>
         /// <param name="progress"></param>
         /// <returns>point on spline</returns>
         public float3 GetPoint(float progress)
         {
-            if(progress == 0f || ControlPointCount <= 1)
+            if(ControlPointCount == 0)
+                return float3.zero;
+            if(progress <= 0f || ControlPointCount <= 1)
                 return GetControlPoint(0);
             else if(progress >= 1f)
                 return GetControlPoint(ControlPointCount - 1);
@@ -168,14 +199,14 @@ namespace Crener.Spline.BaseSpline
             for (int i = 0; i < ControlPointCount - 1; i++)
             {
                 float3 f = GetPoint(0f, i);
-                Vector3 lp = new Vector3(f.x, f.y, 0f);
+                Vector3 lp = new Vector3(f.x, f.y, f.z);
                 int points = (int) (pointDensity * (SegmentLength[i] * Length()));
 
                 for (int s = 0; s <= points; s++)
                 {
                     float progress = s / (float) points;
                     float3 p = GetPoint(progress, i);
-                    Vector3 point = new Vector3(p.x, p.y, 0f);
+                    Vector3 point = new Vector3(p.x, p.y, p.z);
 
                     Gizmos.DrawLine(lp, point);
                     lp = point;

@@ -17,6 +17,7 @@ namespace Crener.Spline.BezierSpline
     /// <summary>
     /// Spline along the XY axis with variance as defined when edited in scene
     /// </summary>
+    [AddComponentMenu("Spline/2D/Variance/Bezier Spline")]
     public class BezierSpline2DVariance : MonoBehaviour, ISimpleSpline2DVariance
     {
         private static readonly Color s_handleLeft = new Color(0.06f, 0.48f, 0f);

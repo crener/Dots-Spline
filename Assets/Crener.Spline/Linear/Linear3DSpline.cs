@@ -3,12 +3,15 @@ using Crener.Spline.BaseSpline;
 using Crener.Spline.Common;
 using Crener.Spline.Common.DataStructs;
 using Unity.Mathematics;
+using UnityEditor;
+using UnityEngine;
 
 namespace Crener.Spline.Linear
 {
     /// <summary>
     /// Simple spline which directly follows a set of points
     /// </summary>
+    [AddComponentMenu("Spline/3D/Linear Spline")]
     public class Linear3DSpline : BaseSpline3D
     {
         public override SplineType SplineDataType

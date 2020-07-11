@@ -3,8 +3,6 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using Crener.Spline.BaseSpline;
 using Crener.Spline.Common;
-using Crener.Spline.Common.Interfaces;
-using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -13,6 +11,7 @@ namespace Crener.Spline.CubicSpline
     /// <summary>
     /// Simple spline which directly follows a set of points with cubic interpolation
     /// </summary>
+    [AddComponentMenu("Spline/2D/Cubic Spline")]
     public class CubicSpline2D : BaseSpline2D
     {
         public override SplineType SplineDataType

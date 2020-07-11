@@ -14,6 +14,7 @@ namespace Crener.Spline.Linear
     /// <summary>
     /// Simple spline which directly follows a set of points
     /// </summary>
+    [AddComponentMenu("Spline/2D/Linear Cubic Spline")]
     public class LinearCubicSpline2D : BaseSpline2D, ILoopingSpline
     {
         [SerializeField]

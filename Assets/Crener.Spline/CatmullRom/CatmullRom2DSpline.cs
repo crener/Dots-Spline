@@ -12,6 +12,7 @@ namespace Crener.Spline.CatmullRom
     /// <summary>
     /// Centripetal Catmull-rom spline based on https://en.wikipedia.org/wiki/Centripetal_Catmull%E2%80%93Rom_spline implementation 
     /// </summary>
+    [AddComponentMenu("Spline/2D/Cutmull Spline")]
     public class CatmullRom2DSpline : BaseSpline2D, ILoopingSpline
     {
         [SerializeField]

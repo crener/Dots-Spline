@@ -7,7 +7,6 @@ namespace Crener.Spline.Test
 {
     public interface ITestSpline
     {
-        IReadOnlyList<float2> ControlPoints { get; }
         IReadOnlyList<float> Times { get; }
         IReadOnlyList<SplineEditMode> Modes { get; }
 
@@ -26,8 +25,4 @@ namespace Crener.Spline.Test
         /// <returns>expected amount of time points</returns>
         int ExpectedTimeCount(int controlPoints);
     }
-    
-    public interface ISimpleTestSpline : ISimpleSpline2D, ITestSpline { }
-    
-    public interface IVarianceTestSpline : ISimpleSpline2DVariance, ISimpleTestSpline { }
 }

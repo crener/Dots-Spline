@@ -6,7 +6,7 @@ using Unity.Mathematics;
 
 namespace Crener.Spline.Test._2D.LinearCubic.TestAdapters
 {
-    public abstract class LinearCubicBaseTestAdapter : BaseSimpleSplineTests
+    public abstract class LinearCubicBaseTest2DAdapter : BaseSimpleSplineTests2D
     {
         /// <summary>
         /// test that 3 point spline doesn't touch 2nd point when in L shape

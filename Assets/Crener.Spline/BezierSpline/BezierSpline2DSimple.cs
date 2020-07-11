@@ -17,6 +17,7 @@ namespace Crener.Spline.BezierSpline
     /// <summary>
     /// Standard 2D spline along the XY axis
     /// </summary>
+    [AddComponentMenu("Spline/2D/Bezier Spline")]
     public class BezierSpline2DSimple : BaseSpline2D, IArkableSpline
     {
         protected const int c_floatsPerControlPoint = 3;
