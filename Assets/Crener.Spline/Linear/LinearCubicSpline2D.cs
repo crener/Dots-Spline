@@ -29,7 +29,7 @@ namespace Crener.Spline.Linear
                 RecalculateLengthBias();
             }
         }
-        
+
         public override SplineType SplineDataType
         {
             get
@@ -40,7 +40,7 @@ namespace Crener.Spline.Linear
                 return SplineType.CubicLinear;
             }
         }
-        public override int SegmentPointCount => Looped ? ControlPointCount + 1 : ControlPointCount -1 ;
+        public override int SegmentPointCount => Looped ? ControlPointCount + 1 : ControlPointCount - 1;
 
         private const float c_splineMidPoint = 0.5f;
 
@@ -106,7 +106,7 @@ namespace Crener.Spline.Linear
 
             return math.lerp(pp0, pp1, t);
         }
-        
+
         protected override void RecalculateLengthBias()
         {
             ClearData();
@@ -118,6 +118,7 @@ namespace Crener.Spline.Linear
                 SegmentLength.Add(1f);
                 return;
             }
+
             if(ControlPointCount == 2)
             {
                 LengthCache = math.distance(Points[0], Points[1]);
@@ -135,17 +136,6 @@ namespace Crener.Spline.Linear
             if(ControlPointCount == 2) return math.distance(GetControlPoint(0), GetControlPoint(1));
 
             return base.LengthBetweenPoints(a, resolution);
-        }
-
-        public override void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
-        {
-            return;
-
-            //todo implement this for b-spline
-            /*dstManager.AddComponent<Spline2DData>(entity);
-            Spline2DData splineData = ConvertData();
-            SplineEntityData = splineData;
-            dstManager.SetSharedComponentData(entity, splineData);*/
         }
     }
 }

@@ -49,9 +49,11 @@ namespace Crener.Spline.Editor._3D
             if(m_editControlPoint.HasValue && EditorInputAbstractions.AddPointMode())
                 m_editControlPoint = null;
 
+            CheckActiveCamera();
             RenderControlPoints(pointSpline);
 
-            if(EditorInputAbstractions.AddPointMode())
+            if(EditorInputAbstractions.AddPointMode() && 
+               SceneView.currentDrawingSceneView == SceneView.lastActiveSceneView)
             {
                 PointSelection(pointSpline);
 

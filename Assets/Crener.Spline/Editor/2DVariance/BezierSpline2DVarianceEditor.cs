@@ -268,7 +268,7 @@ namespace Crener.Spline.Editor._2DVariance
                 return;
             }
 
-            float2 mouse = EditorInputAbstractions.MousePos();
+            float2 mouse = EditorInputAbstractions.MousePos2D();
             int segmentIndex;
             float2 createPoint = ClosestPointSelection(mouse, out segmentIndex);
 

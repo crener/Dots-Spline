@@ -121,6 +121,68 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &272471556
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 272471558}
+  - component: {fileID: 272471557}
+  m_Layer: 0
+  m_Name: Cubic Linear Spline
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &272471557
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 272471556}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57f57a0277914377a25a1f367d4c7fa1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SegmentLength:
+  - 0.43689415
+  - 0.75804466
+  - 1
+  LengthCache: 97.59429
+  Points:
+  - x: -59.53082
+    y: 14.144487
+    z: 2.803154
+  - x: -21.068768
+    y: -4.044629
+    z: 0
+  - x: 10.260286
+    y: -4.8873816
+    z: 0.36006165
+  - x: 32.402916
+    y: 1.7603664
+    z: 5.167037
+  looped: 0
+--- !u!4 &272471558
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 272471556}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 16.922401, y: -7.7448196, z: -13.937778}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 635739486}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &387974471
 GameObject:
   m_ObjectHideFlags: 0
@@ -204,6 +266,38 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 27.390001, z: 0}
+--- !u!1 &635739485
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 635739486}
+  m_Layer: 0
+  m_Name: Splines
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &635739486
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 635739485}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -22.402401, y: 20.64482, z: -52.962223}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 681800330}
+  - {fileID: 272471558}
+  m_Father: {fileID: 0}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &681800329
 GameObject:
   m_ObjectHideFlags: 0
@@ -228,12 +322,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 681800329}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5.48, y: 12.9, z: -66.9}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 16.922401, y: -7.7448196, z: -13.937778}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_Father: {fileID: 635739486}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &681800331
 MonoBehaviour:
@@ -248,23 +342,57 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SegmentLength:
-  - 0.46253997
-  - 0.8081927
+  - 0.08401957
+  - 0.16057271
+  - 0.22172037
+  - 0.281642
+  - 0.36716524
+  - 0.4490006
+  - 0.54026324
+  - 0.6451843
+  - 0.7374539
+  - 0.8533524
+  - 0.9316669
   - 1
-  LengthCache: 100.15497
+  LengthCache: 466.48138
   Points:
-  - x: -59.53082
-    y: 14.144487
-    z: 2.803154
-  - x: -21.582043
-    y: -12.277108
-    z: 0
-  - x: 13.029694
-    y: -11.675455
-    z: 0.36006165
-  - x: 31.561403
-    y: -10.090994
-    z: 5.167037
+  - x: -25.411835
+    y: 94.773575
+    z: 101.39289
+  - x: -47.893387
+    y: 74.3861
+    z: 76.59236
+  - x: -68.52453
+    y: 87.8346
+    z: 50.732327
+  - x: -67.025566
+    y: 59.490715
+    z: 53.562454
+  - x: -49.149853
+    y: 38.039032
+    z: 52.290924
+  - x: -9.59436
+    y: 41.75434
+    z: 48.66185
+  - x: 24.056274
+    y: 57.299103
+    z: 39.534927
+  - x: 59.279488
+    y: 79.59528
+    z: 48.17254
+  - x: 85.745125
+    y: 69.87752
+    z: 88.18033
+  - x: 83.004036
+    y: 95.57877
+    z: 122.59761
+  - x: 32.909042
+    y: 115.11618
+    z: 128.23273
+  - x: 1.0249329
+    y: 100.28737
+    z: 118.32743
+  looped: 1
 --- !u!1 &1927682733
 GameObject:
   m_ObjectHideFlags: 0

@@ -189,13 +189,13 @@ namespace Crener.Spline.Editor._2D
                 {
                     Undo.RecordObject(spline as Object, "Add Spline Point");
                     
-                    spline.AddControlPoint(EditorInputAbstractions.MousePos());
+                    spline.AddControlPoint(EditorInputAbstractions.MousePos2D());
                 }
 
                 return;
             }
 
-            float2 mouse = EditorInputAbstractions.MousePos();
+            float2 mouse = EditorInputAbstractions.MousePos2D();
             int splineIndex;
             float2 createPoint = ClosestPointSelection(mouse, spline, out splineIndex);
 

@@ -196,7 +196,7 @@ namespace Crener.Spline.BaseSpline
             Gizmos.color = Color.gray;
             const float pointDensity = 13;
 
-            for (int i = 0; i < ControlPointCount - 1; i++)
+            for (int i = 0; i < SegmentPointCount - 1; i++)
             {
                 float3 f = GetPoint(0f, i);
                 Vector3 lp = new Vector3(f.x, f.y, f.z);
@@ -208,6 +208,7 @@ namespace Crener.Spline.BaseSpline
                     float3 p = GetPoint(progress, i);
                     Vector3 point = new Vector3(p.x, p.y, p.z);
 
+                    // is Gizmos.DrawLines faster?
                     Gizmos.DrawLine(lp, point);
                     lp = point;
                 }

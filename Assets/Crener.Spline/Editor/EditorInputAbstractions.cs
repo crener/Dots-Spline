@@ -25,7 +25,7 @@ namespace Crener.Spline.Editor
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static float2 MousePos()
+        public static float2 MousePos2D()
         {
             // this is abstracted so that it can be easily ported to the new input system if needed
             Vector3 handleResult = HandleUtility.GUIPointToWorldRay(Event.current.mousePosition).origin;
@@ -33,7 +33,7 @@ namespace Crener.Spline.Editor
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static float3 MousePosFromSceneCamera()
+        public static float3 MousePos3D()
         {
             // this is abstracted so that it can be easily ported to the new input system if needed
             Vector3 handleResult = HandleUtility.GUIPointToWorldRay(Event.current.mousePosition).origin;

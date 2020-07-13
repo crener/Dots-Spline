@@ -28,7 +28,7 @@ namespace Crener.Spline.Editor._2D
 
             if(cubicSpline == null)
             {
-                EditorGUILayout.LabelField($"Unknown Type inspected by '{nameof(Cubic2DEditor)}'");
+                EditorGUILayout.LabelField($"Unknown Type inspected by '{nameof(LinearCubic2DEditor)}'");
                 return;
             }
 
@@ -82,13 +82,12 @@ namespace Crener.Spline.Editor._2D
                 {
                     float progress = s / 64f;
                     float2 p = spline.GetPoint(progress, i - 1);
-
+                    
                     float dist = math.distance(mouse, p);
                     if(bestDistance > dist)
                     {
                         bestPoint = p;
                         bestDistance = dist;
-                        //progress2 = progress;
 
                         if(progress > 0.5)
                         {
