@@ -1,21 +1,20 @@
-using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Crener.Spline.BaseSpline;
-using Crener.Spline.BezierSpline;
 using Crener.Spline.Common;
+using Crener.Spline.Common.DataStructs;
 using Crener.Spline.Common.Interfaces;
-using Unity.Entities;
 using Unity.Mathematics;
+using UnityEditor;
+using UnityEditor.UIElements;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 namespace Crener.Spline.Linear
 {
     /// <summary>
     /// Simple spline which directly follows a set of points
     /// </summary>
-    [AddComponentMenu("Spline/2D/Linear Cubic Spline")]
-    public class LinearCubicSpline2D : BaseSpline2D, ILoopingSpline
+    [AddComponentMenu("Spline/3D/Linear Cubic Spline")]
+    public class LinearCubic3DSpline : BaseSpline3D, ILoopingSpline
     {
         [SerializeField]
         private bool looped = false;
@@ -40,21 +39,27 @@ namespace Crener.Spline.Linear
                 return SplineType.CubicLinear;
             }
         }
-        public override int SegmentPointCount => Looped ? ControlPointCount + 1 : ControlPointCount - 1;
+        public override int SegmentPointCount
+        {
+            get
+            {
+                if(ControlPointCount == 2) return 2 + (Looped ? 1 : 0);
+                return ControlPointCount + (Looped ? 1 : -1);
+            }
+        }
 
         private const float c_splineMidPoint = 0.5f;
 
-        public override float2 GetPoint(float progress)
+        public override float3 GetPoint(float progress)
         {
             if(ControlPointCount == 0)
-                return float2.zero;
+                return float3.zero;
             else if(ControlPointCount == 1)
                 return GetControlPoint(0);
             else if(ControlPointCount == 2)
                 return math.lerp(GetControlPoint(0), GetControlPoint(1), math.clamp(progress, 0f, 1f));
-            else if(progress <= 0f) progress = 0f;
-            else if(progress > 1f) progress = 1f;
 
+            progress = math.clamp(progress, 0f, 1f);
             int aIndex = FindSegmentIndex(progress);
             float pointProgress = SegmentProgress(progress, aIndex);
 
@@ -62,13 +67,16 @@ namespace Crener.Spline.Linear
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        protected override float2 SplineInterpolation(float t, int a)
+        protected override float3 SplineInterpolation(float t, int a)
         {
-            float2 p0 = Points[a];
-            float2 p1 = Points[(a + 1) % ControlPointCount];
-            float2 p2 = Points[(a + 2) % ControlPointCount];
+            float3 p0 = Points[a];
+            float3 p1 = Points[(a + 1) % ControlPointCount];
+            
+            if(ControlPointCount == 2) return math.lerp(p0, p1, t);
+            
+            float3 p2 = Points[(a + 2) % ControlPointCount];
 
-            float2 i0, i1;
+            float3 i0, i1;
             if(looped)
             {
                 i0 = math.lerp(p0, p1, c_splineMidPoint);
@@ -101,8 +109,8 @@ namespace Crener.Spline.Linear
                 }
             }
 
-            float2 pp0 = math.lerp(i0, p1, t);
-            float2 pp1 = math.lerp(p1, i1, t);
+            float3 pp0 = math.lerp(i0, p1, t);
+            float3 pp1 = math.lerp(p1, i1, t);
 
             return math.lerp(pp0, pp1, t);
         }

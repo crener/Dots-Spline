@@ -103,7 +103,7 @@ namespace Crener.Spline.Common
                 case SplineType.Bezier:
                 //todo
                 case SplineType.CubicLinear:
-                //todo
+                    return new LinearCubicSpline3DPointJob {Spline = spline.SplineEntityData.Value};
                 case SplineType.Cubic:
                 //todo
                 case SplineType.BSpline:

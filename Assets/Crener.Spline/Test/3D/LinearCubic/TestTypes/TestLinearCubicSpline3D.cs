@@ -4,19 +4,19 @@ using Crener.Spline.Common;
 using Crener.Spline.Linear;
 using Unity.Mathematics;
 
-namespace Crener.Spline.Test._2D.LinearCubic.TestTypes
+namespace Crener.Spline.Test._3D.LinearCubic.TestTypes
 {
     /// <summary>
     /// Unity won't allow the creation of a component if it's inside the editor folder so this wraps the type to allow tests to run 
     /// </summary>
-    public class MeaninglessTestWrapper2
+    public class MeaninglessTestWrapper
     {
         /// <summary>
         /// override of <see cref="BezierSpline2DSimple"/> which implements the spline test interface
         /// </summary>
-        public class TestLinearCubic2DSplineSimple : LinearCubic2DSpline, ISimpleTestSpline
+        public class TestLinearCubicSpline3DSimple : LinearCubic3DSpline, ISimpleTestSpline3D
         {
-            public IReadOnlyList<float2> ControlPoints => Points;
+            public IReadOnlyList<float3> ControlPoints => Points;
             public IReadOnlyList<float> Times => SegmentLength;
             public IReadOnlyList<SplineEditMode> Modes
             {
@@ -36,13 +36,11 @@ namespace Crener.Spline.Test._2D.LinearCubic.TestTypes
             
             public int ExpectedTimeCount(int controlPoints)
             {
-                if(controlPoints == 0) return 1;
-                if(controlPoints == 1) return 1;
-                if(controlPoints == 2) return 1;
-                
+                if(ControlPointCount <= 2) return math.max(1, controlPoints - 1);
                 return math.max(1, controlPoints - 2);
             }
-            public float2 GetControlPoint(int i, SplinePoint point) => GetControlPoint(i);
+
+            public float3 GetControlPoint(int i, SplinePoint point) => GetControlPoint(i);
         }
     }
 }

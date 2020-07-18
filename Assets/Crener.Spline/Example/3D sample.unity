@@ -147,27 +147,42 @@ MonoBehaviour:
   m_GameObject: {fileID: 272471556}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 57f57a0277914377a25a1f367d4c7fa1, type: 3}
+  m_Script: {fileID: 11500000, guid: d3830ce0480b43e6a861fe88811cde88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   SegmentLength:
-  - 0.43689415
-  - 0.75804466
+  - 0.2210569
+  - 0.37280637
+  - 0.49859428
+  - 0.63094735
+  - 0.7301338
   - 1
-  LengthCache: 97.59429
+  LengthCache: 48.83254
   Points:
-  - x: -59.53082
-    y: 14.144487
-    z: 2.803154
-  - x: -21.068768
-    y: -4.044629
-    z: 0
-  - x: 10.260286
-    y: -4.8873816
-    z: 0.36006165
-  - x: 32.402916
-    y: 1.7603664
-    z: 5.167037
+  - x: -7.779175
+    y: 15.074963
+    z: 4.693448
+  - x: -6.414539
+    y: 7.2351875
+    z: 5.1579857
+  - x: 1.0803252
+    y: 16.446947
+    z: 9.78401
+  - x: 3.6273675
+    y: 8.977528
+    z: 4.342265
+  - x: 8.261758
+    y: 13.943101
+    z: 11.235679
+  - x: 11.774639
+    y: 16.285557
+    z: 6.1220675
+  - x: 9.715892
+    y: 20.694519
+    z: 5.912241
+  - x: -1.7481475
+    y: 19.935614
+    z: 6.5145626
   looped: 0
 --- !u!4 &272471558
 Transform:
@@ -177,7 +192,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 272471556}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 16.922401, y: -7.7448196, z: -13.937778}
+  m_LocalPosition: {x: 23.5, y: -7.7448196, z: 48.54}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 635739486}

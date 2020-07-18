@@ -11,28 +11,28 @@ namespace Crener.Spline.Editor._2D
     /// <summary>
     /// Editor for <see cref="BezierSpline2DSimple"/> which allows for adjusting control points.
     /// </summary>
-    [CustomEditor(typeof(LinearCubicSpline2D))]
+    [CustomEditor(typeof(LinearCubic2DSpline))]
     public class LinearCubic2DEditor : Base2DEditor
     {
-        private LinearCubicSpline2D cubicSpline = null;
+        private LinearCubic2DSpline cubic2DSpline = null;
 
         public override void OnInspectorGUI()
         {
-            if(target != cubicSpline)
+            if(target != cubic2DSpline)
             {
-                cubicSpline = (LinearCubicSpline2D) target;
-                ChangeTransform(cubicSpline.transform);
+                cubic2DSpline = (LinearCubic2DSpline) target;
+                ChangeTransform(cubic2DSpline.transform);
                 m_editing = false;
                 m_editControlPoint = null;
             }
 
-            if(cubicSpline == null)
+            if(cubic2DSpline == null)
             {
                 EditorGUILayout.LabelField($"Unknown Type inspected by '{nameof(LinearCubic2DEditor)}'");
                 return;
             }
 
-            OnInspectorGUI(cubicSpline);
+            OnInspectorGUI(cubic2DSpline);
         }
 
         private void OnSceneGUI()
@@ -41,7 +41,7 @@ namespace Crener.Spline.Editor._2D
             {
                 if(m_debugPointQty > 0)
                 {
-                    RenderIntermediateSplinePoints(m_debugPointQty, cubicSpline);
+                    RenderIntermediateSplinePoints(m_debugPointQty, cubic2DSpline);
                 }
 
                 return;
@@ -50,11 +50,11 @@ namespace Crener.Spline.Editor._2D
             if(m_editControlPoint.HasValue && EditorInputAbstractions.AddPointMode())
                 m_editControlPoint = null;
 
-            RenderControlPoints(cubicSpline);
+            RenderControlPoints(cubic2DSpline);
 
             if(EditorInputAbstractions.AddPointMode())
             {
-                PointSelection(cubicSpline);
+                PointSelection(cubic2DSpline);
 
                 if(Event.current.type == EventType.MouseMove)
                     SceneView.RepaintAll();

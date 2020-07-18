@@ -12,8 +12,8 @@ namespace Crener.Spline.Editor._3D
     {
         private Transform m_sourceTrans = null;
         private Vector3 m_lastTransPosition = Vector3.zero;
-        private Camera m_lastSceneCamera = null;
-        private Transform m_lastSceneCameraTrans = null;
+        protected Camera LastSceneCamera { get; private set; } = null;
+        protected Transform LastSceneCameraTrans{ get; private set; }  = null;
 
         // editor settings
         protected bool m_editing = false;
@@ -230,8 +230,8 @@ namespace Crener.Spline.Editor._3D
 
         protected void CheckActiveCamera()
         {
-            m_lastSceneCamera = SceneView.lastActiveSceneView.camera;
-            m_lastSceneCameraTrans = m_lastSceneCamera.transform;
+            LastSceneCamera = SceneView.lastActiveSceneView.camera;
+            LastSceneCameraTrans = LastSceneCamera.transform;
         }
 
         /// <summary>
@@ -258,7 +258,7 @@ namespace Crener.Spline.Editor._3D
                     Quaternion handleRotation = Quaternion.identity;
                     if(Tools.pivotRotation == PivotRotation.Local && SceneView.lastActiveSceneView != null)
                         // point handle away from camera
-                        handleRotation = m_lastSceneCameraTrans.rotation;
+                        handleRotation = LastSceneCameraTrans.rotation;
 
                     Vector3 pos = Handles.DoPositionHandle(editorPosition, handleRotation);
 
@@ -300,7 +300,7 @@ namespace Crener.Spline.Editor._3D
             index = 0;
             splinePoint = float3.zero;
 
-            float2 mouseComparison = new float2(mouse.x, m_lastSceneCamera.pixelHeight - mouse.y);
+            float2 mouseComparison = new float2(mouse.x, LastSceneCamera.pixelHeight - mouse.y);
             float bestDistance = float.MaxValue;
 
             // this could potentially be cached as long as the spline doesn't change and the camera is at the same position
@@ -310,7 +310,7 @@ namespace Crener.Spline.Editor._3D
                 {
                     float progress = s / 64f;
                     float3 p = spline.GetPoint(progress, i - 1);
-                    Vector3 screenPosition = m_lastSceneCamera.WorldToScreenPoint(p);
+                    Vector3 screenPosition = LastSceneCamera.WorldToScreenPoint(p);
 
                     HandleDrawCross(screenPosition, 0.5f);
 
@@ -327,10 +327,10 @@ namespace Crener.Spline.Editor._3D
             // convert the spline point and mouse position into the new point position
             if(!splinePoint.Equals(float3.zero))
             {
-                Vector3 camPosition = m_lastSceneCameraTrans.position;
+                Vector3 camPosition = LastSceneCameraTrans.position;
 
                 float worldDistance = math.distance(splinePoint, camPosition);
-                Ray cameraRay = m_lastSceneCamera.ScreenPointToRay(new Vector3(mouseComparison.x, mouseComparison.y, 0f));
+                Ray cameraRay = LastSceneCamera.ScreenPointToRay(new Vector3(mouseComparison.x, mouseComparison.y, 0f));
 
                 creationPoint = cameraRay.GetPoint(worldDistance);
                 return true;
@@ -356,7 +356,7 @@ namespace Crener.Spline.Editor._3D
             }
         }
 
-        private static void HandleDrawCross(Vector3 location, float sizeMultiplier = 1f)
+        protected static void HandleDrawCross(Vector3 location, float sizeMultiplier = 1f)
         {
             Vector3 worldLocation = new Vector3(location.x, location.y, location.z);
             float handleSize = HandleUtility.GetHandleSize(worldLocation) * sizeMultiplier;

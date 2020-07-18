@@ -17,7 +17,7 @@ namespace Crener.Spline.Test._2D.LinearCubic
         protected override ISimpleTestSpline CreateNewSpline()
         {
             GameObject game = new GameObject();
-            ISimpleTestSpline spline = game.AddComponent<MeaninglessTestWrapper2.TestLinearCubicSpline2DSimple>();
+            ISimpleTestSpline spline = game.AddComponent<MeaninglessTestWrapper2.TestLinearCubic2DSplineSimple>();
 
             return spline;
         }

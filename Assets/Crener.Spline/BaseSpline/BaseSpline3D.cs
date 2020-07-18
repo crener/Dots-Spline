@@ -130,7 +130,7 @@ namespace Crener.Spline.BaseSpline
         /// </summary>
         /// <param name="progress"></param>
         /// <returns>point on spline</returns>
-        public float3 GetPoint(float progress)
+        public virtual float3 GetPoint(float progress)
         {
             if(ControlPointCount == 0)
                 return float3.zero;

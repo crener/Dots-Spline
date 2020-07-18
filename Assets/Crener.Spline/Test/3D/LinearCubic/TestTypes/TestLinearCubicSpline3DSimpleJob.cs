@@ -5,16 +5,16 @@ using Crener.Spline.Linear;
 using NUnit.Framework;
 using Unity.Mathematics;
 
-namespace Crener.Spline.Test._2D.LinearCubic.TestTypes
+namespace Crener.Spline.Test._3D.LinearCubic.TestTypes
 {
     /// <summary>
     /// Unity won't allow the creation of a component if it's inside the editor folder so this wraps the type to allow tests to run 
     /// </summary>
-    public class MeaninglessTestWrapper
+    public class MeaninglessTestWrapper2
     {
-        public class TestLinearCubic2DSplineSimpleJob : LinearCubic2DSpline, ISimpleTestSpline
+        public class TestLinearCubicSpline3DSimpleJob : LinearCubic3DSpline, ISimpleTestSpline3D
         {
-            public IReadOnlyList<float2> ControlPoints => SplineEntityData.Value.Points.ToArray();
+            public IReadOnlyList<float3> ControlPoints => SplineEntityData.Value.Points.ToArray();
             public IReadOnlyList<float> Times => SplineEntityData.Value.Time.ToArray();
             public IReadOnlyList<SplineEditMode> Modes
             {
@@ -30,13 +30,13 @@ namespace Crener.Spline.Test._2D.LinearCubic.TestTypes
                 }
             }
 
-            public new float2 GetPoint(float progress)
+            public new float3 GetPoint(float progress)
             {
                 ClearData();
                 ConvertData();
 
                 Assert.IsTrue(SplineEntityData.HasValue, "Failed to generate spline");
-                ISplineJob2D job = this.ExtractJob(progress);
+                ISplineJob3D job = this.ExtractJob(progress);
                 job.Execute();
 
                 return job.Result;
@@ -46,14 +46,11 @@ namespace Crener.Spline.Test._2D.LinearCubic.TestTypes
 
             public int ExpectedTimeCount(int controlPoints)
             {
-                if(controlPoints == 0) return 1;
-                if(controlPoints == 1) return 1;
-                if(controlPoints == 2) return 1;
-                
+                if(ControlPointCount <= 2) return math.max(1, controlPoints - 1);
                 return math.max(1, controlPoints - 2);
             }
             
-            public float2 GetControlPoint(int i, SplinePoint point) => GetControlPoint(i);
+            public float3 GetControlPoint(int i, SplinePoint point) => GetControlPoint(i);
         }
     }
 }

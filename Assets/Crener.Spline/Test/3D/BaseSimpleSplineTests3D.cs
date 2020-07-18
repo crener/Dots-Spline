@@ -402,8 +402,6 @@ namespace Crener.Spline.Test._3D
             Assert.AreEqual(2f, testSpline.Length());
 
             Assert.AreEqual(testSpline.ExpectedTimeCount(testSpline.ControlPointCount), testSpline.Times.Count);
-            //Assert.AreEqual(0.5f, testSpline.Times[0]);
-            //Assert.AreEqual(1f, testSpline.Times[1]);
 
             TestHelpers.CheckFloat3(a, testSpline.GetPoint(0f));
             TestHelpers.CheckFloat3(new float3(1f, 0f, 0f), testSpline.GetPoint(0.5f));

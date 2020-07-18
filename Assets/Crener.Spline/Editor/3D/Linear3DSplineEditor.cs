@@ -7,9 +7,6 @@ using UnityEngine;
 
 namespace Crener.Spline.Editor._3D
 {
-    /// <summary>
-    /// Editor for <see cref="Linear2DSpline"/> which allows for adjusting control points.
-    /// </summary>
     [CustomEditor(typeof(Linear3DSpline))]
     public class Linear3DSplineEditor : Base3DEditor
     {

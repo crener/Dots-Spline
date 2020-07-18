@@ -7,7 +7,7 @@ namespace Crener.Spline.Test._3D.Linear
     /// <summary>
     /// Tests Point to point implementation of basic 2D spline functionality
     /// </summary>
-    public class BaseLinearJobTests2D : LinearBaseTest3DAdapter
+    public class BaseLinearJobTests3D : LinearBaseTest3DAdapter
     {
         protected override ISimpleTestSpline3D CreateNewSpline()
         {

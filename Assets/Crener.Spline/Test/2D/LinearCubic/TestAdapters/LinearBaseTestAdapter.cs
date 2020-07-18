@@ -106,6 +106,36 @@ namespace Crener.Spline.Test._2D.LinearCubic.TestAdapters
 
             Assert.AreNotEqual(bottomLeft, testSpline.GetPoint(0.5f));
         }
+        
+        [Test]
+        public void Point3()
+        {
+            ISimpleTestSpline testSpline = PrepareSpline();
+
+            float2 a = float2.zero;
+            float2 b = new float2(2.5f, 0f);
+            float2 c = new float2(7.5f, 0f);
+            float2 d = new float2(10f, 0f);
+            
+            testSpline.AddControlPoint(a);
+            testSpline.AddControlPoint(b);
+            testSpline.AddControlPoint(c);
+            testSpline.AddControlPoint(d);
+
+            Assert.AreEqual(4, testSpline.ControlPointCount);
+            Assert.AreEqual(4, testSpline.Modes.Count);
+            Assert.AreEqual(10f, testSpline.Length());
+
+            Assert.AreEqual(testSpline.ExpectedTimeCount(testSpline.ControlPointCount), testSpline.Times.Count);
+            Assert.AreEqual(0.5f, testSpline.Times[0]);
+            Assert.AreEqual(1f, testSpline.Times[1]);
+
+            TestHelpers.CheckFloat2(a, testSpline.GetPoint(0f));
+            TestHelpers.CheckFloat2(new float2(5f, 0f), testSpline.GetPoint(0.5f));
+            TestHelpers.CheckFloat2(d, testSpline.GetPoint(1f));
+            TestHelpers.CheckFloat2(d, testSpline.GetPoint(1.5f));
+            TestHelpers.CheckFloat2(d, testSpline.GetPoint(5f));
+        }
 
         // todo add tests which check the error range in the first segment and last segment
         // once the weight has been removed from those first points
