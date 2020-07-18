@@ -1,3 +1,4 @@
+using Crener.Spline.Common.Interfaces;
 using Crener.Spline.Test._3D.LinearCubic.TestTypes;
 using Crener.Spline.Test._3D.LinearCubic.TestAdapters;
 using UnityEngine;
@@ -13,6 +14,17 @@ namespace Crener.Spline.Test._3D.LinearCubic
         {
             GameObject game = new GameObject();
             ISimpleTestSpline3D spline = game.AddComponent<MeaninglessTestWrapper.TestLinearCubicSpline3DSimple>();
+
+            return spline;
+        }
+    }
+    
+    public class LoopingLinearCubicTests3D : BaseLoopingTests3D
+    {
+        protected override ILoopingSpline CreateNewSpline()
+        {
+            GameObject game = new GameObject();
+            ILoopingSpline spline = game.AddComponent<MeaninglessTestWrapper.TestLinearCubicSpline3DSimple>();
 
             return spline;
         }

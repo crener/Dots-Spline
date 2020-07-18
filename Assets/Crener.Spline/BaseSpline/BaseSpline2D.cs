@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Crener.Spline.Common;
@@ -142,7 +143,11 @@ namespace Crener.Spline.BaseSpline
             else if(progress <= 0f || ControlPointCount == 1)
                 return GetControlPoint(0);
             else if(progress >= 1f)
-                return GetControlPoint(ControlPointCount - 1);
+            {
+                if(this is ILoopingSpline looped && looped.Looped)
+                    return GetControlPoint(0);
+                return GetControlPoint((ControlPointCount - 1));
+            }
 
             int aIndex = FindSegmentIndex(progress);
             float pointProgress = SegmentProgress(progress, aIndex);
@@ -152,7 +157,7 @@ namespace Crener.Spline.BaseSpline
         protected override float LengthBetweenPoints(int a, int resolution = 64)
         {
             float currentLength = 0;
-            
+
             float2 aPoint = SplineInterpolation(0f, a);
             for (float i = 1; i <= resolution; i++)
             {
@@ -229,7 +234,18 @@ namespace Crener.Spline.BaseSpline
         protected virtual Spline2DData ConvertData()
         {
             ClearData();
-            NativeArray<float2> points = new NativeArray<float2>(Points.ToArray(), Allocator.Persistent);
+
+            float2[] pointData;
+            if(this is ILoopingSpline loopSpline && loopSpline.Looped)
+            {
+                // add an extra point to the end of the array
+                pointData = new float2[Points.Count + 1];
+                Array.Copy(Points.ToArray(), pointData, Points.Count);
+                pointData[Points.Count] = Points[0];
+            }
+            else pointData = Points.ToArray();
+
+            NativeArray<float2> points = new NativeArray<float2>(pointData, Allocator.Persistent);
             NativeArray<float> time = new NativeArray<float>(SegmentLength.ToArray(), Allocator.Persistent);
 
             Assert.IsFalse(hasSplineEntityData);

@@ -222,3 +222,7 @@ ass2/
 
 *.csproj
 *.sln
+
+# Test run results
+Assets/Resources/PerformanceTestRunInfo.json
+Assets/Resources/PerformanceTestRunInfo.json.meta

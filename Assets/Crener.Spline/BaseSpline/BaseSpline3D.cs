@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Crener.Spline.Common;
@@ -17,7 +18,7 @@ namespace Crener.Spline.BaseSpline
     {
         [SerializeField]
         protected List<float3> Points = new List<float3>();
-        
+
         private Spline3DData? m_splineData = null;
 
         public Spline3DData? SplineEntityData
@@ -29,7 +30,7 @@ namespace Crener.Spline.BaseSpline
             }
             protected set => m_splineData = value;
         }
-        
+
         /// <summary>
         /// true if Spline Entity Data has been initialized, calling <see cref="SplineEntityData"/> directly will automatically generate data
         /// </summary>
@@ -39,7 +40,7 @@ namespace Crener.Spline.BaseSpline
         /// Amount of control points in the spline
         /// </summary>
         public override int ControlPointCount => Points.Count;
-        
+
         /// <summary>
         /// Retrieve a point on the spline at a specific control point
         /// </summary>
@@ -137,7 +138,11 @@ namespace Crener.Spline.BaseSpline
             if(progress <= 0f || ControlPointCount <= 1)
                 return GetControlPoint(0);
             else if(progress >= 1f)
-                return GetControlPoint(ControlPointCount - 1);
+            {
+                if(this is ILoopingSpline looped && looped.Looped)
+                    return GetControlPoint(0);
+                return GetControlPoint((ControlPointCount - 1));
+            }
 
             int aIndex = FindSegmentIndex(progress);
             float pointProgress = SegmentProgress(progress, aIndex);
@@ -148,7 +153,7 @@ namespace Crener.Spline.BaseSpline
         {
             float currentLength = 0;
 
-            float3 aPoint =  SplineInterpolation(0f, a);
+            float3 aPoint = SplineInterpolation(0f, a);
             for (float i = 1; i <= resolution; i++)
             {
                 float3 bPoint = SplineInterpolation(i / resolution, a);
@@ -158,7 +163,7 @@ namespace Crener.Spline.BaseSpline
 
             return currentLength;
         }
-        
+
         /// <summary>
         /// Gets the given point from a point segment
         /// </summary>
@@ -169,7 +174,7 @@ namespace Crener.Spline.BaseSpline
         {
             return Points[i];
         }
-        
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected abstract float3 SplineInterpolation(float t, int a);
 
@@ -214,11 +219,21 @@ namespace Crener.Spline.BaseSpline
                 }
             }
         }
-        
+
         protected virtual Spline3DData ConvertData()
         {
             ClearData();
-            NativeArray<float3> points = new NativeArray<float3>(Points.ToArray(), Allocator.Persistent);
+
+            float3[] pointData;
+            if(this is ILoopingSpline loopSpline && loopSpline.Looped)
+            {
+                pointData = new float3[Points.Count + 1];
+                Array.Copy(Points.ToArray(), pointData, Points.Count);
+                pointData[Points.Count] = Points[0];
+            }
+            else pointData = Points.ToArray();
+
+            NativeArray<float3> points = new NativeArray<float3>(pointData, Allocator.Persistent);
             NativeArray<float> time = new NativeArray<float>(SegmentLength.ToArray(), Allocator.Persistent);
 
             Assert.IsFalse(hasSplineEntityData);

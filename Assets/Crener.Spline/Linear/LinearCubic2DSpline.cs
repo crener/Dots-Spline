@@ -36,11 +36,11 @@ namespace Crener.Spline.Linear
             {
                 if(ControlPointCount == 0) return SplineType.Empty;
                 if(ControlPointCount == 1) return SplineType.Single;
-                if(ControlPointCount == 2) return SplineType.Linear;
+                if(ControlPointCount == 2 && !Looped) return SplineType.Linear;
                 return SplineType.CubicLinear;
             }
         }
-        
+
         public override int SegmentPointCount
         {
             get
@@ -58,7 +58,7 @@ namespace Crener.Spline.Linear
                 return float2.zero;
             else if(ControlPointCount == 1)
                 return GetControlPoint(0);
-            else if(ControlPointCount == 2)
+            else if(ControlPointCount == 2 && !Looped)
                 return math.lerp(GetControlPoint(0), GetControlPoint(1), math.clamp(progress, 0f, 1f));
 
             progress = math.clamp(progress, 0f, 1f);
@@ -129,6 +129,12 @@ namespace Crener.Spline.Linear
             if(ControlPointCount == 2)
             {
                 LengthCache = math.distance(Points[0], Points[1]);
+                if(looped)
+                {
+                    LengthCache *= 2;
+                    SegmentLength.Add(0.5f);
+                }
+
                 SegmentLength.Add(1f);
                 return;
             }

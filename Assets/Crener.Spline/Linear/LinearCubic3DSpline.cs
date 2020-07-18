@@ -56,7 +56,7 @@ namespace Crener.Spline.Linear
                 return float3.zero;
             else if(ControlPointCount == 1)
                 return GetControlPoint(0);
-            else if(ControlPointCount == 2)
+            else if(ControlPointCount == 2 && !Looped)
                 return math.lerp(GetControlPoint(0), GetControlPoint(1), math.clamp(progress, 0f, 1f));
 
             progress = math.clamp(progress, 0f, 1f);
@@ -130,6 +130,12 @@ namespace Crener.Spline.Linear
             if(ControlPointCount == 2)
             {
                 LengthCache = math.distance(Points[0], Points[1]);
+                if(looped)
+                {
+                    LengthCache *= 2;
+                    SegmentLength.Add(0.5f);
+                }
+
                 SegmentLength.Add(1f);
                 return;
             }

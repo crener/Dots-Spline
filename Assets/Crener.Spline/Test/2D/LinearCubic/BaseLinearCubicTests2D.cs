@@ -58,4 +58,15 @@ namespace Crener.Spline.Test._2D.LinearCubic
 
         //todo test that 3 or 4 point looped spline doesn't touch any point directly
     }
+    
+    public class LoopingLinearCubicTests2D : BaseLoopingTests2D
+    {
+        protected override ILoopingSpline CreateNewSpline()
+        {
+            GameObject game = new GameObject();
+            ILoopingSpline spline = game.AddComponent<MeaninglessTestWrapper2.TestLinearCubic2DSplineSimple>();
+
+            return spline;
+        }
+    }
 }

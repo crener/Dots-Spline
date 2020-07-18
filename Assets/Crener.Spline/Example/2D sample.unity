@@ -1318,14 +1318,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SegmentLength:
+  - 0.3340142
+  - 0.63801426
   - 1
-  LengthCache: 10.938127
+  LengthCache: 30.21701
   Points:
   - x: -25.32
     y: 21.1
+  - x: -18.211926
+    y: 28.265343
   - x: -14.449539
     y: 19.885216
-  looped: 0
+  looped: 1
 --- !u!1 &1393734955
 GameObject:
   m_ObjectHideFlags: 0
