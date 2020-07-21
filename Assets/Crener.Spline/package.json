@@ -1,15 +1,12 @@
 {
-  "name": "com.crener.Dots-Spline",
-  "version": "1.2.3",
+  "name": "com.crener.dots-spline",
+  "version": "0.7.0",
   "displayName": "DOTS Spline",
   "description": "Editor friendly unity splines",
   "unity": "2019.3",
   "dependencies": {
-    "com.unity.collab-proxy": "1.2.16",
     "com.unity.entities": "0.10.0-preview.6",
-    "com.unity.ide.rider": "2.0.3",
-    "com.unity.ide.vscode": "1.2.1",
-    "com.unity.test-framework": "1.1.14",
+    "com.unity.test-framework": "1.1.14"
  },
  "keywords": [
     "dots",
