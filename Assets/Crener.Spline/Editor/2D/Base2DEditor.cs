@@ -183,18 +183,6 @@ namespace Crener.Spline.Editor._2D
         /// <param name="spline">spline to handle control point logic for</param>
         protected void PointSelection(ISpline2DEditor spline)
         {
-            if(spline.ControlPointCount < 2)
-            {
-                if(EditorInputAbstractions.LeftClick())
-                {
-                    Undo.RecordObject(spline as Object, "Add Spline Point");
-                    
-                    spline.AddControlPoint(EditorInputAbstractions.MousePos2D());
-                }
-
-                return;
-            }
-
             float2 mouse = EditorInputAbstractions.MousePos2D();
             int splineIndex;
             float2 createPoint = ClosestPointSelection(mouse, spline, out splineIndex);
@@ -273,10 +261,15 @@ namespace Crener.Spline.Editor._2D
         /// <param name="spline">spline to check</param>
         /// <param name="index">spline index of the closest point</param>
         /// <returns>closest point on the spline to the mouse</returns>
-        protected virtual float2 ClosestPointSelection(float2 mouse, ISpline2D spline, out int index)
+        protected virtual float2 ClosestPointSelection(float2 mouse, ISpline2DEditor spline, out int index)
         {
             index = 0;
 
+            if(spline.ControlPointCount == 1)
+                return spline.GetControlPoint(0);
+            else if(spline.ControlPointCount == 0)
+                return mouse;
+            
             float2 bestPoint = float2.zero;
             float bestDistance = float.MaxValue;
 

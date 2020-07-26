@@ -70,7 +70,7 @@ namespace Crener.Spline.Editor._2D
         /// <param name="spline">spline to check</param>
         /// <param name="index">spline index of the closest point</param>
         /// <returns>closest point on the spline to the mouse</returns>
-        protected override float2 ClosestPointSelection(float2 mouse, ISpline2D spline, out int index)
+        protected override float2 ClosestPointSelection(float2 mouse, ISpline2DEditor spline, out int index)
         {
             Assert.AreSame(pointSpline, spline, "Somehow the spline changed from the start point and the point sample point");
 

@@ -68,13 +68,17 @@ namespace Crener.Spline.Editor._2D
         /// <param name="spline">spline to check</param>
         /// <param name="index">spline index of the closest point</param>
         /// <returns>closest point on the spline to the mouse</returns>
-        protected override float2 ClosestPointSelection(float2 mouse, ISpline2D spline, out int index)
+        protected override float2 ClosestPointSelection(float2 mouse, ISpline2DEditor spline, out int index)
         {
             index = 0;
 
+            if(spline.ControlPointCount == 1)
+                return spline.GetControlPoint(0);
+            else if(spline.ControlPointCount == 0)
+                return mouse;
+
             float2 bestPoint = float2.zero;
             float bestDistance = float.MaxValue;
-            //float progress2 = 0f;
 
             for (int i = 1; i < spline.SegmentPointCount; i++)
             {
@@ -88,7 +92,6 @@ namespace Crener.Spline.Editor._2D
                     {
                         bestPoint = p;
                         bestDistance = dist;
-                        //progress2 = progress;
 
                         if(progress > 0.5)
                         {
@@ -99,7 +102,6 @@ namespace Crener.Spline.Editor._2D
                 }
             }
 
-            //Debug.Log($"Failed to find closest point! (best progress: {progress2})");
             return bestPoint;
         }
     }

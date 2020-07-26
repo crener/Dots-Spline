@@ -191,18 +191,6 @@ namespace Crener.Spline.Editor._3D
         /// <param name="spline">spline to handle control point logic for</param>
         protected void PointSelection(ISpline3DEditor spline)
         {
-            // if(spline.ControlPointCount < 2)
-            // {
-            //     if(EditorInputAbstractions.LeftClick())
-            //     {
-            //         Undo.RecordObject(spline as Object, "Add Spline Point");
-            //
-            //         spline.AddControlPoint(EditorInputAbstractions.MousePos3D());
-            //     }
-            //
-            //     return;
-            // }
-
             int splineIndex;
             float3 splinePoint, splineMousePoint;
             ClosestPointSelection(Event.current.mousePosition, spline, out splineIndex, out splinePoint, out splineMousePoint);
@@ -303,10 +291,10 @@ namespace Crener.Spline.Editor._3D
             index = 0;
             float2 mouseComparison = new float2(mouse.x, LastSceneCamera.pixelHeight - mouse.y);
 
+            if(spline.ControlPointCount == 0)
+                splinePoint = EditorInputAbstractions.MousePos3D();
             if(spline.ControlPointCount == 1)
-            {
                 splinePoint = spline.GetControlPoint(0);
-            }
             else
             {
                 splinePoint = float3.zero;
