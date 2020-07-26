@@ -1,4 +1,5 @@
 using Crener.Spline.BezierSpline.Jobs;
+using Crener.Spline.BezierSpline.Jobs._3D;
 using Crener.Spline.Common.DataStructs;
 using Crener.Spline.Common.Interfaces;
 using Crener.Spline.Linear.Jobs._2D;
@@ -101,7 +102,7 @@ namespace Crener.Spline.Common
                 case SplineType.Single:
                     return new SinglePoint3DPointJob {Spline = spline.SplineEntityData.Value};
                 case SplineType.Bezier:
-                //todo
+                    return new BezierSpline3DPointJob {Spline = spline.SplineEntityData.Value};
                 case SplineType.CubicLinear:
                     return new LinearCubicSpline3DPointJob {Spline = spline.SplineEntityData.Value};
                 case SplineType.Cubic:
