@@ -1,3 +1,4 @@
+using System;
 using Crener.Spline.Common;
 using Crener.Spline.Common.Interfaces;
 using Unity.Mathematics;
@@ -5,6 +6,7 @@ using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Object = UnityEngine.Object;
 
 namespace Crener.Spline.Editor._3D
 {
@@ -13,7 +15,7 @@ namespace Crener.Spline.Editor._3D
         private Transform m_sourceTrans = null;
         private Vector3 m_lastTransPosition = Vector3.zero;
         protected Camera LastSceneCamera { get; private set; } = null;
-        protected Transform LastSceneCameraTrans{ get; private set; }  = null;
+        protected Transform LastSceneCameraTrans { get; private set; } = null;
 
         // editor settings
         protected bool m_editing = false;
@@ -189,23 +191,21 @@ namespace Crener.Spline.Editor._3D
         /// <param name="spline">spline to handle control point logic for</param>
         protected void PointSelection(ISpline3DEditor spline)
         {
-            if(spline.ControlPointCount < 2)
-            {
-                if(EditorInputAbstractions.LeftClick())
-                {
-                    Undo.RecordObject(spline as Object, "Add Spline Point");
-
-                    spline.AddControlPoint(EditorInputAbstractions.MousePos3D());
-                }
-
-                return;
-            }
+            // if(spline.ControlPointCount < 2)
+            // {
+            //     if(EditorInputAbstractions.LeftClick())
+            //     {
+            //         Undo.RecordObject(spline as Object, "Add Spline Point");
+            //
+            //         spline.AddControlPoint(EditorInputAbstractions.MousePos3D());
+            //     }
+            //
+            //     return;
+            // }
 
             int splineIndex;
             float3 splinePoint, splineMousePoint;
             ClosestPointSelection(Event.current.mousePosition, spline, out splineIndex, out splinePoint, out splineMousePoint);
-
-            //HandleDrawCross(EditorInputAbstractions.MousePos3D());
 
             if(splineIndex != m_editNewPointIndex)
             {
@@ -213,7 +213,6 @@ namespace Crener.Spline.Editor._3D
                 Repaint(); // force refresh inspector
             }
 
-            //Vector3 newPointPosition = m_lastSceneCamera.ScreenToWorldPoint(new Vector3(mouse.x, mouse.y, 0f)); 
             Handles.color = Color.red;
             Handles.DrawLine(splinePoint, splineMousePoint);
 
@@ -222,7 +221,11 @@ namespace Crener.Spline.Editor._3D
                 Undo.RecordObject(objSpline, "Insert Spline Point");
                 EditorUtility.SetDirty(objSpline);
 
-                spline.InsertControlPoint(m_editNewPointIndex, splineMousePoint);
+                if((m_editNewPointIndex == spline.ControlPointCount - 1 || spline.ControlPointCount == 1) &&
+                   splinePoint.Equals(spline.GetControlPoint(m_editNewPointIndex)))
+                    spline.AddControlPoint(splineMousePoint);
+                else
+                    spline.InsertControlPoint(m_editNewPointIndex, splineMousePoint);
 
                 SceneView.RepaintAll();
             }
@@ -294,32 +297,39 @@ namespace Crener.Spline.Editor._3D
         /// <param name="splinePoint">Point on spline that is closest</param>
         /// <param name="creationPoint">point that aligned to the mouse point relative to the camera</param>
         /// <returns>true is point could be found</returns>
-        protected virtual bool ClosestPointSelection(float2 mouse, ISpline3D spline, out int index, out float3 splinePoint,
+        protected virtual bool ClosestPointSelection(float2 mouse, ISpline3DEditor spline, out int index, out float3 splinePoint,
             out float3 creationPoint)
         {
             index = 0;
-            splinePoint = float3.zero;
-
             float2 mouseComparison = new float2(mouse.x, LastSceneCamera.pixelHeight - mouse.y);
-            float bestDistance = float.MaxValue;
 
-            // this could potentially be cached as long as the spline doesn't change and the camera is at the same position
-            for (int i = 1; i < spline.SegmentPointCount; i++)
+            if(spline.ControlPointCount == 1)
             {
-                for (int s = 0; s <= 64; s++)
+                splinePoint = spline.GetControlPoint(0);
+            }
+            else
+            {
+                splinePoint = float3.zero;
+                float bestDistance = float.MaxValue;
+
+                // this could potentially be cached as long as the spline doesn't change and the camera is at the same position
+                for (int i = 1; i < spline.SegmentPointCount; i++)
                 {
-                    float progress = s / 64f;
-                    float3 p = spline.GetPoint(progress, i - 1);
-                    Vector3 screenPosition = LastSceneCamera.WorldToScreenPoint(p);
-
-                    HandleDrawCross(screenPosition, 0.5f);
-
-                    float dist = math.distance(mouseComparison, new float2(screenPosition.x, screenPosition.y));
-                    if(bestDistance > dist)
+                    for (int s = 0; s <= 64; s++)
                     {
-                        splinePoint = p;
-                        index = i;
-                        bestDistance = dist;
+                        float progress = s / 64f;
+                        float3 p = spline.GetPoint(progress, i - 1);
+                        Vector3 screenPosition = LastSceneCamera.WorldToScreenPoint(p);
+
+                        HandleDrawCross(screenPosition, 0.5f);
+
+                        float dist = math.distance(mouseComparison, new float2(screenPosition.x, screenPosition.y));
+                        if(bestDistance > dist)
+                        {
+                            splinePoint = p;
+                            index = i;
+                            bestDistance = dist;
+                        }
                     }
                 }
             }

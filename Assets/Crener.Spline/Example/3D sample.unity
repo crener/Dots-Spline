@@ -121,6 +121,98 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &75190060
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 75190061}
+  - component: {fileID: 75190062}
+  m_Layer: 0
+  m_Name: Bezier Spline
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &75190061
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 75190060}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 23.2, y: -1.81, z: 29.1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 635739486}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &75190062
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 75190060}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98a87d1e226643f7829e294de2da21b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SegmentLength:
+  - 0.16801776
+  - 0.37865898
+  - 0.94260544
+  - 1
+  LengthCache: 108.69696
+  Points:
+  - x: -17.232521
+    y: 15.546598
+    z: 8.569526
+  - x: -14.229091
+    y: 15.0004835
+    z: 7.8737297
+  - x: -3.6120338
+    y: 13.015839
+    z: 5.135065
+  - x: 0.21612942
+    y: 12.376356
+    z: 4.207966
+  - x: 7.4388638
+    y: 11.169822
+    z: 2.4587722
+  - x: 13.259304
+    y: 8.215442
+    z: 0.98290217
+  - x: 22.17796
+    y: 8.213737
+    z: -0.40686226
+  - x: 30.684956
+    y: 8.2121105
+    z: -1.7324797
+  - x: 69.99529
+    y: 12.957303
+    z: -6.33442
+  - x: 82.97659
+    y: 12.855606
+    z: -6.2670918
+  - x: 83.973366
+    y: 12.93592
+    z: -7.2634487
+  - x: 86.51427
+    y: 13.140649
+    z: -9.53945
+  - x: 87.51104
+    y: 13.220963
+    z: -10.535807
+  PointEdit: 0000000000000000000000000000000000000000
+  arkParameterization: 0
+  arkLength: 0.1
 --- !u!1 &272471556
 GameObject:
   m_ObjectHideFlags: 0
@@ -310,6 +402,8 @@ Transform:
   m_Children:
   - {fileID: 681800330}
   - {fileID: 272471558}
+  - {fileID: 75190061}
+  - {fileID: 1293263844}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -408,6 +502,68 @@ MonoBehaviour:
     y: 100.28737
     z: 118.32743
   looped: 1
+--- !u!1 &1293263843
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1293263844}
+  - component: {fileID: 1293263845}
+  m_Layer: 0
+  m_Name: Bezier Spline (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1293263844
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1293263843}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 20.6, y: -1.81, z: 19}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 635739486}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1293263845
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1293263843}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98a87d1e226643f7829e294de2da21b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SegmentLength:
+  - 1
+  LengthCache: 4.743377
+  Points:
+  - x: -0.20134735
+    y: 12.855606
+    z: -8.188042
+  - x: 0.60423666
+    y: 12.277385
+    z: -8.317249
+  - x: 2.8142571
+    y: 10.691106
+    z: -8.671717
+  - x: 3.619841
+    y: 10.1128845
+    z: -8.800924
+  PointEdit: 0000000000000000
+  arkParameterization: 0
+  arkLength: 0.1
 --- !u!1 &1927682733
 GameObject:
   m_ObjectHideFlags: 0

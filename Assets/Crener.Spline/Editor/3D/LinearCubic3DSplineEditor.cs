@@ -67,7 +67,7 @@ namespace Crener.Spline.Editor._3D
         /// <param name="spline">spline to check</param>
         /// <param name="index">spline index of the closest point</param>
         /// <returns>closest point on the spline to the mouse</returns>
-        protected override bool ClosestPointSelection(float2 mouse, ISpline3D spline, out int index, out float3 splinePoint,
+        protected override bool ClosestPointSelection(float2 mouse, ISpline3DEditor spline, out int index, out float3 splinePoint,
             out float3 creationPoint)
         {
             index = 0;
