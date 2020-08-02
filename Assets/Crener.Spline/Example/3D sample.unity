@@ -276,6 +276,8 @@ MonoBehaviour:
     y: 19.935614
     z: 6.5145626
   looped: 0
+  arkParameterization: 0
+  arkLength: 0.1
 --- !u!4 &272471558
 Transform:
   m_ObjectHideFlags: 0
@@ -373,6 +375,85 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 27.390001, z: 0}
+--- !u!1 &408329335
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 408329336}
+  - component: {fileID: 408329337}
+  m_Layer: 0
+  m_Name: Cubic Linear Spline (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &408329336
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 408329335}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 23.5, y: -7.7448196, z: 48.54}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 635739486}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &408329337
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 408329335}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3830ce0480b43e6a861fe88811cde88, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SegmentLength:
+  - 0.2210569
+  - 0.37280637
+  - 0.49859428
+  - 0.63094735
+  - 0.7301338
+  - 1
+  LengthCache: 48.83254
+  Points:
+  - x: -7.779175
+    y: 15.074963
+    z: 4.693448
+  - x: -6.414539
+    y: 7.2351875
+    z: 5.1579857
+  - x: 1.0803252
+    y: 16.446947
+    z: 9.78401
+  - x: 3.6273675
+    y: 8.977528
+    z: 4.342265
+  - x: 8.261758
+    y: 13.943101
+    z: 11.235679
+  - x: 11.774639
+    y: 16.285557
+    z: 6.1220675
+  - x: 9.715892
+    y: 20.694519
+    z: 5.912241
+  - x: -1.7481475
+    y: 19.935614
+    z: 6.5145626
+  looped: 0
+  arkParameterization: 1
+  arkLength: 0.04
 --- !u!1 &635739485
 GameObject:
   m_ObjectHideFlags: 0
@@ -403,6 +484,7 @@ Transform:
   - {fileID: 681800330}
   - {fileID: 272471558}
   - {fileID: 75190061}
+  - {fileID: 408329336}
   - {fileID: 1293263844}
   m_Father: {fileID: 0}
   m_RootOrder: 2
@@ -531,7 +613,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 635739486}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1293263845
 MonoBehaviour:
@@ -564,6 +646,36 @@ MonoBehaviour:
   PointEdit: 0000000000000000
   arkParameterization: 0
   arkLength: 0.1
+--- !u!1 &1295795600
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1295795601}
+  m_Layer: 0
+  m_Name: Plane Splines
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1295795601
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1295795600}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1927682733
 GameObject:
   m_ObjectHideFlags: 0

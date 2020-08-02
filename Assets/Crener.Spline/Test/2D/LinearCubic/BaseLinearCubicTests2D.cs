@@ -2,6 +2,7 @@ using Crener.Spline.Common;
 using Crener.Spline.Common.Interfaces;
 using Crener.Spline.Test._2D.LinearCubic.TestAdapters;
 using Crener.Spline.Test._2D.LinearCubic.TestTypes;
+using Crener.Spline.Test.BaseTests;
 using Crener.Spline.Test.Helpers;
 using NUnit.Framework;
 using Unity.Mathematics;
@@ -65,6 +66,17 @@ namespace Crener.Spline.Test._2D.LinearCubic
         {
             GameObject game = new GameObject();
             ILoopingSpline spline = game.AddComponent<MeaninglessTestWrapper2.TestLinearCubic2DSplineSimple>();
+
+            return spline;
+        }
+    }
+    
+    public class ArkLinearCubicTests2D : BaseArkTests2D
+    {
+        protected override IArkableSpline CreateNewSpline()
+        {
+            GameObject game = new GameObject();
+            IArkableSpline spline = game.AddComponent<MeaninglessTestWrapper2.TestLinearCubic2DSplineSimple>();
 
             return spline;
         }

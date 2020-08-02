@@ -14,10 +14,14 @@ namespace Crener.Spline.Linear
     /// Simple spline which directly follows a set of points
     /// </summary>
     [AddComponentMenu("Spline/3D/Linear Cubic Spline")]
-    public class LinearCubic3DSpline : BaseSpline3D, ILoopingSpline
+    public class LinearCubic3DSpline : BaseSpline3D, ILoopingSpline, IArkableSpline
     {
         [SerializeField]
         private bool looped = false;
+        [SerializeField, Tooltip("Ensures constant length between points in spline")]
+        private bool arkParameterization = false;
+        [SerializeField]
+        private float arkLength = 0.1f;
 
         public bool Looped
         {
@@ -26,6 +30,33 @@ namespace Crener.Spline.Linear
             {
                 looped = value;
                 RecalculateLengthBias();
+            }
+        }        
+        
+        public bool ArkParameterization
+        {
+            get => arkParameterization;
+            set
+            {
+                if(arkParameterization != value)
+                {
+                    arkParameterization = value;
+
+                    ClearData();
+                }
+            }
+        }
+
+        public float ArkLength
+        {
+            get => arkLength;
+            set
+            {
+                if(arkLength != value)
+                {
+                    arkLength = value;
+                    ClearData();
+                }
             }
         }
 
@@ -36,7 +67,7 @@ namespace Crener.Spline.Linear
                 if(ControlPointCount == 0) return SplineType.Empty;
                 if(ControlPointCount == 1) return SplineType.Single;
                 if(ControlPointCount == 2) return SplineType.Linear;
-                return SplineType.CubicLinear;
+                return ArkParameterization ? SplineType.Linear : SplineType.CubicLinear;
             }
         }
         public override int SegmentPointCount

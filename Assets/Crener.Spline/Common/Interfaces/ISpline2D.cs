@@ -11,7 +11,6 @@ namespace Crener.Spline.Common.Interfaces
     public interface ISpline2D : ISpline, IConvertGameObjectToEntity
     {
         Spline2DData? SplineEntityData { get; }
-        SplineType SplineDataType { get; }
 
         /// <summary>
         /// Retrieve a point on the spline

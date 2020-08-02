@@ -1,6 +1,7 @@
 using Crener.Spline.Common.Interfaces;
 using Crener.Spline.Test._2D.Linear.TestAdapters;
 using Crener.Spline.Test._2D.Linear.TestTypes;
+using Crener.Spline.Test.BaseTests;
 using UnityEngine;
 
 namespace Crener.Spline.Test._2D.Linear

@@ -40,7 +40,6 @@ namespace Crener.Spline.BezierSpline
                 if(arkParameterization != value)
                 {
                     arkParameterization = value;
-
                     ClearData();
                 }
             }
@@ -306,7 +305,7 @@ namespace Crener.Spline.BezierSpline
             if(ArkParameterization)
             {
                 Assert.IsFalse(hasSplineEntityData);
-                SplineEntityData = SplineArkConversion();
+                SplineEntityData = SplineArkConversion(ArkLength);
             }
             else
             {
@@ -329,10 +328,10 @@ namespace Crener.Spline.BezierSpline
         /// Convert the spline into smaller linear segments with an equal distance between each point (see: <see cref="ArkLength"/>)
         /// </summary>
         /// <returns>Linear spline data</returns>
-        private Spline3DData SplineArkConversion()
+        protected override Spline3DData SplineArkConversion(float length)
         {
             float previousTime = 0;
-            float normalizedArkLength = math.max(0.001f, ArkLength);
+            float normalizedArkLength = math.max(0.001f, length);
             float splineLength = Length();
             double splineCompleted = 0f;
             List<float3> points = new List<float3>((int) (splineLength / normalizedArkLength * 1.3f));

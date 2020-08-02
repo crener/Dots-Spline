@@ -1,58 +1,12 @@
-using System;
-using System.Linq;
-using System.Runtime.InteropServices;
 using Crener.Spline.Common.Interfaces;
 using Crener.Spline.Test.Helpers;
 using NUnit.Framework;
 using Unity.Mathematics;
-using UnityEngine.Experimental.GlobalIllumination;
 
-namespace Crener.Spline.Test
+namespace Crener.Spline.Test.BaseTests
 {
-    public abstract class BaseLoopingTests : SelfCleanUpTestSet
+    public abstract class BaseLoopingTests : TransferableTestSet<ILoopingSpline>
     {
-        protected abstract ILoopingSpline CreateNewSpline();
-
-        /// <summary>
-        /// Create a new spline and validates that it is ready for testing
-        /// </summary>
-        protected ILoopingSpline PrepareSpline()
-        {
-            ILoopingSpline spline = CreateNewSpline();
-            Assert.IsNotNull(spline);
-
-            TestHelpers.ClearSpline(spline);
-            m_disposables.Add(spline);
-
-            spline.Looped = false;
-            return spline;
-        }
-
-        /// <summary>
-        /// Abstraction of adding a point so that 2D and 3D can share the same tests
-        /// </summary>
-        protected abstract void AddControlPoint(ISpline spline, float3 point);
-
-        protected void RemoveControlPoint(ISpline spline, int index)
-        {
-            Assert.NotNull(spline);
-
-            int before = spline.ControlPointCount;
-            spline.RemoveControlPoint(index);
-
-            Assert.LessOrEqual(spline.ControlPointCount, before, "Removing a point did not decrease the control point count");
-        }
-
-        protected abstract float3 GetProgress(ISpline spline, float progress);
-
-        protected abstract void CompareProgressEquals(ISpline spline, float progress, float3 expectedPoint, float tolerance = 0.00001f);
-        protected abstract void CompareProgress(ISpline spline, float progress, float3 unexpectedPoint);
-
-        /// <summary>
-        /// Abstraction of length between two points so that 2D and 3D can share the same tests
-        /// </summary>
-        protected abstract float Length(float3 a, float3 b);
-
         protected void ChangeLooped(ILoopingSpline spline, bool newLoopedState)
         {
             int segmentCount = spline.SegmentPointCount;
@@ -70,7 +24,16 @@ namespace Crener.Spline.Test
             }
         }
 
-
+        /// <summary>
+        /// Create a new spline and validates that it is ready for testing
+        /// </summary>
+        protected virtual ILoopingSpline PrepareSpline()
+        {
+            ILoopingSpline spline = base.PrepareSpline();
+            spline.Looped = false;
+            return spline;
+        }
+        
         [Test]
         public void LengthIncrease([Range(2, 9)] int points)
         {
@@ -223,7 +186,7 @@ namespace Crener.Spline.Test
 
     public abstract class BaseLoopingTests3D : BaseLoopingTests
     {
-        protected override void AddControlPoint(ISpline spline, float3 point)
+        protected override void AddControlPoint(ILoopingSpline spline, float3 point)
         {
             Assert.NotNull(spline);
 
@@ -238,14 +201,14 @@ namespace Crener.Spline.Test
 
         protected override float Length(float3 a, float3 b) => math.distance(a, b);
         
-        protected override float3 GetProgress(ISpline spline, float progress)
+        protected override float3 GetProgress(ILoopingSpline spline, float progress)
         {
             ISpline3D spline3D = spline as ISpline3D;
             Assert.NotNull(spline3D);
             return spline3D.GetPoint(progress);
         }
 
-        protected override void CompareProgressEquals(ISpline spline, float progress, float3 expectedPoint, float tolerance = 0.00001f)
+        protected override void CompareProgressEquals(ILoopingSpline spline, float progress, float3 expectedPoint, float tolerance = 0.00001f)
         {
             ISpline3D spline3D = spline as ISpline3D;
             Assert.NotNull(spline3D);
@@ -254,7 +217,7 @@ namespace Crener.Spline.Test
             TestHelpers.CheckFloat3(point, expectedPoint, tolerance);
         }
 
-        protected override void CompareProgress(ISpline spline, float progress, float3 unexpectedPoint)
+        protected override void CompareProgress(ILoopingSpline spline, float progress, float3 unexpectedPoint)
         {
             ISpline3D spline3D = spline as ISpline3D;
             Assert.NotNull(spline3D);
@@ -266,7 +229,7 @@ namespace Crener.Spline.Test
 
     public abstract class BaseLoopingTests2D : BaseLoopingTests
     {
-        protected override void AddControlPoint(ISpline spline, float3 point)
+        protected override void AddControlPoint(ILoopingSpline spline, float3 point)
         {
             Assert.NotNull(spline);
 
@@ -281,7 +244,7 @@ namespace Crener.Spline.Test
 
         protected override float Length(float3 a, float3 b) => math.distance(a.xy, b.xy);
 
-        protected override float3 GetProgress(ISpline spline, float progress)
+        protected override float3 GetProgress(ILoopingSpline spline, float progress)
         {
             ISpline2D spline2D = spline as ISpline2D;
             Assert.NotNull(spline2D);
@@ -290,7 +253,7 @@ namespace Crener.Spline.Test
             return new float3(point.x, point.y, 0f);
         }
 
-        protected override void CompareProgressEquals(ISpline spline, float progress, float3 expectedPoint, float tolerance = 0.00001f)
+        protected override void CompareProgressEquals(ILoopingSpline spline, float progress, float3 expectedPoint, float tolerance = 0.00001f)
         {
             ISpline2D spline2D = spline as ISpline2D;
             Assert.NotNull(spline2D);
@@ -299,7 +262,7 @@ namespace Crener.Spline.Test
             TestHelpers.CheckFloat2(point, expectedPoint.xy, tolerance);
         }
 
-        protected override void CompareProgress(ISpline spline, float progress, float3 unexpectedPoint)
+        protected override void CompareProgress(ILoopingSpline spline, float progress, float3 unexpectedPoint)
         {
             ISpline2D spline2D = spline as ISpline2D;
             Assert.NotNull(spline2D);

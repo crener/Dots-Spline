@@ -7,6 +7,7 @@ using Crener.Spline.Common.Interfaces;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UIElements;
 
 namespace Crener.Spline.Linear
@@ -15,11 +16,15 @@ namespace Crener.Spline.Linear
     /// Simple spline which directly follows a set of points
     /// </summary>
     [AddComponentMenu("Spline/2D/Linear Cubic Spline")]
-    public class LinearCubic2DSpline : BaseSpline2D, ILoopingSpline
+    public class LinearCubic2DSpline : BaseSpline2D, ILoopingSpline, IArkableSpline
     {
         [SerializeField]
         private bool looped = false;
-
+        [SerializeField, Tooltip("Ensures constant length between points in spline")]
+        private bool arkParameterization = false;
+        [SerializeField, FormerlySerializedAs("arkLength")]
+        private float arkLength = 0.1f;
+        
         public bool Looped
         {
             get => looped;
@@ -30,6 +35,33 @@ namespace Crener.Spline.Linear
             }
         }
 
+        public bool ArkParameterization
+        {
+            get => arkParameterization;
+            set
+            {
+                if(arkParameterization != value)
+                {
+                    arkParameterization = value;
+
+                    ClearData();
+                }
+            }
+        }
+
+        public float ArkLength
+        {
+            get => arkLength;
+            set
+            {
+                if(arkLength != value)
+                {
+                    arkLength = value;
+                    ClearData();
+                }
+            }
+        }
+
         public override SplineType SplineDataType
         {
             get
@@ -37,7 +69,7 @@ namespace Crener.Spline.Linear
                 if(ControlPointCount == 0) return SplineType.Empty;
                 if(ControlPointCount == 1) return SplineType.Single;
                 if(ControlPointCount == 2 && !Looped) return SplineType.Linear;
-                return SplineType.CubicLinear;
+                return ArkParameterization ? SplineType.Linear : SplineType.CubicLinear;
             }
         }
 

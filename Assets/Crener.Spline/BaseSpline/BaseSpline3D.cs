@@ -224,6 +224,12 @@ namespace Crener.Spline.BaseSpline
         {
             ClearData();
 
+            if(SegmentPointCount >= 2 && this is IArkableSpline arkSpline && arkSpline.ArkParameterization)
+            {
+                SplineEntityData = SplineArkConversion(arkSpline.ArkLength);
+                return SplineEntityData.Value;
+            }
+
             float3[] pointData;
             if(this is ILoopingSpline loopSpline && loopSpline.Looped)
             {
@@ -245,6 +251,93 @@ namespace Crener.Spline.BaseSpline
             };
 
             return SplineEntityData.Value;
+        }
+
+        /// <summary>
+        /// Convert the spline into smaller linear segments with an equal distance between each point (see: <paramref name="arkLength"/>)
+        /// </summary>
+        /// <returns>Linear spline data</returns>
+        protected virtual Spline3DData SplineArkConversion(float arkLength)
+        {
+            float previousTime = 0;
+            float normalizedArkLength = math.max(0.001f, arkLength);
+            float splineLength = Length();
+            double splineCompleted = 0f;
+            List<float3> points = new List<float3>((int) (splineLength / normalizedArkLength * 1.3f));
+            List<float> times = new List<float>(points.Count);
+
+            const int perPointIterationAttempts = 100; // lower values = fast, high values = high precision but longer generation times
+
+            for (int i = 0; i < SegmentLength.Count; i++)
+            {
+                float currentTime = SegmentLength[i];
+                float sectionLength = Length() * currentTime;
+                float pointCount = ((currentTime - previousTime) * sectionLength) / normalizedArkLength;
+                previousTime = currentTime;
+
+                double previousProgress = 0f;
+                float3 previous = GetPoint((float) previousProgress, i);
+                points.Add(previous); // directly add control point
+
+                if(i > 0)
+                {
+                    times.Add((float) splineCompleted / splineLength);
+                }
+
+                double sectionLengthDone = 0f;
+
+                for (int j = 0; j < pointCount - 1; j++)
+                {
+                    // binary search to get best case distance from (expected) previous point
+                    double currentProgress = 0.5f;
+                    double currentSize = 0.5f;
+
+                    float distance = normalizedArkLength;
+                    float targetDistance = normalizedArkLength * (j + 1);
+
+                    float3 point = previous;
+                    int attempts = -1;
+                    while (++attempts < perPointIterationAttempts)
+                    {
+                        point = GetPoint((float) currentProgress, i);
+
+                        distance = math.distance(previous, point);
+                        if(math.abs((sectionLengthDone + distance) - targetDistance) < 0.0000005f)
+                            break;
+
+                        currentSize /= 2;
+                        if(distance > normalizedArkLength)
+                        {
+                            if(currentProgress <= previousProgress) currentProgress = previousProgress;
+                            else currentProgress -= currentSize;
+                        }
+                        else currentProgress += currentSize;
+                    }
+
+                    sectionLengthDone += distance;
+                    splineCompleted += distance;
+                    points.Add(point);
+                    times.Add((float) splineCompleted / splineLength);
+
+                    previous = point;
+                    previousProgress = currentProgress;
+                }
+            }
+
+            if(ControlPointCount >= 2)
+            {
+                // add final control point
+                points.Add(Points[Points.Count - 1]);
+            }
+
+            times.Add(1f);
+
+            return new Spline3DData
+            {
+                Length = Length(),
+                Points = new NativeArray<float3>(points.ToArray(), Allocator.Persistent),
+                Time = new NativeArray<float>(times.ToArray(), Allocator.Persistent)
+            };
         }
     }
 }

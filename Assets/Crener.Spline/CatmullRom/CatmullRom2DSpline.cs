@@ -124,8 +124,8 @@ namespace Crener.Spline.CatmullRom
                     if(a == 0)
                     {
                         p1 = Points[a];
-                        p2 = Points[(a + 1) % ControlPointCount];
-                        p3 = Points[(a + 2) % ControlPointCount];
+                        p2 = Points[1 % ControlPointCount];
+                        p3 = Points[2 % ControlPointCount];
 
                         float2 delta = p2 - p1;
                         float angle = math.atan2(delta.y, delta.x) - (math.PI / 2);
