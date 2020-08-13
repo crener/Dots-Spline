@@ -298,7 +298,7 @@ namespace Crener.Spline.BezierSpline
         {
             ClearData();
 
-            if(ArkParameterization)
+            if(ArkParameterization && SegmentPointCount >= 2)
             {
                 Assert.IsFalse(hasSplineEntityData);
                 SplineEntityData = SplineArkConversion(ArkLength);

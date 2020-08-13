@@ -25,4 +25,13 @@ namespace Crener.Spline.Test
         /// <returns>expected amount of time points</returns>
         int ExpectedTimeCount(int controlPoints);
     }
+
+
+    public interface IArkableTestSpline : ITestSpline, IArkableSpline
+    {
+        /// <summary>
+        /// The amount of control points that the spline should be producing when converting data
+        /// </summary>
+        int ExpectedPointCount { get; }
+    }
 }

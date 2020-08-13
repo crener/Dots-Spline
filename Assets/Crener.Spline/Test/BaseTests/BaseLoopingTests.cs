@@ -27,7 +27,7 @@ namespace Crener.Spline.Test.BaseTests
         /// <summary>
         /// Create a new spline and validates that it is ready for testing
         /// </summary>
-        protected virtual ILoopingSpline PrepareSpline()
+        protected override ILoopingSpline PrepareSpline()
         {
             ILoopingSpline spline = base.PrepareSpline();
             spline.Looped = false;

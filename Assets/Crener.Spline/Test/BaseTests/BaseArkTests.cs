@@ -21,6 +21,9 @@ namespace Crener.Spline.Test.BaseTests
             }
         }
 
+        /// <summary>
+        /// The amount of points in the spline data computed from ark parameterized 
+        /// </summary>
         protected abstract int SplineSegmentPointCount(ISpline spline);
 
         /// <summary>
@@ -30,7 +33,7 @@ namespace Crener.Spline.Test.BaseTests
         public void SegmentChange([Range(2, 9)] int points)
         {
             IArkableSpline testSpline = PrepareSpline();
-            const int pointLength = 2;
+            const int pointLength = 20;
 
             float3 first = new float3(0);
             AddControlPoint(testSpline, first);
@@ -41,7 +44,7 @@ namespace Crener.Spline.Test.BaseTests
                 AddControlPoint(testSpline, point);
             }
 
-            testSpline.ArkLength = pointLength / 2f;
+            testSpline.ArkLength = pointLength / 10f;
             ChangeArking(testSpline, false);
             int normalCount = SplineSegmentPointCount(testSpline);
 
@@ -58,7 +61,7 @@ namespace Crener.Spline.Test.BaseTests
         public void LengthIncreaseSwitchBeforeFirstPoint([Range(2, 9)] int points)
         {
             IArkableSpline testSpline = PrepareSpline();
-            const int pointLength = 2;
+            const int pointLength = 20;
 
             float3 first = new float3(0);
             AddControlPoint(testSpline, first);
@@ -69,7 +72,7 @@ namespace Crener.Spline.Test.BaseTests
                 AddControlPoint(testSpline, point);
             }
 
-            testSpline.ArkLength = pointLength / 2f;
+            testSpline.ArkLength = pointLength / 10f;
             ChangeArking(testSpline, true);
             int arkCount = SplineSegmentPointCount(testSpline);
 
@@ -109,7 +112,7 @@ namespace Crener.Spline.Test.BaseTests
         }
 
         [Test]
-        public void ArkDisableToEnabledSimple()
+        public void ArkDisableToEnabled()
         {
             IArkableSpline testSpline = PrepareSpline();
             
@@ -120,10 +123,11 @@ namespace Crener.Spline.Test.BaseTests
 
             testSpline.ArkLength = 5f;
             testSpline.ArkParameterization = false;
+            int originalCount = SplineSegmentPointCount(testSpline);
 
             ChangeArking(testSpline, false);
             int count = SplineSegmentPointCount(testSpline);
-            Assert.AreEqual(2, count);
+            Assert.AreEqual(originalCount, count, "This value shouldn't have changed");
 
             ChangeArking(testSpline, true);
             count = SplineSegmentPointCount(testSpline);
@@ -131,7 +135,7 @@ namespace Crener.Spline.Test.BaseTests
         }
 
         [Test]
-        public void ArkEnabledToDisabledSimple()
+        public void ArkEnabledToDisabled()
         {
             IArkableSpline testSpline = PrepareSpline();
             
@@ -140,6 +144,7 @@ namespace Crener.Spline.Test.BaseTests
             AddControlPoint(testSpline, a);
             AddControlPoint(testSpline, b);
 
+            int originalCount = SplineSegmentPointCount(testSpline);
             testSpline.ArkLength = 5f;
             testSpline.ArkParameterization = false;
 
@@ -149,7 +154,7 @@ namespace Crener.Spline.Test.BaseTests
 
             ChangeArking(testSpline, false);
             count = SplineSegmentPointCount(testSpline);
-            Assert.AreEqual(2, count);
+            Assert.AreEqual(originalCount, count);
         }
 
         [Test]
@@ -173,6 +178,9 @@ namespace Crener.Spline.Test.BaseTests
             Assert.AreEqual((int)math.ceil(Length(a, b) / 2.5f)+1, count);
         }
 
+        /// <summary>
+        /// amount of points is the same as ark length is modified when arking is disabled 
+        /// </summary>
         [Test]
         public void ArkLengthChangeWhenDisabled()
         {
@@ -184,14 +192,15 @@ namespace Crener.Spline.Test.BaseTests
             AddControlPoint(testSpline, b);
 
             testSpline.ArkLength = 5f;
+            int splineCount = SplineSegmentPointCount(testSpline);
 
             ChangeArking(testSpline, false);
             int count = SplineSegmentPointCount(testSpline);
-            Assert.AreEqual(2, count);
+            Assert.AreEqual(splineCount, count);
             
             testSpline.ArkLength = 2.5f;
             count = SplineSegmentPointCount(testSpline);
-            Assert.AreEqual(2, count);
+            Assert.AreEqual(splineCount, count);
         }
     }
 
