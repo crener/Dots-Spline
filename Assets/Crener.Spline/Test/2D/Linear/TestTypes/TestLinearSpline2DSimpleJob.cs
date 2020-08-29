@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using Crener.Spline.Common;
 using Crener.Spline.Common.Interfaces;
 using Crener.Spline.Linear;
-using Crener.Spline.Linear.Jobs._2D;
 using NUnit.Framework;
 using Unity.Mathematics;
 
@@ -15,8 +14,8 @@ namespace Crener.Spline.Test._2D.Linear.TestTypes
     {
         public class TestLinearSpline2DSimpleJob : Linear2DSpline, ISimpleTestSpline
         {
-            public IReadOnlyList<float2> ControlPoints => SplineEntityData.Value.Points.ToArray();
-            public IReadOnlyList<float> Times => SplineEntityData.Value.Time.ToArray();
+            public IReadOnlyList<float2> ControlPoints => SplineEntityData2D.Value.Points.ToArray();
+            public IReadOnlyList<float> Times => SplineEntityData2D.Value.Time.ToArray();
             public IReadOnlyList<SplineEditMode> Modes
             {
                 get
@@ -31,12 +30,12 @@ namespace Crener.Spline.Test._2D.Linear.TestTypes
                 }
             }
 
-            public new float2 GetPoint(float progress)
+            public new float2 Get2DPoint(float progress)
             {
                 ClearData();
                 ConvertData();
 
-                Assert.IsTrue(SplineEntityData.HasValue, "Failed to generate spline");
+                Assert.IsTrue(SplineEntityData2D.HasValue, "Failed to generate spline");
                 ISplineJob2D job = this.ExtractJob(progress);
                 job.Execute();
 

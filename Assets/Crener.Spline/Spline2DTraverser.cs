@@ -30,7 +30,7 @@ namespace Crener.Spline
             Progress += (m_speedNorm * Time.deltaTime);
             Progress %= 1f;
 
-            float2 pos = Spline.GetPoint(Progress);
+            float2 pos = Spline.Get2DPoint(Progress);
             transform.position = new Vector3(pos.x, pos.y, 0f);
         }
 
@@ -45,12 +45,12 @@ namespace Crener.Spline
             if(Spline != null)
             {
                 // make sure that there is spline data to look at
-                if(!Spline.SplineEntityData.HasValue)
+                if(!Spline.SplineEntityData2D.HasValue)
                 {
                     Spline.Convert(dstManager.CreateEntity(), dstManager, conversionSystem);
                 }
 
-                dstManager.AddSharedComponentData(entity, Spline.SplineEntityData.Value);
+                dstManager.AddSharedComponentData(entity, Spline.SplineEntityData2D.Value);
             }
             else
             {

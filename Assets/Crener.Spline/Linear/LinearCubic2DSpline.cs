@@ -1,14 +1,10 @@
-using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Crener.Spline.BaseSpline;
-using Crener.Spline.BezierSpline;
 using Crener.Spline.Common;
 using Crener.Spline.Common.Interfaces;
-using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Serialization;
-using UnityEngine.UIElements;
 
 namespace Crener.Spline.Linear
 {
@@ -84,7 +80,7 @@ namespace Crener.Spline.Linear
 
         private const float c_splineMidPoint = 0.5f;
 
-        public override float2 GetPoint(float progress)
+        public override float2 Get2DPoint(float progress)
         {
             if(ControlPointCount == 0)
                 return float2.zero;

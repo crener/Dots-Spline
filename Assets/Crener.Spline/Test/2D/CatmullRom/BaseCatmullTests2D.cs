@@ -1,6 +1,5 @@
 using Crener.Spline.Test._2D.CatmullRom.TestAdapters;
 using Crener.Spline.Test._2D.CatmullRom.TestTypes;
-using Crener.Spline.Test._2D.Linear.TestAdapters;
 using UnityEngine;
 
 namespace Crener.Spline.Test._2D.CatmullRom

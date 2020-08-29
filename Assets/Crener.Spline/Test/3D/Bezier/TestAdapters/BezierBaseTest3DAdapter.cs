@@ -30,12 +30,12 @@ namespace Crener.Spline.Test._3D.Bezier.TestAdapters
             Assert.AreEqual(0.75f, testSpline.Times[1]);
             Assert.AreEqual(1f, testSpline.Times[2]);
 
-            TestHelpers.CheckFloat3(a, testSpline.GetPoint(0f));
-            TestHelpers.CheckFloat3(new float3(2.5f, 0f, 0f), testSpline.GetPoint(0.25f));
-            TestHelpers.CheckFloat3(new float3(5f, 0f, 0f), testSpline.GetPoint(0.5f));
-            TestHelpers.CheckFloat3(new float3(10f, 0f, 0f), testSpline.GetPoint(1f));
-            TestHelpers.CheckFloat3(new float3(10f, 0f, 0f), testSpline.GetPoint(1.5f));
-            TestHelpers.CheckFloat3(new float3(10f, 0f, 0f), testSpline.GetPoint(5f));
+            TestHelpers.CheckFloat3(a, testSpline.Get3DPoint(0f));
+            TestHelpers.CheckFloat3(new float3(2.5f, 0f, 0f), testSpline.Get3DPoint(0.25f));
+            TestHelpers.CheckFloat3(new float3(5f, 0f, 0f), testSpline.Get3DPoint(0.5f));
+            TestHelpers.CheckFloat3(new float3(10f, 0f, 0f), testSpline.Get3DPoint(1f));
+            TestHelpers.CheckFloat3(new float3(10f, 0f, 0f), testSpline.Get3DPoint(1.5f));
+            TestHelpers.CheckFloat3(new float3(10f, 0f, 0f), testSpline.Get3DPoint(5f));
         }
 
         [Test]
@@ -83,7 +83,7 @@ namespace Crener.Spline.Test._3D.Bezier.TestAdapters
             Assert.AreEqual(3, testSpline.ControlPointCount);
             Assert.AreEqual(2f, testSpline.Length());
 
-            TestHelpers.CheckFloat3(new float3(2.5f, 10f, 0f), testSpline.GetPoint(0.7f), 0.01f);
+            TestHelpers.CheckFloat3(new float3(2.5f, 10f, 0f), testSpline.Get3DPoint(0.7f), 0.01f);
         }
 
         [Test]

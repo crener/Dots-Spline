@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Runtime.CompilerServices;
 using Crener.Spline.BaseSpline;
 using Crener.Spline.Common;
@@ -10,12 +11,12 @@ namespace Crener.Spline.Linear
     /// <summary>
     /// Simple spline which directly follows a set of points
     /// </summary>
-    [AddComponentMenu("Spline/3D/Linear Spline")]
-    public class Linear3DSpline : BaseSpline3D, ILoopingSpline
+    [AddComponentMenu("Spline/3D/Linear Spline Plain")]
+    public class Linear3DPlainSpline : BaseSpline3DPlain, ILoopingSpline
     {
         [SerializeField]
         private bool looped = false;
-        
+
         public bool Looped
         {
             get => looped;
@@ -38,18 +39,32 @@ namespace Crener.Spline.Linear
         public override int SegmentPointCount => ControlPointCount + (Looped ? 1 : 0);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        protected override float3 SplineInterpolation(float t, int a)
+        protected override float2 SplineInterpolation(float t, int a)
         {
-            float3 start = Points[a % ControlPointCount];
-            float3 end = Points[(a + 1) % ControlPointCount];
+            float2 start = Points[a % ControlPointCount];
+            float2 end = Points[(a + 1) % ControlPointCount];
             return math.lerp(start, end, t);
         }
 
         protected override float LengthBetweenPoints(int a, int resolution = 64)
         {
-            float3 start = Points[a % ControlPointCount];
-            float3 end = Points[(a + 1) % ControlPointCount];
+            float2 start = Points[a % ControlPointCount];
+            float2 end = Points[(a + 1) % ControlPointCount];
             return math.distance(start, end);
+        }
+
+        protected override void DrawLineGizmos()
+        {
+            Gizmos.color = Color.gray;
+            float3[] points3D = Points.Select(p => Convert2Dto3D(p)).ToArray();
+
+            for (int i = 1; i < SegmentPointCount; i++)
+            {
+                int p1 = (i -1) % points3D.Length;
+                int p2 = i % points3D.Length;
+
+                Gizmos.DrawLine(points3D[p1], points3D[p2]);
+            }
         }
     }
 }

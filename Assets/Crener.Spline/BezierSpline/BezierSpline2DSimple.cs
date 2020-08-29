@@ -290,7 +290,7 @@ namespace Crener.Spline.BezierSpline
         {
             dstManager.AddComponent<Spline2DData>(entity);
             Spline2DData splineData = ConvertData();
-            SplineEntityData = splineData;
+            SplineEntityData2D = splineData;
             dstManager.SetSharedComponentData(entity, splineData);
         }
 
@@ -301,7 +301,7 @@ namespace Crener.Spline.BezierSpline
             if(ArkParameterization && SegmentPointCount >= 2)
             {
                 Assert.IsFalse(hasSplineEntityData);
-                SplineEntityData = SplineArkConversion(ArkLength);
+                SplineEntityData2D = SplineArkConversion(ArkLength);
             }
             else
             {
@@ -309,7 +309,7 @@ namespace Crener.Spline.BezierSpline
                 NativeArray<float> time = new NativeArray<float>(SegmentLength.ToArray(), Allocator.Persistent);
 
                 Assert.IsFalse(hasSplineEntityData);
-                SplineEntityData = new Spline2DData
+                SplineEntityData2D = new Spline2DData
                 {
                     Length = Length(),
                     Points = points,
@@ -317,7 +317,7 @@ namespace Crener.Spline.BezierSpline
                 };
             }
 
-            return SplineEntityData.Value;
+            return SplineEntityData2D.Value;
         }
 
         /// <summary>
@@ -343,7 +343,7 @@ namespace Crener.Spline.BezierSpline
                 previousTime = currentTime;
 
                 double previousProgress = 0f;
-                float2 previous = GetPoint((float) previousProgress, i);
+                float2 previous = Get2DPoint((float) previousProgress, i);
                 points.Add(previous); // directly add control point
 
                 if(i > 0)
@@ -366,7 +366,7 @@ namespace Crener.Spline.BezierSpline
                     int attempts = -1;
                     while (++attempts < perPointIterationAttempts)
                     {
-                        point = GetPoint((float) currentProgress, i);
+                        point = Get2DPoint((float) currentProgress, i);
 
                         distance = math.distance(previous, point);
                         if(math.abs((sectionLengthDone + distance) - targetDistance) < 0.0000005f)

@@ -294,7 +294,7 @@ namespace Crener.Spline.BezierSpline
         {
             dstManager.AddComponent<Spline3DData>(entity);
             Spline3DData splineData = ConvertData();
-            SplineEntityData = splineData;
+            SplineEntityData3D = splineData;
             dstManager.SetSharedComponentData(entity, splineData);
         }
 
@@ -305,7 +305,7 @@ namespace Crener.Spline.BezierSpline
             if(ArkParameterization && SegmentPointCount >= 2)
             {
                 Assert.IsFalse(hasSplineEntityData);
-                SplineEntityData = SplineArkConversion(ArkLength);
+                SplineEntityData3D = SplineArkConversion(ArkLength);
             }
             else
             {
@@ -313,7 +313,7 @@ namespace Crener.Spline.BezierSpline
                 NativeArray<float> time = new NativeArray<float>(SegmentLength.ToArray(), Allocator.Persistent);
 
                 Assert.IsFalse(hasSplineEntityData);
-                SplineEntityData = new Spline3DData
+                SplineEntityData3D = new Spline3DData
                 {
                     Length = Length(),
                     Points = points,
@@ -321,7 +321,7 @@ namespace Crener.Spline.BezierSpline
                 };
             }
 
-            return SplineEntityData.Value;
+            return SplineEntityData3D.Value;
         }
     }
 }

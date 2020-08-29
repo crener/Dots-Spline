@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Crener.Spline.BezierSpline;
 using Crener.Spline.Common;

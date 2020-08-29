@@ -46,11 +46,11 @@ namespace Crener.Spline.Common
                 case SplineType.Empty:
                     return new Empty2DPointJob();
                 case SplineType.Single:
-                    return new SinglePoint2DPointJob {Spline = spline.SplineEntityData.Value};
+                    return new SinglePoint2DPointJob {Spline = spline.SplineEntityData2D.Value};
                 case SplineType.Bezier:
-                    return new BezierSpline2DPointJob {Spline = spline.SplineEntityData.Value};
+                    return new BezierSpline2DPointJob {Spline = spline.SplineEntityData2D.Value};
                 case SplineType.CubicLinear:
-                    return new LinearCubicSpline2DPointJob {Spline = spline.SplineEntityData.Value};
+                    return new LinearCubicSpline2DPointJob {Spline = spline.SplineEntityData2D.Value};
                 case SplineType.Cubic:
                 //todo
                 case SplineType.BSpline:
@@ -59,7 +59,7 @@ namespace Crener.Spline.Common
                 //todo
                 case SplineType.Linear: // falls over to the default by design
                 default:
-                    return new LinearSpline2DPointJob {Spline = spline.SplineEntityData.Value};
+                    return new LinearSpline2DPointJob {Spline = spline.SplineEntityData2D.Value};
             }
         }
         
@@ -100,11 +100,11 @@ namespace Crener.Spline.Common
                 case SplineType.Empty:
                     return new Empty3DPointJob();
                 case SplineType.Single:
-                    return new SinglePoint3DPointJob {Spline = spline.SplineEntityData.Value};
+                    return new SinglePoint3DPointJob {Spline = spline.SplineEntityData3D.Value};
                 case SplineType.Bezier:
-                    return new BezierSpline3DPointJob {Spline = spline.SplineEntityData.Value};
+                    return new BezierSpline3DPointJob {Spline = spline.SplineEntityData3D.Value};
                 case SplineType.CubicLinear:
-                    return new LinearCubicSpline3DPointJob {Spline = spline.SplineEntityData.Value};
+                    return new LinearCubicSpline3DPointJob {Spline = spline.SplineEntityData3D.Value};
                 case SplineType.Cubic:
                 //todo
                 case SplineType.BSpline:
@@ -113,7 +113,7 @@ namespace Crener.Spline.Common
                 //todo
                 case SplineType.Linear: // falls over to the default by design
                 default:
-                    return new LinearSpline3DPointJob {Spline = spline.SplineEntityData.Value};
+                    return new LinearSpline3DPointJob {Spline = spline.SplineEntityData3D.Value};
             }
         }
     }

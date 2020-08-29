@@ -21,7 +21,7 @@ namespace Crener.Spline.BaseSpline
 
         private Spline3DData? m_splineData = null;
 
-        public Spline3DData? SplineEntityData
+        public Spline3DData? SplineEntityData3D
         {
             get
             {
@@ -32,7 +32,7 @@ namespace Crener.Spline.BaseSpline
         }
 
         /// <summary>
-        /// true if Spline Entity Data has been initialized, calling <see cref="SplineEntityData"/> directly will automatically generate data
+        /// true if Spline Entity Data has been initialized, calling <see cref="SplineEntityData3D"/> directly will automatically generate data
         /// </summary>
         public override bool hasSplineEntityData => m_splineData.HasValue;
 
@@ -45,7 +45,7 @@ namespace Crener.Spline.BaseSpline
         /// Retrieve a point on the spline at a specific control point
         /// </summary>
         /// <returns>point on spline segment</returns>
-        public float3 GetPoint(float progress, int index)
+        public float3 Get3DPoint(float progress, int index)
         {
             return SplineInterpolation(progress, index);
         }
@@ -131,7 +131,7 @@ namespace Crener.Spline.BaseSpline
         /// </summary>
         /// <param name="progress"></param>
         /// <returns>point on spline</returns>
-        public virtual float3 GetPoint(float progress)
+        public virtual float3 Get3DPoint(float progress)
         {
             if(ControlPointCount == 0)
                 return float3.zero;
@@ -182,8 +182,8 @@ namespace Crener.Spline.BaseSpline
         {
             if(hasSplineEntityData) // access directly to stop possible infinite loop
             {
-                SplineEntityData.Value.Dispose();
-                SplineEntityData = null;
+                SplineEntityData3D.Value.Dispose();
+                SplineEntityData3D = null;
             }
         }
 
@@ -203,14 +203,14 @@ namespace Crener.Spline.BaseSpline
 
             for (int i = 0; i < SegmentPointCount - 1; i++)
             {
-                float3 f = GetPoint(0f, i);
+                float3 f = Get3DPoint(0f, i);
                 Vector3 lp = new Vector3(f.x, f.y, f.z);
                 int points = (int) (pointDensity * (SegmentLength[i] * Length()));
 
                 for (int s = 0; s <= points; s++)
                 {
                     float progress = s / (float) points;
-                    float3 p = GetPoint(progress, i);
+                    float3 p = Get3DPoint(progress, i);
                     Vector3 point = new Vector3(p.x, p.y, p.z);
 
                     // is Gizmos.DrawLines faster?
@@ -226,8 +226,8 @@ namespace Crener.Spline.BaseSpline
 
             if(SegmentPointCount >= 2 && this is IArkableSpline arkSpline && arkSpline.ArkParameterization)
             {
-                SplineEntityData = SplineArkConversion(arkSpline.ArkLength);
-                return SplineEntityData.Value;
+                SplineEntityData3D = SplineArkConversion(arkSpline.ArkLength);
+                return SplineEntityData3D.Value;
             }
 
             float3[] pointData;
@@ -243,14 +243,14 @@ namespace Crener.Spline.BaseSpline
             NativeArray<float> time = new NativeArray<float>(SegmentLength.ToArray(), Allocator.Persistent);
 
             Assert.IsFalse(hasSplineEntityData);
-            SplineEntityData = new Spline3DData
+            SplineEntityData3D = new Spline3DData
             {
                 Length = Length(),
                 Points = points,
                 Time = time
             };
 
-            return SplineEntityData.Value;
+            return SplineEntityData3D.Value;
         }
 
         /// <summary>
@@ -276,7 +276,7 @@ namespace Crener.Spline.BaseSpline
                 previousTime = currentTime;
 
                 double previousProgress = 0f;
-                float3 previous = GetPoint((float) previousProgress, i);
+                float3 previous = Get3DPoint((float) previousProgress, i);
                 points.Add(previous); // directly add control point
 
                 if(i > 0)
@@ -299,7 +299,7 @@ namespace Crener.Spline.BaseSpline
                     int attempts = -1;
                     while (++attempts < perPointIterationAttempts)
                     {
-                        point = GetPoint((float) currentProgress, i);
+                        point = Get3DPoint((float) currentProgress, i);
 
                         distance = math.distance(previous, point);
                         if(math.abs((sectionLengthDone + distance) - targetDistance) < 0.0000005f)

@@ -3,7 +3,6 @@ using Crener.Spline.BaseSpline;
 using Crener.Spline.Common;
 using Crener.Spline.Common.Interfaces;
 using Unity.Assertions;
-using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -53,7 +52,7 @@ namespace Crener.Spline.CatmullRom
         // 0.0 for the uniform spline, 0.5 for the centripetal spline, 1.0 for the chordal spline
         private const float c_alpha = 0.5f;
 
-        public override float2 GetPoint(float progress)
+        public override float2 Get2DPoint(float progress)
         {
             if(ControlPointCount == 0)
                 return float2.zero;

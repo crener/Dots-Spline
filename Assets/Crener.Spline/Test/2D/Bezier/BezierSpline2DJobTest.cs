@@ -20,7 +20,7 @@ namespace Crener.Spline.Test._2D.Bezier
             float2 b = new float2(1f, 0f);
             bezierSpline.AddControlPoint(b);
 
-            Spline2DData data = bezierSpline.SplineEntityData.Value;
+            Spline2DData data = bezierSpline.SplineEntityData2D.Value;
             Assert.AreEqual(1f, bezierSpline.Length());
             Assert.AreEqual(1f, data.Length);
 
@@ -53,7 +53,7 @@ namespace Crener.Spline.Test._2D.Bezier
             float2 c = new float2(2f, 0f);
             bezierSpline.AddControlPoint(c);
 
-            Spline2DData data = bezierSpline.SplineEntityData.Value;
+            Spline2DData data = bezierSpline.SplineEntityData2D.Value;
             Assert.AreEqual(2f, bezierSpline.Length());
             Assert.AreEqual(2f, data.Length);
 
@@ -93,7 +93,7 @@ namespace Crener.Spline.Test._2D.Bezier
             float2 d = new float2(10f, 0f);
             bezierSpline.AddControlPoint(d);
 
-            Spline2DData data = bezierSpline.SplineEntityData.Value;
+            Spline2DData data = bezierSpline.SplineEntityData2D.Value;
             Assert.AreEqual(10f, bezierSpline.Length());
             Assert.AreEqual(10f, data.Length);
 
@@ -127,7 +127,7 @@ namespace Crener.Spline.Test._2D.Bezier
         {
             ISimpleTestSpline bezierSpline = CreateSpline();
 
-            Spline2DData data = bezierSpline.SplineEntityData.Value;
+            Spline2DData data = bezierSpline.SplineEntityData2D.Value;
             Assert.AreEqual(bezierSpline.Length(), data.Length);
             Assert.AreEqual(bezierSpline.Times.Count, data.Time.Length);
             Assert.AreEqual(bezierSpline.ControlPoints.Count, data.Points.Length);
@@ -137,7 +137,7 @@ namespace Crener.Spline.Test._2D.Bezier
                 float2 a = float2.zero;
                 bezierSpline.AddControlPoint(a);
 
-                data = bezierSpline.SplineEntityData.Value;
+                data = bezierSpline.SplineEntityData2D.Value;
                 Assert.AreEqual(bezierSpline.Length(), data.Length);
                 Assert.AreEqual(bezierSpline.Times.Count, data.Time.Length);
                 for (int i = 0; i < bezierSpline.Times.Count; i++)
@@ -151,7 +151,7 @@ namespace Crener.Spline.Test._2D.Bezier
                 float2 b = new float2(2.5f, 0f);
                 bezierSpline.AddControlPoint(b);
 
-                data = bezierSpline.SplineEntityData.Value;
+                data = bezierSpline.SplineEntityData2D.Value;
                 Assert.AreEqual(bezierSpline.Length(), data.Length);
                 Assert.AreEqual(bezierSpline.Times.Count, data.Time.Length);
                 for (int i = 0; i < bezierSpline.Times.Count; i++)
@@ -165,7 +165,7 @@ namespace Crener.Spline.Test._2D.Bezier
                 float2 c = new float2(7.5f, 0f);
                 bezierSpline.AddControlPoint(c);
 
-                data = bezierSpline.SplineEntityData.Value;
+                data = bezierSpline.SplineEntityData2D.Value;
                 Assert.AreEqual(bezierSpline.Length(), data.Length);
                 Assert.AreEqual(bezierSpline.Times.Count, data.Time.Length);
                 for (int i = 0; i < bezierSpline.Times.Count; i++)
@@ -179,7 +179,7 @@ namespace Crener.Spline.Test._2D.Bezier
                 float2 d = new float2(10f, 0f);
                 bezierSpline.AddControlPoint(d);
 
-                data = bezierSpline.SplineEntityData.Value;
+                data = bezierSpline.SplineEntityData2D.Value;
                 Assert.AreEqual(bezierSpline.Length(), data.Length);
                 Assert.AreEqual(bezierSpline.Times.Count, data.Time.Length);
                 for (int i = 0; i < bezierSpline.Times.Count; i++)

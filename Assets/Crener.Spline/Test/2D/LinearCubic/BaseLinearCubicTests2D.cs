@@ -1,4 +1,3 @@
-using Crener.Spline.Common;
 using Crener.Spline.Common.Interfaces;
 using Crener.Spline.Test._2D.LinearCubic.TestAdapters;
 using Crener.Spline.Test._2D.LinearCubic.TestTypes;
@@ -44,17 +43,17 @@ namespace Crener.Spline.Test._2D.LinearCubic
             Assert.AreEqual(4, testSpline.ControlPointCount);
             Assert.AreEqual(3, testSpline.SegmentPointCount);
 
-            TestHelpers.CheckFloat2(topLeft, testSpline.GetPoint(0f));
-            TestHelpers.CheckFloat2(topLeft, testSpline.GetPoint(-0.1f));
-            TestHelpers.CheckFloat2(topRight, testSpline.GetPoint(1f));
-            TestHelpers.CheckFloat2(topRight, testSpline.GetPoint(1.1f));
+            TestHelpers.CheckFloat2(topLeft, testSpline.Get2DPoint(0f));
+            TestHelpers.CheckFloat2(topLeft, testSpline.Get2DPoint(-0.1f));
+            TestHelpers.CheckFloat2(topRight, testSpline.Get2DPoint(1f));
+            TestHelpers.CheckFloat2(topRight, testSpline.Get2DPoint(1.1f));
 
             (testSpline as ILoopingSpline).Looped = true;
             Assert.AreEqual(4, testSpline.ControlPointCount);
             Assert.AreEqual(5, testSpline.SegmentPointCount);
 
-            Assert.AreNotEqual(topLeft, testSpline.GetPoint(-1f));
-            Assert.AreNotEqual(topRight, testSpline.GetPoint(2f));
+            Assert.AreNotEqual(topLeft, testSpline.Get2DPoint(-1f));
+            Assert.AreNotEqual(topRight, testSpline.Get2DPoint(2f));
         }
 
         //todo test that 3 or 4 point looped spline doesn't touch any point directly

@@ -1,6 +1,4 @@
-using Crener.Spline.BezierSpline;
 using Crener.Spline.CatmullRom;
-using Crener.Spline.Common;
 using Crener.Spline.Common.Interfaces;
 using Crener.Spline.Linear;
 using NUnit.Framework;

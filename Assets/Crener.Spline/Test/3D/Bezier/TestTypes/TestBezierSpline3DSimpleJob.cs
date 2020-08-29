@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using Crener.Spline.BezierSpline;
-using Crener.Spline.BezierSpline.Jobs;
 using Crener.Spline.Common;
 using Crener.Spline.Common.Interfaces;
 using NUnit.Framework;
@@ -15,8 +14,8 @@ namespace Crener.Spline.Test._3D.Bezier.TestTypes
     {
         public class TestBezierSpline3DSimpleJob : BezierSpline3DSimple, ISimpleTestSpline3D
         {
-            public IReadOnlyList<float3> ControlPoints => SplineEntityData.Value.Points.ToArray();
-            public IReadOnlyList<float> Times => SplineEntityData.Value.Time.ToArray();
+            public IReadOnlyList<float3> ControlPoints => SplineEntityData3D.Value.Points.ToArray();
+            public IReadOnlyList<float> Times => SplineEntityData3D.Value.Time.ToArray();
             public IReadOnlyList<SplineEditMode> Modes => PointEdit;
 
             public new float Length
@@ -26,24 +25,24 @@ namespace Crener.Spline.Test._3D.Bezier.TestTypes
                     ClearData();
                     ConvertData();
 
-                    Assert.IsTrue(SplineEntityData.HasValue, "Failed to generate spline");
-                    return SplineEntityData.Value.Length;
+                    Assert.IsTrue(SplineEntityData3D.HasValue, "Failed to generate spline");
+                    return SplineEntityData3D.Value.Length;
                 }
             }
 
-            public new float3 GetPoint(float progress)
+            public new float3 Get3DPoint(float progress)
             {
                 ClearData();
                 ConvertData();
 
-                Assert.IsTrue(SplineEntityData.HasValue, "Failed to generate spline");
+                Assert.IsTrue(SplineEntityData3D.HasValue, "Failed to generate spline");
                 ISplineJob3D job = this.ExtractJob(new SplineProgress {Progress = progress});
                 job.Execute();
 
                 return job.Result;
             }
 
-            public override float3 GetControlPoint(int i) => SplineEntityData.Value.Points[i];
+            public override float3 GetControlPoint(int i) => SplineEntityData3D.Value.Points[i];
 
             public int ExpectedControlPointCount(int controlPoints)
             {

@@ -30,12 +30,12 @@ namespace Crener.Spline.Test._3D.Linear.TestAdapters
             Assert.AreEqual(0.75f, testSpline.Times[1]);
             Assert.AreEqual(1f, testSpline.Times[2]);
 
-            TestHelpers.CheckFloat3(a, testSpline.GetPoint(0f));
-            TestHelpers.CheckFloat3(b, testSpline.GetPoint(0.25f));
-            TestHelpers.CheckFloat3(new float3(5f, 0f, 0f), testSpline.GetPoint(0.5f));
-            TestHelpers.CheckFloat3(d, testSpline.GetPoint(1f));
-            TestHelpers.CheckFloat3(d, testSpline.GetPoint(1.5f));
-            TestHelpers.CheckFloat3(d, testSpline.GetPoint(5f));
+            TestHelpers.CheckFloat3(a, testSpline.Get3DPoint(0f));
+            TestHelpers.CheckFloat3(b, testSpline.Get3DPoint(0.25f));
+            TestHelpers.CheckFloat3(new float3(5f, 0f, 0f), testSpline.Get3DPoint(0.5f));
+            TestHelpers.CheckFloat3(d, testSpline.Get3DPoint(1f));
+            TestHelpers.CheckFloat3(d, testSpline.Get3DPoint(1.5f));
+            TestHelpers.CheckFloat3(d, testSpline.Get3DPoint(5f));
         }
 
         [Test]

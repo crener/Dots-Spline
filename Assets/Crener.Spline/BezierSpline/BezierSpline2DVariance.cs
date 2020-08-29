@@ -49,7 +49,7 @@ namespace Crener.Spline.BezierSpline
 
         public Spline2DVarianceData? SplineVarianceEntityData { get; private set; }
 
-        Spline2DData? ISpline2D.SplineEntityData
+        Spline2DData? ISpline2D.SplineEntityData2D
         {
             get
             {
@@ -73,12 +73,12 @@ namespace Crener.Spline.BezierSpline
             }
         }
 
-        public float2 GetPoint(float progress)
+        public float2 Get2DPoint(float progress)
         {
             return GetPoint(progress, half.zero);
         }
 
-        public float2 GetPoint(float progress, int index)
+        public float2 Get2DPoint(float progress, int index)
         {
             return GetPoint(progress, index, half.zero);
         }

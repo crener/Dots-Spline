@@ -19,22 +19,22 @@ namespace Crener.Spline.BaseSpline
         [SerializeField]
         protected List<float2> Points = new List<float2>();
 
-        private Spline2DData? m_splineData = null;
+        private Spline2DData? m_splineData2D = null;
 
-        public Spline2DData? SplineEntityData
+        public Spline2DData? SplineEntityData2D
         {
             get
             {
                 if(!hasSplineEntityData) ConvertData();
-                return m_splineData;
+                return m_splineData2D;
             }
-            protected set => m_splineData = value;
+            protected set => m_splineData2D = value;
         }
 
         /// <summary>
-        /// true if Spline Entity Data has been initialized, calling <see cref="SplineEntityData"/> directly will automatically generate data
+        /// true if Spline Entity Data has been initialized, calling <see cref="SplineEntityData2D"/> directly will automatically generate data
         /// </summary>
-        public override bool hasSplineEntityData => m_splineData.HasValue;
+        public override bool hasSplineEntityData => m_splineData2D.HasValue;
 
         /// <summary>
         /// Amount of control points in the spline
@@ -50,7 +50,7 @@ namespace Crener.Spline.BaseSpline
         /// Retrieve a point on the spline at a specific control point
         /// </summary>
         /// <returns>point on spline segment</returns>
-        public virtual float2 GetPoint(float progress, int index)
+        public virtual float2 Get2DPoint(float progress, int index)
         {
             return SplineInterpolation(progress, index);
         }
@@ -136,7 +136,7 @@ namespace Crener.Spline.BaseSpline
         /// </summary>
         /// <param name="progress"></param>
         /// <returns>point on spline</returns>
-        public virtual float2 GetPoint(float progress)
+        public virtual float2 Get2DPoint(float progress)
         {
             if(ControlPointCount == 0)
                 return float2.zero;
@@ -187,8 +187,8 @@ namespace Crener.Spline.BaseSpline
         {
             if(hasSplineEntityData) // access directly to stop possible infinite loop
             {
-                SplineEntityData.Value.Dispose();
-                SplineEntityData = null;
+                SplineEntityData2D.Value.Dispose();
+                SplineEntityData2D = null;
             }
         }
 
@@ -215,14 +215,14 @@ namespace Crener.Spline.BaseSpline
 
             for (int i = 0; i < SegmentPointCount - 1; i++)
             {
-                float2 f = GetPoint(0f, i);
+                float2 f = Get2DPoint(0f, i);
                 Vector3 lp = new Vector3(f.x, f.y, 0f);
                 int points = math.min((int) (pointDensity * (SegmentLength[i] * Length())), maxPointAmount);
 
                 for (int s = 1; s <= points; s++)
                 {
                     float progress = s / (float) points;
-                    float2 p = GetPoint(progress, i);
+                    float2 p = Get2DPoint(progress, i);
                     Vector3 point = new Vector3(p.x, p.y, 0f);
 
                     Gizmos.DrawLine(lp, point);
@@ -237,8 +237,8 @@ namespace Crener.Spline.BaseSpline
 
             if(SegmentPointCount >= 2 && this is IArkableSpline arkSpline && arkSpline.ArkParameterization)
             {
-                SplineEntityData = SplineArkConversion(arkSpline.ArkLength);
-                return SplineEntityData.Value;
+                SplineEntityData2D = SplineArkConversion(arkSpline.ArkLength);
+                return SplineEntityData2D.Value;
             }
 
             float2[] pointData;
@@ -255,14 +255,14 @@ namespace Crener.Spline.BaseSpline
             NativeArray<float> time = new NativeArray<float>(SegmentLength.ToArray(), Allocator.Persistent);
 
             Assert.IsFalse(hasSplineEntityData);
-            SplineEntityData = new Spline2DData
+            SplineEntityData2D = new Spline2DData
             {
                 Length = Length(),
                 Points = points,
                 Time = time
             };
 
-            return SplineEntityData.Value;
+            return SplineEntityData2D.Value;
         }
         
         /// <summary>
@@ -288,7 +288,7 @@ namespace Crener.Spline.BaseSpline
                 previousTime = currentTime;
 
                 double previousProgress = 0f;
-                float2 previous = GetPoint((float) previousProgress, i);
+                float2 previous = Get2DPoint((float) previousProgress, i);
                 points.Add(previous); // directly add control point
 
                 if(i > 0)
@@ -311,7 +311,7 @@ namespace Crener.Spline.BaseSpline
                     int attempts = -1;
                     while (++attempts < perPointIterationAttempts)
                     {
-                        point = GetPoint((float) currentProgress, i);
+                        point = Get2DPoint((float) currentProgress, i);
 
                         distance = math.distance(previous, point);
                         if(math.abs((sectionLengthDone + distance) - targetDistance) < 0.0000005f)

@@ -29,11 +29,11 @@ namespace Crener.Spline.Test._3D.LinearCubic.TestAdapters
             Assert.AreEqual(0.5f, testSpline.Times[0]);
             Assert.AreEqual(1f, testSpline.Times[1]);
 
-            TestHelpers.CheckFloat3(a, testSpline.GetPoint(0f));
-            TestHelpers.CheckFloat3(new float3(5f, 0f, 0f), testSpline.GetPoint(0.5f));
-            TestHelpers.CheckFloat3(d, testSpline.GetPoint(1f));
-            TestHelpers.CheckFloat3(d, testSpline.GetPoint(1.5f));
-            TestHelpers.CheckFloat3(d, testSpline.GetPoint(5f));
+            TestHelpers.CheckFloat3(a, testSpline.Get3DPoint(0f));
+            TestHelpers.CheckFloat3(new float3(5f, 0f, 0f), testSpline.Get3DPoint(0.5f));
+            TestHelpers.CheckFloat3(d, testSpline.Get3DPoint(1f));
+            TestHelpers.CheckFloat3(d, testSpline.Get3DPoint(1.5f));
+            TestHelpers.CheckFloat3(d, testSpline.Get3DPoint(5f));
         }
 
         [Test]
@@ -98,10 +98,10 @@ namespace Crener.Spline.Test._3D.LinearCubic.TestAdapters
             float3 b = new float3(20f, 20f, 3f);
             testSpline.AddControlPoint(b);
 
-            TestHelpers.CheckFloat3(a, testSpline.GetPoint(0f, 0));
-            TestHelpers.CheckFloat3(math.lerp(a, b, 0.5f), testSpline.GetPoint(0.5f, 0));
-            TestHelpers.CheckFloat3(math.lerp(a, b, 0.7f), testSpline.GetPoint(0.7f, 0));
-            TestHelpers.CheckFloat3(b, testSpline.GetPoint(1f, 0));
+            TestHelpers.CheckFloat3(a, testSpline.Get3DPoint(0f, 0));
+            TestHelpers.CheckFloat3(math.lerp(a, b, 0.5f), testSpline.Get3DPoint(0.5f, 0));
+            TestHelpers.CheckFloat3(math.lerp(a, b, 0.7f), testSpline.Get3DPoint(0.7f, 0));
+            TestHelpers.CheckFloat3(b, testSpline.Get3DPoint(1f, 0));
         }
     }
 }

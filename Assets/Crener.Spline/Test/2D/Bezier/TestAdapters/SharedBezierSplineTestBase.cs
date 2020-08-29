@@ -1,4 +1,3 @@
-using Crener.Spline.Common.Interfaces;
 using Crener.Spline.Test._2D.Bezier.TestTypes;
 using Crener.Spline.Test.Helpers;
 using NUnit.Framework;

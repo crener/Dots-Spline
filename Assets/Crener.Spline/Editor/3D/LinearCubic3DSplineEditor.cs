@@ -1,5 +1,3 @@
-using Crener.Spline.BezierSpline;
-using Crener.Spline.Common;
 using Crener.Spline.Common.Interfaces;
 using Crener.Spline.Linear;
 using Unity.Mathematics;
@@ -82,7 +80,7 @@ namespace Crener.Spline.Editor._3D
                 for (int s = 0; s <= 64; s++)
                 {
                     float progress = s / 64f;
-                    float3 p = spline.GetPoint(progress, i - 1);
+                    float3 p = spline.Get3DPoint(progress, i - 1);
                     Vector3 screenPosition = LastSceneCamera.WorldToScreenPoint(p);
 
                     HandleDrawCross(screenPosition, 0.5f);

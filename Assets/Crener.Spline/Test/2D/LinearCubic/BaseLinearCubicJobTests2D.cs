@@ -1,5 +1,4 @@
 using Crener.Spline.Common.Interfaces;
-using Crener.Spline.Test._2D.Linear.TestAdapters;
 using Crener.Spline.Test._2D.LinearCubic.TestAdapters;
 using Crener.Spline.Test._2D.LinearCubic.TestTypes;
 using Crener.Spline.Test.BaseTests;

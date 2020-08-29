@@ -1,5 +1,3 @@
-using Crener.Spline.Common;
-using Crener.Spline.Common.Interfaces;
 using Crener.Spline.Test.Helpers;
 using NUnit.Framework;
 using Unity.Mathematics;
@@ -26,7 +24,7 @@ namespace Crener.Spline.Test._2D.LinearCubic.TestAdapters
             Assert.AreEqual(3, testSpline.ControlPointCount);
             Assert.AreEqual(2, testSpline.SegmentPointCount);
 
-            Assert.AreNotEqual(bottomLeft, testSpline.GetPoint(0.5f));
+            Assert.AreNotEqual(bottomLeft, testSpline.Get2DPoint(0.5f));
         }
 
         /// <summary>
@@ -47,9 +45,9 @@ namespace Crener.Spline.Test._2D.LinearCubic.TestAdapters
             Assert.AreEqual(3, testSpline.ControlPointCount);
             Assert.AreEqual(2, testSpline.SegmentPointCount);
 
-            Assert.AreEqual(topLeft, testSpline.GetPoint(0f));
-            Assert.AreNotEqual(topLeft, testSpline.GetPoint(1f));
-            Assert.AreEqual(bottomRight, testSpline.GetPoint(1f));
+            Assert.AreEqual(topLeft, testSpline.Get2DPoint(0f));
+            Assert.AreNotEqual(topLeft, testSpline.Get2DPoint(1f));
+            Assert.AreEqual(bottomRight, testSpline.Get2DPoint(1f));
         }
 
         /// <summary>
@@ -72,13 +70,13 @@ namespace Crener.Spline.Test._2D.LinearCubic.TestAdapters
             Assert.AreEqual(4, testSpline.ControlPointCount);
             Assert.AreEqual(3, testSpline.SegmentPointCount);
 
-            TestHelpers.CheckFloat2(topLeft, testSpline.GetPoint(0f));
-            TestHelpers.CheckFloat2(topLeft, testSpline.GetPoint(-0.1f));
-            TestHelpers.CheckFloat2(topRight, testSpline.GetPoint(1f));
-            TestHelpers.CheckFloat2(topRight, testSpline.GetPoint(1.1f), 0.025f);
+            TestHelpers.CheckFloat2(topLeft, testSpline.Get2DPoint(0f));
+            TestHelpers.CheckFloat2(topLeft, testSpline.Get2DPoint(-0.1f));
+            TestHelpers.CheckFloat2(topRight, testSpline.Get2DPoint(1f));
+            TestHelpers.CheckFloat2(topRight, testSpline.Get2DPoint(1.1f), 0.025f);
 
-            Assert.AreNotEqual(bottomLeft, testSpline.GetPoint(0.33f));
-            Assert.AreNotEqual(topRight, testSpline.GetPoint(0.66f));
+            Assert.AreNotEqual(bottomLeft, testSpline.Get2DPoint(0.33f));
+            Assert.AreNotEqual(topRight, testSpline.Get2DPoint(0.66f));
         }
 
         /// <summary>
@@ -99,12 +97,12 @@ namespace Crener.Spline.Test._2D.LinearCubic.TestAdapters
             Assert.AreEqual(3, testSpline.ControlPointCount);
             Assert.AreEqual(2, testSpline.SegmentPointCount);
 
-            TestHelpers.CheckFloat2(topLeft, testSpline.GetPoint(0f));
-            TestHelpers.CheckFloat2(topLeft, testSpline.GetPoint(-0.1f));
-            TestHelpers.CheckFloat2(bottomRight, testSpline.GetPoint(1f));
-            TestHelpers.CheckFloat2(bottomRight, testSpline.GetPoint(1.1f));
+            TestHelpers.CheckFloat2(topLeft, testSpline.Get2DPoint(0f));
+            TestHelpers.CheckFloat2(topLeft, testSpline.Get2DPoint(-0.1f));
+            TestHelpers.CheckFloat2(bottomRight, testSpline.Get2DPoint(1f));
+            TestHelpers.CheckFloat2(bottomRight, testSpline.Get2DPoint(1.1f));
 
-            Assert.AreNotEqual(bottomLeft, testSpline.GetPoint(0.5f));
+            Assert.AreNotEqual(bottomLeft, testSpline.Get2DPoint(0.5f));
         }
         
         [Test]
@@ -130,11 +128,11 @@ namespace Crener.Spline.Test._2D.LinearCubic.TestAdapters
             Assert.AreEqual(0.5f, testSpline.Times[0]);
             Assert.AreEqual(1f, testSpline.Times[1]);
 
-            TestHelpers.CheckFloat2(a, testSpline.GetPoint(0f));
-            TestHelpers.CheckFloat2(new float2(5f, 0f), testSpline.GetPoint(0.5f));
-            TestHelpers.CheckFloat2(d, testSpline.GetPoint(1f));
-            TestHelpers.CheckFloat2(d, testSpline.GetPoint(1.5f));
-            TestHelpers.CheckFloat2(d, testSpline.GetPoint(5f));
+            TestHelpers.CheckFloat2(a, testSpline.Get2DPoint(0f));
+            TestHelpers.CheckFloat2(new float2(5f, 0f), testSpline.Get2DPoint(0.5f));
+            TestHelpers.CheckFloat2(d, testSpline.Get2DPoint(1f));
+            TestHelpers.CheckFloat2(d, testSpline.Get2DPoint(1.5f));
+            TestHelpers.CheckFloat2(d, testSpline.Get2DPoint(5f));
         }
 
         // todo add tests which check the error range in the first segment and last segment

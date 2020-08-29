@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using Crener.Spline.BezierSpline;
 using Crener.Spline.CatmullRom;
 using Crener.Spline.Common;
-using Crener.Spline.Linear;
 using Unity.Mathematics;
 
 namespace Crener.Spline.Test._2D.CatmullRom.TestTypes

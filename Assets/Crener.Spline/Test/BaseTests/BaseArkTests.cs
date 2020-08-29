@@ -225,7 +225,7 @@ namespace Crener.Spline.Test.BaseTests
         {
             ISpline3D spline3D = spline as ISpline3D;
             Assert.NotNull(spline3D);
-            return spline3D.GetPoint(progress);
+            return spline3D.Get3DPoint(progress);
         }
 
         protected override void CompareProgressEquals(IArkableSpline spline, float progress, float3 expectedPoint,
@@ -234,7 +234,7 @@ namespace Crener.Spline.Test.BaseTests
             ISpline3D spline3D = spline as ISpline3D;
             Assert.NotNull(spline3D);
 
-            float3 point = spline3D.GetPoint(progress);
+            float3 point = spline3D.Get3DPoint(progress);
             TestHelpers.CheckFloat3(point, expectedPoint, tolerance);
         }
 
@@ -243,7 +243,7 @@ namespace Crener.Spline.Test.BaseTests
             ISpline3D spline3D = spline as ISpline3D;
             Assert.NotNull(spline3D);
 
-            float3 point = spline3D.GetPoint(progress);
+            float3 point = spline3D.Get3DPoint(progress);
             Assert.AreNotEqual(point, unexpectedPoint);
         }
 
@@ -251,9 +251,9 @@ namespace Crener.Spline.Test.BaseTests
         {
             ISpline3D spline3D = (spline as ISpline3D);
             Assert.NotNull(spline3D, "Unable to convert spline");
-            Assert.NotNull(spline3D.SplineEntityData, "spline failed to generate data");
+            Assert.NotNull(spline3D.SplineEntityData3D, "spline failed to generate data");
 
-            return spline3D.SplineEntityData.Value.Points.Length;
+            return spline3D.SplineEntityData3D.Value.Points.Length;
         }
     }
 
@@ -279,7 +279,7 @@ namespace Crener.Spline.Test.BaseTests
             ISpline2D spline2D = spline as ISpline2D;
             Assert.NotNull(spline2D);
 
-            float2 point = spline2D.GetPoint(progress);
+            float2 point = spline2D.Get2DPoint(progress);
             return new float3(point.x, point.y, 0f);
         }
 
@@ -289,7 +289,7 @@ namespace Crener.Spline.Test.BaseTests
             ISpline2D spline2D = spline as ISpline2D;
             Assert.NotNull(spline2D);
 
-            float2 point = spline2D.GetPoint(progress);
+            float2 point = spline2D.Get2DPoint(progress);
             TestHelpers.CheckFloat2(point, expectedPoint.xy, tolerance);
         }
 
@@ -298,7 +298,7 @@ namespace Crener.Spline.Test.BaseTests
             ISpline2D spline2D = spline as ISpline2D;
             Assert.NotNull(spline2D);
 
-            float2 point = spline2D.GetPoint(progress);
+            float2 point = spline2D.Get2DPoint(progress);
             Assert.AreNotEqual(point, unexpectedPoint.xy);
         }
 
@@ -306,9 +306,9 @@ namespace Crener.Spline.Test.BaseTests
         {
             ISpline2D spline3D = (spline as ISpline2D);
             Assert.NotNull(spline3D, "Unable to convert spline");
-            Assert.NotNull(spline3D.SplineEntityData, "spline failed to generate data");
+            Assert.NotNull(spline3D.SplineEntityData2D, "spline failed to generate data");
 
-            return spline3D.SplineEntityData.Value.Points.Length;
+            return spline3D.SplineEntityData2D.Value.Points.Length;
         }
     }
 }

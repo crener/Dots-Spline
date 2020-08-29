@@ -3,7 +3,6 @@ using Crener.Spline.Test._3D.LinearCubic.TestTypes;
 using Crener.Spline.Test._3D.LinearCubic.TestAdapters;
 using Crener.Spline.Test.BaseTests;
 using UnityEngine;
-using MeaninglessTestWrapper = Crener.Spline.Test._3D.Linear.TestTypes.MeaninglessTestWrapper;
 
 namespace Crener.Spline.Test._3D.LinearCubic
 {

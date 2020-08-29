@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Runtime.CompilerServices;
 using Crener.Spline.BaseSpline;
 using Crener.Spline.Common;
@@ -32,7 +31,7 @@ namespace Crener.Spline.CubicSpline
 
         protected override bool DataInitialized => segmentDistance != null && base.DataInitialized;
 
-        public override float2 GetPoint(float progress)
+        public override float2 Get2DPoint(float progress)
         {
             if(ControlPointCount == 0)
                 return float2.zero;
@@ -246,14 +245,14 @@ namespace Crener.Spline.CubicSpline
 
             for (int i = 0; i < SegmentPointCount - 1; i++)
             {
-                float2 f = GetPoint(0f, i);
+                float2 f = Get2DPoint(0f, i);
                 Vector3 lp = new Vector3(f.x, f.y, 0f);
                 int points = (int) (pointDensity * (SegmentLength[i] * Length()));
 
                 for (int s = 1; s <= points; s++)
                 {
                     float progress = s / (float) points;
-                    float2 p = GetPoint(progress, i);
+                    float2 p = Get2DPoint(progress, i);
                     Vector3 point = new Vector3(p.x, p.y, 0f);
 
                     Gizmos.DrawLine(lp, point);

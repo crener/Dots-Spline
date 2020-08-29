@@ -1,4 +1,3 @@
-using System;
 using Crener.Spline.BezierSpline;
 using Crener.Spline.Common.Interfaces;
 using Crener.Spline.CubicSpline;
@@ -85,7 +84,7 @@ namespace Crener.Spline.Editor._2D
                 for (int s = 0; s <= 64; s++)
                 {
                     float progress = s / 64f;
-                    float2 p = spline.GetPoint(progress, i - 1);
+                    float2 p = spline.Get2DPoint(progress, i - 1);
 
                     float dist = math.distance(mouse, p);
                     if(bestDistance > dist)
