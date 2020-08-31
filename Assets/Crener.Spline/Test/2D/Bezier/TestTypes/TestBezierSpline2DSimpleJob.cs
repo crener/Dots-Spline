@@ -42,7 +42,7 @@ namespace Crener.Spline.Test._2D.Bezier.TestTypes
                 return job.Result;
             }
 
-            public override float2 GetControlPoint(int i) => SplineEntityData2D.Value.Points[i];
+            public override float2 GetControlPoint2D(int i) => SplineEntityData2D.Value.Points[i];
 
             public int ExpectedControlPointCount(int controlPoints)
             {

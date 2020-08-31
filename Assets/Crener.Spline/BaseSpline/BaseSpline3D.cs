@@ -136,12 +136,12 @@ namespace Crener.Spline.BaseSpline
             if(ControlPointCount == 0)
                 return float3.zero;
             if(progress <= 0f || ControlPointCount <= 1)
-                return GetControlPoint(0);
+                return GetControlPoint3D(0);
             else if(progress >= 1f)
             {
                 if(this is ILoopingSpline looped && looped.Looped)
-                    return GetControlPoint(0);
-                return GetControlPoint((ControlPointCount - 1));
+                    return GetControlPoint3D(0);
+                return GetControlPoint3D((ControlPointCount - 1));
             }
 
             int aIndex = FindSegmentIndex(progress);
@@ -170,7 +170,7 @@ namespace Crener.Spline.BaseSpline
         /// <param name="i">index of the segment</param>
         /// <returns>World Space position for the point</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public virtual float3 GetControlPoint(int i)
+        public virtual float3 GetControlPoint3D(int i)
         {
             return Points[i];
         }

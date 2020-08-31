@@ -72,7 +72,7 @@ namespace Crener.Spline.Editor._2D
             index = 0;
 
             if(spline.ControlPointCount == 1)
-                return spline.GetControlPoint(0);
+                return spline.GetControlPoint2D(0);
             else if(spline.ControlPointCount == 0)
                 return mouse;
 

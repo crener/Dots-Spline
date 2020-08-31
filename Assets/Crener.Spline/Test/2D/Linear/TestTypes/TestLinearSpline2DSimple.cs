@@ -36,7 +36,7 @@ namespace Crener.Spline.Test._2D.Linear.TestTypes
             
             public int ExpectedTimeCount(int controlPoints) => math.max(1, controlPoints - 1);
 
-            public float2 GetControlPoint(int i, SplinePoint point) => GetControlPoint(i);
+            public float2 GetControlPoint(int i, SplinePoint point) => GetControlPoint2D(i);
         }
     }
 }

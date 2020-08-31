@@ -61,7 +61,7 @@ namespace Crener.Spline.Test._2D.LinearCubic
     
     public class LoopingLinearCubicTests2D : BaseLoopingTests2D
     {
-        protected override ILoopingSpline CreateNewSpline()
+        public override ILoopingSpline CreateNewSpline()
         {
             GameObject game = new GameObject();
             ILoopingSpline spline = game.AddComponent<MeaninglessTestWrapper2.TestLinearCubic2DSplineSimple>();
@@ -72,7 +72,7 @@ namespace Crener.Spline.Test._2D.LinearCubic
     
     public class ArkLinearCubicTests2D : BaseArkTests2D
     {
-        protected override IArkableSpline CreateNewSpline()
+        public override IArkableSpline CreateNewSpline()
         {
             GameObject game = new GameObject();
             IArkableSpline spline = game.AddComponent<MeaninglessTestWrapper2.TestLinearCubic2DSplineSimple>();

@@ -57,11 +57,11 @@ namespace Crener.Spline.CatmullRom
             if(ControlPointCount == 0)
                 return float2.zero;
             else if(progress <= 0f)
-                return GetControlPoint(0);
+                return GetControlPoint2D(0);
             else if(progress >= 1f)
-                return GetControlPoint(math.max(0, ControlPointCount - 1));
+                return GetControlPoint2D(math.max(0, ControlPointCount - 1));
             else if(ControlPointCount == 1)
-                return GetControlPoint(0);
+                return GetControlPoint2D(0);
 
             int aIndex = FindSegmentIndex(progress);
             float pointProgress = SegmentProgress(progress, aIndex);

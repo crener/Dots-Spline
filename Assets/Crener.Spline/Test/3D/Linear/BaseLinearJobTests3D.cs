@@ -11,7 +11,7 @@ namespace Crener.Spline.Test._3D.Linear
     /// </summary>
     public class BaseLinearJobTests3D : LinearBaseTest3DAdapter
     {
-        protected override ISimpleTestSpline3D CreateNewSpline()
+        public override ITestSpline CreateNewSpline()
         {
             GameObject game = new GameObject();
             ISimpleTestSpline3D spline = game.AddComponent<MeaninglessTestWrapper2.TestLinearSpline3DSimpleJob>();
@@ -22,7 +22,7 @@ namespace Crener.Spline.Test._3D.Linear
     
     public class LoopingLinearJobTests3D : BaseLoopingTests3D
     {
-        protected override ILoopingSpline CreateNewSpline()
+        public override ILoopingSpline CreateNewSpline()
         {
             GameObject game = new GameObject();
             ILoopingSpline spline = game.AddComponent<MeaninglessTestWrapper.TestLinearSpline3DSimple>();

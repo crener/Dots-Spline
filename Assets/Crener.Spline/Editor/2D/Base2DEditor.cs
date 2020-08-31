@@ -6,11 +6,8 @@ using UnityEngine;
 
 namespace Crener.Spline.Editor._2D
 {
-    public abstract class Base2DEditor : UnityEditor.Editor
+    public abstract class Base2DEditor : BasicSplineEditorFunctionality
     {
-        private Transform m_sourceTrans = null;
-        private Vector3 m_lastTransPosition = Vector3.zero;
-
         // editor settings
         protected bool m_editing = false;
         protected bool m_editMoveWithTrans = true;
@@ -115,7 +112,7 @@ namespace Crener.Spline.Editor._2D
 
                     // show the current control point location
                     EditorGUI.BeginChangeCheck();
-                    float2 currentPoint = spline.GetControlPoint(m_editControlPoint.Value);
+                    float2 currentPoint = spline.GetControlPoint2D(m_editControlPoint.Value);
                     currentPoint = EditorGUILayout.Vector2Field("Point", currentPoint);
                     if(EditorGUI.EndChangeCheck())
                     {
@@ -170,12 +167,6 @@ namespace Crener.Spline.Editor._2D
             }
         }
 
-        protected void ChangeTransform(Transform trans)
-        {
-            m_sourceTrans = trans;
-            m_lastTransPosition = trans.position;
-        }
-
         /// <summary>
         /// Handles the control logic for adding a point. This will draw a red line from the mouse position to the closest point along the
         /// curve
@@ -221,7 +212,7 @@ namespace Crener.Spline.Editor._2D
 
                 Handles.color = selected ? Color.blue : new Color(0f, 1f, 1f, 0.73f);
 
-                float2 point = spline.GetControlPoint(i);
+                float2 point = spline.GetControlPoint2D(i);
                 Vector3 editorPosition = new Vector3(point.x, point.y);
 
                 // draw handles
@@ -266,7 +257,7 @@ namespace Crener.Spline.Editor._2D
             index = 0;
 
             if(spline.ControlPointCount == 1)
-                return spline.GetControlPoint(0);
+                return spline.GetControlPoint2D(0);
             else if(spline.ControlPointCount == 0)
                 return mouse;
             
@@ -305,11 +296,11 @@ namespace Crener.Spline.Editor._2D
 
             for (int i = 0; i <= quantity; i++)
             {
-                HandleDrawCross(spline.Get2DPoint(i == 0 ? 0f : i / (quantity - 1f)), multiplier);
+                HandleDrawPlus(spline.Get2DPoint(i == 0 ? 0f : i / (quantity - 1f)), multiplier);
             }
         }
 
-        private static void HandleDrawCross(Vector2 location, float sizeMultiplier = 1f)
+        private static void HandleDrawPlus(Vector2 location, float sizeMultiplier = 1f)
         {
             Vector3 worldLocation = new Vector3(location.x, location.y, 0f);
             float handleSize = HandleUtility.GetHandleSize(worldLocation) * sizeMultiplier;

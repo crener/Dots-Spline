@@ -12,7 +12,7 @@ namespace Crener.Spline.Linear
     /// Simple spline which directly follows a set of points
     /// </summary>
     [AddComponentMenu("Spline/3D/Linear Spline Plain")]
-    public class Linear3DPlainSpline : BaseSpline3DPlain, ILoopingSpline
+    public class Linear3DPlaneSpline : BaseSpline3DPlane, ILoopingSpline
     {
         [SerializeField]
         private bool looped = false;

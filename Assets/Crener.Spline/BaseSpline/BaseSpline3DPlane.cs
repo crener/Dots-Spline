@@ -1,11 +1,13 @@
 using System;
 using System.Linq;
+using Crener.Spline.Common;
 using Crener.Spline.Common.DataStructs;
 using Crener.Spline.Common.Interfaces;
 using Unity.Assertions;
 using Unity.Collections;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 using Color = UnityEngine.Color;
 
 namespace Crener.Spline.BaseSpline
@@ -13,18 +15,18 @@ namespace Crener.Spline.BaseSpline
     /// <summary>
     /// Base implementation which contains base functionality and reusable methods
     /// </summary>
-    public abstract class BaseSpline3DPlain : BaseSpline2D, ISpline3DPlain
+    public abstract class BaseSpline3DPlane : BaseSpline2D, ISpline3DPlane, ISpline3DEditor
     {
-        [SerializeField]
-        protected Quaternion m_forward = Quaternion.identity;
-
         public Quaternion Forward
         {
-            get => m_forward;
+            get
+            {
+                if(trans == null) Start();
+                return trans.rotation;
+            }
             set
             {
-                m_forward = value;
-                RecalculateLengthBias();
+                if(Forward != value) trans.rotation = value;
             }
         }
         public Spline3DData? SplineEntityData3D
@@ -70,15 +72,32 @@ namespace Crener.Spline.BaseSpline
             base.InsertControlPoint(index, Convert3Dto2D(point));
         }
 
-        protected float3 Convert2Dto3D(float2 point)
+        public float3 GetControlPoint3D(int i)
         {
-            return (trans.rotation * new float3(point, 0f)) + trans.position;
+            return Convert2Dto3D(GetControlPoint2D(i));
         }
 
-        protected float2 Convert3Dto2D(float3 point)
+        public void UpdateControlPoint(int index, float3 point, SplinePoint mode)
         {
-            float3 convertedPoint = (Quaternion.Inverse(trans.rotation) * point) - trans.position;
-            Assert.AreEqual(convertedPoint.z, 0f, "3D to 2D conversion failed");
+            base.UpdateControlPoint(index, Convert3Dto2D(point), mode);
+        }
+
+        public void MoveControlPoints(float3 delta)
+        {
+            base.MoveControlPoints(Convert3Dto2D(delta, false));
+        }
+
+        protected float3 Convert2Dto3D(float2 point, bool translate = true)
+        {
+            float3 convertedPoint = (Forward * new float3(point, 0f));
+            if(translate) convertedPoint += (float3)trans.position;
+            return convertedPoint;
+        }
+
+        protected float2 Convert3Dto2D(float3 point, bool translate = true)
+        {
+            float3 convertedPoint = (Quaternion.Inverse(Forward) * point);
+            if(translate) convertedPoint -= (float3)trans.position;
             return new float2(convertedPoint.x, convertedPoint.y);
         }
 

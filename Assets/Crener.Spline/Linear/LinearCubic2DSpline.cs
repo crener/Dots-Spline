@@ -85,9 +85,9 @@ namespace Crener.Spline.Linear
             if(ControlPointCount == 0)
                 return float2.zero;
             else if(ControlPointCount == 1)
-                return GetControlPoint(0);
+                return GetControlPoint2D(0);
             else if(ControlPointCount == 2 && !Looped)
-                return math.lerp(GetControlPoint(0), GetControlPoint(1), math.clamp(progress, 0f, 1f));
+                return math.lerp(GetControlPoint2D(0), GetControlPoint2D(1), math.clamp(progress, 0f, 1f));
 
             progress = math.clamp(progress, 0f, 1f);
             int aIndex = FindSegmentIndex(progress);
@@ -174,7 +174,7 @@ namespace Crener.Spline.Linear
         protected override float LengthBetweenPoints(int a, int resolution = 64)
         {
             if(ControlPointCount <= 1) return 0f;
-            if(ControlPointCount == 2) return math.distance(GetControlPoint(0), GetControlPoint(1));
+            if(ControlPointCount == 2) return math.distance(GetControlPoint2D(0), GetControlPoint2D(1));
 
             return base.LengthBetweenPoints(a, resolution);
         }

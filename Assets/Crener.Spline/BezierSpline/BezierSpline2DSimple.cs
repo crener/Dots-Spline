@@ -242,7 +242,7 @@ namespace Crener.Spline.BezierSpline
         /// <param name="i">index of the segment</param>
         /// <returns>World Space position for the point</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override float2 GetControlPoint(int i)
+        public override float2 GetControlPoint2D(int i)
         {
             return GetControlPoint(i, SplinePoint.Point);
         }

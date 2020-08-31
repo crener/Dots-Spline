@@ -4,7 +4,7 @@ using Crener.Spline.Common.Interfaces;
 
 namespace Crener.Spline.Test
 {
-    public interface ITestSpline
+    public interface ITestSpline : ISpline
     {
         IReadOnlyList<float> Times { get; }
         IReadOnlyList<SplineEditMode> Modes { get; }

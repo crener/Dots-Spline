@@ -29,7 +29,7 @@ namespace Crener.Spline.Test._2D.Bezier
     
     public class ArkBezierSplineTests2D : BaseArkTests2D
     {
-        protected override IArkableSpline CreateNewSpline()
+        public override IArkableSpline CreateNewSpline()
         {
             GameObject game = new GameObject();
             MeaninglessTestWrapper.TestBezierSpline2DSimple testBezierSpline = game.AddComponent<MeaninglessTestWrapper.TestBezierSpline2DSimple>();

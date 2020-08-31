@@ -1,7 +1,9 @@
+using Crener.Spline.Common;
 using Crener.Spline.Common.Interfaces;
 using Crener.Spline.Test._3D.Linear.TestAdapters;
 using Crener.Spline.Test._3D.Linear.TestTypes;
 using Crener.Spline.Test.BaseTests;
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace Crener.Spline.Test._3D.Linear
@@ -11,7 +13,7 @@ namespace Crener.Spline.Test._3D.Linear
     /// </summary>
     public class BaseLinearTests3D : LinearBaseTest3DAdapter
     {
-        protected override ISimpleTestSpline3D CreateNewSpline()
+        public override ITestSpline CreateNewSpline()
         {
             GameObject game = new GameObject();
             ISimpleTestSpline3D spline = game.AddComponent<MeaninglessTestWrapper.TestLinearSpline3DSimple>();
@@ -22,7 +24,7 @@ namespace Crener.Spline.Test._3D.Linear
     
     public class LoopingLinearTests3D : BaseLoopingTests3D
     {
-        protected override ILoopingSpline CreateNewSpline()
+        public override ILoopingSpline CreateNewSpline()
         {
             GameObject game = new GameObject();
             ILoopingSpline spline = game.AddComponent<MeaninglessTestWrapper.TestLinearSpline3DSimple>();

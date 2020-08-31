@@ -36,13 +36,13 @@ namespace Crener.Spline.CubicSpline
             if(ControlPointCount == 0)
                 return float2.zero;
             else if(progress <= 0f)
-                return GetControlPoint(0);
+                return GetControlPoint2D(0);
             else if(progress >= 1f)
-                return GetControlPoint(ControlPointCount - 1);
+                return GetControlPoint2D(ControlPointCount - 1);
             else if(ControlPointCount == 1 || progress <= 0f)
-                return GetControlPoint(0);
+                return GetControlPoint2D(0);
             else if(ControlPointCount == 2)
-                return math.lerp(GetControlPoint(0), GetControlPoint(1), progress);
+                return math.lerp(GetControlPoint2D(0), GetControlPoint2D(1), progress);
             else if(ControlPointCount == 3)
                 return Cubic3Point(0, 1, 2, progress);
 
@@ -68,7 +68,7 @@ namespace Crener.Spline.CubicSpline
 
             if(ControlPointCount == 2)
             {
-                LengthCache = math.distance(GetControlPoint(0), GetControlPoint(1));
+                LengthCache = math.distance(GetControlPoint2D(0), GetControlPoint2D(1));
                 SegmentLength.Add(1f);
                 return;
             }
@@ -219,15 +219,15 @@ namespace Crener.Spline.CubicSpline
 
             if(ControlPointCount == 2)
             {
-                float2 cp0 = GetControlPoint(0);
-                float2 cp1 = GetControlPoint(1);
+                float2 cp0 = GetControlPoint2D(0);
+                float2 cp1 = GetControlPoint2D(1);
                 Gizmos.DrawLine(new Vector3(cp0.x, cp0.y, 0f), new Vector3(cp1.x, cp1.y, 0f));
                 return;
             }
 
             if(ControlPointCount == 3)
             {
-                float2 f = GetControlPoint(0);
+                float2 f = GetControlPoint2D(0);
                 Vector3 lp = new Vector3(f.x, f.y, 0f);
                 int points = (int) (pointDensity * (SegmentLength[0] * Length()));
                 for (int s = 1; s <= points; s++)

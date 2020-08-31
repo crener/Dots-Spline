@@ -2,18 +2,14 @@ using Crener.Spline.Common;
 using Crener.Spline.Common.Interfaces;
 using Unity.Mathematics;
 using UnityEditor;
+using UnityEditor.EditorTools;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
 namespace Crener.Spline.Editor._3D
 {
-    public abstract class Base3DEditor : UnityEditor.Editor
+    public abstract class Base3DEditor : BasicSplineEditorFunctionality
     {
-        private Transform m_sourceTrans = null;
-        private Vector3 m_lastTransPosition = Vector3.zero;
-        protected Camera LastSceneCamera { get; private set; } = null;
-        protected Transform LastSceneCameraTrans { get; private set; } = null;
-
         // editor settings
         protected bool m_editing = false;
         protected bool m_editMoveWithTrans = true;
@@ -119,7 +115,7 @@ namespace Crener.Spline.Editor._3D
 
                     // show the current control point location
                     EditorGUI.BeginChangeCheck();
-                    float3 currentPoint = spline.GetControlPoint(m_editControlPoint.Value);
+                    float3 currentPoint = spline.GetControlPoint3D(m_editControlPoint.Value);
                     currentPoint = EditorGUILayout.Vector3Field("Point", currentPoint);
                     if(EditorGUI.EndChangeCheck())
                     {
@@ -173,12 +169,6 @@ namespace Crener.Spline.Editor._3D
                 spline.MoveControlPoints(new float3(delta.x, delta.y, delta.z));
             }
         }
-
-        protected void ChangeTransform(Transform trans)
-        {
-            m_sourceTrans = trans;
-            m_lastTransPosition = trans.position;
-        }
         #endregion Inspector
 
         /// <summary>
@@ -207,7 +197,7 @@ namespace Crener.Spline.Editor._3D
                 EditorUtility.SetDirty(objSpline);
 
                 if((m_editNewPointIndex == spline.ControlPointCount - 1 || spline.ControlPointCount == 1) &&
-                   splinePoint.Equals(spline.GetControlPoint(m_editNewPointIndex)))
+                   splinePoint.Equals(spline.GetControlPoint3D(m_editNewPointIndex)))
                     spline.AddControlPoint(splineMousePoint);
                 else
                     spline.InsertControlPoint(m_editNewPointIndex, splineMousePoint);
@@ -216,14 +206,8 @@ namespace Crener.Spline.Editor._3D
             }
         }
 
-        protected void CheckActiveCamera()
-        {
-            LastSceneCamera = SceneView.lastActiveSceneView.camera;
-            LastSceneCameraTrans = LastSceneCamera.transform;
-        }
-
         /// <summary>
-        /// Renders a blue dot at each control point of the spline
+        /// Renders a blue dot at each control point of the spline and a control handle for the point that is selected
         /// </summary>
         /// <param name="spline">spline to render control points for</param>
         protected void RenderControlPoints(ISpline3DEditor spline)
@@ -231,38 +215,18 @@ namespace Crener.Spline.Editor._3D
             for (int i = 0; i < spline.ControlPointCount; i++)
             {
                 bool selected = m_editControlPoint == i;
-
                 Handles.color = selected ? Color.blue : new Color(0f, 1f, 1f, 0.73f);
-
-                float3 point = spline.GetControlPoint(i);
-                Vector3 editorPosition = new Vector3(point.x, point.y, point.z);
 
                 // draw handles
                 if(selected)
                 {
-                    // main point 
-                    EditorGUI.BeginChangeCheck();
-
-                    Quaternion handleRotation = Quaternion.identity;
-                    if(Tools.pivotRotation == PivotRotation.Local && SceneView.lastActiveSceneView != null)
-                        // point handle away from camera
-                        handleRotation = LastSceneCameraTrans.rotation;
-
-                    Vector3 pos = Handles.DoPositionHandle(editorPosition, handleRotation);
-
-                    if(EditorGUI.EndChangeCheck() && spline is Object objSpline)
-                    {
-                        Undo.RecordObject(objSpline, "Move Point");
-                        EditorUtility.SetDirty(objSpline);
-
-                        float3 newPoint = new float3(pos.x, pos.y, pos.z);
-                        spline.UpdateControlPoint(i, newPoint, SplinePoint.Point);
-
-                        SceneView.RepaintAll();
-                    }
+                    DrawSelectedHandles(spline, i);
                 }
                 else
                 {
+                    float3 point = spline.GetControlPoint3D(i);
+                    Vector3 editorPosition = new Vector3(point.x, point.y, point.z);
+
                     float size = HandleUtility.GetHandleSize(editorPosition) / 12f;
                     if(Handles.Button(editorPosition, Quaternion.identity, size, size, Handles.DotHandleCap))
                     {
@@ -270,6 +234,36 @@ namespace Crener.Spline.Editor._3D
                         Repaint();
                     }
                 }
+            }
+        }
+
+        /// <summary>
+        /// Draw the control handle for manipulating <paramref name="pointIndex"/> of <paramref name="spline"/>
+        /// </summary>
+        /// <param name="spline">spline to draw for</param>
+        /// <param name="pointIndex">control point index to render from the <paramref name="spline"/></param>
+        protected virtual void DrawSelectedHandles(ISpline3DEditor spline, int pointIndex)
+        {
+            float3 point = spline.GetControlPoint3D(pointIndex);
+
+            EditorGUI.BeginChangeCheck();
+
+            Quaternion handleRotation = Quaternion.identity;
+            if(Tools.pivotRotation == PivotRotation.Local && SceneView.lastActiveSceneView != null)
+                // point handle away from camera
+                handleRotation = LastSceneCameraTrans.rotation;
+
+            Vector3 pos = Handles.DoPositionHandle(point, handleRotation);
+
+            if(EditorGUI.EndChangeCheck() && spline is Object objSpline)
+            {
+                Undo.RecordObject(objSpline, "Move Point");
+                EditorUtility.SetDirty(objSpline);
+
+                float3 newPoint = new float3(pos.x, pos.y, pos.z);
+                spline.UpdateControlPoint(pointIndex, newPoint, SplinePoint.Point);
+
+                SceneView.RepaintAll();
             }
         }
 
@@ -291,7 +285,7 @@ namespace Crener.Spline.Editor._3D
             if(spline.ControlPointCount == 0)
                 splinePoint = EditorInputAbstractions.MousePos3D();
             if(spline.ControlPointCount == 1)
-                splinePoint = spline.GetControlPoint(0);
+                splinePoint = spline.GetControlPoint3D(0);
             else
             {
                 splinePoint = float3.zero;

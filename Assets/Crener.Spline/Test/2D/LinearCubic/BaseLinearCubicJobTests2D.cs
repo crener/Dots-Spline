@@ -22,7 +22,7 @@ namespace Crener.Spline.Test._2D.LinearCubic
     
     public class LoopingLinearCubicJobTests2D : BaseLoopingTests2D
     {
-        protected override ILoopingSpline CreateNewSpline()
+        public override ILoopingSpline CreateNewSpline()
         {
             GameObject game = new GameObject();
             ILoopingSpline spline = game.AddComponent<MeaninglessTestWrapper.TestLinearCubic2DSplineSimpleJob>();

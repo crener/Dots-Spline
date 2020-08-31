@@ -22,7 +22,7 @@ namespace Crener.Spline.Test._3D.LinearCubic
     
     public class LoopingLinearCubicTests3D : BaseLoopingTests3D
     {
-        protected override ILoopingSpline CreateNewSpline()
+        public override ILoopingSpline CreateNewSpline()
         {
             GameObject game = new GameObject();
             ILoopingSpline spline = game.AddComponent<MeaninglessTestWrapper.TestLinearCubicSpline3DSimple>();
@@ -33,7 +33,7 @@ namespace Crener.Spline.Test._3D.LinearCubic
     
     public class ArkLinearCubicTests3D : BaseArkTests3D
     {
-        protected override IArkableSpline CreateNewSpline()
+        public override IArkableSpline CreateNewSpline()
         {
             GameObject game = new GameObject();
             IArkableSpline spline = game.AddComponent<MeaninglessTestWrapper.TestLinearCubicSpline3DSimple>();

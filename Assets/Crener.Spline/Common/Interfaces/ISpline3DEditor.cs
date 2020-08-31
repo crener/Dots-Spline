@@ -9,7 +9,7 @@ namespace Crener.Spline.Common.Interfaces
         /// </summary>
         /// <param name="i">index of the segment</param>
         /// <returns>World Space position for the point</returns>
-        float3 GetControlPoint(int i);
+        float3 GetControlPoint3D(int i);
 
         /// <summary>
         /// Update an existing control points data

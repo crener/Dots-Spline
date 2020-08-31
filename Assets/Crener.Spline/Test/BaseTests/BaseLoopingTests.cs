@@ -1,4 +1,6 @@
+using Crener.Spline.Common;
 using Crener.Spline.Common.Interfaces;
+using Crener.Spline.Test.BaseTests.TransferableTestBases;
 using Crener.Spline.Test.Helpers;
 using NUnit.Framework;
 using Unity.Mathematics;
@@ -33,7 +35,7 @@ namespace Crener.Spline.Test.BaseTests
             spline.Looped = false;
             return spline;
         }
-        
+
         [Test]
         public void LengthIncrease([Range(2, 9)] int points)
         {
@@ -128,7 +130,7 @@ namespace Crener.Spline.Test.BaseTests
             Assert.IsFalse(testSpline.Looped);
             CompareProgressEquals(testSpline, 0f, a);
             CompareProgressEquals(testSpline, 1f, b);
-            
+
             ChangeLooped(testSpline, true);
             float3 point = GetProgress(testSpline, 0f);
             CompareProgressEquals(testSpline, 0f, point);
@@ -151,7 +153,7 @@ namespace Crener.Spline.Test.BaseTests
             Assert.IsFalse(testSpline.Looped);
             CompareProgressEquals(testSpline, 0f, a);
             CompareProgressEquals(testSpline, 1f, c);
-            
+
             ChangeLooped(testSpline, true);
             float3 point = GetProgress(testSpline, 0f);
             CompareProgressEquals(testSpline, 0f, point);
@@ -176,7 +178,7 @@ namespace Crener.Spline.Test.BaseTests
             Assert.IsFalse(testSpline.Looped);
             CompareProgressEquals(testSpline, 0f, a);
             CompareProgressEquals(testSpline, 1f, d);
-            
+
             ChangeLooped(testSpline, true);
             float3 point = GetProgress(testSpline, 0f);
             CompareProgressEquals(testSpline, 0f, point);
@@ -186,89 +188,83 @@ namespace Crener.Spline.Test.BaseTests
 
     public abstract class BaseLoopingTests3D : BaseLoopingTests
     {
-        protected override void AddControlPoint(ILoopingSpline spline, float3 point)
-        {
-            Assert.NotNull(spline);
+        private static SplineInteractionBase3D s_splineBase = new SplineInteractionBase3D();
 
-            ISpline3D spline3D = spline as ISpline3D;
-            Assert.NotNull(spline3D, $"Failed to convert to 3D spline! Spline type was: {spline.GetType().Name}");
+        public override void AddControlPoint(ILoopingSpline spline, float3 point) =>
+            s_splineBase.AddControlPoint(spline as ISimpleSpline3D, point);
 
-            int before = spline3D.ControlPointCount;
-            spline3D.AddControlPoint(point);
+        public override void InsertControlPoint(ILoopingSpline spline, int index, float3 point) =>
+            s_splineBase.InsertControlPoint(spline as ISimpleSpline3D, index, point);
 
-            Assert.Greater(spline3D.ControlPointCount, before, "Adding a point did not increase the control point count");
-        }
+        public override float3 GetControlPoint(ILoopingSpline spline, int index, SplinePoint pointType) =>
+            s_splineBase.GetControlPoint(spline as ISimpleSpline3D, index, pointType);
 
-        protected override float Length(float3 a, float3 b) => math.distance(a, b);
-        
-        protected override float3 GetProgress(ILoopingSpline spline, float progress)
-        {
-            ISpline3D spline3D = spline as ISpline3D;
-            Assert.NotNull(spline3D);
-            return spline3D.Get3DPoint(progress);
-        }
+        public override void UpdateControlPoint(ILoopingSpline spline, int index, float3 newPoint, SplinePoint pointType) =>
+            s_splineBase.UpdateControlPoint(spline as ISimpleSpline3D, index, newPoint, pointType);
 
-        protected override void CompareProgressEquals(ILoopingSpline spline, float progress, float3 expectedPoint, float tolerance = 0.00001f)
-        {
-            ISpline3D spline3D = spline as ISpline3D;
-            Assert.NotNull(spline3D);
+        public override float3 GetProgress(ILoopingSpline spline, float progress) =>
+            s_splineBase.GetProgress(spline as ISimpleSpline3D, progress);
 
-            float3 point = spline3D.Get3DPoint(progress);
-            TestHelpers.CheckFloat3(point, expectedPoint, tolerance);
-        }
+        public override void CompareProgressEquals(ILoopingSpline spline, float progress, float3 expectedPoint,
+            float tolerance = 0.00001f) =>
+            s_splineBase.CompareProgressEquals(spline as ISimpleSpline3D, progress, expectedPoint, tolerance);
 
-        protected override void CompareProgress(ILoopingSpline spline, float progress, float3 unexpectedPoint)
-        {
-            ISpline3D spline3D = spline as ISpline3D;
-            Assert.NotNull(spline3D);
+        public override void CompareProgress(ILoopingSpline spline, float progress, float3 expectedPoint) =>
+            s_splineBase.CompareProgress(spline as ISimpleSpline3D, progress, expectedPoint);
 
-            float3 point = spline3D.Get3DPoint(progress);
-            Assert.AreNotEqual(point, unexpectedPoint);
-        }
+        public override void ComparePoint(float3 expected, float3 actual, float tolerance = 0.00001f) =>
+            s_splineBase.ComparePoint(expected, actual, tolerance);
+
+        public override float Length(float3 a, float3 b) => s_splineBase.Length(a, b);
+    }
+
+    public abstract class BaseLoopingTests3DPlane : BaseLoopingTests3D
+    {
+        private static SplineInteractionBase3DPlane s_splineBase = new SplineInteractionBase3DPlane();
+
+        public override float3 GetProgress(ILoopingSpline spline, float progress) =>
+            s_splineBase.GetProgress(spline as ISimpleSpline3D, progress);
+
+        public override void CompareProgressEquals(ILoopingSpline spline, float progress, float3 expectedPoint,
+            float tolerance = 0.00001f) =>
+            s_splineBase.CompareProgressEquals(spline as ISimpleSpline3D, progress, expectedPoint, tolerance);
+
+        public override void CompareProgress(ILoopingSpline spline, float progress, float3 expectedPoint) =>
+            s_splineBase.CompareProgress(spline as ISimpleSpline3D, progress, expectedPoint);
+
+        public override void ComparePoint(float3 expected, float3 actual, float tolerance = 0.00001f) =>
+            s_splineBase.ComparePoint(expected, actual, tolerance);
     }
 
     public abstract class BaseLoopingTests2D : BaseLoopingTests
     {
-        protected override void AddControlPoint(ILoopingSpline spline, float3 point)
-        {
-            Assert.NotNull(spline);
+        private static SplineInteractionBase2D s_splineBase = new SplineInteractionBase2D();
 
-            ISpline2D spline2D = spline as ISpline2D;
-            Assert.NotNull(spline2D, $"Failed to convert to 2D spline! Spline type was: {spline.GetType().Name}");
+        public override void AddControlPoint(ILoopingSpline spline, float3 point) =>
+            s_splineBase.AddControlPoint(spline as ISpline2D, point);
 
-            int before = spline2D.ControlPointCount;
-            spline2D.AddControlPoint(point.xy);
+        public override void InsertControlPoint(ILoopingSpline spline, int index, float3 point) =>
+            s_splineBase.InsertControlPoint(spline as ISpline2D, index, point);
 
-            Assert.Greater(spline2D.ControlPointCount, before, "Adding a point did not increase the control point count");
-        }
+        public override float3 GetControlPoint(ILoopingSpline spline, int index, SplinePoint pointType) =>
+            s_splineBase.GetControlPoint(spline as ISpline2D, index, pointType);
 
-        protected override float Length(float3 a, float3 b) => math.distance(a.xy, b.xy);
+        public override void UpdateControlPoint(ILoopingSpline spline, int index, float3 newPoint, SplinePoint pointType) =>
+            s_splineBase.UpdateControlPoint(spline as ISpline2D, index, newPoint, pointType);
 
-        protected override float3 GetProgress(ILoopingSpline spline, float progress)
-        {
-            ISpline2D spline2D = spline as ISpline2D;
-            Assert.NotNull(spline2D);
+        public override float3 GetProgress(ILoopingSpline spline, float progress) =>
+            s_splineBase.GetProgress(spline as ISpline2D, progress);
 
-            float2 point = spline2D.Get2DPoint(progress);
-            return new float3(point.x, point.y, 0f);
-        }
+        public override void CompareProgressEquals(ILoopingSpline spline, float progress, float3 expectedPoint,
+            float tolerance = 0.00001f) =>
+            s_splineBase.CompareProgressEquals(spline as ISpline2D, progress, expectedPoint, tolerance);
 
-        protected override void CompareProgressEquals(ILoopingSpline spline, float progress, float3 expectedPoint, float tolerance = 0.00001f)
-        {
-            ISpline2D spline2D = spline as ISpline2D;
-            Assert.NotNull(spline2D);
+        public override void CompareProgress(ILoopingSpline spline, float progress, float3 expectedPoint) =>
+            s_splineBase.CompareProgress(spline as ISpline2D, progress, expectedPoint);
 
-            float2 point = spline2D.Get2DPoint(progress);
-            TestHelpers.CheckFloat2(point, expectedPoint.xy, tolerance);
-        }
+        public override void ComparePoint(float3 expected, float3 actual, float tolerance = 0.00001f) =>
+            s_splineBase.ComparePoint(expected, actual, tolerance);
 
-        protected override void CompareProgress(ILoopingSpline spline, float progress, float3 unexpectedPoint)
-        {
-            ISpline2D spline2D = spline as ISpline2D;
-            Assert.NotNull(spline2D);
-
-            float2 point = spline2D.Get2DPoint(progress);
-            Assert.AreNotEqual(point, unexpectedPoint.xy);
-        }
+        public override float Length(float3 a, float3 b) => s_splineBase.Length(a, b);
     }
 }
