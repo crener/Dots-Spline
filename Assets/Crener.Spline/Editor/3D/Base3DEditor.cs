@@ -2,7 +2,6 @@ using Crener.Spline.Common;
 using Crener.Spline.Common.Interfaces;
 using Unity.Mathematics;
 using UnityEditor;
-using UnityEditor.EditorTools;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -20,6 +19,8 @@ namespace Crener.Spline.Editor._3D
         // Editing states
         private int m_editNewPointIndex = -1;
         protected int? m_editControlPoint = null;
+
+        protected virtual bool m_inspector3dPoint => true;
 
         #region Inspector
         /// <summary>
@@ -115,12 +116,27 @@ namespace Crener.Spline.Editor._3D
 
                     // show the current control point location
                     EditorGUI.BeginChangeCheck();
-                    float3 currentPoint = spline.GetControlPoint3D(m_editControlPoint.Value);
-                    currentPoint = EditorGUILayout.Vector3Field("Point", currentPoint);
-                    if(EditorGUI.EndChangeCheck())
+                    if(m_inspector3dPoint)
                     {
-                        spline.UpdateControlPoint(m_editControlPoint.Value, currentPoint, SplinePoint.Point);
-                        SceneView.RepaintAll();
+                        float3 currentPoint = spline.GetControlPoint3D(m_editControlPoint.Value);
+                        currentPoint = EditorGUILayout.Vector3Field("Point", currentPoint);
+                        if(EditorGUI.EndChangeCheck())
+                        {
+                            spline.UpdateControlPoint(m_editControlPoint.Value, currentPoint, SplinePoint.Point);
+                            SceneView.RepaintAll();
+                        }
+                    }
+                    else
+                    { // useful for spline plane
+                        ISpline2DEditor spline2D = spline as ISpline2DEditor;
+                        
+                        float2 currentPoint = spline2D.GetControlPoint2D(m_editControlPoint.Value);
+                        currentPoint = EditorGUILayout.Vector2Field("Point", currentPoint);
+                        if(EditorGUI.EndChangeCheck())
+                        {
+                            spline2D.UpdateControlPoint(m_editControlPoint.Value, currentPoint, SplinePoint.Point);
+                            SceneView.RepaintAll();
+                        }
                     }
 
                     SplineEditMode existingValue = spline.GetEditMode(m_editControlPoint.Value);
@@ -155,7 +171,7 @@ namespace Crener.Spline.Editor._3D
             }
         }
 
-        private void MoveWithTransform(ISpline3DEditor spline)
+        protected virtual void MoveWithTransform(ISpline3DEditor spline)
         {
             if(!m_editMoveWithTrans) return;
 

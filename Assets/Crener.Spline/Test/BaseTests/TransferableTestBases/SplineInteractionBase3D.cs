@@ -8,7 +8,7 @@ namespace Crener.Spline.Test.BaseTests.TransferableTestBases
 {
     public class SplineInteractionBase3D : ITransferableTestSet<ISimpleSpline3D>
     {
-        public virtual void AddControlPoint(ISimpleSpline3D spline, float3 point)
+        public void AddControlPoint(ISimpleSpline3D spline, float3 point)
         {
             Assert.NotNull(spline);
 
@@ -26,7 +26,7 @@ namespace Crener.Spline.Test.BaseTests.TransferableTestBases
             spline3D.InsertControlPoint(index, point);
         }
 
-        public virtual float3 GetControlPoint(ISimpleSpline3D spline, int index, SplinePoint pointType)
+        public float3 GetControlPoint(ISimpleSpline3D spline, int index, SplinePoint pointType)
         {
             Assert.NotNull(spline);
 
@@ -43,13 +43,13 @@ namespace Crener.Spline.Test.BaseTests.TransferableTestBases
 
         public float Length(float3 a, float3 b) => math.distance(a, b);
 
-        public virtual float3 GetProgress(ISimpleSpline3D spline, float progress)
+        public float3 GetProgress(ISimpleSpline3D spline, float progress)
         {
             Assert.NotNull(spline);
             return spline.Get3DPoint(progress);
         }
 
-        public virtual void CompareProgressEquals(ISimpleSpline3D spline, float progress, float3 expectedPoint, float tolerance = 0.00001f)
+        public void CompareProgressEquals(ISimpleSpline3D spline, float progress, float3 expectedPoint, float tolerance = 0.00001f)
         {
             Assert.NotNull(spline);
 
@@ -57,7 +57,7 @@ namespace Crener.Spline.Test.BaseTests.TransferableTestBases
             TestHelpers.CheckFloat3(point, expectedPoint, tolerance);
         }
 
-        public virtual void CompareProgress(ISimpleSpline3D spline, float progress, float3 expectedPoint)
+        public void CompareProgress(ISimpleSpline3D spline, float progress, float3 expectedPoint)
         {
             Assert.NotNull(spline);
 
@@ -65,7 +65,7 @@ namespace Crener.Spline.Test.BaseTests.TransferableTestBases
             TestHelpers.CheckFloat3(point, expectedPoint);
         }
 
-        public virtual void ComparePoint(float3 expected, float3 actual, float tolerance = 0.00001f)
+        public void ComparePoint(float3 expected, float3 actual, float tolerance = 0.00001f)
         {
             TestHelpers.CheckFloat3(expected, actual, tolerance);
         }

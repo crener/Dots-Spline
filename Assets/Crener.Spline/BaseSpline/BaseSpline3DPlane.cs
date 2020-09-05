@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Numerics;
 using Crener.Spline.Common;
 using Crener.Spline.Common.DataStructs;
 using Crener.Spline.Common.Interfaces;
@@ -9,13 +10,14 @@ using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
 using Color = UnityEngine.Color;
+using Quaternion = UnityEngine.Quaternion;
 
 namespace Crener.Spline.BaseSpline
 {
     /// <summary>
     /// Base implementation which contains base functionality and reusable methods
     /// </summary>
-    public abstract class BaseSpline3DPlane : BaseSpline2D, ISpline3DPlane, ISpline3DEditor
+    public abstract class BaseSpline3DPlane : BaseSpline2D, ISpline3DPlane, ISpline3DPlaneEditor
     {
         public Quaternion Forward
         {
@@ -96,9 +98,17 @@ namespace Crener.Spline.BaseSpline
 
         protected float2 Convert3Dto2D(float3 point, bool translate = true)
         {
-            float3 convertedPoint = (Quaternion.Inverse(Forward) * point);
-            if(translate) convertedPoint -= (float3)trans.position;
-            return new float2(convertedPoint.x, convertedPoint.y);
+            float3 convertedPoint = point;
+            if(translate)
+            {
+                #if UNITY_EDITOR
+                if (trans == null) Start();
+                #endif
+                
+                convertedPoint -= (float3)trans.position;
+            }
+            convertedPoint = Quaternion.Inverse(Forward) * convertedPoint;
+            return convertedPoint.xy;
         }
 
         protected override void OnDrawGizmosSelected()

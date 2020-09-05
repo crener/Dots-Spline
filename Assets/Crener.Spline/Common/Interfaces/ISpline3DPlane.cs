@@ -12,4 +12,6 @@ namespace Crener.Spline.Common.Interfaces
         /// </summary>
         Quaternion Forward { get; set; }
     }
+
+    public interface ISpline3DPlaneEditor : ISpline3DPlane, ISpline3DEditor, ISpline2DEditor { }
 }

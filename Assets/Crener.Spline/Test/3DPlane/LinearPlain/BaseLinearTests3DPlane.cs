@@ -31,4 +31,15 @@ namespace Crener.Spline.Test._3DPlane.LinearPlain
             return spline;
         }
     }
+    
+    public class Linear3DPlaneTests : Base3DPlaneTests
+    {
+        protected override ISpline3DPlaneEditor CreateNewSpline()
+        {
+            GameObject game = new GameObject();
+            ISpline3DPlaneEditor spline = game.AddComponent<MeaninglessTestWrapper.TestLinearSpline3DPlaneSimple>();
+
+            return spline;
+        }
+    }
 }

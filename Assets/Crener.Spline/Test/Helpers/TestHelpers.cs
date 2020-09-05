@@ -1,6 +1,8 @@
+using System;
 using Crener.Spline.Common.Interfaces;
 using NUnit.Framework;
 using Unity.Mathematics;
+using UnityEngine;
 
 namespace Crener.Spline.Test.Helpers
 {
@@ -19,6 +21,12 @@ namespace Crener.Spline.Test.Helpers
 
         public static void CheckFloat2(float2 expected, float2 reality, float tolerance = 0.00001f)
         {
+            Debug.Log($"Testing float2 \"{expected}\" against \"{reality}\"");
+            CheckFloat2Internal(expected, reality, tolerance);
+        }
+
+        private static void CheckFloat2Internal(float2 expected, float2 reality, float tolerance = 0.00001f)
+        {
             Assert.IsTrue(math.length(math.abs(expected.x - reality.x)) <= tolerance,
                 $"X axis is out of range!\n Expected: {expected.x}, Received: {reality.x} ({math.abs(expected.x - reality.x):N5} out of range, Tolerance: {tolerance:N5})");
             Assert.IsTrue(math.length(math.abs(expected.y - reality.y)) <= tolerance,
@@ -27,7 +35,8 @@ namespace Crener.Spline.Test.Helpers
 
         public static void CheckFloat3(float3 expected, float3 reality, float tolerance = 0.00001f)
         {
-            CheckFloat2(expected.xy, reality.xy, tolerance);
+            Debug.Log($"Testing float3 \"{expected}\" against \"{reality}\"");
+            CheckFloat2Internal(expected.xy, reality.xy, tolerance);
             Assert.IsTrue(math.length(math.abs(expected.z - reality.z)) <= tolerance,
                 $"Z axis is out of range!\n Expected: {expected.z}, Received: {reality.z} ({math.abs(expected.z - reality.z):N5} out of range, Tolerance: {tolerance:N5})");
         }

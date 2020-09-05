@@ -818,18 +818,32 @@ namespace Crener.Spline.Test.BaseTests
     {
         private static SplineInteractionBase3DPlane s_splineBase = new SplineInteractionBase3DPlane();
 
+        public override void AddControlPoint(ITestSpline spline, float3 point) =>
+            s_splineBase.AddControlPoint(spline as ISpline3DPlane, point);
+
+        public override void InsertControlPoint(ITestSpline spline, int index, float3 point) =>
+            s_splineBase.InsertControlPoint(spline as ISpline3DPlane, index, point);
+
+        public override float3 GetControlPoint(ITestSpline spline, int index, SplinePoint pointType) =>
+            s_splineBase.GetControlPoint(spline as ISpline3DPlane, index, pointType);
+
+        public override void UpdateControlPoint(ITestSpline spline, int index, float3 newPoint, SplinePoint pointType) =>
+            s_splineBase.UpdateControlPoint(spline as ISpline3DPlane, index, newPoint, pointType);
+
         public override float3 GetProgress(ITestSpline spline, float progress) =>
-            s_splineBase.GetProgress(spline as ISimpleSpline3D, progress);
+            s_splineBase.GetProgress(spline as ISpline3DPlane, progress);
 
         public override void CompareProgressEquals(ITestSpline spline, float progress, float3 expectedPoint,
             float tolerance = 0.00001f) =>
-            s_splineBase.CompareProgressEquals(spline as ISimpleSpline3D, progress, expectedPoint, tolerance);
+            s_splineBase.CompareProgressEquals(spline as ISpline3DPlane, progress, expectedPoint, tolerance);
 
         public override void CompareProgress(ITestSpline spline, float progress, float3 expectedPoint) =>
-            s_splineBase.CompareProgress(spline as ISimpleSpline3D, progress, expectedPoint);
+            s_splineBase.CompareProgress(spline as ISpline3DPlane, progress, expectedPoint);
 
         public override void ComparePoint(float3 expected, float3 actual, float tolerance = 0.00001f) =>
             s_splineBase.ComparePoint(actual, expected, tolerance);
+
+        public override float Length(float3 a, float3 b) => s_splineBase.Length(a, b);
     }
 
     public abstract class BaseFunctionalityTests2D : BaseFunctionalityTests
