@@ -56,12 +56,12 @@ namespace Crener.Spline.BaseSpline
 
         public float3 Get3DPoint(float progress)
         {
-            return Convert2Dto3D(base.Get2DPoint(progress));
+            return Convert2Dto3D(Get2DPoint(progress));
         }
 
         public float3 Get3DPoint(float progress, int index)
         {
-            return Convert2Dto3D(base.Get2DPoint(progress, index));
+            return Convert2Dto3D(Get2DPoint(progress, index));
         }
 
         public void AddControlPoint(float3 point)

@@ -226,7 +226,7 @@ GameObject:
   - component: {fileID: 172778283}
   - component: {fileID: 172778282}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: Linear
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -264,12 +264,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 172778281}
-  m_LocalRotation: {x: -0, y: -0.66468406, z: -0, w: 0.7471247}
+  m_LocalRotation: {x: -0, y: -0.664684, z: -0, w: 0.7471246}
   m_LocalPosition: {x: 1707.5, y: 158.7, z: 111.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_Father: {fileID: 1295795601}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -83.316, z: 0}
 --- !u!1 &272471556
 GameObject:
@@ -653,7 +653,7 @@ GameObject:
   - component: {fileID: 683743493}
   - component: {fileID: 683743492}
   m_Layer: 0
-  m_Name: GameObject (1)
+  m_Name: Linear Cubic
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -668,22 +668,30 @@ MonoBehaviour:
   m_GameObject: {fileID: 683743491}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad20023e7ed44173943e8936d809c5d3, type: 3}
+  m_Script: {fileID: 11500000, guid: 369438bb048e4e08a838221d7612344c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   SegmentLength:
-  - 0.25615114
-  - 0.604843
+  - 0.1818958
+  - 0.38176152
+  - 0.5764254
+  - 0.79404026
   - 1
-  LengthCache: 23.793034
+  LengthCache: 25.707607
   Points:
-  - x: -0.025766447
-    y: 8.607994
-  - x: 3.1
-    y: 13.84
-  - x: 9.37417
-    y: 8.411771
+  - x: 6.231828
+    y: 12.396753
+  - x: 10.376404
+    y: 14.562038
+  - x: 14.580407
+    y: 11.608039
+  - x: 12.848054
+    y: 6.913106
+  - x: 7.2612147
+    y: 7.2030516
   looped: 1
+  arkParameterization: 0
+  arkLength: 0.1
 --- !u!4 &683743493
 Transform:
   m_ObjectHideFlags: 0
@@ -692,11 +700,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 683743491}
   m_LocalRotation: {x: -0, y: 0.65284103, z: -0, w: 0.757495}
-  m_LocalPosition: {x: 12.93, y: 0, z: -39.47}
+  m_LocalPosition: {x: 56.1, y: 13.5, z: -264.7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_Father: {fileID: 1295795601}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 81.512, z: 0}
 --- !u!1 &1293263843
 GameObject:
@@ -786,7 +794,10 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 172778283}
+  - {fileID: 683743493}
+  - {fileID: 2000592282}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -882,3 +893,59 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!1 &2000592281
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2000592282}
+  - component: {fileID: 2000592283}
+  m_Layer: 0
+  m_Name: Linear Cubic (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2000592282
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2000592281}
+  m_LocalRotation: {x: -0, y: 0.65284103, z: -0, w: 0.757495}
+  m_LocalPosition: {x: 52.65, y: 11.33, z: -241.61}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1295795601}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 81.512, z: 0}
+--- !u!114 &2000592283
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2000592281}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 369438bb048e4e08a838221d7612344c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SegmentLength:
+  - 1
+  LengthCache: 1.024051
+  Points:
+  - x: 6
+    y: 10
+  - x: 7.000007
+    y: 9.779396
+  - x: 8.000004
+    y: 10.771355
+  looped: 0
+  arkParameterization: 0
+  arkLength: 0.1

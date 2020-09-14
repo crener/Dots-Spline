@@ -1,18 +1,18 @@
+using System.Linq;
 using System.Runtime.CompilerServices;
 using Crener.Spline.BaseSpline;
 using Crener.Spline.Common;
 using Crener.Spline.Common.Interfaces;
 using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Crener.Spline.Linear
 {
     /// <summary>
     /// Simple spline which directly follows a set of points
     /// </summary>
-    [AddComponentMenu("Spline/2D/Linear Cubic Spline")]
-    public class LinearCubic2DSpline : BaseSpline2D, ILoopingSpline, IArkableSpline
+    [AddComponentMenu("Spline/3D/Linear Cubic Spline Plain")]
+    public class LinearCubic3DPlaneSpline : BaseSpline3DPlane, ILoopingSpline, IArkableSpline
     {
         [SerializeField]
         private bool looped = false;
@@ -20,7 +20,7 @@ namespace Crener.Spline.Linear
         private bool arkParameterization = false;
         [SerializeField]
         private float arkLength = 0.1f;
-        
+
         public bool Looped
         {
             get => looped;
@@ -77,9 +77,9 @@ namespace Crener.Spline.Linear
                 return ControlPointCount + (Looped ? 1 : -1);
             }
         }
-
+        
         private const float c_splineMidPoint = 0.5f;
-
+        
         public override float2 Get2DPoint(float progress)
         {
             if(ControlPointCount == 0)
@@ -95,7 +95,7 @@ namespace Crener.Spline.Linear
 
             return SplineInterpolation(pointProgress, aIndex);
         }
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected override float2 SplineInterpolation(float t, int a)
         {
@@ -141,7 +141,7 @@ namespace Crener.Spline.Linear
 
             return math.lerp(pp0, pp1, t);
         }
-
+        
         protected override void RecalculateLengthBias()
         {
             ClearData();

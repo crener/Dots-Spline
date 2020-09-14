@@ -778,10 +778,10 @@ namespace Crener.Spline.Test.BaseTests
             Assert.AreEqual(points, testSpline.ControlPointCount);
             Assert.AreEqual(testSpline.ExpectedTimeCount(testSpline.ControlPointCount), testSpline.Times.Count);
 
-            CompareProgressEquals(testSpline, 0.5f, new float3(offset +(points - 1) / 2f), 0.00005f);
+            CompareProgressEquals(testSpline, 0.5f, new float3(offset + (points - 1) / 2f), 0.00005f);
         }
     }
-    
+
     public abstract class BaseFunctionalityTests3D : BaseFunctionalityTests
     {
         private static SplineInteractionBase3D s_splineBase = new SplineInteractionBase3D();
