@@ -80,20 +80,21 @@ namespace Crener.Spline.Linear
         
         private const float c_splineMidPoint = 0.5f;
         
-        public override float2 Get2DPoint(float progress)
+        protected override float2 GetPointProgress(float progress, bool translate)
         {
+            float2 translation = translate ? (((float3) trans.position).xy) : float2.zero;
             if(ControlPointCount == 0)
-                return float2.zero;
+                return translation;
             else if(ControlPointCount == 1)
-                return GetControlPoint2D(0);
+                return translation + GetControlPoint2D(0);
             else if(ControlPointCount == 2 && !Looped)
-                return math.lerp(GetControlPoint2D(0), GetControlPoint2D(1), math.clamp(progress, 0f, 1f));
+                return math.lerp(translation + GetControlPoint2D(0), translation + GetControlPoint2D(1), math.clamp(progress, 0f, 1f));
 
             progress = math.clamp(progress, 0f, 1f);
             int aIndex = FindSegmentIndex(progress);
             float pointProgress = SegmentProgress(progress, aIndex);
 
-            return SplineInterpolation(pointProgress, aIndex);
+            return translation + SplineInterpolation(pointProgress, aIndex);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

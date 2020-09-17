@@ -4,6 +4,7 @@ using Crener.Spline.Test.BaseTests.TransferableTestBases;
 using Crener.Spline.Test.Helpers;
 using NUnit.Framework;
 using Unity.Mathematics;
+using UnityEngine;
 
 namespace Crener.Spline.Test.BaseTests
 {
@@ -31,7 +32,7 @@ namespace Crener.Spline.Test.BaseTests
         /// ensures that the segment count increases after ark parametrisation is enabled 
         /// </summary>
         [Test]
-        public void SegmentChange([Range(2, 9)] int points)
+        public void SegmentChange([NUnit.Framework.Range(2, 9)] int points)
         {
             IArkableSpline testSpline = PrepareSpline();
             const int pointLength = 20;
@@ -59,7 +60,7 @@ namespace Crener.Spline.Test.BaseTests
         /// ensures that the segment count decreases after ark parametrisation is disabled 
         /// </summary>
         [Test]
-        public void LengthIncreaseSwitchBeforeFirstPoint([Range(2, 9)] int points)
+        public void LengthIncreaseSwitchBeforeFirstPoint([NUnit.Framework.Range(2, 9)] int points)
         {
             IArkableSpline testSpline = PrepareSpline();
             const int pointLength = 20;
@@ -203,6 +204,23 @@ namespace Crener.Spline.Test.BaseTests
             count = SplineSegmentPointCount(testSpline);
             Assert.AreEqual(splineCount, count);
         }
+
+        [Test]
+        public void Translation()
+        {
+            IArkableSpline testSpline = PrepareSpline();
+            float3 move = new float3(10f, 0f, 10f);
+            ((MonoBehaviour) testSpline).transform.position = move;
+
+            float3 a = new float3(80);
+            AddControlPoint(testSpline, a);
+
+            ChangeArking(testSpline, true);
+            int count = SplineSegmentPointCount(testSpline);
+            Assert.AreEqual(1, count);
+
+            CompareProgressEquals(testSpline, 0f, a + move);
+        }
     }
 
     public abstract class BaseArkTests3D : BaseArkTests
@@ -228,8 +246,8 @@ namespace Crener.Spline.Test.BaseTests
             float tolerance = 0.00001f) =>
             s_splineBase.CompareProgressEquals(spline as ISimpleSpline3D, progress, expectedPoint, tolerance);
 
-        public override void CompareProgress(IArkableSpline spline, float progress, float3 expectedPoint) =>
-            s_splineBase.CompareProgress(spline as ISimpleSpline3D, progress, expectedPoint);
+        public override void CompareProgressNotEquals(IArkableSpline spline, float progress, float3 expectedPoint) =>
+            s_splineBase.CompareProgressNotEquals(spline as ISimpleSpline3D, progress, expectedPoint);
 
         public override void ComparePoint(float3 expected, float3 actual, float tolerance = 0.00001f) =>
             s_splineBase.ComparePoint(expected, actual, tolerance);
@@ -269,8 +287,8 @@ namespace Crener.Spline.Test.BaseTests
             float tolerance = 0.00001f) =>
             s_splineBase.CompareProgressEquals(spline as ISpline3DPlane, progress, expectedPoint, tolerance);
 
-        public override void CompareProgress(IArkableSpline spline, float progress, float3 expectedPoint) =>
-            s_splineBase.CompareProgress(spline as ISpline3DPlane, progress, expectedPoint);
+        public override void CompareProgressNotEquals(IArkableSpline spline, float progress, float3 expectedPoint) =>
+            s_splineBase.CompareProgressNotEquals(spline as ISpline3DPlane, progress, expectedPoint);
 
         public override void ComparePoint(float3 expected, float3 actual, float tolerance = 0.00001f) =>
             s_splineBase.ComparePoint(actual, expected, tolerance);
@@ -301,8 +319,8 @@ namespace Crener.Spline.Test.BaseTests
             float tolerance = 0.00001f) =>
             s_splineBase.CompareProgressEquals(spline as ISpline2D, progress, expectedPoint, tolerance);
 
-        public override void CompareProgress(IArkableSpline spline, float progress, float3 expectedPoint) =>
-            s_splineBase.CompareProgress(spline as ISpline2D, progress, expectedPoint);
+        public override void CompareProgressNotEquals(IArkableSpline spline, float progress, float3 expectedPoint) =>
+            s_splineBase.CompareProgressNotEquals(spline as ISpline2D, progress, expectedPoint);
 
         public override void ComparePoint(float3 expected, float3 actual, float tolerance = 0.00001f) =>
             s_splineBase.ComparePoint(expected, actual, tolerance);

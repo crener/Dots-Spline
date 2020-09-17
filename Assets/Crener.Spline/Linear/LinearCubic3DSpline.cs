@@ -80,18 +80,21 @@ namespace Crener.Spline.Linear
 
         public override float3 Get3DPoint(float progress)
         {
+            float3 translation = trans.position;
             if(ControlPointCount == 0)
-                return float3.zero;
+                return translation;
             else if(ControlPointCount == 1)
-                return GetControlPoint3D(0);
+                return translation + GetControlPoint3D(0);
             else if(ControlPointCount == 2 && !Looped)
-                return math.lerp(GetControlPoint3D(0), GetControlPoint3D(1), math.clamp(progress, 0f, 1f));
+            {
+                return math.lerp(translation + GetControlPoint3D(0), translation + GetControlPoint3D(1), math.clamp(progress, 0f, 1f));
+            }
 
             progress = math.clamp(progress, 0f, 1f);
             int aIndex = FindSegmentIndex(progress);
             float pointProgress = SegmentProgress(progress, aIndex);
 
-            return SplineInterpolation(pointProgress, aIndex);
+            return translation + SplineInterpolation(pointProgress, aIndex);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

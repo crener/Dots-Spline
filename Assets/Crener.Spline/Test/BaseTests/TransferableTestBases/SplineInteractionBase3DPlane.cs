@@ -58,7 +58,7 @@ namespace Crener.Spline.Test.BaseTests.TransferableTestBases
             TestHelpers.CheckFloat2(point.xy, expectedPoint.xy, tolerance);
         }
 
-        public void CompareProgress(ISpline3DPlane spline, float progress, float3 unexpectedPoint)
+        public void CompareProgressNotEquals(ISpline3DPlane spline, float progress, float3 unexpectedPoint)
         {
             Assert.NotNull(spline);
             

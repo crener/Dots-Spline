@@ -918,7 +918,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2000592281}
   m_LocalRotation: {x: -0, y: 0.65284103, z: -0, w: 0.757495}
-  m_LocalPosition: {x: 52.65, y: 11.33, z: -241.61}
+  m_LocalPosition: {x: 52.46, y: 15.13, z: -240.35}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1295795601}
@@ -937,15 +937,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SegmentLength:
+  - 0.35662958
+  - 0.6791701
   - 1
-  LengthCache: 1.024051
+  LengthCache: 3.1674848
   Points:
   - x: 6
     y: 10
   - x: 7.000007
     y: 9.779396
-  - x: 8.000004
-    y: 10.771355
-  looped: 0
+  - x: 7.969704
+    y: 10.859104
+  looped: 1
   arkParameterization: 0
   arkLength: 0.1

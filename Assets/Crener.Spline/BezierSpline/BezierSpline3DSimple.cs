@@ -309,9 +309,15 @@ namespace Crener.Spline.BezierSpline
             }
             else
             {
-                NativeArray<float3> points = new NativeArray<float3>(Points.ToArray(), Allocator.Persistent);
+                NativeArray<float3> points = new NativeArray<float3>(Points.Count, Allocator.Persistent);
                 NativeArray<float> time = new NativeArray<float>(SegmentLength.ToArray(), Allocator.Persistent);
 
+                float3 translation = trans.position;
+                for (int i = 0; i < points.Length; i++)
+                {
+                    points[i] = Points[i] + translation;
+                }
+                
                 Assert.IsFalse(hasSplineEntityData);
                 SplineEntityData3D = new Spline3DData
                 {

@@ -32,7 +32,7 @@ namespace Crener.Spline.Test.BaseTests.TransferableTestBases
         float3 GetProgress(T spline, float progress);
 
         void CompareProgressEquals(T spline, float progress, float3 expectedPoint, float tolerance = 0.00001f);
-        void CompareProgress(T spline, float progress, float3 expectedPoint);
+        void CompareProgressNotEquals(T spline, float progress, float3 expectedPoint);
         void ComparePoint(float3 expected, float3 actual, float tolerance = 1E-05F);
 
         /// <summary>

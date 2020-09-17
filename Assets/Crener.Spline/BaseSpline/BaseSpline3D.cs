@@ -47,7 +47,7 @@ namespace Crener.Spline.BaseSpline
         /// <returns>point on spline segment</returns>
         public float3 Get3DPoint(float progress, int index)
         {
-            return SplineInterpolation(progress, index);
+            return (float3)trans.position + SplineInterpolation(progress, index);
         }
 
         /// <summary>
@@ -133,20 +133,21 @@ namespace Crener.Spline.BaseSpline
         /// <returns>point on spline</returns>
         public virtual float3 Get3DPoint(float progress)
         {
+            float3 translation = trans.position;
             if(ControlPointCount == 0)
-                return float3.zero;
+                return translation;
             if(progress <= 0f || ControlPointCount <= 1)
-                return GetControlPoint3D(0);
-            else if(progress >= 1f)
+                return translation + GetControlPoint3D(0);
+            if(progress >= 1f)
             {
                 if(this is ILoopingSpline looped && looped.Looped)
-                    return GetControlPoint3D(0);
-                return GetControlPoint3D((ControlPointCount - 1));
+                    return translation + GetControlPoint3D(0);
+                return translation + GetControlPoint3D((ControlPointCount - 1));
             }
 
             int aIndex = FindSegmentIndex(progress);
             float pointProgress = SegmentProgress(progress, aIndex);
-            return SplineInterpolation(pointProgress, aIndex);
+            return translation + SplineInterpolation(pointProgress, aIndex);
         }
 
         protected override float LengthBetweenPoints(int a, int resolution = 64)
@@ -213,7 +214,6 @@ namespace Crener.Spline.BaseSpline
                     float3 p = Get3DPoint(progress, i);
                     Vector3 point = new Vector3(p.x, p.y, p.z);
 
-                    // is Gizmos.DrawLines faster?
                     Gizmos.DrawLine(lp, point);
                     lp = point;
                 }
@@ -234,10 +234,25 @@ namespace Crener.Spline.BaseSpline
             if(this is ILoopingSpline loopSpline && loopSpline.Looped)
             {
                 pointData = new float3[Points.Count + 1];
-                Array.Copy(Points.ToArray(), pointData, Points.Count);
-                pointData[Points.Count] = Points[0];
+                
+                float3 translation = trans.position;
+                for (int i = 0; i < Points.Count; i++)
+                {
+                    pointData[i] = Points[i] + translation;
+                }
+                
+                pointData[Points.Count] = pointData[0];
             }
-            else pointData = Points.ToArray();
+            else
+            {
+                pointData = new float3[Points.Count];
+                
+                float3 translation = trans.position;
+                for (int i = 0; i < Points.Count; i++)
+                {
+                    pointData[i] = Points[i] + translation;
+                }
+            }
 
             NativeArray<float3> points = new NativeArray<float3>(pointData, Allocator.Persistent);
             NativeArray<float> time = new NativeArray<float>(SegmentLength.ToArray(), Allocator.Persistent);

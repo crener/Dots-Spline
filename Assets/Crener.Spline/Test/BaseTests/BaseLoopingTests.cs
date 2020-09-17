@@ -209,8 +209,8 @@ namespace Crener.Spline.Test.BaseTests
             float tolerance = 0.00001f) =>
             s_splineBase.CompareProgressEquals(spline as ISimpleSpline3D, progress, expectedPoint, tolerance);
 
-        public override void CompareProgress(ILoopingSpline spline, float progress, float3 expectedPoint) =>
-            s_splineBase.CompareProgress(spline as ISimpleSpline3D, progress, expectedPoint);
+        public override void CompareProgressNotEquals(ILoopingSpline spline, float progress, float3 expectedPoint) =>
+            s_splineBase.CompareProgressNotEquals(spline as ISimpleSpline3D, progress, expectedPoint);
 
         public override void ComparePoint(float3 expected, float3 actual, float tolerance = 0.00001f) =>
             s_splineBase.ComparePoint(expected, actual, tolerance);
@@ -241,8 +241,8 @@ namespace Crener.Spline.Test.BaseTests
             float tolerance = 0.00001f) =>
             s_splineBase.CompareProgressEquals(spline as ISpline3DPlane, progress, expectedPoint, tolerance);
 
-        public override void CompareProgress(ILoopingSpline spline, float progress, float3 expectedPoint) =>
-            s_splineBase.CompareProgress(spline as ISpline3DPlane, progress, expectedPoint);
+        public override void CompareProgressNotEquals(ILoopingSpline spline, float progress, float3 expectedPoint) =>
+            s_splineBase.CompareProgressNotEquals(spline as ISpline3DPlane, progress, expectedPoint);
 
         public override void ComparePoint(float3 expected, float3 actual, float tolerance = 0.00001f) =>
             s_splineBase.ComparePoint(actual, expected, tolerance);
@@ -273,8 +273,8 @@ namespace Crener.Spline.Test.BaseTests
             float tolerance = 0.00001f) =>
             s_splineBase.CompareProgressEquals(spline as ISpline2D, progress, expectedPoint, tolerance);
 
-        public override void CompareProgress(ILoopingSpline spline, float progress, float3 expectedPoint) =>
-            s_splineBase.CompareProgress(spline as ISpline2D, progress, expectedPoint);
+        public override void CompareProgressNotEquals(ILoopingSpline spline, float progress, float3 expectedPoint) =>
+            s_splineBase.CompareProgressNotEquals(spline as ISpline2D, progress, expectedPoint);
 
         public override void ComparePoint(float3 expected, float3 actual, float tolerance = 0.00001f) =>
             s_splineBase.ComparePoint(expected, actual, tolerance);

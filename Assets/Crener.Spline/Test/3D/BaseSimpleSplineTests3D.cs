@@ -2,6 +2,7 @@ using Crener.Spline.Common;
 using Crener.Spline.Test.Helpers;
 using NUnit.Framework;
 using Unity.Mathematics;
+using UnityEngine;
 
 namespace Crener.Spline.Test._3D
 {
@@ -513,6 +514,27 @@ namespace Crener.Spline.Test._3D
         }
 
         [Test]
+        public void Translation()
+        {
+            ISimpleTestSpline3D testSpline = PrepareSpline();
+            float3 move = new float3(10f, 0f, 10f);
+            ((MonoBehaviour) testSpline).transform.position = move;
+
+            Assert.AreEqual(0, testSpline.ControlPointCount);
+            Assert.AreEqual(0, testSpline.Modes.Count);
+            Assert.AreEqual(1, testSpline.Times.Count);
+
+            float3 a = float3.zero;
+            testSpline.InsertControlPoint(12, a);
+
+            Assert.AreEqual(1, testSpline.ControlPointCount);
+            Assert.AreEqual(1, testSpline.Modes.Count);
+            Assert.AreEqual(1, testSpline.Times.Count);
+            TestHelpers.CheckFloat3(move, testSpline.Get3DPoint(0f));
+            TestHelpers.CheckFloat3(a, testSpline.GetControlPoint(0, SplinePoint.Point));
+        }
+
+        [Test]
         public void Insert()
         {
             ISimpleTestSpline3D testSpline = PrepareSpline();
@@ -705,7 +727,7 @@ namespace Crener.Spline.Test._3D
         /// Progress less than 0 should return first point
         /// </summary>
         [Test]
-        public void ProgressUnder([Range(1, 8)] int nodeAmount)
+        public void ProgressUnder([NUnit.Framework.Range(1, 8)] int nodeAmount)
         {
             const float offsetX = 2f;
             const float offsetY = 2f;
@@ -733,7 +755,7 @@ namespace Crener.Spline.Test._3D
         /// Progress greater than 0 should return first point
         /// </summary>
         [Test]
-        public void ProgressOver([Range(1, 8)] int nodeAmount)
+        public void ProgressOver([NUnit.Framework.Range(1, 8)] int nodeAmount)
         {
             const float offsetX = 2f;
             const float offsetY = 2f;
@@ -758,7 +780,7 @@ namespace Crener.Spline.Test._3D
         }
 
         [Test]
-        public void MultiMidPoint([Range(1, 12)] int points)
+        public void MultiMidPoint([NUnit.Framework.Range(1, 12)] int points)
         {
             ISimpleTestSpline3D testSpline = PrepareSpline();
 
@@ -779,7 +801,7 @@ namespace Crener.Spline.Test._3D
         }
 
         [Test]
-        public void MultiMidPointOffset([Range(1, 12)] int points)
+        public void MultiMidPointOffset([NUnit.Framework.Range(1, 12)] int points)
         {
             ISimpleTestSpline3D testSpline = PrepareSpline();
             const float offset = 200f;

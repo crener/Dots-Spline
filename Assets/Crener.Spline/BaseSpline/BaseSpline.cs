@@ -39,6 +39,22 @@ namespace Crener.Spline.BaseSpline
         /// </summary>
         public virtual int SegmentPointCount => ControlPointCount;
 
+        protected Transform trans
+        {
+            get
+            {
+                if(m_trans == null) Start();
+                return m_trans;
+            }
+        }
+
+        private Transform m_trans = null; 
+        
+        private void Start()
+        {
+            m_trans = transform;
+        }
+
         public abstract SplineType SplineDataType { get; }
 
         public abstract void RemoveControlPoint(int index);

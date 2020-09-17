@@ -64,7 +64,7 @@ namespace Crener.Spline.Test.BaseTests
         public abstract float3 GetProgress(T spline, float progress);
 
         public abstract void CompareProgressEquals(T spline, float progress, float3 expectedPoint, float tolerance = 0.00001f);
-        public abstract void CompareProgress(T spline, float progress, float3 expectedPoint);
+        public abstract void CompareProgressNotEquals(T spline, float progress, float3 expectedPoint);
         public abstract void ComparePoint(float3 expected, float3 actual, float tolerance = 1E-05F);
 
         /// <summary>

@@ -21,11 +21,7 @@ namespace Crener.Spline.BaseSpline
     {
         public Quaternion Forward
         {
-            get
-            {
-                if(trans == null) Start();
-                return trans.rotation;
-            }
+            get => trans.rotation;
             set
             {
                 if(Forward != value) trans.rotation = value;
@@ -42,12 +38,6 @@ namespace Crener.Spline.BaseSpline
         }
 
         private Spline3DData? m_splineData3D = null;
-        private Transform trans;
-
-        private void Start()
-        {
-            trans = GetComponent<Transform>();
-        }
 
         /// <summary>
         /// true if Spline Entity Data has been initialized, calling <see cref="SplineEntityData3D"/> directly will automatically generate data
@@ -56,12 +46,12 @@ namespace Crener.Spline.BaseSpline
 
         public float3 Get3DPoint(float progress)
         {
-            return Convert2Dto3D(Get2DPoint(progress));
+            return Convert2Dto3D(GetPointProgress(progress, false));
         }
 
         public float3 Get3DPoint(float progress, int index)
         {
-            return Convert2Dto3D(Get2DPoint(progress, index));
+            return Convert2Dto3D(GetPointProgress(progress, false));
         }
 
         public void AddControlPoint(float3 point)
@@ -101,20 +91,43 @@ namespace Crener.Spline.BaseSpline
             float3 convertedPoint = point;
             if(translate)
             {
-                #if UNITY_EDITOR
-                if (trans == null) Start();
-                #endif
-                
                 convertedPoint -= (float3)trans.position;
             }
             convertedPoint = Quaternion.Inverse(Forward) * convertedPoint;
             return convertedPoint.xy;
         }
 
+        /// <summary>
+        /// Relieve a point on the spline
+        /// </summary>
+        /// <param name="progress"></param>
+        /// <returns>point on spline</returns>
+        public override float2 Get2DPoint(float progress)
+        {
+            return GetPointProgress(progress, true);
+        }
+
+        protected virtual float2 GetPointProgress(float progress, bool translate)
+        {
+            float2 translation = translate ? (((float3) trans.position).xy) : float2.zero;
+            if(ControlPointCount == 0)
+                return translation;
+            else if(progress <= 0f || ControlPointCount == 1)
+                return translation + GetControlPoint2D(0);
+            else if(progress >= 1f)
+            {
+                if(this is ILoopingSpline looped && looped.Looped)
+                    return translation +GetControlPoint2D(0);
+                return translation + GetControlPoint2D((ControlPointCount - 1));
+            }
+
+            int aIndex = FindSegmentIndex(progress);
+            float pointProgress = SegmentProgress(progress, aIndex);
+            return translation + SplineInterpolation(pointProgress, aIndex);
+        }
+
         protected override void OnDrawGizmosSelected()
         {
-            if(trans == null) Start();
-
             float2 bottomLeft = float.NaN, topRight = float.NaN;
             for (int i = 0; i < Points.Count; i++)
             {

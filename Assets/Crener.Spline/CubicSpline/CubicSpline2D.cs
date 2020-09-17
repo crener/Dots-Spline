@@ -33,22 +33,23 @@ namespace Crener.Spline.CubicSpline
 
         public override float2 Get2DPoint(float progress)
         {
+            float2 translation = ((float3) trans.position).xy;
             if(ControlPointCount == 0)
-                return float2.zero;
+                return translation;
             else if(progress <= 0f)
-                return GetControlPoint2D(0);
+                return translation + GetControlPoint2D(0);
             else if(progress >= 1f)
-                return GetControlPoint2D(ControlPointCount - 1);
+                return translation + GetControlPoint2D(ControlPointCount - 1);
             else if(ControlPointCount == 1 || progress <= 0f)
-                return GetControlPoint2D(0);
+                return translation + GetControlPoint2D(0);
             else if(ControlPointCount == 2)
-                return math.lerp(GetControlPoint2D(0), GetControlPoint2D(1), progress);
+                return math.lerp(translation + GetControlPoint2D(0), translation + GetControlPoint2D(1), progress);
             else if(ControlPointCount == 3)
-                return Cubic3Point(0, 1, 2, progress);
+                return translation + Cubic3Point(0, 1, 2, progress);
 
             int aIndex = FindSegmentIndex(progress);
             float pointProgress = SegmentProgress(progress, aIndex);
-            return SplineInterpolation(pointProgress, aIndex);
+            return translation + SplineInterpolation(pointProgress, aIndex);
         }
 
         protected override void RecalculateLengthBias()
