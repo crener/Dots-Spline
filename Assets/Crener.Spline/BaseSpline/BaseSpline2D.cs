@@ -19,8 +19,6 @@ namespace Crener.Spline.BaseSpline
         [SerializeField]
         protected List<float2> Points = new List<float2>();
 
-        private Spline2DData? m_splineData2D = null;
-
         public Spline2DData? SplineEntityData2D
         {
             get
@@ -45,6 +43,8 @@ namespace Crener.Spline.BaseSpline
         /// Is the data in the spline initialized
         /// </summary>
         protected virtual bool DataInitialized => SegmentPointCount > 0 && SegmentLength.Count >= 0;
+        
+        private Spline2DData? m_splineData2D = null;
 
         /// <summary>
         /// Retrieve a point on the spline at a specific control point
@@ -52,7 +52,7 @@ namespace Crener.Spline.BaseSpline
         /// <returns>point on spline segment</returns>
         public virtual float2 Get2DPoint(float progress, int index)
         {
-            return ((float3)trans.position).xy + SplineInterpolation(progress, index);
+            return Position.xy + SplineInterpolation(progress, index);
         }
 
         /// <summary>
@@ -138,16 +138,16 @@ namespace Crener.Spline.BaseSpline
         /// <returns>point on spline</returns>
         public virtual float2 Get2DPoint(float progress)
         {
-            float2 translation = ((float3) trans.position).xy;
+            float2 translation = Position.xy;
             if(ControlPointCount == 0)
                 return translation;
             else if(progress <= 0f || ControlPointCount == 1)
-                return translation + GetControlPoint2D(0);
+                return translation + GetControlPoint2DLocal(0);
             else if(progress >= 1f)
             {
                 if(this is ILoopingSpline looped && looped.Looped)
-                    return translation +GetControlPoint2D(0);
-                return translation + GetControlPoint2D((ControlPointCount - 1));
+                    return translation + GetControlPoint2DLocal(0);
+                return translation + GetControlPoint2DLocal((ControlPointCount - 1));
             }
 
             int aIndex = FindSegmentIndex(progress);
@@ -171,14 +171,55 @@ namespace Crener.Spline.BaseSpline
         }
 
         /// <summary>
+        /// Take the <paramref name="position"/> in local space and return the world space location
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        protected float2 ConvertToWorldSpace(float2 position)
+        {
+            return (Position + (float3)(Forward * new float3(position, 0f))).xy;
+        }
+
+        /// <summary>
+        /// Take the <paramref name="position"/>s in local space and convert all to world space locations
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        protected IEnumerable<float2> ConvertToWorldSpace(IEnumerable<float2> position)
+        {
+            float2 transPosCache = Position.xy;
+            foreach (float2 pos in position)
+            {
+                yield return transPosCache + ((float3) (Forward * new float3(pos, 0f))).xy;
+            }
+        }
+
+        /// <summary>
+        /// Take the <paramref name="position"/> in world space and return the local space location
+        /// </summary>
+        protected float2 ConvertToLocalSpace(float2 position)
+        {
+            return (Position - (float3)(Quaternion.Inverse(Forward) * new float3(position, 0f))).xy;
+        }
+
+        /// <summary>
         /// Gets the given point from a point segment
         /// </summary>
         /// <param name="i">index of the segment</param>
         /// <returns>World Space position for the point</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public virtual float2 GetControlPoint2D(int i)
+        public virtual float2 GetControlPoint2DLocal(int i)
         {
             return Points[i];
+        }
+
+        /// <summary>
+        /// Gets the given point from a point segment
+        /// </summary>
+        /// <param name="i">index of the segment</param>
+        /// <returns>World Space position for the point</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public virtual float2 GetControlPoint2DWorld(int i)
+        {
+            return Points[i] + Position.xy;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -242,15 +283,15 @@ namespace Crener.Spline.BaseSpline
                 return SplineEntityData2D.Value;
             }
 
-            float2[] pointData;
-            if(this is ILoopingSpline loopSpline && loopSpline.Looped)
+            bool looped = this is ILoopingSpline loopSpline && loopSpline.Looped;
+            float2[] pointData = new float2[Points.Count + (looped ? 1 : 0)];
+
+            for (int i = 0; i < Points.Count; i++)
             {
-                // add an extra point to the end of the array
-                pointData = new float2[Points.Count + 1];
-                Array.Copy(Points.ToArray(), pointData, Points.Count);
-                pointData[Points.Count] = Points[0];
+                pointData[i] = Position.xy + Points[i];
             }
-            else pointData = Points.ToArray();
+
+            if(looped) pointData[Points.Count] = pointData[0];
 
             NativeArray<float2> points = new NativeArray<float2>(pointData, Allocator.Persistent);
             NativeArray<float> time = new NativeArray<float>(SegmentLength.ToArray(), Allocator.Persistent);
@@ -265,7 +306,7 @@ namespace Crener.Spline.BaseSpline
 
             return SplineEntityData2D.Value;
         }
-        
+
         /// <summary>
         /// Convert the spline into smaller linear segments with an equal distance between each point (see: <see cref="arkLength"/>)
         /// </summary>

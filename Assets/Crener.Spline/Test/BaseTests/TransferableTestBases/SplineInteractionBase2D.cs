@@ -21,7 +21,7 @@ namespace Crener.Spline.Test.BaseTests.TransferableTestBases
             Assert.Greater(spline2D.ControlPointCount, before, "Adding a point did not increase the control point count");
         }
 
-        public void InsertControlPoint(ISpline2D spline, int index, float3 point)
+        public void InsertControlPointWorldSpace(ISpline2D spline, int index, float3 point)
         {
             ISpline2DEditor spline2D = spline as ISpline2DEditor;
             Assert.NotNull(spline2D);
@@ -34,7 +34,7 @@ namespace Crener.Spline.Test.BaseTests.TransferableTestBases
             ISpline2DEditor spline2D = spline as ISpline2DEditor;
             Assert.NotNull(spline2D);
             
-            return new float3(spline2D.GetControlPoint2D(index), 0f);
+            return new float3(spline2D.GetControlPoint2DLocal(index), 0f);
         }
 
         public void UpdateControlPoint(ISpline2D spline, int index, float3 newPoint, SplinePoint pointType)

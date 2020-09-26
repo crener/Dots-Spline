@@ -109,8 +109,8 @@ namespace Crener.Spline.Test._3D.Bezier.TestAdapters
             float3 d = new float3(20f, 30f, 0f);
             testSpline.AddControlPoint(a);
             testSpline.AddControlPoint(d);
-            testSpline.InsertControlPoint(1, b);
-            testSpline.InsertControlPoint(2, c);
+            testSpline.InsertControlPointWorldSpace(1, b);
+            testSpline.InsertControlPointWorldSpace(2, c);
 
             float minLength = math.distance(a, b) + math.distance(b, c) + math.distance(c, d);
             Assert.Greater(testSpline.Length(), minLength);

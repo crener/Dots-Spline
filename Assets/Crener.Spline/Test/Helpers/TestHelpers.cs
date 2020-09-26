@@ -21,7 +21,7 @@ namespace Crener.Spline.Test.Helpers
 
         public static void CheckFloat2(float2 expected, float2 reality, float tolerance = 0.00001f)
         {
-            Debug.Log($"Testing float2 \"{expected}\" against \"{reality}\"");
+            Debug.Log($"Testing '{expected}' against '{reality}'");
             CheckFloat2Internal(expected, reality, tolerance);
         }
 
@@ -35,7 +35,7 @@ namespace Crener.Spline.Test.Helpers
 
         public static void CheckFloat3(float3 expected, float3 reality, float tolerance = 0.00001f)
         {
-            Debug.Log($"Testing float3 \"{expected}\" against \"{reality}\"");
+            Debug.Log($"Testing '{expected}' against '{reality}'");
             CheckFloat2Internal(expected.xy, reality.xy, tolerance);
             Assert.IsTrue(math.length(math.abs(expected.z - reality.z)) <= tolerance,
                 $"Z axis is out of range!\n Expected: {expected.z}, Received: {reality.z} ({math.abs(expected.z - reality.z):N5} out of range, Tolerance: {tolerance:N5})");

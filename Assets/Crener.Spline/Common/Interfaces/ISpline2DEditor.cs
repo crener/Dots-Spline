@@ -8,8 +8,15 @@ namespace Crener.Spline.Common.Interfaces
         /// Gets the given point from a point segment
         /// </summary>
         /// <param name="i">index of the segment</param>
+        /// <returns>Local Space position for the point</returns>
+        float2 GetControlPoint2DLocal(int i);
+        
+        /// <summary>
+        /// Gets the given point from a point segment in world space
+        /// </summary>
+        /// <param name="i">index of the segment</param>
         /// <returns>World Space position for the point</returns>
-        float2 GetControlPoint2D(int i);
+        float2 GetControlPoint2DWorld(int i);
 
         /// <summary>
         /// Update an existing control points data

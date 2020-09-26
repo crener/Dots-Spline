@@ -47,7 +47,7 @@ namespace Crener.Spline.BaseSpline
         /// <returns>point on spline segment</returns>
         public float3 Get3DPoint(float progress, int index)
         {
-            return (float3)trans.position + SplineInterpolation(progress, index);
+            return ConvertToWorldSpace(SplineInterpolation(progress, index));
         }
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace Crener.Spline.BaseSpline
         /// </summary>
         /// <param name="index">segment index</param>
         /// <param name="point">location to insert</param>
-        public virtual void InsertControlPoint(int index, float3 point)
+        public virtual void InsertControlPointWorldSpace(int index, float3 point)
         {
             if(Points.Count < 1 || index >= ControlPointCount)
             {
@@ -84,6 +84,11 @@ namespace Crener.Spline.BaseSpline
             }
 
             RecalculateLengthBias();
+        }
+
+        public virtual void InsertControlPointLocalSpace(int index, float3 point)
+        {
+            InsertControlPointWorldSpace(index, point);
         }
 
         /// <summary>
@@ -108,7 +113,7 @@ namespace Crener.Spline.BaseSpline
         {
             Assert.IsTrue(index <= ControlPointCount);
 
-            Points[index] = point;
+            Points[index] = ConvertToLocalSpace(point);
             RecalculateLengthBias();
         }
 
@@ -133,21 +138,20 @@ namespace Crener.Spline.BaseSpline
         /// <returns>point on spline</returns>
         public virtual float3 Get3DPoint(float progress)
         {
-            float3 translation = trans.position;
             if(ControlPointCount == 0)
-                return translation;
+                return Position;
             if(progress <= 0f || ControlPointCount <= 1)
-                return translation + GetControlPoint3D(0);
+                return ConvertToWorldSpace( GetControlPoint3DLocal(0));
             if(progress >= 1f)
             {
                 if(this is ILoopingSpline looped && looped.Looped)
-                    return translation + GetControlPoint3D(0);
-                return translation + GetControlPoint3D((ControlPointCount - 1));
+                    return ConvertToWorldSpace( GetControlPoint3DLocal(0));
+                return ConvertToWorldSpace(GetControlPoint3DLocal((ControlPointCount - 1)));
             }
 
             int aIndex = FindSegmentIndex(progress);
             float pointProgress = SegmentProgress(progress, aIndex);
-            return translation + SplineInterpolation(pointProgress, aIndex);
+            return ConvertToWorldSpace( SplineInterpolation(pointProgress, aIndex));
         }
 
         protected override float LengthBetweenPoints(int a, int resolution = 64)
@@ -171,9 +175,50 @@ namespace Crener.Spline.BaseSpline
         /// <param name="i">index of the segment</param>
         /// <returns>World Space position for the point</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public virtual float3 GetControlPoint3D(int i)
+        public virtual float3 GetControlPoint3DLocal(int i)
         {
             return Points[i];
+        }
+
+        /// <summary>
+        /// Gets the given point from a point segment
+        /// </summary>
+        /// <param name="i">index of the segment</param>
+        /// <returns>World Space position for the point</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public virtual float3 GetControlPoint3DWorld(int i)
+        {
+            return ConvertToWorldSpace(GetControlPoint3DLocal(i));
+        }
+
+        /// <summary>
+        /// Take the <paramref name="position"/> in local space and return the world space location
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        protected float3 ConvertToWorldSpace(float3 position)
+        {
+            return Position + (float3)(Forward * position);
+        }
+
+        /// <summary>
+        /// Take the <paramref name="position"/>s in local space and convert all to world space locations
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        protected IEnumerable<float3> ConvertToWorldSpace(IEnumerable<float3> position)
+        {
+            float3 transPosCache = Position;
+            foreach (float3 pos in position)
+            {
+                yield return transPosCache + (float3) (Forward * pos);
+            }
+        }
+
+        /// <summary>
+        /// Take the <paramref name="position"/> in world space and return the local space location
+        /// </summary>
+        protected float3 ConvertToLocalSpace(float3 position)
+        {
+            return Quaternion.Inverse(Forward) * (position - Position);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -183,7 +228,7 @@ namespace Crener.Spline.BaseSpline
         {
             if(hasSplineEntityData) // access directly to stop possible infinite loop
             {
-                SplineEntityData3D.Value.Dispose();
+                SplineEntityData3D?.Dispose();
                 SplineEntityData3D = null;
             }
         }
@@ -230,29 +275,14 @@ namespace Crener.Spline.BaseSpline
                 return SplineEntityData3D.Value;
             }
 
-            float3[] pointData;
-            if(this is ILoopingSpline loopSpline && loopSpline.Looped)
+            bool looped = this is ILoopingSpline loopSpline && loopSpline.Looped;
+            float3[] pointData = new float3[Points.Count + (looped ? 1 : 0)];
+
+            for (int i = 0; i < Points.Count; i++)
             {
-                pointData = new float3[Points.Count + 1];
-                
-                float3 translation = trans.position;
-                for (int i = 0; i < Points.Count; i++)
-                {
-                    pointData[i] = Points[i] + translation;
-                }
-                
-                pointData[Points.Count] = pointData[0];
+                pointData[i] = ConvertToWorldSpace(Points[i]);
             }
-            else
-            {
-                pointData = new float3[Points.Count];
-                
-                float3 translation = trans.position;
-                for (int i = 0; i < Points.Count; i++)
-                {
-                    pointData[i] = Points[i] + translation;
-                }
-            }
+            if(looped) pointData[Points.Count] = pointData[0];
 
             NativeArray<float3> points = new NativeArray<float3>(pointData, Allocator.Persistent);
             NativeArray<float> time = new NativeArray<float>(SegmentLength.ToArray(), Allocator.Persistent);

@@ -80,21 +80,21 @@ namespace Crener.Spline.Linear
 
         public override float3 Get3DPoint(float progress)
         {
-            float3 translation = trans.position;
+            float3 translation = Position;
             if(ControlPointCount == 0)
                 return translation;
             else if(ControlPointCount == 1)
-                return translation + GetControlPoint3D(0);
+                return translation + (float3)(Forward * GetControlPoint3DLocal(0));
             else if(ControlPointCount == 2 && !Looped)
             {
-                return math.lerp(translation + GetControlPoint3D(0), translation + GetControlPoint3D(1), math.clamp(progress, 0f, 1f));
+                return translation + (float3)(Forward * math.lerp(GetControlPoint3DLocal(0), GetControlPoint3DLocal(1), math.clamp(progress, 0f, 1f)));
             }
 
             progress = math.clamp(progress, 0f, 1f);
             int aIndex = FindSegmentIndex(progress);
             float pointProgress = SegmentProgress(progress, aIndex);
 
-            return translation + SplineInterpolation(pointProgress, aIndex);
+            return translation + (float3)(Forward * SplineInterpolation(pointProgress, aIndex));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -178,7 +178,7 @@ namespace Crener.Spline.Linear
         protected override float LengthBetweenPoints(int a, int resolution = 64)
         {
             if(ControlPointCount <= 1) return 0f;
-            if(ControlPointCount == 2) return math.distance(GetControlPoint3D(0), GetControlPoint3D(1));
+            if(ControlPointCount == 2) return math.distance(GetControlPoint3DLocal(0), GetControlPoint3DLocal(1));
 
             return base.LengthBetweenPoints(a, resolution);
         }

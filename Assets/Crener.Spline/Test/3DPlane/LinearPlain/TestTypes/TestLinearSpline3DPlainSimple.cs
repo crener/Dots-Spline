@@ -37,7 +37,7 @@ namespace Crener.Spline.Test._3DPlane.LinearPlain.TestTypes
             
             public int ExpectedTimeCount(int controlPoints) => math.max(1, controlPoints - 1);
 
-            public float3 GetControlPoint(int i, SplinePoint point) => GetControlPoint3D(i);
+            public float3 GetControlPoint(int i, SplinePoint point) => GetControlPoint3DLocal(i);
         }
     }
 }

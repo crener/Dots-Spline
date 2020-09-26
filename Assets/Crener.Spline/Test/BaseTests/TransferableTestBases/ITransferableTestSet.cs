@@ -14,7 +14,7 @@ namespace Crener.Spline.Test.BaseTests.TransferableTestBases
         /// <summary>
         /// Abstraction of inserting a point so that 2D and 3D can share the same tests
         /// </summary>
-        void InsertControlPoint(T spline, int index, float3 point);
+        void InsertControlPointWorldSpace(T spline, int index, float3 point);
 
         /// <summary>
         /// Get the control point at <paramref name="index"/> from <paramref name="spline"/>
@@ -40,4 +40,12 @@ namespace Crener.Spline.Test.BaseTests.TransferableTestBases
         /// </summary>
         float Length(float3 a, float3 b);
     }
+
+    public interface ITransferablePlainTestSet<in T> : ITransferableTestSet<T> where T : ISpline
+    {
+        /// <summary>
+        /// Get the control point at <paramref name="index"/> from <paramref name="spline"/>
+        /// </summary>
+        float3 GetControlPointWorldSpace(T spline, int index, SplinePoint pointType);
+    } 
 }

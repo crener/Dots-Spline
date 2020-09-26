@@ -57,15 +57,15 @@ namespace Crener.Spline.CatmullRom
             if(ControlPointCount == 0)
                 return float2.zero;
             else if(progress <= 0f)
-                return GetControlPoint2D(0);
+                return ConvertToWorldSpace(GetControlPoint2DLocal(0));
             else if(progress >= 1f)
-                return GetControlPoint2D(math.max(0, ControlPointCount - 1));
+                return ConvertToWorldSpace(GetControlPoint2DLocal(math.max(0, ControlPointCount - 1)));
             else if(ControlPointCount == 1)
-                return GetControlPoint2D(0);
+                return ConvertToWorldSpace(GetControlPoint2DLocal(0));
 
             int aIndex = FindSegmentIndex(progress);
             float pointProgress = SegmentProgress(progress, aIndex);
-            return SplineInterpolation(pointProgress, aIndex);
+            return ConvertToWorldSpace(SplineInterpolation(pointProgress, aIndex));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

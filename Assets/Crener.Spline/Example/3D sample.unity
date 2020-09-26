@@ -245,17 +245,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SegmentLength:
-  - 0.3692257
-  - 0.71989083
+  - 0.14387909
+  - 0.27605382
+  - 0.43718475
+  - 0.8030191
   - 1
-  LengthCache: 438.05847
+  LengthCache: 164.6977
   Points:
-  - x: -38.154217
-    y: 71.3768
-  - x: -156.7511
-    y: 181.35588
-  - x: -152.85739
-    y: 27.79343
+  - x: 9.41787
+    y: 17.621933
+  - x: -12.435539
+    y: 8.4592285
+  - x: -32.638706
+    y: 16.565763
+  - x: -45.297943
+    y: -6.7581215
+  - x: 14.464282
+    y: -14.425484
   looped: 1
 --- !u!4 &172778283
 Transform:
@@ -264,13 +270,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 172778281}
-  m_LocalRotation: {x: -0, y: -0.664684, z: -0, w: 0.7471246}
-  m_LocalPosition: {x: 1707.5, y: 158.7, z: 111.5}
+  m_LocalRotation: {x: -0, y: -0.8654201, z: -0, w: -0.50104696}
+  m_LocalPosition: {x: 25.3, y: 0, z: 29.3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1295795601}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: -83.316, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -240.139, z: 0}
 --- !u!1 &272471556
 GameObject:
   m_ObjectHideFlags: 0
@@ -544,6 +550,7 @@ Transform:
   - {fileID: 75190061}
   - {fileID: 408329336}
   - {fileID: 1293263844}
+  - {fileID: 850266196}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -571,13 +578,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 681800329}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 16.922401, y: -7.7448196, z: -13.937778}
+  m_LocalRotation: {x: -0, y: 0.13174525, z: -0, w: 0.9912836}
+  m_LocalPosition: {x: 338.9, y: 43.1, z: 29.3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 635739486}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 15.141, z: 0}
 --- !u!114 &681800331
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -591,56 +598,56 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SegmentLength:
-  - 0.08401957
-  - 0.16057271
-  - 0.22172037
-  - 0.281642
-  - 0.36716524
-  - 0.4490006
-  - 0.54026324
-  - 0.6451843
-  - 0.7374539
-  - 0.8533524
-  - 0.9316669
+  - 0.10278302
+  - 0.17529462
+  - 0.23536988
+  - 0.2942406
+  - 0.37826395
+  - 0.4586641
+  - 0.54832613
+  - 0.65140706
+  - 0.7420584
+  - 0.8559243
+  - 0.9328653
   - 1
-  LengthCache: 466.48138
+  LengthCache: 474.80856
   Points:
-  - x: -25.411835
-    y: 94.773575
-    z: 101.39289
-  - x: -47.893387
-    y: 74.3861
-    z: 76.59236
-  - x: -68.52453
-    y: 87.8346
-    z: 50.732327
-  - x: -67.025566
-    y: 59.490715
-    z: 53.562454
-  - x: -49.149853
-    y: 38.039032
-    z: 52.290924
-  - x: -9.59436
-    y: 41.75434
-    z: 48.66185
-  - x: 24.056274
-    y: 57.299103
-    z: 39.534927
-  - x: 59.279488
-    y: 79.59528
-    z: 48.17254
-  - x: 85.745125
-    y: 69.87752
-    z: 88.18033
-  - x: 83.004036
-    y: 95.57877
-    z: 122.59761
-  - x: 32.909042
-    y: 115.11618
-    z: 128.23273
-  - x: 1.0249329
-    y: 100.28737
-    z: 118.32743
+  - x: 283.58813
+    y: 86.07357
+    z: 145.49286
+  - x: 238.10687
+    y: 79.21858
+    z: 129.17978
+  - x: 240.47546
+    y: 79.1346
+    z: 94.83232
+  - x: 241.97443
+    y: 50.79071
+    z: 97.662445
+  - x: 259.85016
+    y: 29.339027
+    z: 96.390915
+  - x: 299.40564
+    y: 33.054337
+    z: 92.76184
+  - x: 333.05627
+    y: 48.5991
+    z: 83.63492
+  - x: 368.27954
+    y: 70.89528
+    z: 92.27254
+  - x: 394.74512
+    y: 61.177513
+    z: 132.28033
+  - x: 392.00403
+    y: 86.87878
+    z: 166.6976
+  - x: 341.90906
+    y: 106.416176
+    z: 172.3327
+  - x: 310.0249
+    y: 91.587364
+    z: 162.42743
   looped: 1
 --- !u!1 &683743491
 GameObject:
@@ -672,23 +679,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SegmentLength:
-  - 0.1818958
-  - 0.38176152
-  - 0.5764254
-  - 0.79404026
+  - 0.16981183
+  - 0.3542826
+  - 0.56614876
+  - 0.7879402
   - 1
-  LengthCache: 25.707607
+  LengthCache: 22.487617
   Points:
-  - x: 6.231828
-    y: 12.396753
-  - x: 10.376404
-    y: 14.562038
-  - x: 14.580407
-    y: 11.608039
-  - x: 12.848054
-    y: 6.913106
-  - x: 7.2612147
-    y: 7.2030516
+  - x: -6.870357
+    y: 15.166754
+  - x: -2.7258258
+    y: 17.332037
+  - x: 0.1110518
+    y: 14.363853
+  - x: -0.2542131
+    y: 9.683107
+  - x: -6.8381915
+    y: 9.305786
   looped: 1
   arkParameterization: 0
   arkLength: 0.1
@@ -699,13 +706,72 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 683743491}
-  m_LocalRotation: {x: -0, y: 0.65284103, z: -0, w: 0.757495}
-  m_LocalPosition: {x: 56.1, y: 13.5, z: -264.7}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 3.86, y: 3.87, z: 0.96}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1295795601}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 81.512, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &850266195
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 850266196}
+  - component: {fileID: 850266197}
+  m_Layer: 0
+  m_Name: Linear Spline (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &850266196
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 850266195}
+  m_LocalRotation: {x: 0.012725968, y: 0.58007646, z: -0.033247966, w: 0.81378376}
+  m_LocalPosition: {x: 42, y: 31.6, z: 34.3}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 635739486}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 3.399, y: 70.897, z: -2.259}
+--- !u!114 &850266197
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 850266195}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57f57a0277914377a25a1f367d4c7fa1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SegmentLength:
+  - 0.26923728
+  - 0.5665167
+  - 1
+  LengthCache: 39.77907
+  Points:
+  - x: 24.098848
+    y: 24.719696
+    z: 3.506734
+  - x: 14.825594
+    y: 29.966507
+    z: 4.5939493
+  - x: 7.857342
+    y: 23.10698
+    z: -2.0568206
+  looped: 1
 --- !u!1 &1293263843
 GameObject:
   m_ObjectHideFlags: 0
@@ -731,7 +797,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1293263843}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 20.6, y: -1.81, z: 19}
+  m_LocalPosition: {x: 22.65, y: -1.03, z: 21.64}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 635739486}
@@ -751,20 +817,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SegmentLength:
   - 1
-  LengthCache: 4.743377
+  LengthCache: 42.084194
   Points:
-  - x: -0.20134735
-    y: 12.855606
-    z: -8.188042
-  - x: 0.60423666
-    y: 12.277385
-    z: -8.317249
-  - x: 2.8142571
-    y: 10.691106
-    z: -8.671717
-  - x: 3.619841
-    y: 10.1128845
-    z: -8.800924
+  - x: 12.233604
+    y: 6.800646
+    z: -41.53295
+  - x: 15.154535
+    y: 6.2224255
+    z: -40.15954
+  - x: 4.8642564
+    y: 14.179192
+    z: -0.7636709
+  - x: 5.6698403
+    y: 13.600969
+    z: -0.89287853
   PointEdit: 0000000000000000
   arkParameterization: 0
   arkLength: 0.1
@@ -917,13 +983,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2000592281}
-  m_LocalRotation: {x: -0, y: 0.65284103, z: -0, w: 0.757495}
-  m_LocalPosition: {x: 52.46, y: 15.13, z: -240.35}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 2.7, z: -69.4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1295795601}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 81.512, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2000592283
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -937,13 +1003,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SegmentLength:
-  - 0.35662958
-  - 0.6791701
+  - 0.35332423
+  - 0.6769343
   - 1
-  LengthCache: 3.1674848
+  LengthCache: 3.1469178
   Points:
-  - x: 6
-    y: 10
+  - x: 6.0150976
+    y: 10.154583
   - x: 7.000007
     y: 9.779396
   - x: 7.969704

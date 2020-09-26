@@ -47,8 +47,8 @@ namespace Crener.Spline.BezierSpline.Entity
                 {
                     SplineLength = spline.Length,
                     DeltaTime = Time.DeltaTime,
-                    MoverDef = GetArchetypeChunkComponentType<SplineProgress>(false),
-                    SpeedDef = GetArchetypeChunkComponentType<TraversalSpeed>(true),
+                    MoverDef = GetComponentTypeHandle<SplineProgress>(false),
+                    SpeedDef = GetComponentTypeHandle<TraversalSpeed>(true),
                 };
                 JobHandle progressHandle = update.Schedule(m_splineQuery);
 
@@ -56,8 +56,8 @@ namespace Crener.Spline.BezierSpline.Entity
                 Move2DTraversers move = new Move2DTraversers()
                 {
                     Spline = spline,
-                    MoverDef = GetArchetypeChunkComponentType<SplineProgress>(true),
-                    TransDef = GetArchetypeChunkComponentType<Translation>(false)
+                    MoverDef = GetComponentTypeHandle<SplineProgress>(true),
+                    TransDef = GetComponentTypeHandle<Translation>(false)
                 };
                 JobHandle moveHandle = move.Schedule(m_splineQuery, progressHandle);
 
@@ -87,8 +87,8 @@ namespace Crener.Spline.BezierSpline.Entity
             [ReadOnly]
             public Spline2DData Spline;
             [ReadOnly]
-            public ArchetypeChunkComponentType<SplineProgress> MoverDef;
-            public ArchetypeChunkComponentType<Translation> TransDef;
+            public ComponentTypeHandle<SplineProgress> MoverDef;
+            public ComponentTypeHandle<Translation> TransDef;
 
             public void Execute(ArchetypeChunk chunk, int chunkIndex, int firstEntityIndex)
             {

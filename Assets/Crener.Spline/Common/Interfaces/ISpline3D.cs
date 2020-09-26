@@ -12,7 +12,7 @@ namespace Crener.Spline.Common.Interfaces
         Spline3DData? SplineEntityData3D { get; }
 
         /// <summary>
-        /// Retrieve a point on the spline
+        /// Retrieve a point on the spline in world space
         /// </summary>
         /// <param name="progress">0 to 1 range of progress along the spline</param>
         /// <returns>point on spline</returns>
@@ -35,8 +35,15 @@ namespace Crener.Spline.Common.Interfaces
         /// inserts a point before the specified segment index
         /// </summary>
         /// <param name="index">segment index</param>
-        /// <param name="point">location to insert</param>
-        void InsertControlPoint(int index, float3 point);
+        /// <param name="point">world space location to insert</param>
+        void InsertControlPointWorldSpace(int index, float3 point);
+
+        /// <summary>
+        /// inserts a point before the specified segment index
+        /// </summary>
+        /// <param name="index">segment index</param>
+        /// <param name="point">local space location to insert</param>
+        void InsertControlPointLocalSpace(int index, float3 point);
     }
 
     /// <summary>

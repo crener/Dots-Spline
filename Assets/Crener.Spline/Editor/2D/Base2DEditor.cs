@@ -112,7 +112,7 @@ namespace Crener.Spline.Editor._2D
 
                     // show the current control point location
                     EditorGUI.BeginChangeCheck();
-                    float2 currentPoint = spline.GetControlPoint2D(m_editControlPoint.Value);
+                    float2 currentPoint = spline.GetControlPoint2DLocal(m_editControlPoint.Value);
                     currentPoint = EditorGUILayout.Vector2Field("Point", currentPoint);
                     if(EditorGUI.EndChangeCheck())
                     {
@@ -206,28 +206,29 @@ namespace Crener.Spline.Editor._2D
         /// <param name="spline">spline to render control points for</param>
         protected void RenderControlPoints(ISpline2DEditor spline)
         {
+            float3 origin = ((MonoBehaviour)spline).transform.position;
             for (int i = 0; i < spline.ControlPointCount; i++)
             {
                 bool selected = m_editControlPoint == i;
 
                 Handles.color = selected ? Color.blue : new Color(0f, 1f, 1f, 0.73f);
 
-                float2 point = spline.GetControlPoint2D(i);
-                Vector3 editorPosition = new Vector3(point.x, point.y);
+                float2 point = spline.GetControlPoint2DLocal(i);
+                float3 editorPosition = new float3(point, 0f);
 
                 // draw handles
                 if(selected)
                 {
                     // main point 
                     EditorGUI.BeginChangeCheck();
-                    Vector3 pos = Handles.DoPositionHandle(editorPosition, Quaternion.identity);
+                    Vector3 pos = Handles.DoPositionHandle(editorPosition + origin, Quaternion.identity);
 
                     if(EditorGUI.EndChangeCheck() && spline is Object objSpline)
                     {
                         Undo.RecordObject(objSpline, "Move Point");
                         EditorUtility.SetDirty(objSpline);
 
-                        float2 newPoint = new float2(pos.x, pos.y);
+                        float2 newPoint = new float2(origin.x - pos.x, origin.y - pos.y);
                         spline.UpdateControlPoint(i, newPoint, SplinePoint.Point);
 
                         SceneView.RepaintAll();
@@ -236,7 +237,7 @@ namespace Crener.Spline.Editor._2D
                 else
                 {
                     float size = HandleUtility.GetHandleSize(editorPosition) / 12f;
-                    if(Handles.Button(editorPosition, Quaternion.identity, size, size, Handles.DotHandleCap))
+                    if(Handles.Button(editorPosition + origin, Quaternion.identity, size, size, Handles.DotHandleCap))
                     {
                         m_editControlPoint = i;
                         Repaint();
@@ -257,7 +258,7 @@ namespace Crener.Spline.Editor._2D
             index = 0;
 
             if(spline.ControlPointCount == 1)
-                return spline.GetControlPoint2D(0);
+                return spline.GetControlPoint2DLocal(0);
             else if(spline.ControlPointCount == 0)
                 return mouse;
             

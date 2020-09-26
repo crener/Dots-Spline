@@ -774,7 +774,7 @@ namespace Crener.Spline.Test._2D
             Assert.AreEqual(1, testSpline.ControlPointCount);
             Assert.AreEqual(1, testSpline.Modes.Count);
             Assert.AreEqual(1, testSpline.Times.Count);
-            TestHelpers.CheckFloat2(new float2(10f, 0f), testSpline.Get2DPoint(0f));
+            TestHelpers.CheckFloat2(move.xy, testSpline.Get2DPoint(0f));
             TestHelpers.CheckFloat2(a, testSpline.GetControlPoint(0, SplinePoint.Point));
         }
 

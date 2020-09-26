@@ -36,7 +36,7 @@ namespace Crener.Spline.Test._2D.CatmullRom.TestTypes
             
             public int ExpectedTimeCount(int controlPoints) => math.max(1, controlPoints - 1);
 
-            public float2 GetControlPoint(int i, SplinePoint point) => GetControlPoint2D(i);
+            public float2 GetControlPoint(int i, SplinePoint point) => GetControlPoint2DLocal(i);
         }
     }
 }

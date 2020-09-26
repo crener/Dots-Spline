@@ -37,9 +37,9 @@ namespace Crener.Spline.Experimental
             if(ControlPointCount == 0)
                 return float2.zero;
             else if(ControlPointCount == 1)
-                return GetControlPoint2D(0);
+                return GetControlPoint2DLocal(0);
             else if(ControlPointCount == 2)
-                return math.lerp(GetControlPoint2D(0), GetControlPoint2D(1), progress);
+                return math.lerp(GetControlPoint2DLocal(0), GetControlPoint2DLocal(1), progress);
             else if(ControlPointCount == 3)
                 return Cubic3Point(0,1,2, progress);
             // else if(progress <= 0f)

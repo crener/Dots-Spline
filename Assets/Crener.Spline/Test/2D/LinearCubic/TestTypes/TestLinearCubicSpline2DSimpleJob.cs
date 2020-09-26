@@ -53,7 +53,7 @@ namespace Crener.Spline.Test._2D.LinearCubic.TestTypes
                 return math.max(1, controlPoints - 2);
             }
             
-            public float2 GetControlPoint(int i, SplinePoint point) => GetControlPoint2D(i);
+            public float2 GetControlPoint(int i, SplinePoint point) => GetControlPoint2DLocal(i);
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Crener.Spline.Common;
 using Crener.Spline.Common.Interfaces;
 using Unity.Entities;
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace Crener.Spline.BaseSpline
@@ -39,7 +40,24 @@ namespace Crener.Spline.BaseSpline
         /// </summary>
         public virtual int SegmentPointCount => ControlPointCount;
 
-        protected Transform trans
+        /// <summary>
+        /// Position of the spline origin in world space
+        /// </summary>
+        public float3 Position => trans.position;
+        
+        /// <summary>
+        /// forward direction of the spline origin
+        /// </summary>
+        public Quaternion Forward
+        {
+            get => trans.rotation;
+            set
+            {
+                if(Forward != value) trans.rotation = value;
+            }
+        }
+        
+        private Transform trans
         {
             get
             {
@@ -48,7 +66,7 @@ namespace Crener.Spline.BaseSpline
             }
         }
 
-        private Transform m_trans = null; 
+        private Transform m_trans = null;
         
         private void Start()
         {

@@ -1,3 +1,4 @@
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace Crener.Spline.Common.Interfaces
@@ -13,5 +14,5 @@ namespace Crener.Spline.Common.Interfaces
         Quaternion Forward { get; set; }
     }
 
-    public interface ISpline3DPlaneEditor : ISpline3DPlane, ISpline3DEditor, ISpline2DEditor { }
+    public interface ISpline3DPlaneEditor : ISpline3DPlane, ISpline3DEditor, ISpline2DEditor {}
 }

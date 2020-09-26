@@ -19,14 +19,6 @@ namespace Crener.Spline.BaseSpline
     /// </summary>
     public abstract class BaseSpline3DPlane : BaseSpline2D, ISpline3DPlane, ISpline3DPlaneEditor
     {
-        public Quaternion Forward
-        {
-            get => trans.rotation;
-            set
-            {
-                if(Forward != value) trans.rotation = value;
-            }
-        }
         public Spline3DData? SplineEntityData3D
         {
             get
@@ -46,27 +38,49 @@ namespace Crener.Spline.BaseSpline
 
         public float3 Get3DPoint(float progress)
         {
-            return Convert2Dto3D(GetPointProgress(progress, false));
+            float2 point = GetPointProgress(progress, false);
+            return Convert2Dto3D(point, true);
         }
 
         public float3 Get3DPoint(float progress, int index)
         {
-            return Convert2Dto3D(GetPointProgress(progress, false));
+            float2 point = GetPointProgress(progress, false);
+            return Convert2Dto3D(point, true);
         }
 
         public void AddControlPoint(float3 point)
         {
-            base.AddControlPoint(Convert3Dto2D(point));
+            float2 converted = Convert3Dto2D(point, false);
+            base.AddControlPoint(converted);
         }
 
-        public void InsertControlPoint(int index, float3 point)
+        public void InsertControlPointWorldSpace(int index, float3 point)
         {
-            base.InsertControlPoint(index, Convert3Dto2D(point));
+            float2 converted = Convert3Dto2D(point, false);
+            base.InsertControlPoint(index, converted);
         }
 
-        public float3 GetControlPoint3D(int i)
+        public void InsertControlPointLocalSpace(int index, float3 point)
         {
-            return Convert2Dto3D(GetControlPoint2D(i));
+            base.InsertControlPoint(index, point.xy);
+        }
+
+        /// <summary>
+        /// Returns the control point relative to the transform of the object
+        /// </summary>
+        /// <param name="i">control point index to retrieve</param>
+        public float3 GetControlPoint3DLocal(int i)
+        {
+            return new float3(GetControlPoint2DLocal(i), 0f);
+        }
+
+        /// <summary>
+        /// Returns the control point relative to the world origin
+        /// </summary>
+        /// <param name="i">control point index to retrieve</param>
+        public float3 GetControlPoint3DWorld(int i)
+        {
+            return Convert2Dto3D(GetControlPoint2DLocal(i), true);
         }
 
         public void UpdateControlPoint(int index, float3 point, SplinePoint mode)
@@ -82,17 +96,14 @@ namespace Crener.Spline.BaseSpline
         protected float3 Convert2Dto3D(float2 point, bool translate = true)
         {
             float3 convertedPoint = (Forward * new float3(point, 0f));
-            if(translate) convertedPoint += (float3)trans.position;
+            if(translate) convertedPoint += Position;
             return convertedPoint;
         }
 
         protected float2 Convert3Dto2D(float3 point, bool translate = true)
         {
             float3 convertedPoint = point;
-            if(translate)
-            {
-                convertedPoint -= (float3)trans.position;
-            }
+            if(translate) convertedPoint -= Position;
             convertedPoint = Quaternion.Inverse(Forward) * convertedPoint;
             return convertedPoint.xy;
         }
@@ -100,7 +111,6 @@ namespace Crener.Spline.BaseSpline
         /// <summary>
         /// Relieve a point on the spline
         /// </summary>
-        /// <param name="progress"></param>
         /// <returns>point on spline</returns>
         public override float2 Get2DPoint(float progress)
         {
@@ -109,16 +119,16 @@ namespace Crener.Spline.BaseSpline
 
         protected virtual float2 GetPointProgress(float progress, bool translate)
         {
-            float2 translation = translate ? (((float3) trans.position).xy) : float2.zero;
+            float2 translation = translate ? Position.xy : float2.zero;
             if(ControlPointCount == 0)
                 return translation;
             else if(progress <= 0f || ControlPointCount == 1)
-                return translation + GetControlPoint2D(0);
+                return translation + GetControlPoint2DLocal(0);
             else if(progress >= 1f)
             {
                 if(this is ILoopingSpline looped && looped.Looped)
-                    return translation +GetControlPoint2D(0);
-                return translation + GetControlPoint2D((ControlPointCount - 1));
+                    return translation + GetControlPoint2DLocal(0);
+                return translation + GetControlPoint2DLocal((ControlPointCount - 1));
             }
 
             int aIndex = FindSegmentIndex(progress);
@@ -131,10 +141,11 @@ namespace Crener.Spline.BaseSpline
             float2 bottomLeft = float.NaN, topRight = float.NaN;
             for (int i = 0; i < Points.Count; i++)
             {
-                bottomLeft.x = math.min(Points[i].x, bottomLeft.x);
-                bottomLeft.y = math.min(Points[i].y, bottomLeft.y);
-                topRight.x = math.max(Points[i].x, topRight.x);
-                topRight.y = math.max(Points[i].y, topRight.y);
+                float2 cp = GetControlPoint2DLocal(i);
+                bottomLeft.x = math.min(cp.x, bottomLeft.x);
+                bottomLeft.y = math.min(cp.y, bottomLeft.y);
+                topRight.x = math.max(cp.x, topRight.x);
+                topRight.y = math.max(cp.y, topRight.y);
             }
 
             // drag the outer rect
@@ -218,7 +229,7 @@ namespace Crener.Spline.BaseSpline
         protected virtual Spline3DData SplineArkConversion3D(float arkLength)
         {
             // yes, getting the data from here is kinda cheating but... but it's kinda clean ;)
-            Spline2DData spline2D = base.SplineEntityData2D.Value;
+            Spline2DData spline2D = SplineEntityData2D.Value;
 
             return new Spline3DData
             {

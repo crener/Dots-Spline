@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using Crener.Spline.BaseSpline;
 using Crener.Spline.Common;
@@ -109,7 +110,7 @@ namespace Crener.Spline.BezierSpline
         /// </summary>
         /// <param name="index">segment index</param>
         /// <param name="point">location to insert</param>
-        public override void InsertControlPoint(int index, float3 point)
+        public override void InsertControlPointWorldSpace(int index, float3 point)
         {
             if(Points.Count < 1 || index >= ControlPointCount)
             {
@@ -246,7 +247,7 @@ namespace Crener.Spline.BezierSpline
         /// <param name="i">index of the segment</param>
         /// <returns>World Space position for the point</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override float3 GetControlPoint3D(int i)
+        public override float3 GetControlPoint3DLocal(int i)
         {
             return GetControlPoint(i, SplinePoint.Point);
         }
@@ -309,14 +310,8 @@ namespace Crener.Spline.BezierSpline
             }
             else
             {
-                NativeArray<float3> points = new NativeArray<float3>(Points.Count, Allocator.Persistent);
+                NativeArray<float3> points = new NativeArray<float3>(ConvertToWorldSpace(Points).ToArray(), Allocator.Persistent);
                 NativeArray<float> time = new NativeArray<float>(SegmentLength.ToArray(), Allocator.Persistent);
-
-                float3 translation = trans.position;
-                for (int i = 0; i < points.Length; i++)
-                {
-                    points[i] = Points[i] + translation;
-                }
                 
                 Assert.IsFalse(hasSplineEntityData);
                 SplineEntityData3D = new Spline3DData

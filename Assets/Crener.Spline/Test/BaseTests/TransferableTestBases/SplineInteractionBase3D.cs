@@ -18,12 +18,12 @@ namespace Crener.Spline.Test.BaseTests.TransferableTestBases
             Assert.Greater(spline.ControlPointCount, before, "Adding a point did not increase the control point count");
         }
 
-        public void InsertControlPoint(ISimpleSpline3D spline, int index, float3 point)
+        public void InsertControlPointWorldSpace(ISimpleSpline3D spline, int index, float3 point)
         {
             ISpline3DEditor spline3D = spline as ISpline3DEditor;
             Assert.NotNull(spline3D);
 
-            spline3D.InsertControlPoint(index, point);
+            spline3D.InsertControlPointWorldSpace(index, point);
         }
 
         public float3 GetControlPoint(ISimpleSpline3D spline, int index, SplinePoint pointType)

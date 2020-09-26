@@ -525,12 +525,80 @@ namespace Crener.Spline.Test._3D
             Assert.AreEqual(1, testSpline.Times.Count);
 
             float3 a = float3.zero;
-            testSpline.InsertControlPoint(12, a);
+            testSpline.InsertControlPointWorldSpace(12, a);
 
             Assert.AreEqual(1, testSpline.ControlPointCount);
             Assert.AreEqual(1, testSpline.Modes.Count);
             Assert.AreEqual(1, testSpline.Times.Count);
             TestHelpers.CheckFloat3(move, testSpline.Get3DPoint(0f));
+            TestHelpers.CheckFloat3(a, testSpline.GetControlPoint(0, SplinePoint.Point));
+        }
+
+        [Test]
+        public void TranslationRotation()
+        {
+            ISimpleTestSpline3D testSpline = PrepareSpline();
+            float3 move = new float3(10f, 0f, 10f);
+            ((MonoBehaviour) testSpline).transform.position = move;
+            
+            Quaternion targetRotation = Quaternion.Euler(0f, 90f, 0f);
+            ((MonoBehaviour) testSpline).transform.rotation = targetRotation;
+
+            Assert.AreEqual(0, testSpline.ControlPointCount);
+            Assert.AreEqual(0, testSpline.Modes.Count);
+            Assert.AreEqual(1, testSpline.Times.Count);
+
+            float3 a = new float3(20f, 3f, 4f);
+            testSpline.InsertControlPointWorldSpace(12, a);
+
+            Assert.AreEqual(1, testSpline.ControlPointCount);
+            Assert.AreEqual(1, testSpline.Modes.Count);
+            Assert.AreEqual(1, testSpline.Times.Count);
+            TestHelpers.CheckFloat3(move + (float3)(targetRotation * a), testSpline.Get3DPoint(0f));
+            TestHelpers.CheckFloat3(a, testSpline.GetControlPoint(0, SplinePoint.Point));
+        }
+
+        [Test]
+        public void RotationPrePoint()
+        {
+            ISimpleTestSpline3D testSpline = PrepareSpline();
+            
+            Quaternion targetRotation = Quaternion.Euler(0f, 90f, 0f);
+            ((MonoBehaviour) testSpline).transform.rotation = targetRotation;
+
+            Assert.AreEqual(0, testSpline.ControlPointCount);
+            Assert.AreEqual(0, testSpline.Modes.Count);
+            Assert.AreEqual(1, testSpline.Times.Count);
+
+            float3 a = new float3(10f, 10f, 5f);
+            testSpline.InsertControlPointWorldSpace(12, a);
+
+            Assert.AreEqual(1, testSpline.ControlPointCount);
+            Assert.AreEqual(1, testSpline.Modes.Count);
+            Assert.AreEqual(1, testSpline.Times.Count);
+            TestHelpers.CheckFloat3(targetRotation * a, testSpline.Get3DPoint(0f));
+            TestHelpers.CheckFloat3(a, testSpline.GetControlPoint(0, SplinePoint.Point));
+        }
+
+        [Test]
+        public void RotationPostPoint()
+        {
+            ISimpleTestSpline3D testSpline = PrepareSpline();
+
+            Assert.AreEqual(0, testSpline.ControlPointCount);
+            Assert.AreEqual(0, testSpline.Modes.Count);
+            Assert.AreEqual(1, testSpline.Times.Count);
+
+            float3 a = new float3(10f, 10f, 5f);
+            testSpline.InsertControlPointWorldSpace(12, a);
+            
+            Quaternion targetRotation = Quaternion.Euler(0f, 90f, 0f);
+            ((MonoBehaviour) testSpline).transform.rotation = targetRotation;
+
+            Assert.AreEqual(1, testSpline.ControlPointCount);
+            Assert.AreEqual(1, testSpline.Modes.Count);
+            Assert.AreEqual(1, testSpline.Times.Count);
+            TestHelpers.CheckFloat3(targetRotation * a, testSpline.Get3DPoint(0f));
             TestHelpers.CheckFloat3(a, testSpline.GetControlPoint(0, SplinePoint.Point));
         }
 
@@ -554,7 +622,7 @@ namespace Crener.Spline.Test._3D
 
             //insert point
             float3 c = new float3(20f, 0f, 1f);
-            testSpline.InsertControlPoint(1, c);
+            testSpline.InsertControlPointWorldSpace(1, c);
 
             Assert.AreEqual(3, testSpline.ControlPointCount);
             Assert.AreEqual(3, testSpline.Modes.Count);
@@ -575,7 +643,7 @@ namespace Crener.Spline.Test._3D
             TestHelpers.CheckFloat3(a, testSpline.GetControlPoint(0, SplinePoint.Point), (float.Epsilon * 2f));
 
             float3 b = new float3(4);
-            testSpline.InsertControlPoint(0, b);
+            testSpline.InsertControlPointWorldSpace(0, b);
             Assert.AreEqual(2, testSpline.ControlPointCount);
             Assert.AreEqual(2, testSpline.Modes.Count);
             TestHelpers.CheckFloat3(b, testSpline.GetControlPoint(0, SplinePoint.Point), (float.Epsilon * 2f));
@@ -597,7 +665,7 @@ namespace Crener.Spline.Test._3D
             TestHelpers.CheckFloat3(a, testSpline.GetControlPoint(0, SplinePoint.Point));
 
             float3 b = new float3(10f, 0f, 1f);
-            testSpline.InsertControlPoint(1000, b);
+            testSpline.InsertControlPointWorldSpace(1000, b);
 
             TestHelpers.CheckFloat3(b, testSpline.Get3DPoint(1f));
             TestHelpers.CheckFloat3(b, testSpline.GetControlPoint(1, SplinePoint.Point));
@@ -617,7 +685,7 @@ namespace Crener.Spline.Test._3D
             Assert.AreEqual(1, testSpline.Times.Count);
 
             float3 a = float3.zero;
-            testSpline.InsertControlPoint(12, a);
+            testSpline.InsertControlPointWorldSpace(12, a);
 
             Assert.AreEqual(1, testSpline.ControlPointCount);
             Assert.AreEqual(1, testSpline.Modes.Count);
@@ -647,7 +715,7 @@ namespace Crener.Spline.Test._3D
             TestHelpers.CheckFloat3(b, testSpline.GetControlPoint(1, SplinePoint.Point));
 
             //insert point
-            testSpline.InsertControlPoint(2, c);
+            testSpline.InsertControlPointWorldSpace(2, c);
 
             Assert.AreEqual(3, testSpline.ControlPointCount);
             Assert.AreEqual(3, testSpline.Modes.Count);
@@ -678,7 +746,7 @@ namespace Crener.Spline.Test._3D
 
             //insert point
             float3 c = new float3(-2f, 0f, 1f);
-            testSpline.InsertControlPoint(0, c);
+            testSpline.InsertControlPointWorldSpace(0, c);
 
             Assert.AreEqual(3, testSpline.ControlPointCount);
             Assert.AreEqual(3, testSpline.Modes.Count);

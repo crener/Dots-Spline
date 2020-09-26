@@ -230,8 +230,11 @@ namespace Crener.Spline.Test.BaseTests
         public override void AddControlPoint(IArkableSpline spline, float3 point) =>
             s_splineBase.AddControlPoint(spline as ISimpleSpline3D, point);
 
-        public override void InsertControlPoint(IArkableSpline spline, int index, float3 point) =>
-            s_splineBase.InsertControlPoint(spline as ISimpleSpline3D, index, point);
+        public override void InsertControlPointWorldSpace(IArkableSpline spline, int index, float3 point) =>
+            s_splineBase.InsertControlPointWorldSpace(spline as ISimpleSpline3D, index, point);
+
+        public override void InsertControlPointLocalSpace(IArkableSpline spline, int index, float3 point) => 
+            s_splineBase.InsertControlPointWorldSpace(spline as ISimpleSpline3D, index, point);
 
         public override float3 GetControlPoint(IArkableSpline spline, int index, SplinePoint pointType) =>
             s_splineBase.GetControlPoint(spline as ISimpleSpline3D, index, pointType);
@@ -271,8 +274,8 @@ namespace Crener.Spline.Test.BaseTests
         public override void AddControlPoint(IArkableSpline spline, float3 point) =>
             s_splineBase.AddControlPoint(spline as ISpline3DPlane, point);
 
-        public override void InsertControlPoint(IArkableSpline spline, int index, float3 point) =>
-            s_splineBase.InsertControlPoint(spline as ISpline3DPlane, index, point);
+        public override void InsertControlPointWorldSpace(IArkableSpline spline, int index, float3 point) =>
+            s_splineBase.InsertControlPointWorldSpace(spline as ISpline3DPlane, index, point);
 
         public override float3 GetControlPoint(IArkableSpline spline, int index, SplinePoint pointType) =>
             s_splineBase.GetControlPoint(spline as ISpline3DPlane, index, pointType);
@@ -303,8 +306,11 @@ namespace Crener.Spline.Test.BaseTests
         public override void AddControlPoint(IArkableSpline spline, float3 point) =>
             s_splineBase.AddControlPoint(spline as ISpline2D, point);
 
-        public override void InsertControlPoint(IArkableSpline spline, int index, float3 point) =>
-            s_splineBase.InsertControlPoint(spline as ISpline2D, index, point);
+        public override void InsertControlPointWorldSpace(IArkableSpline spline, int index, float3 point) =>
+            s_splineBase.InsertControlPointWorldSpace(spline as ISpline2D, index, point);
+
+        public override void InsertControlPointLocalSpace(IArkableSpline spline, int index, float3 point) => 
+            s_splineBase.InsertControlPointWorldSpace(spline as ISpline2D, index, point);
 
         public override float3 GetControlPoint(IArkableSpline spline, int index, SplinePoint pointType) =>
             s_splineBase.GetControlPoint(spline as ISpline2D, index, pointType);

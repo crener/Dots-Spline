@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using Crener.Spline.BaseSpline;
 using Crener.Spline.Common;
@@ -242,7 +243,7 @@ namespace Crener.Spline.BezierSpline
         /// <param name="i">index of the segment</param>
         /// <returns>World Space position for the point</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override float2 GetControlPoint2D(int i)
+        public override float2 GetControlPoint2DLocal(int i)
         {
             return GetControlPoint(i, SplinePoint.Point);
         }
@@ -305,7 +306,7 @@ namespace Crener.Spline.BezierSpline
             }
             else
             {
-                NativeArray<float2> points = new NativeArray<float2>(Points.ToArray(), Allocator.Persistent);
+                NativeArray<float2> points = new NativeArray<float2>(ConvertToWorldSpace(Points).ToArray(), Allocator.Persistent);
                 NativeArray<float> time = new NativeArray<float>(SegmentLength.ToArray(), Allocator.Persistent);
 
                 Assert.IsFalse(hasSplineEntityData);

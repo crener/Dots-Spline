@@ -11,16 +11,16 @@ namespace Crener.Spline.Editor._3DPlain
     {
         // Override so that inspector point is shown as 2D
         protected override bool m_inspector3dPoint => false;
-        
+
         /// <inheritdoc cref="Base3DEditor.DrawSelectedHandles"/>
         protected override void DrawSelectedHandles(ISpline3DEditor spline, int pointIndex)
         {
-            float3 point = spline.GetControlPoint3D(pointIndex);
+            float3 point = spline.GetControlPoint3DWorld(pointIndex);
 
             EditorGUI.BeginChangeCheck();
 
             ISpline3DPlane plane = spline as ISpline3DPlane;
-            Vector3 pos = Handles.DoPositionHandle(point, plane.Forward);
+            float3 pos = Handles.DoPositionHandle(point, plane.Forward);
 
             if(EditorGUI.EndChangeCheck() && spline is Object objSpline)
             {
@@ -32,7 +32,7 @@ namespace Crener.Spline.Editor._3DPlain
                 SceneView.RepaintAll();
             }
         }
-        
+
         protected override void MoveWithTransform(ISpline3DEditor spline)
         {
             if(m_editMoveWithTrans) return;

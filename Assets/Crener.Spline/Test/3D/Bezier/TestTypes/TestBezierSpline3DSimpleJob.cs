@@ -42,7 +42,7 @@ namespace Crener.Spline.Test._3D.Bezier.TestTypes
                 return job.Result;
             }
 
-            public override float3 GetControlPoint3D(int i) => SplineEntityData3D.Value.Points[i];
+            public override float3 GetControlPoint3DLocal(int i) => SplineEntityData3D.Value.Points[i];
 
             public int ExpectedControlPointCount(int controlPoints)
             {

@@ -6,7 +6,7 @@ using Unity.Mathematics;
 
 namespace Crener.Spline.Test.BaseTests.TransferableTestBases
 {
-    public class SplineInteractionBase3DPlane : ITransferableTestSet<ISpline3DPlane>
+    public class SplineInteractionBase3DPlane : ITransferablePlainTestSet<ISpline3DPlane>
     {
         public void AddControlPoint(ISpline3DPlane spline, float3 point)
         {
@@ -18,25 +18,41 @@ namespace Crener.Spline.Test.BaseTests.TransferableTestBases
             Assert.Greater(spline.ControlPointCount, before, "Adding a point did not increase the control point count");
         }
 
-        public void InsertControlPoint(ISpline3DPlane spline, int index, float3 point)
+        public void InsertControlPointWorldSpace(ISpline3DPlane spline, int index, float3 point)
         {
-            ISpline3DEditor spline3D = spline as ISpline3DEditor;
+            ISpline3DPlaneEditor spline3D = spline as ISpline3DPlaneEditor;
             Assert.NotNull(spline3D);
 
-            spline3D.InsertControlPoint(index, point);
+            spline3D.InsertControlPointWorldSpace(index, point);
+        }
+
+        public void InsertControlPointLocalSpace(ISpline3DPlane spline, int index, float3 point)
+        {
+            ISpline3DPlaneEditor spline3D = spline as ISpline3DPlaneEditor;
+            Assert.NotNull(spline3D);
+
+            spline3D.InsertControlPointLocalSpace(index, point);
         }
         
         public float3 GetControlPoint(ISpline3DPlane spline, int index, SplinePoint pointType)
         {
-            ISpline3DEditor spline3D = spline as ISpline3DEditor;
+            ISpline3DPlaneEditor spline3D = spline as ISpline3DPlaneEditor;
             Assert.NotNull(spline3D);
             
-            return spline3D.GetControlPoint3D(index);
+            return spline3D.GetControlPoint3DLocal(index);
+        }
+
+        public float3 GetControlPointWorldSpace(ISpline3DPlane spline, int index, SplinePoint pointType)
+        {
+            ISpline3DPlaneEditor spline3D = spline as ISpline3DPlaneEditor;
+            Assert.NotNull(spline3D);
+            
+            return spline3D.GetControlPoint3DWorld(index);
         }
 
         public void UpdateControlPoint(ISpline3DPlane spline, int index, float3 newPoint, SplinePoint pointType)
         {
-            ISpline3DEditor spline3D = spline as ISpline3DEditor;
+            ISpline3DPlaneEditor spline3D = spline as ISpline3DPlaneEditor;
             Assert.NotNull(spline3D);
 
             spline3D.UpdateControlPoint(index, newPoint, pointType);
