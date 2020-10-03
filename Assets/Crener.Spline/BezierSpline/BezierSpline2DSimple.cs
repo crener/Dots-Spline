@@ -248,6 +248,18 @@ namespace Crener.Spline.BezierSpline
             return GetControlPoint(i, SplinePoint.Point);
         }
 
+        /// <summary>
+        /// Gets the given point from a point segment
+        /// </summary>
+        /// <param name="i">index of the segment</param>
+        /// <param name="point">type of point to get information for</param>
+        /// <returns>World Space position for the point</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public float2 GetControlPoint2DWorld(int i, SplinePoint point)
+        {
+            return GetControlPoint(i, point) + Position.xy;
+        }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private int IndexMode(int i, SplinePoint point)
         {

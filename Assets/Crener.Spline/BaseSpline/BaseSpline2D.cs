@@ -121,7 +121,7 @@ namespace Crener.Spline.BaseSpline
         /// Move all points by <paramref name="delta"/> amount
         /// </summary>
         /// <param name="delta">amount to move all point by</param>
-        public void MoveControlPoints(float2 delta)
+        public virtual void MoveControlPoints(float2 delta)
         {
             for (int i = 0; i < Points.Count; i++)
             {

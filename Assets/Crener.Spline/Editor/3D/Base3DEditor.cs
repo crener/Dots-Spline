@@ -173,18 +173,19 @@ namespace Crener.Spline.Editor._3D
 
         protected virtual void MoveWithTransform(ISpline3DEditor spline)
         {
-            if(!m_editMoveWithTrans) return;
+            if(m_editMoveWithTrans) return;
 
             Vector3 currentPosition = m_sourceTrans.position;
             if(currentPosition != m_lastTransPosition)
             {
-                Vector3 delta = currentPosition - m_lastTransPosition;
+                Vector3 delta = m_lastTransPosition - currentPosition;
                 m_lastTransPosition = currentPosition;
 
                 // move all the points by delta amount
                 spline.MoveControlPoints(new float3(delta.x, delta.y, delta.z));
             }
         }
+        
         #endregion Inspector
 
         /// <summary>

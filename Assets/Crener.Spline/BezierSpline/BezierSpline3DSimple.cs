@@ -106,6 +106,17 @@ namespace Crener.Spline.BezierSpline
         }
 
         /// <summary>
+        /// Update an existing control points data
+        /// </summary>
+        /// <param name="index">control point index</param>
+        /// <param name="point">location of the point in world space</param>
+        /// <param name="mode">type of point to update</param>
+        public void UpdateControlPointFromWorld(int index, float3 point, SplinePoint mode)
+        {
+            UpdateControlPoint(index, ConvertToLocalSpace(point), mode);
+        }
+
+        /// <summary>
         /// inserts a point before the specified segment index
         /// </summary>
         /// <param name="index">segment index</param>
@@ -250,6 +261,18 @@ namespace Crener.Spline.BezierSpline
         public override float3 GetControlPoint3DLocal(int i)
         {
             return GetControlPoint(i, SplinePoint.Point);
+        }
+
+        /// <summary>
+        /// Gets the given point from a point segment
+        /// </summary>
+        /// <param name="i">index of the segment</param>
+        /// <param name="point">type of point to get</param>
+        /// <returns>World Space position for the point</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public float3 GetControlPoint3DWorld(int i, SplinePoint point)
+        {
+            return ConvertToWorldSpace(GetControlPoint(i, point));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

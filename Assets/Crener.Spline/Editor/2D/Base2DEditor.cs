@@ -154,12 +154,12 @@ namespace Crener.Spline.Editor._2D
 
         private void MoveWithTransform(ISpline2DEditor spline)
         {
-            if(!m_editMoveWithTrans) return;
+            if(m_editMoveWithTrans) return;
             
             Vector3 currentPosition = m_sourceTrans.position;
             if(currentPosition != m_lastTransPosition)
             {
-                Vector3 delta = currentPosition - m_lastTransPosition;
+                Vector3 delta = m_lastTransPosition - currentPosition;
                 m_lastTransPosition = currentPosition;
 
                 // move all the points by delta amount
@@ -194,7 +194,8 @@ namespace Crener.Spline.Editor._2D
                 Undo.RecordObject(objSpline, "Insert Spline Point");
                 EditorUtility.SetDirty(objSpline);
 
-                spline.InsertControlPoint(m_editNewPointIndex, mouse);
+                float3 origin = m_sourceTrans.position;
+                spline.InsertControlPoint(m_editNewPointIndex, mouse - origin.xy);
 
                 SceneView.RepaintAll();
             }
@@ -206,14 +207,13 @@ namespace Crener.Spline.Editor._2D
         /// <param name="spline">spline to render control points for</param>
         protected void RenderControlPoints(ISpline2DEditor spline)
         {
-            float3 origin = ((MonoBehaviour)spline).transform.position;
             for (int i = 0; i < spline.ControlPointCount; i++)
             {
                 bool selected = m_editControlPoint == i;
 
                 Handles.color = selected ? Color.blue : new Color(0f, 1f, 1f, 0.73f);
 
-                float2 point = spline.GetControlPoint2DLocal(i);
+                float2 point = spline.GetControlPoint2DWorld(i);
                 float3 editorPosition = new float3(point, 0f);
 
                 // draw handles
@@ -221,14 +221,15 @@ namespace Crener.Spline.Editor._2D
                 {
                     // main point 
                     EditorGUI.BeginChangeCheck();
-                    Vector3 pos = Handles.DoPositionHandle(editorPosition + origin, Quaternion.identity);
+                    Vector3 pos = Handles.DoPositionHandle(editorPosition, Quaternion.identity);
 
                     if(EditorGUI.EndChangeCheck() && spline is Object objSpline)
                     {
                         Undo.RecordObject(objSpline, "Move Point");
                         EditorUtility.SetDirty(objSpline);
 
-                        float2 newPoint = new float2(origin.x - pos.x, origin.y - pos.y);
+                        float3 origin = ((MonoBehaviour)spline).transform.position;
+                        float2 newPoint = new float2(pos.x, pos.y) - origin.xy;
                         spline.UpdateControlPoint(i, newPoint, SplinePoint.Point);
 
                         SceneView.RepaintAll();
@@ -237,7 +238,7 @@ namespace Crener.Spline.Editor._2D
                 else
                 {
                     float size = HandleUtility.GetHandleSize(editorPosition) / 12f;
-                    if(Handles.Button(editorPosition + origin, Quaternion.identity, size, size, Handles.DotHandleCap))
+                    if(Handles.Button(editorPosition, Quaternion.identity, size, size, Handles.DotHandleCap))
                     {
                         m_editControlPoint = i;
                         Repaint();

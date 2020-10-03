@@ -52,6 +52,13 @@ namespace Crener.Spline.CubicSpline
             return translation + SplineInterpolation(pointProgress, aIndex);
         }
 
+        /// <inheritdoc cref="BaseSpline2D.MoveControlPoints(float2)"/>
+        public override void MoveControlPoints(float2 delta)
+        {
+            base.MoveControlPoints(delta);
+            RecalculateLengthBias();
+        }
+        
         protected override void RecalculateLengthBias()
         {
             const int res = 512;
@@ -220,21 +227,21 @@ namespace Crener.Spline.CubicSpline
 
             if(ControlPointCount == 2)
             {
-                float2 cp0 = GetControlPoint2DLocal(0);
-                float2 cp1 = GetControlPoint2DLocal(1);
+                float2 cp0 = GetControlPoint2DWorld(0);
+                float2 cp1 = GetControlPoint2DWorld(1);
                 Gizmos.DrawLine(new Vector3(cp0.x, cp0.y, 0f), new Vector3(cp1.x, cp1.y, 0f));
                 return;
             }
 
             if(ControlPointCount == 3)
             {
-                float2 f = GetControlPoint2DLocal(0);
+                float2 f = GetControlPoint2DWorld(0);
                 Vector3 lp = new Vector3(f.x, f.y, 0f);
                 int points = (int) (pointDensity * (SegmentLength[0] * Length()));
                 for (int s = 1; s <= points; s++)
                 {
                     float progress = s / (float) points;
-                    float2 p = Cubic3Point(0, 1, 2, progress);
+                    float2 p = ConvertToWorldSpace(Cubic3Point(0, 1, 2, progress));
                     Vector3 point = new Vector3(p.x, p.y, 0f);
 
                     Gizmos.DrawLine(lp, point);
