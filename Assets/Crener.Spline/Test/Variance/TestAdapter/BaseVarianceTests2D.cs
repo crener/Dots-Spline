@@ -287,10 +287,10 @@ namespace Crener.Spline.Test.Variance.TestAdapter
             float2 b = new float2(1f, 0f);
             spline.AddControlPoint(b);
 
-            spline.UpdateControlPoint(0, new float2(0f, 1f), SplinePointVariance.PointLeft);
-            spline.UpdateControlPoint(0, new float2(0f, 1.1f), SplinePointVariance.PostLeft);
-            spline.UpdateControlPoint(1, new float2(1f, 0.9f), SplinePointVariance.PreLeft);
-            spline.UpdateControlPoint(1, new float2(1f, 1f), SplinePointVariance.PointLeft);
+            spline.UpdateControlPointLocal(0, new float2(0f, 1f), SplinePointVariance.PointLeft);
+            spline.UpdateControlPointLocal(0, new float2(0f, 1.1f), SplinePointVariance.PostLeft);
+            spline.UpdateControlPointLocal(1, new float2(1f, 0.9f), SplinePointVariance.PreLeft);
+            spline.UpdateControlPointLocal(1, new float2(1f, 1f), SplinePointVariance.PointLeft);
 
             Assert.AreEqual(2, spline.ControlPointCount);
 
@@ -317,14 +317,14 @@ namespace Crener.Spline.Test.Variance.TestAdapter
 
             //update 0 point position
             float2 a2 = new float2(-1f, -1f);
-            spline.UpdateControlPoint(0, a2, SplinePointVariance.Point);
+            spline.UpdateControlPointLocal(0, a2, SplinePointVariance.Point);
 
             TestHelpers.CheckFloat2(a2, spline.GetPoint(0f, new half(0)));
             TestHelpers.CheckFloat2(a2, spline.GetControlPoint(0, SplinePointVariance.Point));
 
             //update 1 point position
             float2 b2 = new float2(2f, 2f);
-            spline.UpdateControlPoint(1, b2, SplinePointVariance.Point);
+            spline.UpdateControlPointLocal(1, b2, SplinePointVariance.Point);
 
             TestHelpers.CheckFloat2(b2, spline.GetPoint(1f, new half(0)));
             TestHelpers.CheckFloat2(b2, spline.GetControlPoint(1, SplinePointVariance.Point));
@@ -354,18 +354,18 @@ namespace Crener.Spline.Test.Variance.TestAdapter
 
             //update 0 point position
             float2 a2 = new float2(0f, 1f);
-            spline.UpdateControlPoint(0, a2, SplinePointVariance.Point);
+            spline.UpdateControlPointLocal(0, a2, SplinePointVariance.Point);
             TestHelpers.CheckFloat2(a2, spline.GetPoint(0f, new half(0)));
             TestHelpers.CheckFloat2(a2, spline.GetControlPoint(0, SplinePointVariance.Point));
 
             //update 1 point position
             float2 b2 = new float2(1f, 1f);
-            spline.UpdateControlPoint(1, b2, SplinePointVariance.Point);
+            spline.UpdateControlPointLocal(1, b2, SplinePointVariance.Point);
             TestHelpers.CheckFloat2(b2, spline.GetControlPoint(1, SplinePointVariance.Point));
 
             //update 2 point position
             float2 c2 = new float2(2f, 1f);
-            spline.UpdateControlPoint(2, c2, SplinePointVariance.Point);
+            spline.UpdateControlPointLocal(2, c2, SplinePointVariance.Point);
             TestHelpers.CheckFloat2(c2, spline.GetPoint(1f, new half(0)));
             TestHelpers.CheckFloat2(c2, spline.GetControlPoint(2, SplinePointVariance.Point));
         }
@@ -386,7 +386,7 @@ namespace Crener.Spline.Test.Variance.TestAdapter
 
             //update 1 point position
             float2 b2 = new float2(1f, 2f);
-            spline.UpdateControlPoint(1, b2, SplinePointVariance.Point);
+            spline.UpdateControlPointLocal(1, b2, SplinePointVariance.Point);
 
             Assert.GreaterOrEqual(spline.Length(), 2f);
         }
@@ -520,11 +520,11 @@ namespace Crener.Spline.Test.Variance.TestAdapter
             float2 aRight = a + new float2(0f, -s);
             float2 aRightPost = a + new float2(s, -s);
 
-            spline.UpdateControlPoint(0, aPost, SplinePointVariance.Post);
-            spline.UpdateControlPoint(0, aLeft, SplinePointVariance.PointLeft);
-            spline.UpdateControlPoint(0, aLeftPost, SplinePointVariance.PostLeft);
-            spline.UpdateControlPoint(0, aRight, SplinePointVariance.PointRight);
-            spline.UpdateControlPoint(0, aRightPost, SplinePointVariance.PostRight);
+            spline.UpdateControlPointLocal(0, aPost, SplinePointVariance.Post);
+            spline.UpdateControlPointLocal(0, aLeft, SplinePointVariance.PointLeft);
+            spline.UpdateControlPointLocal(0, aLeftPost, SplinePointVariance.PostLeft);
+            spline.UpdateControlPointLocal(0, aRight, SplinePointVariance.PointRight);
+            spline.UpdateControlPointLocal(0, aRightPost, SplinePointVariance.PostRight);
 
             Assert.AreEqual(a, spline.GetControlPoint(0, SplinePointVariance.Point));
             Assert.AreEqual(a, spline.ControlPoints[0]);
@@ -549,14 +549,14 @@ namespace Crener.Spline.Test.Variance.TestAdapter
             float2 bRightPre = b + new float2(-s, -s);
             float2 bRightPost = b + new float2(s, -s);
 
-            spline.UpdateControlPoint(1, bPre, SplinePointVariance.Pre);
-            spline.UpdateControlPoint(1, bPost, SplinePointVariance.Post);
-            spline.UpdateControlPoint(1, bLeft, SplinePointVariance.PointLeft);
-            spline.UpdateControlPoint(1, bLeftPre, SplinePointVariance.PreLeft);
-            spline.UpdateControlPoint(1, bLeftPost, SplinePointVariance.PostLeft);
-            spline.UpdateControlPoint(1, bRight, SplinePointVariance.PointRight);
-            spline.UpdateControlPoint(1, bRightPre, SplinePointVariance.PreRight);
-            spline.UpdateControlPoint(1, bRightPost, SplinePointVariance.PostRight);
+            spline.UpdateControlPointLocal(1, bPre, SplinePointVariance.Pre);
+            spline.UpdateControlPointLocal(1, bPost, SplinePointVariance.Post);
+            spline.UpdateControlPointLocal(1, bLeft, SplinePointVariance.PointLeft);
+            spline.UpdateControlPointLocal(1, bLeftPre, SplinePointVariance.PreLeft);
+            spline.UpdateControlPointLocal(1, bLeftPost, SplinePointVariance.PostLeft);
+            spline.UpdateControlPointLocal(1, bRight, SplinePointVariance.PointRight);
+            spline.UpdateControlPointLocal(1, bRightPre, SplinePointVariance.PreRight);
+            spline.UpdateControlPointLocal(1, bRightPost, SplinePointVariance.PostRight);
 
             Assert.AreEqual(bPre, spline.GetControlPoint(1, SplinePointVariance.Pre));
             Assert.AreEqual(bPre, spline.ControlPoints[6]);
@@ -584,11 +584,11 @@ namespace Crener.Spline.Test.Variance.TestAdapter
             float2 cRight = c + new float2(0f, -s);
             float2 cRightPre = c + new float2(s, -s);
 
-            spline.UpdateControlPoint(2, cPre, SplinePointVariance.Pre);
-            spline.UpdateControlPoint(2, cLeft, SplinePointVariance.PointLeft);
-            spline.UpdateControlPoint(2, cLeftPre, SplinePointVariance.PreLeft);
-            spline.UpdateControlPoint(2, cRight, SplinePointVariance.PointRight);
-            spline.UpdateControlPoint(2, cRightPre, SplinePointVariance.PreRight);
+            spline.UpdateControlPointLocal(2, cPre, SplinePointVariance.Pre);
+            spline.UpdateControlPointLocal(2, cLeft, SplinePointVariance.PointLeft);
+            spline.UpdateControlPointLocal(2, cLeftPre, SplinePointVariance.PreLeft);
+            spline.UpdateControlPointLocal(2, cRight, SplinePointVariance.PointRight);
+            spline.UpdateControlPointLocal(2, cRightPre, SplinePointVariance.PreRight);
 
             Assert.AreEqual(cPre, spline.GetControlPoint(2, SplinePointVariance.Pre));
             Assert.AreEqual(cPre, spline.ControlPoints[15]);
@@ -621,25 +621,25 @@ namespace Crener.Spline.Test.Variance.TestAdapter
             Assert.AreEqual(1f, spline.Times[0]);
 
             float2 al = PositionAngle(a, 180f);
-            spline.UpdateControlPoint(0, al, SplinePointVariance.PointLeft);
+            spline.UpdateControlPointLocal(0, al, SplinePointVariance.PointLeft);
             float2 alPost = PositionAngle(al, 90f);
-            spline.UpdateControlPoint(0, alPost, SplinePointVariance.PostLeft);
+            spline.UpdateControlPointLocal(0, alPost, SplinePointVariance.PostLeft);
 
             float2 ar = PositionAngle(a, 0f);
-            spline.UpdateControlPoint(0, ar, SplinePointVariance.PointRight);
+            spline.UpdateControlPointLocal(0, ar, SplinePointVariance.PointRight);
             float2 arPost = PositionAngle(ar, 90f);
-            spline.UpdateControlPoint(0, arPost, SplinePointVariance.PostRight);
+            spline.UpdateControlPointLocal(0, arPost, SplinePointVariance.PostRight);
 
 
             float2 bl = PositionAngle(b, 180f);
-            spline.UpdateControlPoint(1, bl, SplinePointVariance.PointLeft);
+            spline.UpdateControlPointLocal(1, bl, SplinePointVariance.PointLeft);
             float2 blPre = PositionAngle(bl, -90f);
-            spline.UpdateControlPoint(1, blPre, SplinePointVariance.PreLeft);
+            spline.UpdateControlPointLocal(1, blPre, SplinePointVariance.PreLeft);
 
             float2 br = PositionAngle(b, 0);
-            spline.UpdateControlPoint(1, br, SplinePointVariance.PointRight);
+            spline.UpdateControlPointLocal(1, br, SplinePointVariance.PointRight);
             float2 brPre = PositionAngle(br, -90f);
-            spline.UpdateControlPoint(1, brPre, SplinePointVariance.PreRight);
+            spline.UpdateControlPointLocal(1, brPre, SplinePointVariance.PreRight);
 
             //check spline is still the same
             Assert.AreEqual(2, spline.ControlPointCount);
@@ -681,25 +681,25 @@ namespace Crener.Spline.Test.Variance.TestAdapter
             Assert.AreEqual(1f, spline.Times[0]);
 
             float2 al = PositionAngle(a, 180f);
-            spline.UpdateControlPoint(0, al, SplinePointVariance.PointLeft);
+            spline.UpdateControlPointLocal(0, al, SplinePointVariance.PointLeft);
             float2 alPost = PositionAngle(al, 90f);
-            spline.UpdateControlPoint(0, alPost, SplinePointVariance.PostLeft);
+            spline.UpdateControlPointLocal(0, alPost, SplinePointVariance.PostLeft);
 
             float2 ar = PositionAngle(a, 0f);
-            spline.UpdateControlPoint(0, ar, SplinePointVariance.PointRight);
+            spline.UpdateControlPointLocal(0, ar, SplinePointVariance.PointRight);
             float2 arPost = PositionAngle(ar, 90f);
-            spline.UpdateControlPoint(0, arPost, SplinePointVariance.PostRight);
+            spline.UpdateControlPointLocal(0, arPost, SplinePointVariance.PostRight);
 
 
             float2 bl = PositionAngle(b, 180f);
-            spline.UpdateControlPoint(1, bl, SplinePointVariance.PointLeft);
+            spline.UpdateControlPointLocal(1, bl, SplinePointVariance.PointLeft);
             float2 blPre = PositionAngle(bl, -90f);
-            spline.UpdateControlPoint(1, blPre, SplinePointVariance.PreLeft);
+            spline.UpdateControlPointLocal(1, blPre, SplinePointVariance.PreLeft);
 
             float2 br = PositionAngle(b, 0);
-            spline.UpdateControlPoint(1, br, SplinePointVariance.PointRight);
+            spline.UpdateControlPointLocal(1, br, SplinePointVariance.PointRight);
             float2 brPre = PositionAngle(br, -90f);
-            spline.UpdateControlPoint(1, brPre, SplinePointVariance.PreRight);
+            spline.UpdateControlPointLocal(1, brPre, SplinePointVariance.PreRight);
 
             //check spline is still the same
             Assert.AreEqual(2, spline.ControlPointCount);

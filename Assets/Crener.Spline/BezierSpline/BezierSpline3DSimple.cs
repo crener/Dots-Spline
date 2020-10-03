@@ -95,7 +95,7 @@ namespace Crener.Spline.BezierSpline
         /// <param name="index">control point index</param>
         /// <param name="point">location of the point</param>
         /// <param name="mode">type of point to update</param>
-        public override void UpdateControlPoint(int index, float3 point, SplinePoint mode)
+        public override void UpdateControlPointWorld(int index, float3 point, SplinePoint mode)
         {
             Assert.IsTrue(index <= ControlPointCount);
 
@@ -113,7 +113,7 @@ namespace Crener.Spline.BezierSpline
         /// <param name="mode">type of point to update</param>
         public void UpdateControlPointFromWorld(int index, float3 point, SplinePoint mode)
         {
-            UpdateControlPoint(index, ConvertToLocalSpace(point), mode);
+            UpdateControlPointWorld(index, ConvertToLocalSpace(point), mode);
         }
 
         /// <summary>

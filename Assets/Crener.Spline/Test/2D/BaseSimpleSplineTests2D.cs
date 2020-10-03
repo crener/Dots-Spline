@@ -441,14 +441,14 @@ namespace Crener.Spline.Test._2D
 
             //update 0 point position
             float2 a2 = new float2(-1f, -1f);
-            testSpline.UpdateControlPoint(0, a2, SplinePoint.Point);
+            testSpline.UpdateControlPointLocal(0, a2, SplinePoint.Point);
 
             TestHelpers.CheckFloat2(a2, testSpline.Get2DPoint(0f));
             TestHelpers.CheckFloat2(a2, testSpline.GetControlPoint(0, SplinePoint.Point));
 
             //update 1 point position
             float2 b2 = new float2(2f, 2f);
-            testSpline.UpdateControlPoint(1, b2, SplinePoint.Point);
+            testSpline.UpdateControlPointLocal(1, b2, SplinePoint.Point);
 
             TestHelpers.CheckFloat2(b2, testSpline.Get2DPoint(1f));
             TestHelpers.CheckFloat2(b2, testSpline.GetControlPoint(1, SplinePoint.Point));
@@ -478,18 +478,18 @@ namespace Crener.Spline.Test._2D
 
             //update 0 point position
             float2 a2 = new float2(0f, 1f);
-            testSpline.UpdateControlPoint(0, a2, SplinePoint.Point);
+            testSpline.UpdateControlPointLocal(0, a2, SplinePoint.Point);
             TestHelpers.CheckFloat2(a2, testSpline.Get2DPoint(0f));
             TestHelpers.CheckFloat2(a2, testSpline.GetControlPoint(0, SplinePoint.Point));
 
             //update 1 point position
             float2 b2 = new float2(1f, 1f);
-            testSpline.UpdateControlPoint(1, b2, SplinePoint.Point);
+            testSpline.UpdateControlPointLocal(1, b2, SplinePoint.Point);
             TestHelpers.CheckFloat2(b2, testSpline.GetControlPoint(1, SplinePoint.Point));
 
             //update 2 point position
             float2 c2 = new float2(2f, 1f);
-            testSpline.UpdateControlPoint(2, c2, SplinePoint.Point);
+            testSpline.UpdateControlPointLocal(2, c2, SplinePoint.Point);
             TestHelpers.CheckFloat2(c2, testSpline.Get2DPoint(1f));
             TestHelpers.CheckFloat2(c2, testSpline.GetControlPoint(2, SplinePoint.Point));
         }
@@ -510,7 +510,7 @@ namespace Crener.Spline.Test._2D
 
             //update 1 point position
             float2 b2 = new float2(1f, 2f);
-            testSpline.UpdateControlPoint(1, b2, SplinePoint.Point);
+            testSpline.UpdateControlPointLocal(1, b2, SplinePoint.Point);
             Assert.GreaterOrEqual(testSpline.Length(), 2f);
         }
 

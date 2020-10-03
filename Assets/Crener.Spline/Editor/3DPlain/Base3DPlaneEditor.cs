@@ -27,7 +27,7 @@ namespace Crener.Spline.Editor._3DPlain
                 Undo.RecordObject(objSpline, "Move Point");
                 EditorUtility.SetDirty(objSpline);
 
-                spline.UpdateControlPoint(pointIndex, pos, SplinePoint.Point);
+                spline.UpdateControlPointWorld(pointIndex, pos, SplinePoint.Point);
 
                 SceneView.RepaintAll();
             }

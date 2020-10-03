@@ -49,7 +49,7 @@ namespace Crener.Spline.Test._3D.LinearCubic.TestTypes
                 if(ControlPointCount <= 2) return math.max(1, controlPoints - 1);
                 return math.max(1, controlPoints - 2);
             }
-            
+
             public float3 GetControlPoint(int i, SplinePoint point) => GetControlPoint3DLocal(i);
         }
     }

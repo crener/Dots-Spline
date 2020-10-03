@@ -116,7 +116,7 @@ namespace Crener.Spline.Editor._2D
                     currentPoint = EditorGUILayout.Vector2Field("Point", currentPoint);
                     if(EditorGUI.EndChangeCheck())
                     {
-                        spline.UpdateControlPoint(m_editControlPoint.Value, currentPoint, SplinePoint.Point);
+                        spline.UpdateControlPointLocal(m_editControlPoint.Value, currentPoint, SplinePoint.Point);
                         SceneView.RepaintAll();
                     }
                     
@@ -230,7 +230,7 @@ namespace Crener.Spline.Editor._2D
 
                         float3 origin = ((MonoBehaviour)spline).transform.position;
                         float2 newPoint = new float2(pos.x, pos.y) - origin.xy;
-                        spline.UpdateControlPoint(i, newPoint, SplinePoint.Point);
+                        spline.UpdateControlPointLocal(i, newPoint, SplinePoint.Point);
 
                         SceneView.RepaintAll();
                     }

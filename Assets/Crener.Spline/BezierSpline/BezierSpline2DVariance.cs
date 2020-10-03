@@ -259,7 +259,7 @@ namespace Crener.Spline.BezierSpline
                 point.y + math.cos(-angle));
         }
 
-        public void UpdateControlPoint(int index, float2 point, SplinePointVariance mode)
+        public void UpdateControlPointLocal(int index, float2 point, SplinePointVariance mode)
         {
 #if UNITY_EDITOR
             Assert.IsTrue(index <= ControlPointCount);

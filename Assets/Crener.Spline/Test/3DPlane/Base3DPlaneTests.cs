@@ -150,7 +150,7 @@ namespace Crener.Spline.Test._3DPlane
             // update the cp position along the axis parallel to the plain
             float3 perpendicularPlain = new float3(10f, 0f, 0f);
             float3 newWorldLocation = new float3(0f, 5f, -10f);
-            spline.UpdateControlPoint(0, newWorldLocation + perpendicularPlain, SplinePoint.Point);
+            spline.UpdateControlPointWorld(0, newWorldLocation + perpendicularPlain, SplinePoint.Point);
             TestHelpers.CheckFloat3(newWorldLocation, spline.GetControlPoint3DWorld(0));
             TestHelpers.CheckFloat2(a.xy, spline.GetControlPoint2DLocal(0));
 
@@ -182,7 +182,7 @@ namespace Crener.Spline.Test._3DPlane
             float3 newWorldLocation = new float3(0f, 5f, -10f);
             TestHelpers.CheckFloat3(newWorldLocation, spline.GetControlPoint3DWorld(0));
             newWorldLocation += new float3(0f, 0f, 5f);
-            spline.UpdateControlPoint(0, newWorldLocation, SplinePoint.Point);
+            spline.UpdateControlPointWorld(0, newWorldLocation, SplinePoint.Point);
             TestHelpers.CheckFloat3(newWorldLocation, spline.GetControlPoint3DWorld(0));
             
             a = new float3(5f, 5f, 0f);
@@ -223,7 +223,7 @@ namespace Crener.Spline.Test._3DPlane
 
             a = a + new float3(1f, 1f, 0f);
             float3 additionalTranslation = a + origin;
-            spline.UpdateControlPoint(0, additionalTranslation, SplinePoint.Point);
+            spline.UpdateControlPointWorld(0, additionalTranslation, SplinePoint.Point);
             TestHelpers.CheckFloat3(additionalTranslation, spline.GetControlPoint3DWorld(0));
             TestHelpers.CheckFloat3(a, spline.GetControlPoint3DLocal(0));
             TestHelpers.CheckFloat2(additionalTranslation.xy, spline.GetControlPoint2DLocal(0));

@@ -42,7 +42,7 @@ namespace Crener.Spline.Test.BaseTests.TransferableTestBases
             ISpline2DEditor spline2D = spline as ISpline2DEditor;
             Assert.NotNull(spline2D);
             
-            spline2D.UpdateControlPoint(index, newPoint.xy, pointType);
+            spline2D.UpdateControlPointLocal(index, newPoint.xy, pointType);
         }
 
         public float Length(float3 a, float3 b) => math.distance(a.xy, b.xy);

@@ -48,9 +48,9 @@ namespace Crener.Spline.Test.Variance.TestTypes
                 RecalculateLengthBias();
             }
 
-            public void UpdateControlPoint(int index, float2 point, SplinePoint mode)
+            public void UpdateControlPointLocal(int index, float2 point, SplinePoint mode)
             {
-                UpdateControlPoint(index, point, TranslateVariancePoint(mode));
+                UpdateControlPointLocal(index, point, TranslateVariancePoint(mode));
             }
 
             public float2 GetControlPoint(int i, SplinePoint point)

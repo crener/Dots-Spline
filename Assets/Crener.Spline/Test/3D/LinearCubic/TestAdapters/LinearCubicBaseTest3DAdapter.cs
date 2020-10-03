@@ -77,8 +77,8 @@ namespace Crener.Spline.Test._3D.LinearCubic.TestAdapters
             float3 b = new float3(1f, 3f, 1f);
             testSpline.AddControlPoint(b);
 
-            testSpline.UpdateControlPoint(0, new float3(1f, 0f, 1f), SplinePoint.Post);
-            testSpline.UpdateControlPoint(1, new float3(0f, 3f, 1f), SplinePoint.Pre);
+            testSpline.UpdateControlPointWorld(0, new float3(1f, 0f, 1f), SplinePoint.Post);
+            testSpline.UpdateControlPointWorld(1, new float3(0f, 3f, 1f), SplinePoint.Pre);
 
             float length = math.distance(a, b);
             float spline = testSpline.Length();

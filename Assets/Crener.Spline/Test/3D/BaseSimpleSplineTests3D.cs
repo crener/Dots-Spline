@@ -440,14 +440,14 @@ namespace Crener.Spline.Test._3D
 
             //update 0 point position
             float3 a2 = new float3(-1f, -1f, 1f);
-            testSpline.UpdateControlPoint(0, a2, SplinePoint.Point);
+            testSpline.UpdateControlPointWorld(0, a2, SplinePoint.Point);
 
             TestHelpers.CheckFloat3(a2, testSpline.Get3DPoint(0f));
             TestHelpers.CheckFloat3(a2, testSpline.GetControlPoint(0, SplinePoint.Point));
 
             //update 1 point position
             float3 b2 = new float3(2f, 2f, 1f);
-            testSpline.UpdateControlPoint(1, b2, SplinePoint.Point);
+            testSpline.UpdateControlPointWorld(1, b2, SplinePoint.Point);
 
             TestHelpers.CheckFloat3(b2, testSpline.Get3DPoint(1f));
             TestHelpers.CheckFloat3(b2, testSpline.GetControlPoint(1, SplinePoint.Point));
@@ -477,18 +477,18 @@ namespace Crener.Spline.Test._3D
 
             //update 0 point position
             float3 a2 = new float3(0f, 1f, 1f);
-            testSpline.UpdateControlPoint(0, a2, SplinePoint.Point);
+            testSpline.UpdateControlPointWorld(0, a2, SplinePoint.Point);
             TestHelpers.CheckFloat3(a2, testSpline.Get3DPoint(0f));
             TestHelpers.CheckFloat3(a2, testSpline.GetControlPoint(0, SplinePoint.Point));
 
             //update 1 point position
             float3 b2 = new float3(1f, 1f, 1f);
-            testSpline.UpdateControlPoint(1, b2, SplinePoint.Point);
+            testSpline.UpdateControlPointWorld(1, b2, SplinePoint.Point);
             TestHelpers.CheckFloat3(b2, testSpline.GetControlPoint(1, SplinePoint.Point));
 
             //update 2 point position
             float3 c2 = new float3(2f, 1f, 1f);
-            testSpline.UpdateControlPoint(2, c2, SplinePoint.Point);
+            testSpline.UpdateControlPointWorld(2, c2, SplinePoint.Point);
             TestHelpers.CheckFloat3(c2, testSpline.Get3DPoint(1f));
             TestHelpers.CheckFloat3(c2, testSpline.GetControlPoint(2, SplinePoint.Point));
         }
@@ -509,7 +509,7 @@ namespace Crener.Spline.Test._3D
 
             //update 1 point position
             float3 b2 = new float3(1f, 2f, 1f);
-            testSpline.UpdateControlPoint(1, b2, SplinePoint.Point);
+            testSpline.UpdateControlPointWorld(1, b2, SplinePoint.Point);
             Assert.GreaterOrEqual(testSpline.Length(), 2f);
         }
 

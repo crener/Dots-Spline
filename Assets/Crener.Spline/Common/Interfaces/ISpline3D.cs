@@ -57,7 +57,7 @@ namespace Crener.Spline.Common.Interfaces
         /// <param name="index">control point index</param>
         /// <param name="point">location of the point</param>
         /// <param name="mode">type of point to update</param>
-        void UpdateControlPoint(int index, float3 point, SplinePoint mode);
+        void UpdateControlPointWorld(int index, float3 point, SplinePoint mode);
 
         /// <summary>
         /// Gets the given point from a point segment

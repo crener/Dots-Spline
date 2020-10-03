@@ -109,11 +109,22 @@ namespace Crener.Spline.BaseSpline
         /// <param name="index">control point index</param>
         /// <param name="point">location of the point</param>
         /// <param name="mode">type of point to update</param>
-        public virtual void UpdateControlPoint(int index, float3 point, SplinePoint mode)
+        public virtual void UpdateControlPointWorld(int index, float3 point, SplinePoint mode)
+        {
+            UpdateControlPointLocal(index, ConvertToLocalSpace(point), mode);
+        }
+
+        /// <summary>
+        /// Update an existing control points data
+        /// </summary>
+        /// <param name="index">control point index</param>
+        /// <param name="point">location of the point</param>
+        /// <param name="mode">type of point to update</param>
+        public virtual void UpdateControlPointLocal(int index, float3 point, SplinePoint mode)
         {
             Assert.IsTrue(index <= ControlPointCount);
 
-            Points[index] = ConvertToLocalSpace(point);
+            Points[index] = point;
             RecalculateLengthBias();
         }
 

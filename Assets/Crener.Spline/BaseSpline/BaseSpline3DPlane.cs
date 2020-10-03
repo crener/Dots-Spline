@@ -83,9 +83,14 @@ namespace Crener.Spline.BaseSpline
             return Convert2Dto3D(GetControlPoint2DLocal(i), true);
         }
 
-        public void UpdateControlPoint(int index, float3 point, SplinePoint mode)
+        public void UpdateControlPointWorld(int index, float3 point, SplinePoint mode)
         {
-            base.UpdateControlPoint(index, Convert3Dto2D(point), mode);
+            base.UpdateControlPointLocal(index, Convert3Dto2D(point), mode);
+        }
+
+        public void UpdateControlPointLocal(int index, float3 point, SplinePoint mode)
+        {
+            base.UpdateControlPointLocal(index, Convert3Dto2D(point, false), mode);
         }
 
         public void MoveControlPoints(float3 delta)

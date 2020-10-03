@@ -109,7 +109,7 @@ namespace Crener.Spline.BaseSpline
         /// <param name="index">control point index</param>
         /// <param name="point">location of the point</param>
         /// <param name="mode">type of point to update</param>
-        public virtual void UpdateControlPoint(int index, float2 point, SplinePoint mode)
+        public virtual void UpdateControlPointLocal(int index, float2 point, SplinePoint mode)
         {
             Assert.IsTrue(index <= ControlPointCount);
 

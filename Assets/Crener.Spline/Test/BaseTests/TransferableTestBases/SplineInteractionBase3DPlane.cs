@@ -55,7 +55,7 @@ namespace Crener.Spline.Test.BaseTests.TransferableTestBases
             ISpline3DPlaneEditor spline3D = spline as ISpline3DPlaneEditor;
             Assert.NotNull(spline3D);
 
-            spline3D.UpdateControlPoint(index, newPoint, pointType);
+            spline3D.UpdateControlPointWorld(index, newPoint, pointType);
         }
 
         public float Length(float3 a, float3 b) => math.distance(a, b);

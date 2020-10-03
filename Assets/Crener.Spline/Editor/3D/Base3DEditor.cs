@@ -122,7 +122,7 @@ namespace Crener.Spline.Editor._3D
                         currentPoint = EditorGUILayout.Vector3Field("Point", currentPoint);
                         if(EditorGUI.EndChangeCheck())
                         {
-                            spline.UpdateControlPoint(m_editControlPoint.Value, currentPoint, SplinePoint.Point);
+                            spline.UpdateControlPointLocal(m_editControlPoint.Value, currentPoint, SplinePoint.Point);
                             SceneView.RepaintAll();
                         }
                     }
@@ -134,7 +134,7 @@ namespace Crener.Spline.Editor._3D
                         currentPoint = EditorGUILayout.Vector2Field("Point", currentPoint);
                         if(EditorGUI.EndChangeCheck())
                         {
-                            spline2D.UpdateControlPoint(m_editControlPoint.Value, currentPoint, SplinePoint.Point);
+                            spline2D.UpdateControlPointLocal(m_editControlPoint.Value, currentPoint, SplinePoint.Point);
                             SceneView.RepaintAll();
                         }
                     }
@@ -276,7 +276,7 @@ namespace Crener.Spline.Editor._3D
                 Undo.RecordObject(objSpline, "Move Point");
                 EditorUtility.SetDirty(objSpline);
 
-                spline.UpdateControlPoint(pointIndex, pos, SplinePoint.Point);
+                spline.UpdateControlPointWorld(pointIndex, pos, SplinePoint.Point);
 
                 SceneView.RepaintAll();
             }
