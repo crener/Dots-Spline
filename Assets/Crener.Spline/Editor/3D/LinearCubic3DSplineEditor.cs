@@ -1,5 +1,5 @@
+using Crener.Spline._3D;
 using Crener.Spline.Common.Interfaces;
-using Crener.Spline.Linear;
 using Unity.Mathematics;
 using UnityEditor;
 using UnityEngine;

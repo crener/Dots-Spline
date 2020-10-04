@@ -1,6 +1,5 @@
 using System.Collections.Generic;
-using Crener.Spline.BezierSpline;
-using Crener.Spline.CatmullRom;
+using Crener.Spline._2D;
 using Crener.Spline.Common;
 using Unity.Mathematics;
 

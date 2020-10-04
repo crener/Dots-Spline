@@ -1,9 +1,7 @@
-using Crener.Spline.BezierSpline.Jobs;
-using Crener.Spline.BezierSpline.Jobs._3D;
+using Crener.Spline._2D.Jobs;
+using Crener.Spline._3D.Jobs;
 using Crener.Spline.Common.DataStructs;
 using Crener.Spline.Common.Interfaces;
-using Crener.Spline.Linear.Jobs._2D;
-using Crener.Spline.Linear.Jobs._3D;
 
 namespace Crener.Spline.Common
 {

@@ -1,7 +1,6 @@
 using System.Collections.Generic;
-using Crener.Spline.BezierSpline;
+using Crener.Spline._2D;
 using Crener.Spline.Common;
-using Crener.Spline.CubicSpline;
 using Unity.Mathematics;
 
 namespace Crener.Spline.Test._2D.Cubic.TestTypes

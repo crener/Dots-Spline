@@ -1,6 +1,5 @@
-using Crener.Spline.CatmullRom;
+using Crener.Spline._2D;
 using Crener.Spline.Common.Interfaces;
-using Crener.Spline.Linear;
 using NUnit.Framework;
 using Unity.Mathematics;
 using UnityEditor;
