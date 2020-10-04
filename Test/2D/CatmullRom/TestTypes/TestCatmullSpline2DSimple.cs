@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using Crener.Spline.BezierSpline;
 using Crener.Spline.CatmullRom;
 using Crener.Spline.Common;
-using Crener.Spline.Linear;
 using Unity.Mathematics;
 
 namespace Crener.Spline.Test._2D.CatmullRom.TestTypes
@@ -37,7 +36,7 @@ namespace Crener.Spline.Test._2D.CatmullRom.TestTypes
             
             public int ExpectedTimeCount(int controlPoints) => math.max(1, controlPoints - 1);
 
-            public float2 GetControlPoint(int i, SplinePoint point) => GetControlPoint(i);
+            public float2 GetControlPoint(int i, SplinePoint point) => GetControlPoint2DLocal(i);
         }
     }
 }

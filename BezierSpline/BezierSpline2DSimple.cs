@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using Crener.Spline.BaseSpline;
 using Crener.Spline.Common;
@@ -96,7 +97,7 @@ namespace Crener.Spline.BezierSpline
         /// <param name="index">control point index</param>
         /// <param name="point">location of the point</param>
         /// <param name="mode">type of point to update</param>
-        public override void UpdateControlPoint(int index, float2 point, SplinePoint mode)
+        public override void UpdateControlPointLocal(int index, float2 point, SplinePoint mode)
         {
             Assert.IsTrue(index <= ControlPointCount);
 
@@ -242,9 +243,21 @@ namespace Crener.Spline.BezierSpline
         /// <param name="i">index of the segment</param>
         /// <returns>World Space position for the point</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override float2 GetControlPoint(int i)
+        public override float2 GetControlPoint2DLocal(int i)
         {
             return GetControlPoint(i, SplinePoint.Point);
+        }
+
+        /// <summary>
+        /// Gets the given point from a point segment
+        /// </summary>
+        /// <param name="i">index of the segment</param>
+        /// <param name="point">type of point to get information for</param>
+        /// <returns>World Space position for the point</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public float2 GetControlPoint2DWorld(int i, SplinePoint point)
+        {
+            return GetControlPoint(i, point) + Position.xy;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -290,7 +303,7 @@ namespace Crener.Spline.BezierSpline
         {
             dstManager.AddComponent<Spline2DData>(entity);
             Spline2DData splineData = ConvertData();
-            SplineEntityData = splineData;
+            SplineEntityData2D = splineData;
             dstManager.SetSharedComponentData(entity, splineData);
         }
 
@@ -298,18 +311,18 @@ namespace Crener.Spline.BezierSpline
         {
             ClearData();
 
-            if(ArkParameterization)
+            if(ArkParameterization && SegmentPointCount >= 2)
             {
                 Assert.IsFalse(hasSplineEntityData);
-                SplineEntityData = SplineArkConversion();
+                SplineEntityData2D = SplineArkConversion(ArkLength);
             }
             else
             {
-                NativeArray<float2> points = new NativeArray<float2>(Points.ToArray(), Allocator.Persistent);
+                NativeArray<float2> points = new NativeArray<float2>(ConvertToWorldSpace(Points).ToArray(), Allocator.Persistent);
                 NativeArray<float> time = new NativeArray<float>(SegmentLength.ToArray(), Allocator.Persistent);
 
                 Assert.IsFalse(hasSplineEntityData);
-                SplineEntityData = new Spline2DData
+                SplineEntityData2D = new Spline2DData
                 {
                     Length = Length(),
                     Points = points,
@@ -317,17 +330,17 @@ namespace Crener.Spline.BezierSpline
                 };
             }
 
-            return SplineEntityData.Value;
+            return SplineEntityData2D.Value;
         }
 
         /// <summary>
-        /// Convert the spline into smaller linear segments with an equal distance between each point (see: <see cref="ArkLength"/>)
+        /// Convert the spline into smaller linear segments with an equal distance between each point (see: <see cref="arkLength"/>)
         /// </summary>
         /// <returns>Linear spline data</returns>
-        private Spline2DData SplineArkConversion()
+        protected override Spline2DData SplineArkConversion(float length)
         {
             float previousTime = 0;
-            float normalizedArkLength = math.max(0.001f, ArkLength);
+            float normalizedArkLength = math.max(0.001f, length);
             float splineLength = Length();
             double splineCompleted = 0f;
             List<float2> points = new List<float2>((int) (splineLength / normalizedArkLength * 1.3f));
@@ -343,7 +356,7 @@ namespace Crener.Spline.BezierSpline
                 previousTime = currentTime;
 
                 double previousProgress = 0f;
-                float2 previous = GetPoint((float) previousProgress, i);
+                float2 previous = Get2DPoint((float) previousProgress, i);
                 points.Add(previous); // directly add control point
 
                 if(i > 0)
@@ -366,7 +379,7 @@ namespace Crener.Spline.BezierSpline
                     int attempts = -1;
                     while (++attempts < perPointIterationAttempts)
                     {
-                        point = GetPoint((float) currentProgress, i);
+                        point = Get2DPoint((float) currentProgress, i);
 
                         distance = math.distance(previous, point);
                         if(math.abs((sectionLengthDone + distance) - targetDistance) < 0.0000005f)

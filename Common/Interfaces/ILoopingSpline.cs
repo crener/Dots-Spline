@@ -1,5 +1,3 @@
-using System;
-
 namespace Crener.Spline.Common.Interfaces
 {
     public interface ILoopingSpline : ISpline

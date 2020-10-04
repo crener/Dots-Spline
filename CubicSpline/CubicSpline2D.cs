@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Runtime.CompilerServices;
 using Crener.Spline.BaseSpline;
 using Crener.Spline.Common;
@@ -32,26 +31,34 @@ namespace Crener.Spline.CubicSpline
 
         protected override bool DataInitialized => segmentDistance != null && base.DataInitialized;
 
-        public override float2 GetPoint(float progress)
+        public override float2 Get2DPoint(float progress)
         {
+            float2 translation = Position.xy;
             if(ControlPointCount == 0)
-                return float2.zero;
+                return translation;
             else if(progress <= 0f)
-                return GetControlPoint(0);
+                return translation + GetControlPoint2DLocal(0);
             else if(progress >= 1f)
-                return GetControlPoint(ControlPointCount - 1);
+                return translation + GetControlPoint2DLocal(ControlPointCount - 1);
             else if(ControlPointCount == 1 || progress <= 0f)
-                return GetControlPoint(0);
+                return translation + GetControlPoint2DLocal(0);
             else if(ControlPointCount == 2)
-                return math.lerp(GetControlPoint(0), GetControlPoint(1), progress);
+                return math.lerp(translation + GetControlPoint2DLocal(0), translation + GetControlPoint2DLocal(1), progress);
             else if(ControlPointCount == 3)
-                return Cubic3Point(0, 1, 2, progress);
+                return translation + Cubic3Point(0, 1, 2, progress);
 
             int aIndex = FindSegmentIndex(progress);
             float pointProgress = SegmentProgress(progress, aIndex);
-            return SplineInterpolation(pointProgress, aIndex);
+            return translation + SplineInterpolation(pointProgress, aIndex);
         }
 
+        /// <inheritdoc cref="BaseSpline2D.MoveControlPoints(float2)"/>
+        public override void MoveControlPoints(float2 delta)
+        {
+            base.MoveControlPoints(delta);
+            RecalculateLengthBias();
+        }
+        
         protected override void RecalculateLengthBias()
         {
             const int res = 512;
@@ -69,7 +76,7 @@ namespace Crener.Spline.CubicSpline
 
             if(ControlPointCount == 2)
             {
-                LengthCache = math.distance(GetControlPoint(0), GetControlPoint(1));
+                LengthCache = math.distance(GetControlPoint2DLocal(0), GetControlPoint2DLocal(1));
                 SegmentLength.Add(1f);
                 return;
             }
@@ -220,21 +227,21 @@ namespace Crener.Spline.CubicSpline
 
             if(ControlPointCount == 2)
             {
-                float2 cp0 = GetControlPoint(0);
-                float2 cp1 = GetControlPoint(1);
+                float2 cp0 = GetControlPoint2DWorld(0);
+                float2 cp1 = GetControlPoint2DWorld(1);
                 Gizmos.DrawLine(new Vector3(cp0.x, cp0.y, 0f), new Vector3(cp1.x, cp1.y, 0f));
                 return;
             }
 
             if(ControlPointCount == 3)
             {
-                float2 f = GetControlPoint(0);
+                float2 f = GetControlPoint2DWorld(0);
                 Vector3 lp = new Vector3(f.x, f.y, 0f);
                 int points = (int) (pointDensity * (SegmentLength[0] * Length()));
                 for (int s = 1; s <= points; s++)
                 {
                     float progress = s / (float) points;
-                    float2 p = Cubic3Point(0, 1, 2, progress);
+                    float2 p = ConvertToWorldSpace(Cubic3Point(0, 1, 2, progress));
                     Vector3 point = new Vector3(p.x, p.y, 0f);
 
                     Gizmos.DrawLine(lp, point);
@@ -246,14 +253,14 @@ namespace Crener.Spline.CubicSpline
 
             for (int i = 0; i < SegmentPointCount - 1; i++)
             {
-                float2 f = GetPoint(0f, i);
+                float2 f = Get2DPoint(0f, i);
                 Vector3 lp = new Vector3(f.x, f.y, 0f);
                 int points = (int) (pointDensity * (SegmentLength[i] * Length()));
 
                 for (int s = 1; s <= points; s++)
                 {
                     float progress = s / (float) points;
-                    float2 p = GetPoint(progress, i);
+                    float2 p = Get2DPoint(progress, i);
                     Vector3 point = new Vector3(p.x, p.y, 0f);
 
                     Gizmos.DrawLine(lp, point);

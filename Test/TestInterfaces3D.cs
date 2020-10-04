@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Crener.Spline.Common;
 using Crener.Spline.Common.Interfaces;
 using Unity.Mathematics;
 

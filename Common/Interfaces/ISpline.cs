@@ -7,6 +7,8 @@ namespace Crener.Spline.Common.Interfaces
     /// </summary>
     public interface ISpline : IDisposable
     {
+        SplineType SplineDataType { get; }
+        
         /// <summary>
         /// Amount of control points in the spline
         /// </summary>

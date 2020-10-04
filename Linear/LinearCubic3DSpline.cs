@@ -1,11 +1,8 @@
 using System.Runtime.CompilerServices;
 using Crener.Spline.BaseSpline;
 using Crener.Spline.Common;
-using Crener.Spline.Common.DataStructs;
 using Crener.Spline.Common.Interfaces;
 using Unity.Mathematics;
-using UnityEditor;
-using UnityEditor.UIElements;
 using UnityEngine;
 
 namespace Crener.Spline.Linear
@@ -14,10 +11,14 @@ namespace Crener.Spline.Linear
     /// Simple spline which directly follows a set of points
     /// </summary>
     [AddComponentMenu("Spline/3D/Linear Cubic Spline")]
-    public class LinearCubic3DSpline : BaseSpline3D, ILoopingSpline
+    public class LinearCubic3DSpline : BaseSpline3D, ILoopingSpline, IArkableSpline
     {
         [SerializeField]
         private bool looped = false;
+        [SerializeField, Tooltip("Ensures constant length between points in spline")]
+        private bool arkParameterization = false;
+        [SerializeField]
+        private float arkLength = 0.1f;
 
         public bool Looped
         {
@@ -26,6 +27,33 @@ namespace Crener.Spline.Linear
             {
                 looped = value;
                 RecalculateLengthBias();
+            }
+        }        
+        
+        public bool ArkParameterization
+        {
+            get => arkParameterization;
+            set
+            {
+                if(arkParameterization != value)
+                {
+                    arkParameterization = value;
+
+                    ClearData();
+                }
+            }
+        }
+
+        public float ArkLength
+        {
+            get => arkLength;
+            set
+            {
+                if(arkLength != value)
+                {
+                    arkLength = value;
+                    ClearData();
+                }
             }
         }
 
@@ -36,7 +64,7 @@ namespace Crener.Spline.Linear
                 if(ControlPointCount == 0) return SplineType.Empty;
                 if(ControlPointCount == 1) return SplineType.Single;
                 if(ControlPointCount == 2) return SplineType.Linear;
-                return SplineType.CubicLinear;
+                return ArkParameterization ? SplineType.Linear : SplineType.CubicLinear;
             }
         }
         public override int SegmentPointCount
@@ -50,20 +78,23 @@ namespace Crener.Spline.Linear
 
         private const float c_splineMidPoint = 0.5f;
 
-        public override float3 GetPoint(float progress)
+        public override float3 Get3DPoint(float progress)
         {
+            float3 translation = Position;
             if(ControlPointCount == 0)
-                return float3.zero;
+                return translation;
             else if(ControlPointCount == 1)
-                return GetControlPoint(0);
+                return translation + (float3)(Forward * GetControlPoint3DLocal(0));
             else if(ControlPointCount == 2 && !Looped)
-                return math.lerp(GetControlPoint(0), GetControlPoint(1), math.clamp(progress, 0f, 1f));
+            {
+                return translation + (float3)(Forward * math.lerp(GetControlPoint3DLocal(0), GetControlPoint3DLocal(1), math.clamp(progress, 0f, 1f)));
+            }
 
             progress = math.clamp(progress, 0f, 1f);
             int aIndex = FindSegmentIndex(progress);
             float pointProgress = SegmentProgress(progress, aIndex);
 
-            return SplineInterpolation(pointProgress, aIndex);
+            return translation + (float3)(Forward * SplineInterpolation(pointProgress, aIndex));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -147,7 +178,7 @@ namespace Crener.Spline.Linear
         protected override float LengthBetweenPoints(int a, int resolution = 64)
         {
             if(ControlPointCount <= 1) return 0f;
-            if(ControlPointCount == 2) return math.distance(GetControlPoint(0), GetControlPoint(1));
+            if(ControlPointCount == 2) return math.distance(GetControlPoint3DLocal(0), GetControlPoint3DLocal(1));
 
             return base.LengthBetweenPoints(a, resolution);
         }

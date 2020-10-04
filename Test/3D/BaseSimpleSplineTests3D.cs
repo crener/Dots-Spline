@@ -1,10 +1,8 @@
-using System.IO;
-using System.Security.Cryptography.X509Certificates;
-using Crener.Spline.CatmullRom;
 using Crener.Spline.Common;
 using Crener.Spline.Test.Helpers;
 using NUnit.Framework;
 using Unity.Mathematics;
+using UnityEngine;
 
 namespace Crener.Spline.Test._3D
 {
@@ -364,7 +362,7 @@ namespace Crener.Spline.Test._3D
             Assert.AreEqual(0, testSpline.ControlPointCount);
             Assert.AreEqual(0f, testSpline.Length());
 
-            TestHelpers.CheckFloat3(float3.zero, testSpline.GetPoint(0.5f));
+            TestHelpers.CheckFloat3(float3.zero, testSpline.Get3DPoint(0.5f));
         }
 
         [Test]
@@ -383,7 +381,7 @@ namespace Crener.Spline.Test._3D
             Assert.AreEqual(1, testSpline.Times.Count);
             Assert.AreEqual(1f, testSpline.Times[0]);
 
-            TestHelpers.CheckFloat3(new float3(0.5f, 0f, 0f), testSpline.GetPoint(0.5f));
+            TestHelpers.CheckFloat3(new float3(0.5f, 0f, 0f), testSpline.Get3DPoint(0.5f));
         }
 
         [Test]
@@ -403,8 +401,8 @@ namespace Crener.Spline.Test._3D
 
             Assert.AreEqual(testSpline.ExpectedTimeCount(testSpline.ControlPointCount), testSpline.Times.Count);
 
-            TestHelpers.CheckFloat3(a, testSpline.GetPoint(0f));
-            TestHelpers.CheckFloat3(new float3(1f, 0f, 0f), testSpline.GetPoint(0.5f));
+            TestHelpers.CheckFloat3(a, testSpline.Get3DPoint(0f));
+            TestHelpers.CheckFloat3(new float3(1f, 0f, 0f), testSpline.Get3DPoint(0.5f));
             //TestHelpers.CheckFloat3(c * 0.77f, spline.GetPoint(0.77f)); // fails due to bezier point bunching issues
         }
 
@@ -419,7 +417,7 @@ namespace Crener.Spline.Test._3D
             Assert.AreEqual(1, testSpline.ControlPointCount);
             Assert.AreEqual(0f, testSpline.Length());
 
-            TestHelpers.CheckFloat3(new float3(3f, 3f, 1f), testSpline.GetPoint(0.5f));
+            TestHelpers.CheckFloat3(new float3(3f, 3f, 1f), testSpline.Get3DPoint(0.5f));
         }
 
         [Test]
@@ -435,23 +433,23 @@ namespace Crener.Spline.Test._3D
             Assert.AreEqual(2, testSpline.ControlPointCount);
             Assert.AreEqual(2, testSpline.Modes.Count);
             Assert.AreEqual(1, testSpline.Times.Count);
-            TestHelpers.CheckFloat3(a, testSpline.GetPoint(0f));
+            TestHelpers.CheckFloat3(a, testSpline.Get3DPoint(0f));
             TestHelpers.CheckFloat3(a, testSpline.GetControlPoint(0, SplinePoint.Point));
-            TestHelpers.CheckFloat3(b, testSpline.GetPoint(1f));
+            TestHelpers.CheckFloat3(b, testSpline.Get3DPoint(1f));
             TestHelpers.CheckFloat3(b, testSpline.GetControlPoint(1, SplinePoint.Point));
 
             //update 0 point position
             float3 a2 = new float3(-1f, -1f, 1f);
-            testSpline.UpdateControlPoint(0, a2, SplinePoint.Point);
+            testSpline.UpdateControlPointWorld(0, a2, SplinePoint.Point);
 
-            TestHelpers.CheckFloat3(a2, testSpline.GetPoint(0f));
+            TestHelpers.CheckFloat3(a2, testSpline.Get3DPoint(0f));
             TestHelpers.CheckFloat3(a2, testSpline.GetControlPoint(0, SplinePoint.Point));
 
             //update 1 point position
             float3 b2 = new float3(2f, 2f, 1f);
-            testSpline.UpdateControlPoint(1, b2, SplinePoint.Point);
+            testSpline.UpdateControlPointWorld(1, b2, SplinePoint.Point);
 
-            TestHelpers.CheckFloat3(b2, testSpline.GetPoint(1f));
+            TestHelpers.CheckFloat3(b2, testSpline.Get3DPoint(1f));
             TestHelpers.CheckFloat3(b2, testSpline.GetControlPoint(1, SplinePoint.Point));
         }
 
@@ -470,28 +468,28 @@ namespace Crener.Spline.Test._3D
             Assert.AreEqual(3, testSpline.ControlPointCount);
             Assert.AreEqual(3, testSpline.Modes.Count);
             Assert.AreEqual(testSpline.ExpectedTimeCount(testSpline.ControlPointCount), testSpline.Times.Count);
-            TestHelpers.CheckFloat3(a, testSpline.GetPoint(0f));
+            TestHelpers.CheckFloat3(a, testSpline.Get3DPoint(0f));
             TestHelpers.CheckFloat3(a, testSpline.GetControlPoint(0, SplinePoint.Point));
-            TestHelpers.CheckFloat3(b, testSpline.GetPoint(0.5f));
+            TestHelpers.CheckFloat3(b, testSpline.Get3DPoint(0.5f));
             TestHelpers.CheckFloat3(b, testSpline.GetControlPoint(1, SplinePoint.Point));
-            TestHelpers.CheckFloat3(c, testSpline.GetPoint(1f));
+            TestHelpers.CheckFloat3(c, testSpline.Get3DPoint(1f));
             TestHelpers.CheckFloat3(c, testSpline.GetControlPoint(2, SplinePoint.Point));
 
             //update 0 point position
             float3 a2 = new float3(0f, 1f, 1f);
-            testSpline.UpdateControlPoint(0, a2, SplinePoint.Point);
-            TestHelpers.CheckFloat3(a2, testSpline.GetPoint(0f));
+            testSpline.UpdateControlPointWorld(0, a2, SplinePoint.Point);
+            TestHelpers.CheckFloat3(a2, testSpline.Get3DPoint(0f));
             TestHelpers.CheckFloat3(a2, testSpline.GetControlPoint(0, SplinePoint.Point));
 
             //update 1 point position
             float3 b2 = new float3(1f, 1f, 1f);
-            testSpline.UpdateControlPoint(1, b2, SplinePoint.Point);
+            testSpline.UpdateControlPointWorld(1, b2, SplinePoint.Point);
             TestHelpers.CheckFloat3(b2, testSpline.GetControlPoint(1, SplinePoint.Point));
 
             //update 2 point position
             float3 c2 = new float3(2f, 1f, 1f);
-            testSpline.UpdateControlPoint(2, c2, SplinePoint.Point);
-            TestHelpers.CheckFloat3(c2, testSpline.GetPoint(1f));
+            testSpline.UpdateControlPointWorld(2, c2, SplinePoint.Point);
+            TestHelpers.CheckFloat3(c2, testSpline.Get3DPoint(1f));
             TestHelpers.CheckFloat3(c2, testSpline.GetControlPoint(2, SplinePoint.Point));
         }
 
@@ -511,8 +509,90 @@ namespace Crener.Spline.Test._3D
 
             //update 1 point position
             float3 b2 = new float3(1f, 2f, 1f);
-            testSpline.UpdateControlPoint(1, b2, SplinePoint.Point);
+            testSpline.UpdateControlPointWorld(1, b2, SplinePoint.Point);
             Assert.GreaterOrEqual(testSpline.Length(), 2f);
+        }
+
+        [Test]
+        public void Translation()
+        {
+            ISimpleTestSpline3D testSpline = PrepareSpline();
+            float3 move = new float3(10f, 0f, 10f);
+            ((MonoBehaviour) testSpline).transform.position = move;
+
+            Assert.AreEqual(0, testSpline.ControlPointCount);
+            Assert.AreEqual(0, testSpline.Modes.Count);
+            Assert.AreEqual(1, testSpline.Times.Count);
+
+            float3 a = float3.zero;
+            testSpline.InsertControlPointWorldSpace(12, a);
+
+            Assert.AreEqual(1, testSpline.ControlPointCount);
+            Assert.AreEqual(1, testSpline.Modes.Count);
+            Assert.AreEqual(1, testSpline.Times.Count);
+            TestHelpers.CheckFloat3(move, testSpline.Get3DPoint(0f));
+            TestHelpers.CheckFloat3(a, testSpline.GetControlPoint(0, SplinePoint.Point));
+        }
+
+        [Test]
+        public void TranslationRotation()
+        {
+            ISimpleTestSpline3D testSpline = PrepareSpline();
+            float3 move = new float3(10f, 0f, 10f);
+            ((MonoBehaviour) testSpline).transform.position = move;
+            
+            Quaternion targetRotation = Quaternion.Euler(0f, 90f, 0f);
+            ((MonoBehaviour) testSpline).transform.rotation = targetRotation;
+
+            float3 a = new float3(20f, 3f, 4f);
+            testSpline.InsertControlPointWorldSpace(12, a);
+            
+            TestHelpers.CheckFloat3(move + (float3)(targetRotation * a), testSpline.Get3DPoint(0f));
+            TestHelpers.CheckFloat3(a, testSpline.GetControlPoint(0, SplinePoint.Point));
+        }
+
+        [Test]
+        public void RotationPrePoint()
+        {
+            ISimpleTestSpline3D testSpline = PrepareSpline();
+            
+            Quaternion targetRotation = Quaternion.Euler(0f, 90f, 0f);
+            ((MonoBehaviour) testSpline).transform.rotation = targetRotation;
+
+            Assert.AreEqual(0, testSpline.ControlPointCount);
+            Assert.AreEqual(0, testSpline.Modes.Count);
+            Assert.AreEqual(1, testSpline.Times.Count);
+
+            float3 a = new float3(10f, 10f, 5f);
+            testSpline.InsertControlPointWorldSpace(12, a);
+
+            Assert.AreEqual(1, testSpline.ControlPointCount);
+            Assert.AreEqual(1, testSpline.Modes.Count);
+            Assert.AreEqual(1, testSpline.Times.Count);
+            TestHelpers.CheckFloat3(targetRotation * a, testSpline.Get3DPoint(0f));
+            TestHelpers.CheckFloat3(a, testSpline.GetControlPoint(0, SplinePoint.Point));
+        }
+
+        [Test]
+        public void RotationPostPoint()
+        {
+            ISimpleTestSpline3D testSpline = PrepareSpline();
+
+            Assert.AreEqual(0, testSpline.ControlPointCount);
+            Assert.AreEqual(0, testSpline.Modes.Count);
+            Assert.AreEqual(1, testSpline.Times.Count);
+
+            float3 a = new float3(10f, 10f, 5f);
+            testSpline.InsertControlPointWorldSpace(12, a);
+            
+            Quaternion targetRotation = Quaternion.Euler(0f, 90f, 0f);
+            ((MonoBehaviour) testSpline).transform.rotation = targetRotation;
+
+            Assert.AreEqual(1, testSpline.ControlPointCount);
+            Assert.AreEqual(1, testSpline.Modes.Count);
+            Assert.AreEqual(1, testSpline.Times.Count);
+            TestHelpers.CheckFloat3(targetRotation * a, testSpline.Get3DPoint(0f));
+            TestHelpers.CheckFloat3(a, testSpline.GetControlPoint(0, SplinePoint.Point));
         }
 
         [Test]
@@ -528,14 +608,14 @@ namespace Crener.Spline.Test._3D
             Assert.AreEqual(2, testSpline.ControlPointCount);
             Assert.AreEqual(2, testSpline.Modes.Count);
             Assert.AreEqual(testSpline.ExpectedTimeCount(testSpline.ControlPointCount), testSpline.Times.Count);
-            TestHelpers.CheckFloat3(a, testSpline.GetPoint(0f));
+            TestHelpers.CheckFloat3(a, testSpline.Get3DPoint(0f));
             TestHelpers.CheckFloat3(a, testSpline.GetControlPoint(0, SplinePoint.Point));
-            TestHelpers.CheckFloat3(b, testSpline.GetPoint(1f));
+            TestHelpers.CheckFloat3(b, testSpline.Get3DPoint(1f));
             TestHelpers.CheckFloat3(b, testSpline.GetControlPoint(1, SplinePoint.Point));
 
             //insert point
             float3 c = new float3(20f, 0f, 1f);
-            testSpline.InsertControlPoint(1, c);
+            testSpline.InsertControlPointWorldSpace(1, c);
 
             Assert.AreEqual(3, testSpline.ControlPointCount);
             Assert.AreEqual(3, testSpline.Modes.Count);
@@ -556,7 +636,7 @@ namespace Crener.Spline.Test._3D
             TestHelpers.CheckFloat3(a, testSpline.GetControlPoint(0, SplinePoint.Point), (float.Epsilon * 2f));
 
             float3 b = new float3(4);
-            testSpline.InsertControlPoint(0, b);
+            testSpline.InsertControlPointWorldSpace(0, b);
             Assert.AreEqual(2, testSpline.ControlPointCount);
             Assert.AreEqual(2, testSpline.Modes.Count);
             TestHelpers.CheckFloat3(b, testSpline.GetControlPoint(0, SplinePoint.Point), (float.Epsilon * 2f));
@@ -574,13 +654,13 @@ namespace Crener.Spline.Test._3D
             Assert.AreEqual(1, testSpline.ControlPointCount);
             Assert.AreEqual(1, testSpline.Modes.Count);
             Assert.AreEqual(1, testSpline.Times.Count);
-            TestHelpers.CheckFloat3(a, testSpline.GetPoint(0f));
+            TestHelpers.CheckFloat3(a, testSpline.Get3DPoint(0f));
             TestHelpers.CheckFloat3(a, testSpline.GetControlPoint(0, SplinePoint.Point));
 
             float3 b = new float3(10f, 0f, 1f);
-            testSpline.InsertControlPoint(1000, b);
+            testSpline.InsertControlPointWorldSpace(1000, b);
 
-            TestHelpers.CheckFloat3(b, testSpline.GetPoint(1f));
+            TestHelpers.CheckFloat3(b, testSpline.Get3DPoint(1f));
             TestHelpers.CheckFloat3(b, testSpline.GetControlPoint(1, SplinePoint.Point));
 
             Assert.AreEqual(2, testSpline.ControlPointCount);
@@ -598,12 +678,12 @@ namespace Crener.Spline.Test._3D
             Assert.AreEqual(1, testSpline.Times.Count);
 
             float3 a = float3.zero;
-            testSpline.InsertControlPoint(12, a);
+            testSpline.InsertControlPointWorldSpace(12, a);
 
             Assert.AreEqual(1, testSpline.ControlPointCount);
             Assert.AreEqual(1, testSpline.Modes.Count);
             Assert.AreEqual(1, testSpline.Times.Count);
-            TestHelpers.CheckFloat3(a, testSpline.GetPoint(0f));
+            TestHelpers.CheckFloat3(a, testSpline.Get3DPoint(0f));
             TestHelpers.CheckFloat3(a, testSpline.GetControlPoint(0, SplinePoint.Point));
         }
 
@@ -622,13 +702,13 @@ namespace Crener.Spline.Test._3D
             Assert.AreEqual(2, testSpline.ControlPointCount);
             Assert.AreEqual(2, testSpline.Modes.Count);
             Assert.AreEqual(testSpline.ExpectedTimeCount(testSpline.ControlPointCount), testSpline.Times.Count);
-            TestHelpers.CheckFloat3(a, testSpline.GetPoint(0f));
+            TestHelpers.CheckFloat3(a, testSpline.Get3DPoint(0f));
             TestHelpers.CheckFloat3(a, testSpline.GetControlPoint(0, SplinePoint.Point));
-            TestHelpers.CheckFloat3(b, testSpline.GetPoint(1f));
+            TestHelpers.CheckFloat3(b, testSpline.Get3DPoint(1f));
             TestHelpers.CheckFloat3(b, testSpline.GetControlPoint(1, SplinePoint.Point));
 
             //insert point
-            testSpline.InsertControlPoint(2, c);
+            testSpline.InsertControlPointWorldSpace(2, c);
 
             Assert.AreEqual(3, testSpline.ControlPointCount);
             Assert.AreEqual(3, testSpline.Modes.Count);
@@ -652,14 +732,14 @@ namespace Crener.Spline.Test._3D
             Assert.AreEqual(2, testSpline.Modes.Count);
             Assert.AreEqual(testSpline.ExpectedTimeCount(testSpline.ControlPointCount), testSpline.Times.Count);
 
-            TestHelpers.CheckFloat3(a, testSpline.GetPoint(0f));
+            TestHelpers.CheckFloat3(a, testSpline.Get3DPoint(0f));
             TestHelpers.CheckFloat3(a, testSpline.GetControlPoint(0, SplinePoint.Point));
-            TestHelpers.CheckFloat3(b, testSpline.GetPoint(1f));
+            TestHelpers.CheckFloat3(b, testSpline.Get3DPoint(1f));
             TestHelpers.CheckFloat3(b, testSpline.GetControlPoint(1, SplinePoint.Point));
 
             //insert point
             float3 c = new float3(-2f, 0f, 1f);
-            testSpline.InsertControlPoint(0, c);
+            testSpline.InsertControlPointWorldSpace(0, c);
 
             Assert.AreEqual(3, testSpline.ControlPointCount);
             Assert.AreEqual(3, testSpline.Modes.Count);
@@ -676,9 +756,9 @@ namespace Crener.Spline.Test._3D
 
             Assert.AreEqual(0, testSpline.ControlPointCount);
 
-            TestHelpers.CheckFloat3(float3.zero, testSpline.GetPoint(0f));
-            TestHelpers.CheckFloat3(float3.zero, testSpline.GetPoint(1f));
-            TestHelpers.CheckFloat3(float3.zero, testSpline.GetPoint(0.5f));
+            TestHelpers.CheckFloat3(float3.zero, testSpline.Get3DPoint(0f));
+            TestHelpers.CheckFloat3(float3.zero, testSpline.Get3DPoint(1f));
+            TestHelpers.CheckFloat3(float3.zero, testSpline.Get3DPoint(0.5f));
         }
 
         [Test]
@@ -708,7 +788,7 @@ namespace Crener.Spline.Test._3D
         /// Progress less than 0 should return first point
         /// </summary>
         [Test]
-        public void ProgressUnder([Range(1, 8)] int nodeAmount)
+        public void ProgressUnder([NUnit.Framework.Range(1, 8)] int nodeAmount)
         {
             const float offsetX = 2f;
             const float offsetY = 2f;
@@ -727,16 +807,16 @@ namespace Crener.Spline.Test._3D
             Assert.AreNotEqual(float3.zero, first, "Test likely misconfigured as the expects location has the default value");
             Assert.AreEqual(nodeAmount, testSpline.ControlPointCount);
 
-            Assert.AreEqual(first, testSpline.GetPoint(0f));
-            Assert.AreEqual(first, testSpline.GetPoint(-0.5f));
-            Assert.AreEqual(first, testSpline.GetPoint(-1f));
+            Assert.AreEqual(first, testSpline.Get3DPoint(0f));
+            Assert.AreEqual(first, testSpline.Get3DPoint(-0.5f));
+            Assert.AreEqual(first, testSpline.Get3DPoint(-1f));
         }
 
         /// <summary>
         /// Progress greater than 0 should return first point
         /// </summary>
         [Test]
-        public void ProgressOver([Range(1, 8)] int nodeAmount)
+        public void ProgressOver([NUnit.Framework.Range(1, 8)] int nodeAmount)
         {
             const float offsetX = 2f;
             const float offsetY = 2f;
@@ -755,13 +835,13 @@ namespace Crener.Spline.Test._3D
             Assert.AreNotEqual(float3.zero, last, "Test likely misconfigured as the expects location has the default value");
             Assert.AreEqual(nodeAmount, testSpline.ControlPointCount);
 
-            Assert.AreEqual(last, testSpline.GetPoint(1f));
-            Assert.AreEqual(last, testSpline.GetPoint(1.5f));
-            Assert.AreEqual(last, testSpline.GetPoint(2f));
+            Assert.AreEqual(last, testSpline.Get3DPoint(1f));
+            Assert.AreEqual(last, testSpline.Get3DPoint(1.5f));
+            Assert.AreEqual(last, testSpline.Get3DPoint(2f));
         }
 
         [Test]
-        public void MultiMidPoint([Range(1, 12)] int points)
+        public void MultiMidPoint([NUnit.Framework.Range(1, 12)] int points)
         {
             ISimpleTestSpline3D testSpline = PrepareSpline();
 
@@ -777,12 +857,12 @@ namespace Crener.Spline.Test._3D
             Assert.AreEqual(points, testSpline.ControlPointCount);
             Assert.AreEqual(testSpline.ExpectedTimeCount(testSpline.ControlPointCount), testSpline.Times.Count);
 
-            float3 point = testSpline.GetPoint(0.5f);
+            float3 point = testSpline.Get3DPoint(0.5f);
             TestHelpers.CheckFloat3(new float3((points - 1) / 2f), point);
         }
 
         [Test]
-        public void MultiMidPointOffset([Range(1, 12)] int points)
+        public void MultiMidPointOffset([NUnit.Framework.Range(1, 12)] int points)
         {
             ISimpleTestSpline3D testSpline = PrepareSpline();
             const float offset = 200f;
@@ -799,7 +879,7 @@ namespace Crener.Spline.Test._3D
             Assert.AreEqual(points, testSpline.ControlPointCount);
             Assert.AreEqual(testSpline.ExpectedTimeCount(testSpline.ControlPointCount), testSpline.Times.Count);
 
-            float3 point = testSpline.GetPoint(0.5f);
+            float3 point = testSpline.Get3DPoint(0.5f);
             TestHelpers.CheckFloat3(new float3(offset + (points - 1) / 2f), point, 0.00005f);
         }
     }

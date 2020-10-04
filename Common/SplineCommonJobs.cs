@@ -15,9 +15,9 @@ namespace Crener.Spline.Common
         [ReadOnly]
         public float DeltaTime;
 
-        public ArchetypeChunkComponentType<SplineProgress> MoverDef;
+        public ComponentTypeHandle<SplineProgress> MoverDef;
         [ReadOnly]
-        public ArchetypeChunkComponentType<TraversalSpeed> SpeedDef;
+        public ComponentTypeHandle<TraversalSpeed> SpeedDef;
 
         public void Execute(ArchetypeChunk chunk, int chunkIndex, int firstEntityIndex)
         {

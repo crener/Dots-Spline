@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using Crener.Spline.BezierSpline;
-using Crener.Spline.BezierSpline.Jobs;
 using Crener.Spline.Common;
 using Crener.Spline.Common.Interfaces;
 using NUnit.Framework;
@@ -15,8 +14,8 @@ namespace Crener.Spline.Test._2D.Bezier.TestTypes
     {
         public class TestBezierSpline2DSimpleJob : BezierSpline2DSimple, ISimpleTestSpline
         {
-            public IReadOnlyList<float2> ControlPoints => SplineEntityData.Value.Points.ToArray();
-            public IReadOnlyList<float> Times => SplineEntityData.Value.Time.ToArray();
+            public IReadOnlyList<float2> ControlPoints => SplineEntityData2D.Value.Points.ToArray();
+            public IReadOnlyList<float> Times => SplineEntityData2D.Value.Time.ToArray();
             public IReadOnlyList<SplineEditMode> Modes => PointEdit;
 
             public new float Length
@@ -26,24 +25,24 @@ namespace Crener.Spline.Test._2D.Bezier.TestTypes
                     ClearData();
                     ConvertData();
 
-                    Assert.IsTrue(SplineEntityData.HasValue, "Failed to generate spline");
-                    return SplineEntityData.Value.Length;
+                    Assert.IsTrue(SplineEntityData2D.HasValue, "Failed to generate spline");
+                    return SplineEntityData2D.Value.Length;
                 }
             }
 
-            public new float2 GetPoint(float progress)
+            public new float2 Get2DPoint(float progress)
             {
                 ClearData();
                 ConvertData();
 
-                Assert.IsTrue(SplineEntityData.HasValue, "Failed to generate spline");
+                Assert.IsTrue(SplineEntityData2D.HasValue, "Failed to generate spline");
                 ISplineJob2D job = this.ExtractJob(new SplineProgress {Progress = progress});
                 job.Execute();
 
                 return job.Result;
             }
 
-            public override float2 GetControlPoint(int i) => SplineEntityData.Value.Points[i];
+            public override float2 GetControlPoint2DLocal(int i) => SplineEntityData2D.Value.Points[i];
 
             public int ExpectedControlPointCount(int controlPoints)
             {

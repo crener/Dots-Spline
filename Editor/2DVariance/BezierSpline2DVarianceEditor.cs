@@ -395,14 +395,14 @@ namespace Crener.Spline.Editor._2DVariance
                                     EditorUtility.SetDirty(SplineObject);
 
                                     float2 newPoint = new float2(pos.x, pos.y);
-                                    Spline.UpdateControlPoint(i, newPoint, SplinePointVariance.Point);
+                                    Spline.UpdateControlPointLocal(i, newPoint, SplinePointVariance.Point);
 
                                     float2 delta = newPoint - point;
 
                                     // move the left and right points
-                                    Spline.UpdateControlPoint(i, Spline.GetControlPoint(i, SplinePointVariance.PointLeft) + delta,
+                                    Spline.UpdateControlPointLocal(i, Spline.GetControlPoint(i, SplinePointVariance.PointLeft) + delta,
                                         SplinePointVariance.PointLeft);
-                                    Spline.UpdateControlPoint(i, Spline.GetControlPoint(i, SplinePointVariance.PointRight) + delta,
+                                    Spline.UpdateControlPointLocal(i, Spline.GetControlPoint(i, SplinePointVariance.PointRight) + delta,
                                         SplinePointVariance.PointRight);
 
                                     if(m_editMoveRelated)
@@ -410,21 +410,21 @@ namespace Crener.Spline.Editor._2DVariance
                                         // move the other points relative to this
                                         if(preExists)
                                         {
-                                            Spline.UpdateControlPoint(i, Spline.GetControlPoint(i, SplinePointVariance.Pre) + delta,
+                                            Spline.UpdateControlPointLocal(i, Spline.GetControlPoint(i, SplinePointVariance.Pre) + delta,
                                                 SplinePointVariance.Pre);
-                                            Spline.UpdateControlPoint(i, Spline.GetControlPoint(i, SplinePointVariance.PreLeft) + delta,
+                                            Spline.UpdateControlPointLocal(i, Spline.GetControlPoint(i, SplinePointVariance.PreLeft) + delta,
                                                 SplinePointVariance.PreLeft);
-                                            Spline.UpdateControlPoint(i, Spline.GetControlPoint(i, SplinePointVariance.PreRight) + delta,
+                                            Spline.UpdateControlPointLocal(i, Spline.GetControlPoint(i, SplinePointVariance.PreRight) + delta,
                                                 SplinePointVariance.PreRight);
                                         }
 
                                         if(postExists)
                                         {
-                                            Spline.UpdateControlPoint(i, Spline.GetControlPoint(i, SplinePointVariance.Post) + delta,
+                                            Spline.UpdateControlPointLocal(i, Spline.GetControlPoint(i, SplinePointVariance.Post) + delta,
                                                 SplinePointVariance.Post);
-                                            Spline.UpdateControlPoint(i, Spline.GetControlPoint(i, SplinePointVariance.PostLeft) + delta,
+                                            Spline.UpdateControlPointLocal(i, Spline.GetControlPoint(i, SplinePointVariance.PostLeft) + delta,
                                                 SplinePointVariance.PostLeft);
-                                            Spline.UpdateControlPoint(i, Spline.GetControlPoint(i, SplinePointVariance.PostRight) + delta,
+                                            Spline.UpdateControlPointLocal(i, Spline.GetControlPoint(i, SplinePointVariance.PostRight) + delta,
                                                 SplinePointVariance.PostRight);
                                         }
                                     }
@@ -781,7 +781,7 @@ namespace Crener.Spline.Editor._2DVariance
                         UpdateOppositePoint(postMagnitude, center, newPoint, cpIndex, pointType.OppositePrePost());
                     }
 
-                    Spline.UpdateControlPoint(cpIndex, newPoint, pointType);
+                    Spline.UpdateControlPointLocal(cpIndex, newPoint, pointType);
                     break;
                 }
                 case SplineEditMode.Mirror:
@@ -792,11 +792,11 @@ namespace Crener.Spline.Editor._2DVariance
                         UpdateOppositePoint(preMagnitude, center, newPoint, cpIndex, pointType.OppositePrePost());
                     }
 
-                    Spline.UpdateControlPoint(cpIndex, newPoint, pointType);
+                    Spline.UpdateControlPointLocal(cpIndex, newPoint, pointType);
                     break;
                 }
                 case SplineEditMode.Free:
-                    Spline.UpdateControlPoint(cpIndex, newPoint, pointType);
+                    Spline.UpdateControlPointLocal(cpIndex, newPoint, pointType);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -825,7 +825,7 @@ namespace Crener.Spline.Editor._2DVariance
                         UpdateOppositePoint(preMagnitude, center, newPoint, cpIndex, pointType.OppositePrePost());
                     }
 
-                    Spline.UpdateControlPoint(cpIndex, newPoint, pointType);
+                    Spline.UpdateControlPointLocal(cpIndex, newPoint, pointType);
                     break;
                 }
                 case SplineEditMode.Mirror:
@@ -836,11 +836,11 @@ namespace Crener.Spline.Editor._2DVariance
                         UpdateOppositePoint(postMagnitude, center, newPoint, cpIndex, pointType.OppositePrePost());
                     }
 
-                    Spline.UpdateControlPoint(cpIndex, newPoint, pointType);
+                    Spline.UpdateControlPointLocal(cpIndex, newPoint, pointType);
                     break;
                 }
                 case SplineEditMode.Free:
-                    Spline.UpdateControlPoint(cpIndex, newPoint, pointType);
+                    Spline.UpdateControlPointLocal(cpIndex, newPoint, pointType);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -896,7 +896,7 @@ namespace Crener.Spline.Editor._2DVariance
                                                       -math.sin(mainAngle),
                                                       -math.cos(mainAngle)) * newMagnitude);
 
-                    Spline.UpdateControlPoint(cpIndex, newSide, splineType);
+                    Spline.UpdateControlPointLocal(cpIndex, newSide, splineType);
 
                     if(preExists)
                     {
@@ -907,7 +907,7 @@ namespace Crener.Spline.Editor._2DVariance
                                                       -math.sin(preAngle),
                                                       -math.cos(preAngle)) * preMagnitude);
 
-                        Spline.UpdateControlPoint(cpIndex, point, pre);
+                        Spline.UpdateControlPointLocal(cpIndex, point, pre);
                     }
                     
                     if(postExists)
@@ -920,7 +920,7 @@ namespace Crener.Spline.Editor._2DVariance
                                                       math.sin(postAngle),
                                                       math.cos(postAngle)) * postMagnitude);
 
-                        Spline.UpdateControlPoint(cpIndex, point, post);
+                        Spline.UpdateControlPointLocal(cpIndex, point, post);
                     }
 
                     break;
@@ -945,7 +945,7 @@ namespace Crener.Spline.Editor._2DVariance
                 }
                 case SplineEditMode.Free:
                 {
-                    Spline.UpdateControlPoint(cpIndex, newPoint, splineType);
+                    Spline.UpdateControlPointLocal(cpIndex, newPoint, splineType);
                     break;
                 }
                 default:
@@ -970,7 +970,7 @@ namespace Crener.Spline.Editor._2DVariance
             float2 updatedPoint = new float2(
                 center.x + (math.sin(-angle) * magnitude),
                 center.y + (math.cos(-angle) * magnitude));
-            Spline.UpdateControlPoint(i, updatedPoint, pointType);
+            Spline.UpdateControlPointLocal(i, updatedPoint, pointType);
         }
 
         /// <summary>

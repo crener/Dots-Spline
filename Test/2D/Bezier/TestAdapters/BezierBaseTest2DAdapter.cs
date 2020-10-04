@@ -30,12 +30,12 @@ namespace Crener.Spline.Test._2D.Bezier.TestAdapters
             Assert.AreEqual(0.75f, testSpline.Times[1]);
             Assert.AreEqual(1f, testSpline.Times[2]);
 
-            TestHelpers.CheckFloat2(a, testSpline.GetPoint(0f));
-            TestHelpers.CheckFloat2(new float2(2.5f, 0f), testSpline.GetPoint(0.25f));
-            TestHelpers.CheckFloat2(new float2(5f, 0f), testSpline.GetPoint(0.5f));
-            TestHelpers.CheckFloat2(new float2(10f, 0f), testSpline.GetPoint(1f));
-            TestHelpers.CheckFloat2(new float2(10f, 0f), testSpline.GetPoint(1.5f));
-            TestHelpers.CheckFloat2(new float2(10f, 0f), testSpline.GetPoint(5f));
+            TestHelpers.CheckFloat2(a, testSpline.Get2DPoint(0f));
+            TestHelpers.CheckFloat2(new float2(2.5f, 0f), testSpline.Get2DPoint(0.25f));
+            TestHelpers.CheckFloat2(new float2(5f, 0f), testSpline.Get2DPoint(0.5f));
+            TestHelpers.CheckFloat2(new float2(10f, 0f), testSpline.Get2DPoint(1f));
+            TestHelpers.CheckFloat2(new float2(10f, 0f), testSpline.Get2DPoint(1.5f));
+            TestHelpers.CheckFloat2(new float2(10f, 0f), testSpline.Get2DPoint(5f));
         }
         
         [Test]
@@ -83,7 +83,7 @@ namespace Crener.Spline.Test._2D.Bezier.TestAdapters
             Assert.AreEqual(3, testSpline.ControlPointCount);
             Assert.AreEqual(2f, testSpline.Length());
 
-            TestHelpers.CheckFloat2(new float2(2.5f, 10f), testSpline.GetPoint(0.7f), 0.01f);
+            TestHelpers.CheckFloat2(new float2(2.5f, 10f), testSpline.Get2DPoint(0.7f), 0.01f);
         }
 
         [Test]
@@ -126,8 +126,8 @@ namespace Crener.Spline.Test._2D.Bezier.TestAdapters
             float2 b = new float2(1f, 3f);
             testSpline.AddControlPoint(b);
 
-            testSpline.UpdateControlPoint(0, new float2(1f,0f),SplinePoint.Post );
-            testSpline.UpdateControlPoint(1, new float2(0f,3f),SplinePoint.Pre );
+            testSpline.UpdateControlPointLocal(0, new float2(1f,0f),SplinePoint.Post );
+            testSpline.UpdateControlPointLocal(1, new float2(0f,3f),SplinePoint.Pre );
             
             float length = math.distance(a, b);
             Assert.Greater(testSpline.Length(), length);

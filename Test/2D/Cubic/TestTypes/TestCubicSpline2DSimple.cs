@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using Crener.Spline.BezierSpline;
 using Crener.Spline.Common;
 using Crener.Spline.CubicSpline;
-using Crener.Spline.Linear;
 using Unity.Mathematics;
 
 namespace Crener.Spline.Test._2D.Cubic.TestTypes
@@ -41,7 +40,7 @@ namespace Crener.Spline.Test._2D.Cubic.TestTypes
                 return math.max(1, controlPoints - 1);
             }
 
-            public float2 GetControlPoint(int i, SplinePoint point) => GetControlPoint(i);
+            public float2 GetControlPoint(int i, SplinePoint point) => GetControlPoint2DLocal(i);
         }
     }
 }

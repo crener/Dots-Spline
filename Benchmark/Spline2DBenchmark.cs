@@ -2,7 +2,6 @@ using Crener.Spline.BezierSpline.Entity;
 using Crener.Spline.Common.Interfaces;
 using Unity.Entities;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Crener.Spline.Benchmark
 {
@@ -62,12 +61,12 @@ namespace Crener.Spline.Benchmark
 
             if(Spline != null)
             {
-                if(!m_spline.SplineEntityData.HasValue)
+                if(!m_spline.SplineEntityData2D.HasValue)
                 {
                     m_spline.Convert(dstManager.CreateEntity(), dstManager, conversionSystem);
                 }
 
-                dstManager.AddSharedComponentData(entity, m_spline.SplineEntityData.Value);
+                dstManager.AddSharedComponentData(entity, m_spline.SplineEntityData2D.Value);
             }
         }
     }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Crener.Spline.Common;
 using Crener.Spline.Common.Interfaces;
 using Unity.Entities;
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace Crener.Spline.BaseSpline
@@ -38,6 +39,39 @@ namespace Crener.Spline.BaseSpline
         /// This is useful if the curve loops back around on itself as the calculations to setup the curve can take reused points into account
         /// </summary>
         public virtual int SegmentPointCount => ControlPointCount;
+
+        /// <summary>
+        /// Position of the spline origin in world space
+        /// </summary>
+        public float3 Position => trans.position;
+        
+        /// <summary>
+        /// forward direction of the spline origin
+        /// </summary>
+        public Quaternion Forward
+        {
+            get => trans.rotation;
+            set
+            {
+                if(Forward != value) trans.rotation = value;
+            }
+        }
+        
+        private Transform trans
+        {
+            get
+            {
+                if(m_trans == null) Start();
+                return m_trans;
+            }
+        }
+
+        private Transform m_trans = null;
+        
+        private void Start()
+        {
+            m_trans = transform;
+        }
 
         public abstract SplineType SplineDataType { get; }
 

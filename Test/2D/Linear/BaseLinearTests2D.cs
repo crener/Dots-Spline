@@ -1,6 +1,7 @@
 using Crener.Spline.Common.Interfaces;
 using Crener.Spline.Test._2D.Linear.TestAdapters;
 using Crener.Spline.Test._2D.Linear.TestTypes;
+using Crener.Spline.Test.BaseTests;
 using UnityEngine;
 
 namespace Crener.Spline.Test._2D.Linear
@@ -21,7 +22,7 @@ namespace Crener.Spline.Test._2D.Linear
     
     public class LoopingLinearTests2D : BaseLoopingTests2D
     {
-        protected override ILoopingSpline CreateNewSpline()
+        public override ILoopingSpline CreateNewSpline()
         {
             GameObject game = new GameObject();
             ILoopingSpline spline = game.AddComponent<MeaninglessTestWrapper.TestLinearSpline2DSimple>();

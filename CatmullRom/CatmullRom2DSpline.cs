@@ -3,7 +3,6 @@ using Crener.Spline.BaseSpline;
 using Crener.Spline.Common;
 using Crener.Spline.Common.Interfaces;
 using Unity.Assertions;
-using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -53,20 +52,20 @@ namespace Crener.Spline.CatmullRom
         // 0.0 for the uniform spline, 0.5 for the centripetal spline, 1.0 for the chordal spline
         private const float c_alpha = 0.5f;
 
-        public override float2 GetPoint(float progress)
+        public override float2 Get2DPoint(float progress)
         {
             if(ControlPointCount == 0)
                 return float2.zero;
             else if(progress <= 0f)
-                return GetControlPoint(0);
+                return ConvertToWorldSpace(GetControlPoint2DLocal(0));
             else if(progress >= 1f)
-                return GetControlPoint(math.max(0, ControlPointCount - 1));
+                return ConvertToWorldSpace(GetControlPoint2DLocal(math.max(0, ControlPointCount - 1)));
             else if(ControlPointCount == 1)
-                return GetControlPoint(0);
+                return ConvertToWorldSpace(GetControlPoint2DLocal(0));
 
             int aIndex = FindSegmentIndex(progress);
             float pointProgress = SegmentProgress(progress, aIndex);
-            return SplineInterpolation(pointProgress, aIndex);
+            return ConvertToWorldSpace(SplineInterpolation(pointProgress, aIndex));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -124,8 +123,8 @@ namespace Crener.Spline.CatmullRom
                     if(a == 0)
                     {
                         p1 = Points[a];
-                        p2 = Points[(a + 1) % ControlPointCount];
-                        p3 = Points[(a + 2) % ControlPointCount];
+                        p2 = Points[1 % ControlPointCount];
+                        p3 = Points[2 % ControlPointCount];
 
                         float2 delta = p2 - p1;
                         float angle = math.atan2(delta.y, delta.x) - (math.PI / 2);

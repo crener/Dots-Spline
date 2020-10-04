@@ -21,5 +21,17 @@ namespace Crener.Spline.BezierSpline
                 (3f * oneMinusT * t * t * bDir) +
                 (t * t * t * bPoint);
         }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static float3 CubicBezierPoint(float t, float3 aPoint, float3 aDir, float3 bDir, float3 bPoint)
+        {
+            t = math.clamp(t, 0f, 1f);
+            float oneMinusT = 1f - t;
+            return
+                (oneMinusT * oneMinusT * oneMinusT * aPoint) +
+                (3f * oneMinusT * oneMinusT * t * aDir) +
+                (3f * oneMinusT * t * t * bDir) +
+                (t * t * t * bPoint);
+        }
     }
 }

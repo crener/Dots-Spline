@@ -14,8 +14,8 @@ namespace Crener.Spline.Test._2D.CatmullRom.TestTypes
     {
         public class TestCatmullSpline2DSimpleJob : CatmullRom2DSpline, ISimpleTestSpline
         {
-            public IReadOnlyList<float2> ControlPoints => SplineEntityData.Value.Points.ToArray();
-            public IReadOnlyList<float> Times => SplineEntityData.Value.Time.ToArray();
+            public IReadOnlyList<float2> ControlPoints => SplineEntityData2D.Value.Points.ToArray();
+            public IReadOnlyList<float> Times => SplineEntityData2D.Value.Time.ToArray();
             public IReadOnlyList<SplineEditMode> Modes
             {
                 get
@@ -30,12 +30,12 @@ namespace Crener.Spline.Test._2D.CatmullRom.TestTypes
                 }
             }
 
-            public new float2 GetPoint(float progress)
+            public new float2 Get2DPoint(float progress)
             {
                 ClearData();
                 ConvertData();
 
-                Assert.IsTrue(SplineEntityData.HasValue, "Failed to generate spline");
+                Assert.IsTrue(SplineEntityData2D.HasValue, "Failed to generate spline");
                 ISplineJob2D job = this.ExtractJob(progress);
                 job.Execute();
 
@@ -46,7 +46,7 @@ namespace Crener.Spline.Test._2D.CatmullRom.TestTypes
 
             public int ExpectedTimeCount(int controlPoints) => math.max(1, controlPoints - 1);
             
-            public float2 GetControlPoint(int i, SplinePoint point) => GetControlPoint(i);
+            public float2 GetControlPoint(int i, SplinePoint point) => GetControlPoint2DLocal(i);
         }
     }
 }

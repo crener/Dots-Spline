@@ -10,7 +10,6 @@ using Crener.Spline.Test._2D.Bezier.TestTypes;
 using Crener.Spline.Test.Helpers;
 using NUnit.Framework;
 using Unity.Mathematics;
-using UnityEngine;
 
 namespace Crener.Spline.Test._2D.Bezier
 {
@@ -54,8 +53,8 @@ namespace Crener.Spline.Test._2D.Bezier
             spline.AddControlPoint(new float2(10, 10));
             spline.AddControlPoint(new float2(20, 10));
             Assert.AreEqual(2, spline.ControlPointCount);
-            spline.UpdateControlPoint(0, new float2(15, 10), SplinePoint.Post);
-            spline.UpdateControlPoint(1, new float2(19, 10), SplinePoint.Pre);
+            spline.UpdateControlPointLocal(0, new float2(15, 10), SplinePoint.Post);
+            spline.UpdateControlPointLocal(1, new float2(19, 10), SplinePoint.Pre);
 
             Assert.IsFalse(spline.ArkParameterization);
             Assert.AreEqual(10f, spline.Length());
@@ -74,17 +73,17 @@ namespace Crener.Spline.Test._2D.Bezier
             spline.AddControlPoint(new float2(10, 10));
             spline.AddControlPoint(new float2(20, 10));
             Assert.AreEqual(2, spline.ControlPointCount);
-            spline.UpdateControlPoint(0, new float2(15, 10), SplinePoint.Post);
-            spline.UpdateControlPoint(1, new float2(19, 10), SplinePoint.Pre);
+            spline.UpdateControlPointLocal(0, new float2(15, 10), SplinePoint.Post);
+            spline.UpdateControlPointLocal(1, new float2(19, 10), SplinePoint.Pre);
 
             Assert.IsFalse(spline.ArkParameterization);
-            Spline2DData? bezierData = spline.SplineEntityData;
+            Spline2DData? bezierData = spline.SplineEntityData2D;
             Assert.NotNull(bezierData);
             Assert.AreEqual(10f, bezierData?.Length);
 
             spline.ArkParameterization = true;
             Assert.IsTrue(spline.ArkParameterization);
-            bezierData = spline.SplineEntityData;
+            bezierData = spline.SplineEntityData2D;
             Assert.NotNull(bezierData);
             Assert.AreEqual(10f, bezierData?.Length);
         }
@@ -100,12 +99,12 @@ namespace Crener.Spline.Test._2D.Bezier
 
             spline.AddControlPoint(new float2(10, 10));
             spline.AddControlPoint(new float2(20, 10));
-            spline.UpdateControlPoint(0, new float2(15, 10), SplinePoint.Post);
-            spline.UpdateControlPoint(1, new float2(19, 10), SplinePoint.Pre);
+            spline.UpdateControlPointLocal(0, new float2(15, 10), SplinePoint.Post);
+            spline.UpdateControlPointLocal(1, new float2(19, 10), SplinePoint.Pre);
             Assert.AreEqual(2, spline.ControlPointCount);
 
             Assert.IsFalse(spline.ArkParameterization);
-            Spline2DData? bezierData = spline.SplineEntityData;
+            Spline2DData? bezierData = spline.SplineEntityData2D;
             Assert.NotNull(bezierData, "Failed to generate bezier data");
             int bezierHash = bezierData.GetHashCode();
             int bezierPointHash = bezierData.Value.Points.GetHashCode();
@@ -113,7 +112,7 @@ namespace Crener.Spline.Test._2D.Bezier
 
             spline.ArkParameterization = true;
             Assert.IsTrue(spline.ArkParameterization);
-            Spline2DData? bezierData2 = spline.SplineEntityData;
+            Spline2DData? bezierData2 = spline.SplineEntityData2D;
             Assert.NotNull(bezierData, "Failed to generate p2p data");
 
             // moment of truth!
@@ -137,32 +136,32 @@ namespace Crener.Spline.Test._2D.Bezier
             spline.AddControlPoint(new float2(10f, yAxis));
             spline.AddControlPoint(new float2(10f + length, yAxis));
             const float sharedMidPoint = 10f + (length * 0.9f);
-            spline.UpdateControlPoint(0, new float2(sharedMidPoint, yAxis), SplinePoint.Post);
-            spline.UpdateControlPoint(1, new float2(sharedMidPoint, yAxis), SplinePoint.Pre);
+            spline.UpdateControlPointLocal(0, new float2(sharedMidPoint, yAxis), SplinePoint.Post);
+            spline.UpdateControlPointLocal(1, new float2(sharedMidPoint, yAxis), SplinePoint.Pre);
             Assert.AreEqual(2, spline.ControlPointCount);
-            Assert.AreEqual(length, spline.SplineEntityData?.Length, "unexpected length!");
+            Assert.AreEqual(length, spline.SplineEntityData2D?.Length, "unexpected length!");
 
             // make sure that points converge from left to right, otherwise ark param wouldn't be required ;)
-            float2 left1 = spline.GetPoint(0f);
-            float2 left2 = spline.GetPoint(0.1f);
+            float2 left1 = spline.Get2DPoint(0f);
+            float2 left2 = spline.Get2DPoint(0.1f);
             float left = math.distance(left1, left2);
-            float2 right1 = spline.GetPoint(0.9f);
-            float2 right2 = spline.GetPoint(1f);
+            float2 right1 = spline.Get2DPoint(0.9f);
+            float2 right2 = spline.Get2DPoint(1f);
             float right = math.distance(right1, right2);
             Assert.Greater(left, right, $"Left Delta '{left}' should be grater than right delta '{right}'");
 
             // enable ark parameterization 
             spline.ArkParameterization = true;
             spline.ArkLength = subDivision;
-            Assert.AreEqual(length, spline.SplineEntityData?.Length, "unexpected length!");
+            Assert.AreEqual(length, spline.SplineEntityData2D?.Length, "unexpected length!");
 
             // in sure that the point count is as expected
             // if there where multiple control points there might be more resulting points than just totalLength / ark length
-            Assert.AreEqual((int) (length / subDivision) + 1, spline.SplineEntityData?.Points.Length);
+            Assert.AreEqual((int) (length / subDivision) + 1, spline.SplineEntityData2D?.Points.Length);
 
             // if y-axis has shifted at all we know that something has gone very wrong
-            Assert.NotNull(spline.SplineEntityData);
-            foreach (float2 point in spline.SplineEntityData?.Points)
+            Assert.NotNull(spline.SplineEntityData2D);
+            foreach (float2 point in spline.SplineEntityData2D?.Points)
             {
                 Assert.IsTrue(math.abs(yAxis - point.y) < c_requiredPrecision);
             }
@@ -194,14 +193,14 @@ namespace Crener.Spline.Test._2D.Bezier
             spline.AddControlPoint(new float2(start, yAxis));
             spline.AddControlPoint(new float2(end, yAxis));
             Assert.AreEqual(2, spline.ControlPointCount);
-            Assert.AreEqual(length, spline.SplineEntityData?.Length, "unexpected length!");
+            Assert.AreEqual(length, spline.SplineEntityData2D?.Length, "unexpected length!");
 
             spline.ArkLength = subDivision;
             spline.ArkParameterization = true;
-            Assert.AreEqual(length, spline.SplineEntityData?.Length, "unexpected length!");
+            Assert.AreEqual(length, spline.SplineEntityData2D?.Length, "unexpected length!");
 
             // there should be exactly 3 points; start, middle, end
-            float2[] points = spline.SplineEntityData?.Points.ToArray();
+            float2[] points = spline.SplineEntityData2D?.Points.ToArray();
             Assert.NotNull(points);
             Assert.AreEqual(3, points.Length);
 
@@ -229,14 +228,14 @@ namespace Crener.Spline.Test._2D.Bezier
             spline.AddControlPoint(new float2(start, yAxis));
             spline.AddControlPoint(new float2(end, yAxis));
             Assert.AreEqual(2, spline.ControlPointCount);
-            Assert.AreEqual(length, spline.SplineEntityData?.Length, "unexpected length!");
+            Assert.AreEqual(length, spline.SplineEntityData2D?.Length, "unexpected length!");
 
             spline.ArkParameterization = true;
             spline.ArkLength = subDivision;
-            Assert.AreEqual(length, spline.SplineEntityData?.Length, "unexpected length!");
+            Assert.AreEqual(length, spline.SplineEntityData2D?.Length, "unexpected length!");
 
             // there should be exactly 3 points; start, middle, end
-            float2[] points = spline.SplineEntityData?.Points.ToArray();
+            float2[] points = spline.SplineEntityData2D?.Points.ToArray();
             Assert.NotNull(points);
             Assert.AreEqual(4, points.Length);
 
@@ -270,7 +269,7 @@ namespace Crener.Spline.Test._2D.Bezier
 
             spline.ArkParameterization = true;
             spline.ArkLength = subDivision;
-            Assert.AreEqual(math.distance(a, b), spline.SplineEntityData?.Length, "unexpected length!");
+            Assert.AreEqual(math.distance(a, b), spline.SplineEntityData2D?.Length, "unexpected length!");
 
             // exact expected points from the conversion process
             float2 point = getPointViaJob(spline, 0f);
@@ -314,13 +313,13 @@ namespace Crener.Spline.Test._2D.Bezier
             // create a large 'S' via spline points
             spline.AddControlPoint(a);
             spline.AddControlPoint(b);
-            spline.UpdateControlPoint(0, new float2(b.x, a.x), SplinePoint.Post);
-            spline.UpdateControlPoint(1, new float2(a.x, b.x), SplinePoint.Pre);
+            spline.UpdateControlPointLocal(0, new float2(b.x, a.x), SplinePoint.Post);
+            spline.UpdateControlPointLocal(1, new float2(a.x, b.x), SplinePoint.Pre);
             Assert.AreEqual(2, spline.ControlPointCount);
 
             spline.ArkLength = subDivision;
             spline.ArkParameterization = true;
-            Assert.AreEqual(spline.Length, spline.SplineEntityData?.Length, "unexpected length!");
+            Assert.AreEqual(spline.Length, spline.SplineEntityData2D?.Length, "unexpected length!");
 
             // exact expected points from the conversion process
             TestHelpers.CheckFloat2(a, getPointViaJob(spline, 0f));
@@ -344,14 +343,14 @@ namespace Crener.Spline.Test._2D.Bezier
             spline.AddControlPoint(new float2(10f, yAxis));
             spline.AddControlPoint(new float2(10f + length, yAxis));
             float sharedMidPoint = 10f + (length * 0.9f);
-            spline.UpdateControlPoint(0, new float2(sharedMidPoint, yAxis), SplinePoint.Post);
-            spline.UpdateControlPoint(1, new float2(sharedMidPoint, yAxis), SplinePoint.Pre);
+            spline.UpdateControlPointLocal(0, new float2(sharedMidPoint, yAxis), SplinePoint.Post);
+            spline.UpdateControlPointLocal(1, new float2(sharedMidPoint, yAxis), SplinePoint.Pre);
 
             spline.ArkParameterization = true;
             spline.ArkLength = subDivision;
-            Assert.AreEqual(length, spline.SplineEntityData?.Length, "unexpected length!");
+            Assert.AreEqual(length, spline.SplineEntityData2D?.Length, "unexpected length!");
 
-            float2[] array = spline.SplineEntityData?.Points.ToArray();
+            float2[] array = spline.SplineEntityData2D?.Points.ToArray();
             Assert.NotNull(array);
             for (int i = 1; i < array.Length; i++)
             {
@@ -375,14 +374,14 @@ namespace Crener.Spline.Test._2D.Bezier
 
             spline.ArkParameterization = true;
             spline.ArkLength = 0.1f;
-            Assert.NotNull(spline.SplineEntityData);
+            Assert.NotNull(spline.SplineEntityData2D);
 
-            int dataCount = spline.SplineEntityData.Value.Points.Length;
+            int dataCount = spline.SplineEntityData2D.Value.Points.Length;
             Assert.Greater(dataCount, 2);
 
             // more distance between points means less points in total
             spline.ArkLength = 1f;
-            Assert.Less(spline.SplineEntityData.Value.Points.Length, dataCount);
+            Assert.Less(spline.SplineEntityData2D.Value.Points.Length, dataCount);
         }
 
         private float2 getPointViaJob(ISpline2D spline, float progress)
@@ -392,7 +391,7 @@ namespace Crener.Spline.Test._2D.Bezier
                 case SplineType.Bezier:
                     BezierSpline2DPointJob bzSpline = new BezierSpline2DPointJob
                     {
-                        Spline = spline.SplineEntityData.Value,
+                        Spline = spline.SplineEntityData2D.Value,
                         SplineProgress = new SplineProgress {Progress = progress}
                     };
                     bzSpline.Execute();
@@ -400,7 +399,7 @@ namespace Crener.Spline.Test._2D.Bezier
                 case SplineType.Linear:
                     LinearSpline2DPointJob pSpline = new LinearSpline2DPointJob
                     {
-                        Spline = spline.SplineEntityData.Value,
+                        Spline = spline.SplineEntityData2D.Value,
                         SplineProgress = new SplineProgress {Progress = progress}
                     };
                     pSpline.Execute();
@@ -425,9 +424,9 @@ namespace Crener.Spline.Test._2D.Bezier
             spline.ArkLength = 1;
             spline.ArkParameterization = true;
 
-            Assert.AreEqual(spline.Length, spline.SplineEntityData.Value.Length, "unexpected length!");
-            Assert.NotNull(spline.SplineEntityData);
-            Spline2DData splineData = spline.SplineEntityData.Value;
+            Assert.AreEqual(spline.Length, spline.SplineEntityData2D.Value.Length, "unexpected length!");
+            Assert.NotNull(spline.SplineEntityData2D);
+            Spline2DData splineData = spline.SplineEntityData2D.Value;
 
             Assert.AreEqual(101, splineData.Points.Length);
             for (int i = 0; i <= 100; i++)
@@ -447,14 +446,14 @@ namespace Crener.Spline.Test._2D.Bezier
             float2 b = new float2(100f, 100f);
             spline.AddControlPoint(a);
             spline.AddControlPoint(b);
-            spline.UpdateControlPoint(0, new float2(1f, 1f), SplinePoint.Post);
-            spline.UpdateControlPoint(1, new float2(99f, 99f), SplinePoint.Pre);
+            spline.UpdateControlPointLocal(0, new float2(1f, 1f), SplinePoint.Post);
+            spline.UpdateControlPointLocal(1, new float2(99f, 99f), SplinePoint.Pre);
             Assert.AreEqual(2, spline.ControlPointCount);
 
             spline.ArkLength = math.length(new float2(1f, 1f));
             spline.ArkParameterization = true;
-            Assert.NotNull(spline.SplineEntityData);
-            Spline2DData splineData = spline.SplineEntityData.Value;
+            Assert.NotNull(spline.SplineEntityData2D);
+            Spline2DData splineData = spline.SplineEntityData2D.Value;
 
             Assert.AreEqual(101, splineData.Points.Length);
             for (int i = 0; i <= 100; i++)

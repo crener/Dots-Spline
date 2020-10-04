@@ -35,7 +35,37 @@ namespace Crener.Spline.BezierSpline
 
         public int ControlPointCount => Points.Count == 0 ? 0 : (int) math.ceil(Points.Count / 9f);
         public int SegmentPointCount => ControlPointCount;
-        public float Length() => LengthCache[(int) SplineSide.Center];
+        public float Length() => LengthCache[(int) SplineSide.Center];        /// <summary>
+        /// Position of the spline origin in world space
+        /// </summary>
+        public float3 Position => trans.position;
+        
+        /// <summary>
+        /// forward direction of the spline origin
+        /// </summary>
+        public Quaternion Forward
+        {
+            get => trans.rotation;
+            set
+            {
+                if(Forward != value) trans.rotation = value;
+            }
+        }
+        
+        private Transform trans
+        {
+            get
+            {
+                if(m_trans == null) Start();
+                return m_trans;
+            }
+        }
+
+        
+        private void Start()
+        {
+            m_trans = transform;
+        }
 
         public float Length(half variance)
         {
@@ -48,8 +78,9 @@ namespace Crener.Spline.BezierSpline
         }
 
         public Spline2DVarianceData? SplineVarianceEntityData { get; private set; }
+        private Transform m_trans = null;
 
-        Spline2DData? ISpline2D.SplineEntityData
+        Spline2DData? ISpline2D.SplineEntityData2D
         {
             get
             {
@@ -73,12 +104,12 @@ namespace Crener.Spline.BezierSpline
             }
         }
 
-        public float2 GetPoint(float progress)
+        public float2 Get2DPoint(float progress)
         {
             return GetPoint(progress, half.zero);
         }
 
-        public float2 GetPoint(float progress, int index)
+        public float2 Get2DPoint(float progress, int index)
         {
             return GetPoint(progress, index, half.zero);
         }
@@ -92,9 +123,9 @@ namespace Crener.Spline.BezierSpline
         public float2 GetPoint(float progress, half variance)
         {
             if(ControlPointCount == 0)
-                return float2.zero;
+                return Position.xy;
             if(ControlPointCount <= 1)
-                return GetControlPoint(0, SplinePointVariance.Point);
+                return ConvertToWorldSpace(GetControlPoint(0, SplinePointVariance.Point));
             progress = math.clamp(progress, 0f, 1f);
 
             int aIndex = FindSegmentIndex(progress);
@@ -112,7 +143,7 @@ namespace Crener.Spline.BezierSpline
                 throw new IndexOutOfRangeException($"{nameof(sideProgress)} out of range: {sideProgress}");
 #endif
 
-            return CubicBezierPoint(centerProgress, sideProgress, aIndex, bIndex, variance);
+            return ConvertToWorldSpace(CubicBezierPoint(centerProgress, sideProgress, aIndex, bIndex, variance));
         }
 
         /// <summary>
@@ -228,7 +259,7 @@ namespace Crener.Spline.BezierSpline
                 point.y + math.cos(-angle));
         }
 
-        public void UpdateControlPoint(int index, float2 point, SplinePointVariance mode)
+        public void UpdateControlPointLocal(int index, float2 point, SplinePointVariance mode)
         {
 #if UNITY_EDITOR
             Assert.IsTrue(index <= ControlPointCount);
@@ -522,6 +553,28 @@ namespace Crener.Spline.BezierSpline
             return currentLength;
         }
 
+        /// <summary>
+        /// Take the <paramref name="position"/> in local space and return the world space location
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        protected float2 ConvertToWorldSpace(float2 position)
+        {
+            return (Position + (float3)(Forward * new float3(position, 0f))).xy;
+        }
+
+        /// <summary>
+        /// Take the <paramref name="position"/>s in local space and convert all to world space locations
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        protected IEnumerable<float2> ConvertToWorldSpace(IEnumerable<float2> position)
+        {
+            float2 transPosCache = Position.xy;
+            foreach (float2 pos in position)
+            {
+                yield return transPosCache + ((float3) (Forward * new float3(pos, 0f))).xy;
+            }
+        }
+
         public void ClearData()
         {
             if(SplineVarianceEntityData.HasValue)
@@ -673,7 +726,7 @@ namespace Crener.Spline.BezierSpline
 
         public float2 GetPoint(float progress, int index, half variance)
         {
-            return CubicBezierPoint(progress, index, (index + 1) % ControlPointCount, variance);
+            return ConvertToWorldSpace(CubicBezierPoint(progress, index, (index + 1) % ControlPointCount, variance));
         }
 
         private static half SideToVariance(SplineSide side)
@@ -721,20 +774,20 @@ namespace Crener.Spline.BezierSpline
                 {
                     if(cp > 0)
                     {
-                        points[current++] = GetControlPoint(cp, SplinePointVariance.Pre);
-                        points[current++] = GetControlPoint(cp, SplinePointVariance.PreLeft);
-                        points[current++] = GetControlPoint(cp, SplinePointVariance.PreRight);
+                        points[current++] = ConvertToWorldSpace(GetControlPoint(cp, SplinePointVariance.Pre));
+                        points[current++] = ConvertToWorldSpace(GetControlPoint(cp, SplinePointVariance.PreLeft));
+                        points[current++] = ConvertToWorldSpace(GetControlPoint(cp, SplinePointVariance.PreRight));
                     }
 
-                    points[current++] = GetControlPoint(cp, SplinePointVariance.Point);
-                    points[current++] = GetControlPoint(cp, SplinePointVariance.PointLeft);
-                    points[current++] = GetControlPoint(cp, SplinePointVariance.PointRight);
+                    points[current++] = ConvertToWorldSpace(GetControlPoint(cp, SplinePointVariance.Point));
+                    points[current++] = ConvertToWorldSpace(GetControlPoint(cp, SplinePointVariance.PointLeft));
+                    points[current++] = ConvertToWorldSpace(GetControlPoint(cp, SplinePointVariance.PointRight));
 
                     if(cp < ControlPointCount - 1)
                     {
-                        points[current++] = GetControlPoint(cp, SplinePointVariance.Post);
-                        points[current++] = GetControlPoint(cp, SplinePointVariance.PostLeft);
-                        points[current++] = GetControlPoint(cp, SplinePointVariance.PostRight);
+                        points[current++] = ConvertToWorldSpace(GetControlPoint(cp, SplinePointVariance.Post));
+                        points[current++] = ConvertToWorldSpace(GetControlPoint(cp, SplinePointVariance.PostLeft));
+                        points[current++] = ConvertToWorldSpace(GetControlPoint(cp, SplinePointVariance.PostRight));
                     }
                 }
             }

@@ -3,7 +3,6 @@ using System.Runtime.CompilerServices;
 using Crener.Spline.BaseSpline;
 using Crener.Spline.Common;
 using Crener.Spline.Common.Interfaces;
-using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -33,14 +32,14 @@ namespace Crener.Spline.Experimental
 
         private const float c_splineMidPoint = 0.5f;
 
-        public override float2 GetPoint(float progress)
+        public override float2 Get2DPoint(float progress)
         {
             if(ControlPointCount == 0)
                 return float2.zero;
             else if(ControlPointCount == 1)
-                return GetControlPoint(0);
+                return GetControlPoint2DLocal(0);
             else if(ControlPointCount == 2)
-                return math.lerp(GetControlPoint(0), GetControlPoint(1), progress);
+                return math.lerp(GetControlPoint2DLocal(0), GetControlPoint2DLocal(1), progress);
             else if(ControlPointCount == 3)
                 return Cubic3Point(0,1,2, progress);
             // else if(progress <= 0f)

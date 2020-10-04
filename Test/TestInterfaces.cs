@@ -1,11 +1,10 @@
 using System.Collections.Generic;
 using Crener.Spline.Common;
 using Crener.Spline.Common.Interfaces;
-using Unity.Mathematics;
 
 namespace Crener.Spline.Test
 {
-    public interface ITestSpline
+    public interface ITestSpline : ISpline
     {
         IReadOnlyList<float> Times { get; }
         IReadOnlyList<SplineEditMode> Modes { get; }
@@ -24,5 +23,14 @@ namespace Crener.Spline.Test
         /// <param name="controlPoints">amount of control points in the spline</param>
         /// <returns>expected amount of time points</returns>
         int ExpectedTimeCount(int controlPoints);
+    }
+
+
+    public interface IArkableTestSpline : ITestSpline, IArkableSpline
+    {
+        /// <summary>
+        /// The amount of control points that the spline should be producing when converting data
+        /// </summary>
+        int ExpectedPointCount { get; }
     }
 }

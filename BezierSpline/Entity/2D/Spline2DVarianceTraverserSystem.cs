@@ -50,9 +50,9 @@ namespace Crener.Spline.BezierSpline.Entity
                     SplineLengthLeft = spline.Length[1],
                     SplineLengthRight = spline.Length[2],
                     DeltaTime = Time.DeltaTime,
-                    MoverDef = GetArchetypeChunkComponentType<SplineProgress>(false),
-                    SpeedDef = GetArchetypeChunkComponentType<TraversalSpeed>(true),
-                    VarianceDef = GetArchetypeChunkComponentType<SplineVariance>(true),
+                    MoverDef = GetComponentTypeHandle<SplineProgress>(false),
+                    SpeedDef = GetComponentTypeHandle<TraversalSpeed>(true),
+                    VarianceDef = GetComponentTypeHandle<SplineVariance>(true),
                 };
                 JobHandle progressHandle = update.Schedule(m_splineQuery);
 
@@ -60,9 +60,9 @@ namespace Crener.Spline.BezierSpline.Entity
                 MoveTraversers move = new MoveTraversers()
                 {
                     Spline = spline,
-                    MoverDef = GetArchetypeChunkComponentType<SplineProgress>(true),
-                    VarianceDef = GetArchetypeChunkComponentType<SplineVariance>(true),
-                    TransDef = GetArchetypeChunkComponentType<Translation>(false)
+                    MoverDef = GetComponentTypeHandle<SplineProgress>(true),
+                    VarianceDef = GetComponentTypeHandle<SplineVariance>(true),
+                    TransDef = GetComponentTypeHandle<Translation>(false)
                 };
                 JobHandle moveHandle = move.Schedule(m_splineQuery, progressHandle);
 
@@ -94,11 +94,11 @@ namespace Crener.Spline.BezierSpline.Entity
             [ReadOnly]
             public float DeltaTime;
 
-            public ArchetypeChunkComponentType<SplineProgress> MoverDef;
+            public ComponentTypeHandle<SplineProgress> MoverDef;
             [ReadOnly]
-            public ArchetypeChunkComponentType<TraversalSpeed> SpeedDef;
+            public ComponentTypeHandle<TraversalSpeed> SpeedDef;
             [ReadOnly]
-            public ArchetypeChunkComponentType<SplineVariance> VarianceDef;
+            public ComponentTypeHandle<SplineVariance> VarianceDef;
 
             public void Execute(ArchetypeChunk chunk, int chunkIndex, int firstEntityIndex)
             {
@@ -131,10 +131,10 @@ namespace Crener.Spline.BezierSpline.Entity
             [ReadOnly]
             public Spline2DVarianceData Spline;
             [ReadOnly]
-            public ArchetypeChunkComponentType<SplineProgress> MoverDef;
+            public ComponentTypeHandle<SplineProgress> MoverDef;
             [ReadOnly]
-            public ArchetypeChunkComponentType<SplineVariance> VarianceDef;
-            public ArchetypeChunkComponentType<Translation> TransDef;
+            public ComponentTypeHandle<SplineVariance> VarianceDef;
+            public ComponentTypeHandle<Translation> TransDef;
 
             public void Execute(ArchetypeChunk chunk, int chunkIndex, int firstEntityIndex)
             {

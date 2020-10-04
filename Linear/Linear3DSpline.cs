@@ -1,11 +1,8 @@
 using System.Runtime.CompilerServices;
 using Crener.Spline.BaseSpline;
 using Crener.Spline.Common;
-using Crener.Spline.Common.DataStructs;
 using Crener.Spline.Common.Interfaces;
 using Unity.Mathematics;
-using UnityEditor;
-using UnityEditor.UIElements;
 using UnityEngine;
 
 namespace Crener.Spline.Linear
