@@ -1,7 +1,6 @@
 using Crener.Spline.Common;
 using Crener.Spline.Common.Interfaces;
 using Crener.Spline.Test.BaseTests.TransferableTestBases;
-using Crener.Spline.Test.Helpers;
 using NUnit.Framework;
 using Unity.Mathematics;
 using UnityEngine;
@@ -28,7 +27,6 @@ namespace Crener.Spline.Test.BaseTests
             float3 a = float3.zero;
             AddControlPoint(testSpline, a);
 
-            Assert.AreEqual(1, testSpline.ControlPointCount);
             Assert.AreEqual(testSpline.ExpectedControlPointCount(1), testSpline.ControlPointCount);
             Assert.AreEqual(1, testSpline.Modes.Count);
             Assert.AreEqual(1, testSpline.Times.Count);
@@ -48,9 +46,8 @@ namespace Crener.Spline.Test.BaseTests
             AddControlPoint(testSpline, b);
 
             Assert.AreEqual(2, testSpline.ControlPointCount);
-            Assert.AreEqual(testSpline.ExpectedControlPointCount(2), testSpline.ControlPointCount);
             Assert.AreEqual(2, testSpline.Modes.Count);
-            Assert.AreEqual(testSpline.ExpectedTimeCount(testSpline.ControlPointCount), testSpline.Times.Count);
+            Assert.AreEqual(testSpline.ExpectedTimeCount(2), testSpline.Times.Count);
             Assert.AreEqual(1f, testSpline.Length());
 
             ComparePoint(a, GetControlPoint(testSpline, 0, SplinePoint.Point));
@@ -70,9 +67,8 @@ namespace Crener.Spline.Test.BaseTests
             AddControlPoint(testSpline, c);
 
             Assert.AreEqual(3, testSpline.ControlPointCount);
-            Assert.AreEqual(testSpline.ExpectedControlPointCount(3), testSpline.ControlPointCount);
             Assert.AreEqual(3, testSpline.Modes.Count);
-            Assert.AreEqual(testSpline.ExpectedTimeCount(testSpline.ControlPointCount), testSpline.Times.Count);
+            Assert.AreEqual(testSpline.ExpectedTimeCount(3), testSpline.Times.Count);
             Assert.AreEqual(2f, testSpline.Length());
 
             ComparePoint(a, GetControlPoint(testSpline, 0, SplinePoint.Point));
@@ -92,9 +88,8 @@ namespace Crener.Spline.Test.BaseTests
             float3 c = s_xTwo;
             AddControlPoint(testSpline, c);
 
-            Assert.AreEqual(3, testSpline.ControlPointCount);
             Assert.AreEqual(3, testSpline.Modes.Count);
-            Assert.AreEqual(testSpline.ExpectedControlPointCount(3), testSpline.ControlPointCount);
+            Assert.AreEqual(3, testSpline.ControlPointCount);
             Assert.AreEqual(testSpline.ExpectedTimeCount(testSpline.ControlPointCount), testSpline.Times.Count);
             Assert.AreEqual(2f, testSpline.Length());
 
@@ -105,9 +100,8 @@ namespace Crener.Spline.Test.BaseTests
             //Remove a point
             testSpline.RemoveControlPoint(1);
 
-            Assert.AreEqual(2, testSpline.ControlPointCount);
             Assert.AreEqual(2, testSpline.Modes.Count);
-            Assert.AreEqual(testSpline.ExpectedControlPointCount(2), testSpline.ControlPointCount);
+            Assert.AreEqual(2, testSpline.ControlPointCount);
             Assert.AreEqual(1, testSpline.Times.Count);
             Assert.AreEqual(2f, testSpline.Length());
 
@@ -125,9 +119,8 @@ namespace Crener.Spline.Test.BaseTests
             float3 b = s_xOne;
             AddControlPoint(testSpline, b);
 
-            Assert.AreEqual(2, testSpline.ControlPointCount);
             Assert.AreEqual(2, testSpline.Modes.Count);
-            Assert.AreEqual(testSpline.ExpectedControlPointCount(2), testSpline.ControlPointCount);
+            Assert.AreEqual(2, testSpline.ControlPointCount);
             Assert.AreEqual(1, testSpline.Times.Count);
             Assert.AreEqual(1f, testSpline.Length());
 
@@ -137,9 +130,8 @@ namespace Crener.Spline.Test.BaseTests
             //Remove a point
             testSpline.RemoveControlPoint(0);
 
-            Assert.AreEqual(1, testSpline.ControlPointCount);
             Assert.AreEqual(1, testSpline.Modes.Count);
-            Assert.AreEqual(testSpline.ExpectedControlPointCount(1), testSpline.ControlPointCount);
+            Assert.AreEqual(1, testSpline.ControlPointCount);
             Assert.AreEqual(1, testSpline.Times.Count);
             Assert.AreEqual(0f, testSpline.Length());
 
@@ -156,9 +148,8 @@ namespace Crener.Spline.Test.BaseTests
             float3 b = s_xOne;
             AddControlPoint(testSpline, b);
 
-            Assert.AreEqual(2, testSpline.ControlPointCount);
             Assert.AreEqual(2, testSpline.Modes.Count);
-            Assert.AreEqual(testSpline.ExpectedControlPointCount(2), testSpline.ControlPointCount);
+            Assert.AreEqual(2, testSpline.ControlPointCount);
             Assert.AreEqual(1, testSpline.Times.Count);
             Assert.AreEqual(1f, testSpline.Length());
 
@@ -168,9 +159,8 @@ namespace Crener.Spline.Test.BaseTests
             //Remove a point
             testSpline.RemoveControlPoint(1);
 
-            Assert.AreEqual(1, testSpline.ControlPointCount);
             Assert.AreEqual(1, testSpline.Modes.Count);
-            Assert.AreEqual(testSpline.ExpectedControlPointCount(1), testSpline.ControlPointCount);
+            Assert.AreEqual(1, testSpline.ControlPointCount);
             Assert.AreEqual(1, testSpline.Times.Count);
             Assert.AreEqual(0f, testSpline.Length());
 
@@ -189,9 +179,8 @@ namespace Crener.Spline.Test.BaseTests
             AddControlPoint(testSpline, b);
             AddControlPoint(testSpline, c);
 
-            Assert.AreEqual(3, testSpline.ControlPointCount);
             Assert.AreEqual(3, testSpline.Modes.Count);
-            Assert.AreEqual(testSpline.ExpectedControlPointCount(3), testSpline.ControlPointCount);
+            Assert.AreEqual(3, testSpline.ControlPointCount);
             Assert.AreEqual(testSpline.ExpectedTimeCount(testSpline.ControlPointCount), testSpline.Times.Count);
             Assert.AreEqual(10f, testSpline.Length());
 
@@ -202,9 +191,8 @@ namespace Crener.Spline.Test.BaseTests
             //Remove a point
             testSpline.RemoveControlPoint(2);
 
-            Assert.AreEqual(2, testSpline.ControlPointCount);
             Assert.AreEqual(2, testSpline.Modes.Count);
-            Assert.AreEqual(testSpline.ExpectedControlPointCount(2), testSpline.ControlPointCount);
+            Assert.AreEqual(2, testSpline.ControlPointCount);
             Assert.AreEqual(1, testSpline.Times.Count);
             Assert.AreEqual(1f, testSpline.Length());
 
@@ -222,9 +210,8 @@ namespace Crener.Spline.Test.BaseTests
             float3 b = s_xOne;
             AddControlPoint(testSpline, b);
 
-            Assert.AreEqual(2, testSpline.ControlPointCount);
             Assert.AreEqual(2, testSpline.Modes.Count);
-            Assert.AreEqual(testSpline.ExpectedControlPointCount(2), testSpline.ControlPointCount);
+            Assert.AreEqual(2, testSpline.ControlPointCount);
             Assert.AreEqual(1, testSpline.Times.Count);
             Assert.AreEqual(1f, testSpline.Length());
 
@@ -234,10 +221,9 @@ namespace Crener.Spline.Test.BaseTests
             //Remove a point
             testSpline.RemoveControlPoint(300);
 
-            Assert.AreEqual(1, testSpline.ControlPointCount);
             Assert.AreEqual(1, testSpline.Modes.Count);
-            Assert.AreEqual(testSpline.ExpectedControlPointCount(1), testSpline.ControlPointCount);
-            Assert.AreEqual(1, testSpline.Times.Count);
+            Assert.AreEqual(1, testSpline.ControlPointCount);
+            Assert.AreEqual(testSpline.ExpectedTimeCount(1), testSpline.Times.Count);
             Assert.AreEqual(0f, testSpline.Length());
 
             ComparePoint(a, GetControlPoint(testSpline, 0, SplinePoint.Point));
@@ -256,6 +242,7 @@ namespace Crener.Spline.Test.BaseTests
             AddControlPoint(testSpline, c);
 
             Assert.AreEqual(3, testSpline.ControlPointCount);
+            Assert.AreEqual(3, testSpline.ControlPointCount);
             Assert.AreEqual(3, testSpline.Modes.Count);
             Assert.AreEqual(testSpline.ExpectedTimeCount(testSpline.ControlPointCount), testSpline.Times.Count);
             Assert.AreEqual(2f, testSpline.Length());
@@ -267,9 +254,8 @@ namespace Crener.Spline.Test.BaseTests
             // Remove a point
             testSpline.RemoveControlPoint(2);
 
-            Assert.AreEqual(2, testSpline.ControlPointCount);
             Assert.AreEqual(2, testSpline.Modes.Count);
-            Assert.AreEqual(testSpline.ExpectedControlPointCount(2), testSpline.ControlPointCount);
+            Assert.AreEqual(2, testSpline.ControlPointCount);
             Assert.AreEqual(1, testSpline.Times.Count);
             Assert.AreEqual(1f, testSpline.Length());
 
@@ -279,9 +265,8 @@ namespace Crener.Spline.Test.BaseTests
             // Remove another point
             testSpline.RemoveControlPoint(1);
 
-            Assert.AreEqual(1, testSpline.ControlPointCount);
             Assert.AreEqual(1, testSpline.Modes.Count);
-            Assert.AreEqual(testSpline.ExpectedControlPointCount(1), testSpline.ControlPointCount);
+            Assert.AreEqual(1, testSpline.ControlPointCount);
             Assert.AreEqual(1, testSpline.Times.Count);
             Assert.AreEqual(0f, testSpline.Length());
 
@@ -298,9 +283,8 @@ namespace Crener.Spline.Test.BaseTests
             float3 b = s_xOne;
             AddControlPoint(testSpline, b);
 
-            Assert.AreEqual(2, testSpline.ControlPointCount);
             Assert.AreEqual(2, testSpline.Modes.Count);
-            Assert.AreEqual(testSpline.ExpectedControlPointCount(2), testSpline.ControlPointCount);
+            Assert.AreEqual(2, testSpline.ControlPointCount);
             Assert.AreEqual(1, testSpline.Times.Count);
             Assert.AreEqual(1f, testSpline.Length());
 
@@ -310,9 +294,8 @@ namespace Crener.Spline.Test.BaseTests
             // Remove a point less than 0
             testSpline.RemoveControlPoint(-3);
 
-            Assert.AreEqual(2, testSpline.ControlPointCount);
             Assert.AreEqual(2, testSpline.Modes.Count);
-            Assert.AreEqual(testSpline.ExpectedControlPointCount(2), testSpline.ControlPointCount);
+            Assert.AreEqual(2, testSpline.ControlPointCount);
             Assert.AreEqual(1, testSpline.Times.Count);
             Assert.AreEqual(1f, testSpline.Length());
 
@@ -357,10 +340,10 @@ namespace Crener.Spline.Test.BaseTests
             AddControlPoint(testSpline, a);
             float3 b = s_xOne;
             AddControlPoint(testSpline, b);
-
+            
             Assert.AreEqual(2, testSpline.ControlPointCount);
             Assert.AreEqual(1f, testSpline.Length());
-
+            
             Assert.AreEqual(1, testSpline.Times.Count);
             Assert.AreEqual(1f, testSpline.Times[0]);
 
@@ -397,7 +380,7 @@ namespace Crener.Spline.Test.BaseTests
             float3 a = new float3(3f, 3f, 1f);
             AddControlPoint(testSpline, a);
 
-            Assert.AreEqual(1, testSpline.ControlPointCount);
+            Assert.AreEqual(testSpline.ExpectedControlPointCount(1), testSpline.ControlPointCount);
             Assert.AreEqual(0f, testSpline.Length());
 
             CompareProgressNotEquals(testSpline, 0.5f, new float3(3f, 3f, 1f));
@@ -415,7 +398,8 @@ namespace Crener.Spline.Test.BaseTests
 
             Assert.AreEqual(2, testSpline.ControlPointCount);
             Assert.AreEqual(2, testSpline.Modes.Count);
-            Assert.AreEqual(1, testSpline.Times.Count);
+            Assert.AreEqual(testSpline.ExpectedTimeCount(1), testSpline.Times.Count);
+            
             CompareProgressNotEquals(testSpline, 0f, a);
             ComparePoint(a, GetControlPoint(testSpline, 0, SplinePoint.Point));
             CompareProgressNotEquals(testSpline, 1f, b);
@@ -451,6 +435,7 @@ namespace Crener.Spline.Test.BaseTests
             Assert.AreEqual(3, testSpline.ControlPointCount);
             Assert.AreEqual(3, testSpline.Modes.Count);
             Assert.AreEqual(testSpline.ExpectedTimeCount(testSpline.ControlPointCount), testSpline.Times.Count);
+            
             CompareProgressNotEquals(testSpline, 0f, a);
             ComparePoint(a, GetControlPoint(testSpline, 0, SplinePoint.Point));
             CompareProgressNotEquals(testSpline, 0.5f, b);
@@ -749,9 +734,9 @@ namespace Crener.Spline.Test.BaseTests
             ((MonoBehaviour) testSpline).transform.position = move;
 
             float3 a = float3.zero;
-            InsertControlPointWorldSpace(testSpline, 12, a);
-            ComparePoint(move, GetProgress(testSpline, 0f));
+            InsertControlPointLocalSpace(testSpline, 12, a);
             ComparePoint(a, GetControlPoint(testSpline, 0, SplinePoint.Point));
+            ComparePoint(move, GetProgress(testSpline, 0f));
         }
 
         [Test]
@@ -761,6 +746,7 @@ namespace Crener.Spline.Test.BaseTests
             
             float3 a = float3.zero;
             InsertControlPointWorldSpace(testSpline, 12, a);
+            Assert.AreEqual(1, testSpline.ControlPointCount);
             ComparePoint(a, GetControlPoint(testSpline, 0, SplinePoint.Point));
             
             float3 move = new float3(10f, 0f, 10f);
@@ -770,6 +756,7 @@ namespace Crener.Spline.Test.BaseTests
 
             a = new float3(10f);
             UpdateControlPoint(testSpline, 0, a + move, SplinePoint.Point);
+            Assert.AreEqual(1, testSpline.ControlPointCount);
             ComparePoint(a, GetControlPoint(testSpline, 0, SplinePoint.Point));
             ComparePoint(move + a, GetProgress(testSpline, 0f));
         }
@@ -791,7 +778,11 @@ namespace Crener.Spline.Test.BaseTests
             float3 a = new float3(20f, 3f, 4f);
             InsertControlPointLocalSpace(testSpline, 12, a);
             ComparePoint(a, GetControlPoint(testSpline, 0, SplinePoint.Point));
-            ComparePoint(move + (float3)(targetRotation * new float3(a.xy, 0f)), GetProgress(testSpline, 0f));
+
+            if(testSpline is ISpline3DPlane)
+                ComparePoint(move + (float3)(targetRotation * new float3(a.xy, 0)), GetProgress(testSpline, 0f));
+            else
+                ComparePoint(move + (float3)(targetRotation * a), GetProgress(testSpline, 0f));
         }
 
         [Test]
@@ -881,7 +872,7 @@ namespace Crener.Spline.Test.BaseTests
             s_splineBase.InsertControlPointWorldSpace(spline as ISimpleSpline3D, index, point);
 
         public override void InsertControlPointLocalSpace(ITestSpline spline, int index, float3 point) => 
-            s_splineBase.InsertControlPointWorldSpace(spline as ISimpleSpline3D, index, point);
+            s_splineBase.InsertControlPointLocalSpace(spline as ISimpleSpline3D, index, point);
 
         public override float3 GetControlPoint(ITestSpline spline, int index, SplinePoint pointType) =>
             s_splineBase.GetControlPoint(spline as ISimpleSpline3D, index, pointType);

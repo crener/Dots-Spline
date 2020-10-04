@@ -544,16 +544,9 @@ namespace Crener.Spline.Test._3D
             Quaternion targetRotation = Quaternion.Euler(0f, 90f, 0f);
             ((MonoBehaviour) testSpline).transform.rotation = targetRotation;
 
-            Assert.AreEqual(0, testSpline.ControlPointCount);
-            Assert.AreEqual(0, testSpline.Modes.Count);
-            Assert.AreEqual(1, testSpline.Times.Count);
-
             float3 a = new float3(20f, 3f, 4f);
             testSpline.InsertControlPointWorldSpace(12, a);
-
-            Assert.AreEqual(1, testSpline.ControlPointCount);
-            Assert.AreEqual(1, testSpline.Modes.Count);
-            Assert.AreEqual(1, testSpline.Times.Count);
+            
             TestHelpers.CheckFloat3(move + (float3)(targetRotation * a), testSpline.Get3DPoint(0f));
             TestHelpers.CheckFloat3(a, testSpline.GetControlPoint(0, SplinePoint.Point));
         }

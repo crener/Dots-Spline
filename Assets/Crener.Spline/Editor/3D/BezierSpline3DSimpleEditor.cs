@@ -108,7 +108,7 @@ namespace Crener.Spline.Editor._3D
                                         UpdateOppositePoint(postMagnitude, point, newPos, i, SplinePoint.Post);
                                     }
 
-                                    bezierSpline.UpdateControlPointFromWorld(i, newPos, SplinePoint.Pre);
+                                    bezierSpline.UpdateControlPointWorld(i, newPos, SplinePoint.Pre);
                                     break;
                                 }
                                 case SplineEditMode.Mirror:
@@ -119,11 +119,11 @@ namespace Crener.Spline.Editor._3D
                                         UpdateOppositePoint(preMagnitude, point, newPos, i, SplinePoint.Post);
                                     }
 
-                                    bezierSpline.UpdateControlPointFromWorld(i, newPos, SplinePoint.Pre);
+                                    bezierSpline.UpdateControlPointWorld(i, newPos, SplinePoint.Pre);
                                     break;
                                 }
                                 case SplineEditMode.Free:
-                                    bezierSpline.UpdateControlPointFromWorld(i, newPos, SplinePoint.Pre);
+                                    bezierSpline.UpdateControlPointWorld(i, newPos, SplinePoint.Pre);
                                     break;
                                 default:
                                     throw new ArgumentOutOfRangeException();
@@ -147,7 +147,7 @@ namespace Crener.Spline.Editor._3D
                             EditorUtility.SetDirty(bezierSpline);
 
                             float3 newPoint = new float3(pos.x, pos.y, pos.z);
-                            bezierSpline.UpdateControlPointFromWorld(i, newPoint, SplinePoint.Point);
+                            bezierSpline.UpdateControlPointWorld(i, newPoint, SplinePoint.Point);
 
                             if(m_editMoveWithTrans)
                             {
@@ -157,7 +157,7 @@ namespace Crener.Spline.Editor._3D
                                 void UpdatePoint(SplinePoint type)
                                 {
                                     float3 cp = bezierSpline.GetControlPoint3DWorld(i, type);
-                                    bezierSpline.UpdateControlPointFromWorld(i, cp + delta, type);
+                                    bezierSpline.UpdateControlPointWorld(i, cp + delta, type);
                                 }
 
                                 if(preExists) UpdatePoint(SplinePoint.Pre);
@@ -195,7 +195,7 @@ namespace Crener.Spline.Editor._3D
                                         UpdateOppositePoint(preMagnitude, point, newPos, i, SplinePoint.Pre);
                                     }
 
-                                    bezierSpline.UpdateControlPointFromWorld(i, newPos, SplinePoint.Post);
+                                    bezierSpline.UpdateControlPointWorld(i, newPos, SplinePoint.Post);
                                     break;
                                 }
                                 case SplineEditMode.Mirror:
@@ -206,11 +206,11 @@ namespace Crener.Spline.Editor._3D
                                         UpdateOppositePoint(postMagnitude, point, newPos, i, SplinePoint.Pre);
                                     }
 
-                                    bezierSpline.UpdateControlPointFromWorld(i, newPos, SplinePoint.Post);
+                                    bezierSpline.UpdateControlPointWorld(i, newPos, SplinePoint.Post);
                                     break;
                                 }
                                 case SplineEditMode.Free:
-                                    bezierSpline.UpdateControlPointFromWorld(i, newPos, SplinePoint.Post);
+                                    bezierSpline.UpdateControlPointWorld(i, newPos, SplinePoint.Post);
                                     break;
                                 default:
                                     throw new ArgumentOutOfRangeException();
@@ -253,7 +253,7 @@ namespace Crener.Spline.Editor._3D
                 center.x + dir.x,
                 center.y + dir.y,
                 center.z + dir.z);
-            bezierSpline.UpdateControlPointFromWorld(i, updatedPoint, pointType);
+            bezierSpline.UpdateControlPointWorld(i, updatedPoint, pointType);
         }
     }
 }

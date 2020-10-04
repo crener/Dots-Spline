@@ -66,6 +66,11 @@ namespace Crener.Spline.BaseSpline
         /// <param name="point">location to insert</param>
         public virtual void InsertControlPointWorldSpace(int index, float3 point)
         {
+            InsertControlPointLocalSpace(index, ConvertToLocalSpace(point));
+        }
+
+        public virtual void InsertControlPointLocalSpace(int index, float3 point)
+        {
             if(Points.Count < 1 || index >= ControlPointCount)
             {
                 // add as there aren't enough points to insert between
@@ -84,11 +89,6 @@ namespace Crener.Spline.BaseSpline
             }
 
             RecalculateLengthBias();
-        }
-
-        public virtual void InsertControlPointLocalSpace(int index, float3 point)
-        {
-            InsertControlPointWorldSpace(index, point);
         }
 
         /// <summary>

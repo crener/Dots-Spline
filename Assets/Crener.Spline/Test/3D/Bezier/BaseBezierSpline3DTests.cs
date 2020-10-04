@@ -14,16 +14,12 @@ namespace Crener.Spline.Test._3D.Bezier
     /// </summary>
     public class BaseBezierSpline3DTests : BezierBaseTest3DAdapter
     {
-        protected override ISimpleTestSpline3D CreateNewSpline()
+        public override ITestSpline CreateNewSpline()
         {
             GameObject game = new GameObject();
-            MeaninglessTestWrapper.TestBezierSpline3DSimple testBezierSpline = game.AddComponent<MeaninglessTestWrapper.TestBezierSpline3DSimple>();
-            Assert.IsNotNull(testBezierSpline);
+            ISimpleTestSpline3D spline = game.AddComponent<MeaninglessTestWrapper.TestBezierSpline3DSimple>();
 
-            TestHelpers.ClearSpline(testBezierSpline);
-
-            m_disposables.Add(testBezierSpline);
-            return testBezierSpline;
+            return spline;
         }
     }
     

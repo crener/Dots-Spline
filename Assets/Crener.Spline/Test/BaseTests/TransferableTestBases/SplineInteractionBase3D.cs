@@ -26,6 +26,14 @@ namespace Crener.Spline.Test.BaseTests.TransferableTestBases
             spline3D.InsertControlPointWorldSpace(index, point);
         }
 
+        public void InsertControlPointLocalSpace(ISimpleSpline3D spline, int index, float3 point)
+        {
+            ISpline3DEditor spline3D = spline as ISpline3DEditor;
+            Assert.NotNull(spline3D);
+
+            spline3D.InsertControlPointLocalSpace(index, point);
+        }
+
         public float3 GetControlPoint(ISimpleSpline3D spline, int index, SplinePoint pointType)
         {
             Assert.NotNull(spline);

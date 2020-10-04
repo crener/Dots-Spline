@@ -11,7 +11,7 @@ namespace Crener.Spline.Test._3D.LinearCubic
     /// </summary>
     public class BaseLinearCubicTests3D : LinearCubicBaseTest3DAdapter
     {
-        protected override ISimpleTestSpline3D CreateNewSpline()
+        public override ITestSpline CreateNewSpline()
         {
             GameObject game = new GameObject();
             ISimpleTestSpline3D spline = game.AddComponent<MeaninglessTestWrapper.TestLinearCubicSpline3DSimple>();

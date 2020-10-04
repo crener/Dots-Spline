@@ -232,7 +232,7 @@ namespace Crener.Spline.Test.BaseTests
             s_splineBase.InsertControlPointWorldSpace(spline as ISpline3DPlane, index, point);
 
         public override void InsertControlPointLocalSpace(ILoopingSpline spline, int index, float3 point) => 
-            s_splineBase.InsertControlPointWorldSpace(spline as ISpline3DPlane, index, point);
+            s_splineBase.InsertControlPointLocalSpace(spline as ISpline3DPlane, index, point);
 
         public override float3 GetControlPoint(ILoopingSpline spline, int index, SplinePoint pointType) =>
             s_splineBase.GetControlPoint(spline as ISpline3DPlane, index, pointType);
