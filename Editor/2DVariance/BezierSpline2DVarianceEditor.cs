@@ -1,6 +1,7 @@
 using System;
 using System.Runtime.CompilerServices;
-using Crener.Spline.BezierSpline;
+using Crener.Spline._2D;
+using Crener.Spline._2DVariance;
 using Crener.Spline.Common;
 using Crener.Spline.Common.Interfaces;
 using Unity.Mathematics;

@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Crener.Spline.BezierSpline.Entity;
+using Crener.Spline._2D.Entity;
 using Crener.Spline.Common;
 using Crener.Spline.Common.DataStructs;
 using Unity.Collections;

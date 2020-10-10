@@ -1,6 +1,6 @@
 {
   "name": "com.crener.dots-spline",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "displayName": "DOTS Spline",
   "description": "Editor friendly unity splines",
   "unity": "2020.1",

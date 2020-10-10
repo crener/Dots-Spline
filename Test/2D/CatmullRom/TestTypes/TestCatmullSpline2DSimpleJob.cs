@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Crener.Spline.CatmullRom;
+using Crener.Spline._2D;
 using Crener.Spline.Common;
 using Crener.Spline.Common.Interfaces;
 using NUnit.Framework;

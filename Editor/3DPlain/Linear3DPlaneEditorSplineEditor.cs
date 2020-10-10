@@ -1,4 +1,4 @@
-using Crener.Spline.Linear;
+using Crener.Spline._3DPlain;
 using UnityEditor;
 using UnityEngine;
 

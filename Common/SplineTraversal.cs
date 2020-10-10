@@ -1,4 +1,4 @@
-using Crener.Spline.BezierSpline.Entity;
+using Crener.Spline._2D.Entity;
 using Unity.Entities;
 using Unity.Mathematics;
 

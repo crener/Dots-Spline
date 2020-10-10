@@ -1,4 +1,4 @@
-using Crener.Spline.BezierSpline.Jobs;
+using Crener.Spline._2D.Jobs;
 using Crener.Spline.Test._2D.Bezier.TestAdapters;
 using Crener.Spline.Test._2D.Bezier.TestTypes;
 using Crener.Spline.Test.Helpers;

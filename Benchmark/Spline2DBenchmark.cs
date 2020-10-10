@@ -1,4 +1,5 @@
-using Crener.Spline.BezierSpline.Entity;
+using Crener.Spline._2D.Entity;
+using Crener.Spline.Benchmark.SplineTraversers;
 using Crener.Spline.Common.Interfaces;
 using Unity.Entities;
 using UnityEngine;

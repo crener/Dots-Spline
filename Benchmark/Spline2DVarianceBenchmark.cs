@@ -1,3 +1,4 @@
+using Crener.Spline.Benchmark.SplineTraversers;
 using Crener.Spline.Common.Interfaces;
 using Unity.Entities;
 using Unity.Mathematics;

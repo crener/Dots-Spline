@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
+using Crener.Spline._3DPlain;
 using Crener.Spline.Common;
-using Crener.Spline.Linear;
 using Unity.Mathematics;
 
 namespace Crener.Spline.Test._3DPlane.LinearCubicPlain.TestTypes

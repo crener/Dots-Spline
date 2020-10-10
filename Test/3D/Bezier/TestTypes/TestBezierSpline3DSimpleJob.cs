@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Crener.Spline.BezierSpline;
+using Crener.Spline._3D;
 using Crener.Spline.Common;
 using Crener.Spline.Common.Interfaces;
 using NUnit.Framework;
