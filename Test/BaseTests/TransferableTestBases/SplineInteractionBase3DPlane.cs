@@ -8,7 +8,7 @@ namespace Crener.Spline.Test.BaseTests.TransferableTestBases
 {
     public class SplineInteractionBase3DPlane : ITransferablePlainTestSet<ISpline3DPlane>
     {
-        public void AddControlPoint(ISpline3DPlane spline, float3 point)
+        public void AddControlPointLocalSpace(ISpline3DPlane spline, float3 point)
         {
             Assert.NotNull(spline);
 

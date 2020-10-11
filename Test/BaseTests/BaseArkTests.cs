@@ -38,12 +38,12 @@ namespace Crener.Spline.Test.BaseTests
             const int pointLength = 20;
 
             float3 first = new float3(0);
-            AddControlPoint(testSpline, first);
+            AddControlPointLocalSpace(testSpline, first);
 
             for (int i = 1; i < points; i++)
             {
                 float3 point = new float3(i * pointLength);
-                AddControlPoint(testSpline, point);
+                AddControlPointLocalSpace(testSpline, point);
             }
 
             testSpline.ArkLength = pointLength / 10f;
@@ -66,12 +66,12 @@ namespace Crener.Spline.Test.BaseTests
             const int pointLength = 20;
 
             float3 first = new float3(0);
-            AddControlPoint(testSpline, first);
+            AddControlPointLocalSpace(testSpline, first);
 
             for (int i = 1; i < points; i++)
             {
                 float3 point = new float3(i * pointLength);
-                AddControlPoint(testSpline, point);
+                AddControlPointLocalSpace(testSpline, point);
             }
 
             testSpline.ArkLength = pointLength / 10f;
@@ -102,7 +102,7 @@ namespace Crener.Spline.Test.BaseTests
         public void SinglePoint()
         {
             IArkableSpline testSpline = PrepareSpline();
-            AddControlPoint(testSpline, new float3(80));
+            AddControlPointLocalSpace(testSpline, new float3(80));
 
             ChangeArking(testSpline, true);
             int count = SplineSegmentPointCount(testSpline);
@@ -120,8 +120,8 @@ namespace Crener.Spline.Test.BaseTests
 
             float3 a = new float3(10f);
             float3 b = new float3(80f);
-            AddControlPoint(testSpline, a);
-            AddControlPoint(testSpline, b);
+            AddControlPointLocalSpace(testSpline, a);
+            AddControlPointLocalSpace(testSpline, b);
 
             testSpline.ArkLength = 5f;
             testSpline.ArkParameterization = false;
@@ -143,8 +143,8 @@ namespace Crener.Spline.Test.BaseTests
 
             float3 a = new float3(10f);
             float3 b = new float3(80f);
-            AddControlPoint(testSpline, a);
-            AddControlPoint(testSpline, b);
+            AddControlPointLocalSpace(testSpline, a);
+            AddControlPointLocalSpace(testSpline, b);
 
             int originalCount = SplineSegmentPointCount(testSpline);
             testSpline.ArkLength = 5f;
@@ -166,8 +166,8 @@ namespace Crener.Spline.Test.BaseTests
 
             float3 a = new float3(10f);
             float3 b = new float3(80f);
-            AddControlPoint(testSpline, a);
-            AddControlPoint(testSpline, b);
+            AddControlPointLocalSpace(testSpline, a);
+            AddControlPointLocalSpace(testSpline, b);
 
             testSpline.ArkLength = 5f;
 
@@ -190,8 +190,8 @@ namespace Crener.Spline.Test.BaseTests
 
             float3 a = new float3(10f);
             float3 b = new float3(80f);
-            AddControlPoint(testSpline, a);
-            AddControlPoint(testSpline, b);
+            AddControlPointLocalSpace(testSpline, a);
+            AddControlPointLocalSpace(testSpline, b);
 
             testSpline.ArkLength = 5f;
             int splineCount = SplineSegmentPointCount(testSpline);
@@ -213,7 +213,7 @@ namespace Crener.Spline.Test.BaseTests
             ((MonoBehaviour) testSpline).transform.position = move;
 
             float3 a = new float3(80);
-            AddControlPoint(testSpline, a);
+            AddControlPointLocalSpace(testSpline, a);
 
             ChangeArking(testSpline, true);
             int count = SplineSegmentPointCount(testSpline);
@@ -227,8 +227,8 @@ namespace Crener.Spline.Test.BaseTests
     {
         private static SplineInteractionBase3D s_splineBase = new SplineInteractionBase3D();
 
-        public override void AddControlPoint(IArkableSpline spline, float3 point) =>
-            s_splineBase.AddControlPoint(spline as ISimpleSpline3D, point);
+        public override void AddControlPointLocalSpace(IArkableSpline spline, float3 point) =>
+            s_splineBase.AddControlPointLocalSpace(spline as ISimpleSpline3D, point);
 
         public override void InsertControlPointWorldSpace(IArkableSpline spline, int index, float3 point) =>
             s_splineBase.InsertControlPointWorldSpace(spline as ISimpleSpline3D, index, point);
@@ -271,8 +271,8 @@ namespace Crener.Spline.Test.BaseTests
     {
         private static SplineInteractionBase3DPlane s_splineBase = new SplineInteractionBase3DPlane();
 
-        public override void AddControlPoint(IArkableSpline spline, float3 point) =>
-            s_splineBase.AddControlPoint(spline as ISpline3DPlane, point);
+        public override void AddControlPointLocalSpace(IArkableSpline spline, float3 point) =>
+            s_splineBase.AddControlPointLocalSpace(spline as ISpline3DPlane, point);
 
         public override void InsertControlPointWorldSpace(IArkableSpline spline, int index, float3 point) =>
             s_splineBase.InsertControlPointWorldSpace(spline as ISpline3DPlane, index, point);
@@ -303,8 +303,8 @@ namespace Crener.Spline.Test.BaseTests
     {
         private static SplineInteractionBase2D s_splineBase = new SplineInteractionBase2D();
 
-        public override void AddControlPoint(IArkableSpline spline, float3 point) =>
-            s_splineBase.AddControlPoint(spline as ISpline2D, point);
+        public override void AddControlPointLocalSpace(IArkableSpline spline, float3 point) =>
+            s_splineBase.AddControlPointLocalSpace(spline as ISpline2D, point);
 
         public override void InsertControlPointWorldSpace(IArkableSpline spline, int index, float3 point) =>
             s_splineBase.InsertControlPointWorldSpace(spline as ISpline2D, index, point);

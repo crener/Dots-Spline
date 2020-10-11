@@ -306,12 +306,15 @@ namespace Crener.Spline.Editor._3D
                 splinePoint = float3.zero;
                 float bestDistance = float.MaxValue;
 
+                const int segmentSampleAmount = 64;
+                const float segmentSampleAmountF = segmentSampleAmount;
+                
                 // this could potentially be cached as long as the spline doesn't change and the camera is at the same position
                 for (int i = 1; i < spline.SegmentPointCount; i++)
                 {
-                    for (int s = 0; s <= 64; s++)
+                    for (int s = 0; s <= segmentSampleAmount; s++)
                     {
-                        float progress = s / 64f;
+                        float progress = s / segmentSampleAmountF;
                         float3 p = spline.Get3DPoint(progress, i - 1);
                         Vector3 screenPosition = LastSceneCamera.WorldToScreenPoint(p);
 

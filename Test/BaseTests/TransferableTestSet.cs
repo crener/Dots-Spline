@@ -31,7 +31,7 @@ namespace Crener.Spline.Test.BaseTests
         /// <summary>
         /// Abstraction of adding a point so that 2D and 3D can share the same tests
         /// </summary>
-        public abstract void AddControlPoint(T spline, float3 point);
+        public abstract void AddControlPointLocalSpace(T spline, float3 point);
 
         /// <summary>
         /// Abstraction of inserting a point from a location in world space so that 2D and 3D can share the same tests

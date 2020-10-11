@@ -14,13 +14,13 @@ namespace Crener.Spline.Test._3D.Bezier.TestAdapters
             ITestSpline testSpline = PrepareSpline();
 
             float3 a = float3.zero;
-            AddControlPoint(testSpline, a);
+            AddControlPointLocalSpace(testSpline, a);
             float3 b = new float3(2.5f, 0f, 0f);
-            AddControlPoint(testSpline, b);
+            AddControlPointLocalSpace(testSpline, b);
             float3 c = new float3(7.5f, 0f, 0f);
-            AddControlPoint(testSpline, c);
+            AddControlPointLocalSpace(testSpline, c);
             float3 d = new float3(10f, 0f, 0f);
-            AddControlPoint(testSpline, d);
+            AddControlPointLocalSpace(testSpline, d);
 
             Assert.AreEqual(4, testSpline.ControlPointCount);
             Assert.AreEqual(4, testSpline.Modes.Count);
@@ -45,7 +45,7 @@ namespace Crener.Spline.Test._3D.Bezier.TestAdapters
             ITestSpline testSpline = PrepareSpline();
 
             float3 a = float3.zero;
-            AddControlPoint(testSpline, a);
+            AddControlPointLocalSpace(testSpline, a);
 
             Assert.AreEqual(1, testSpline.ControlPointCount);
             Assert.AreEqual(1, testSpline.Modes.Count);
@@ -55,7 +55,7 @@ namespace Crener.Spline.Test._3D.Bezier.TestAdapters
             ComparePoint(a, GetControlPoint(testSpline, 0, SplinePoint.Point));
 
             float3 b = new float3(10f, 0f, 0f);
-            AddControlPoint(testSpline, b);
+            AddControlPointLocalSpace(testSpline, b);
 
             Assert.AreEqual(2, testSpline.ControlPointCount);
             Assert.AreEqual(2, testSpline.Modes.Count);
@@ -75,11 +75,11 @@ namespace Crener.Spline.Test._3D.Bezier.TestAdapters
             ITestSpline testSpline = PrepareSpline();
 
             float3 a = new float3(1f, 10f, 0f);
-            AddControlPoint(testSpline, a);
+            AddControlPointLocalSpace(testSpline, a);
             float3 b = new float3(2f, 10f, 0f);
-            AddControlPoint(testSpline, b);
+            AddControlPointLocalSpace(testSpline, b);
             float3 c = new float3(3f, 10f, 0f);
-            AddControlPoint(testSpline, c);
+            AddControlPointLocalSpace(testSpline, c);
 
             Assert.AreEqual(3, testSpline.ControlPointCount);
             Assert.AreEqual(2f, testSpline.Length());
@@ -93,7 +93,7 @@ namespace Crener.Spline.Test._3D.Bezier.TestAdapters
             ITestSpline testSpline = PrepareSpline();
 
             float3 a = float3.zero;
-            AddControlPoint(testSpline, a);
+            AddControlPointLocalSpace(testSpline, a);
 
             testSpline.ChangeEditMode(0, mode);
             Assert.AreEqual(mode, testSpline.GetEditMode(0));
@@ -108,8 +108,8 @@ namespace Crener.Spline.Test._3D.Bezier.TestAdapters
             float3 b = new float3(10f, 10f, 0f);
             float3 c = new float3(0f, 20f, 0f);
             float3 d = new float3(20f, 30f, 0f);
-            AddControlPoint(testSpline, a);
-            AddControlPoint(testSpline, d);
+            AddControlPointLocalSpace(testSpline, a);
+            AddControlPointLocalSpace(testSpline, d);
             InsertControlPointWorldSpace(testSpline, 1, b);
             InsertControlPointWorldSpace(testSpline, 2, c);
 
@@ -123,9 +123,9 @@ namespace Crener.Spline.Test._3D.Bezier.TestAdapters
             ITestSpline testSpline = PrepareSpline();
 
             float3 a = new float3(0f, 0f, 0f);
-            AddControlPoint(testSpline, a);
+            AddControlPointLocalSpace(testSpline, a);
             float3 b = new float3(1f, 3f, 0f);
-            AddControlPoint(testSpline, b);
+            AddControlPointLocalSpace(testSpline, b);
 
             UpdateControlPoint(testSpline, 0, new float3(1f, 0f, 0f), SplinePoint.Post);
             UpdateControlPoint(testSpline, 1, new float3(0f, 3f, 0f), SplinePoint.Pre);

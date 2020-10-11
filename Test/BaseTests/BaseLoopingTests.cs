@@ -42,12 +42,12 @@ namespace Crener.Spline.Test.BaseTests
             ILoopingSpline testSpline = PrepareSpline();
 
             float3 first = new float3(0);
-            AddControlPoint(testSpline, first);
+            AddControlPointLocalSpace(testSpline, first);
 
             for (int i = 1; i < points; i++)
             {
                 float3 point = new float3(i);
-                AddControlPoint(testSpline, point);
+                AddControlPointLocalSpace(testSpline, point);
             }
 
             Assert.IsFalse(testSpline.Looped);
@@ -69,12 +69,12 @@ namespace Crener.Spline.Test.BaseTests
             ChangeLooped(testSpline, true);
 
             float3 first = new float3(0);
-            AddControlPoint(testSpline, first);
+            AddControlPointLocalSpace(testSpline, first);
 
             for (int i = 1; i < points; i++)
             {
                 float3 point = new float3(i);
-                AddControlPoint(testSpline, point);
+                AddControlPointLocalSpace(testSpline, point);
             }
 
             float length = testSpline.Length();
@@ -104,7 +104,7 @@ namespace Crener.Spline.Test.BaseTests
         public void SinglePoint()
         {
             ILoopingSpline testSpline = PrepareSpline();
-            AddControlPoint(testSpline, new float3(80));
+            AddControlPointLocalSpace(testSpline, new float3(80));
 
             Assert.IsFalse(testSpline.Looped);
             Assert.AreEqual(0f, testSpline.Length());
@@ -124,8 +124,8 @@ namespace Crener.Spline.Test.BaseTests
             float3 a = new float3(10f);
             float3 b = new float3(20f);
 
-            AddControlPoint(testSpline, a);
-            AddControlPoint(testSpline, b);
+            AddControlPointLocalSpace(testSpline, a);
+            AddControlPointLocalSpace(testSpline, b);
 
             Assert.IsFalse(testSpline.Looped);
             CompareProgressEquals(testSpline, 0f, a);
@@ -146,9 +146,9 @@ namespace Crener.Spline.Test.BaseTests
             float3 b = new float3(12f, 10f, 3f);
             float3 c = new float3(11f, 11f, 3f);
 
-            AddControlPoint(testSpline, a);
-            AddControlPoint(testSpline, b);
-            AddControlPoint(testSpline, c);
+            AddControlPointLocalSpace(testSpline, a);
+            AddControlPointLocalSpace(testSpline, b);
+            AddControlPointLocalSpace(testSpline, c);
 
             Assert.IsFalse(testSpline.Looped);
             CompareProgressEquals(testSpline, 0f, a);
@@ -170,10 +170,10 @@ namespace Crener.Spline.Test.BaseTests
             float3 c = new float3(12f, 12f, 3f);
             float3 d = new float3(10f, 12f, 3f);
 
-            AddControlPoint(testSpline, a);
-            AddControlPoint(testSpline, b);
-            AddControlPoint(testSpline, c);
-            AddControlPoint(testSpline, d);
+            AddControlPointLocalSpace(testSpline, a);
+            AddControlPointLocalSpace(testSpline, b);
+            AddControlPointLocalSpace(testSpline, c);
+            AddControlPointLocalSpace(testSpline, d);
 
             Assert.IsFalse(testSpline.Looped);
             CompareProgressEquals(testSpline, 0f, a);
@@ -190,8 +190,8 @@ namespace Crener.Spline.Test.BaseTests
     {
         private static SplineInteractionBase3D s_splineBase = new SplineInteractionBase3D();
 
-        public override void AddControlPoint(ILoopingSpline spline, float3 point) =>
-            s_splineBase.AddControlPoint(spline as ISimpleSpline3D, point);
+        public override void AddControlPointLocalSpace(ILoopingSpline spline, float3 point) =>
+            s_splineBase.AddControlPointLocalSpace(spline as ISimpleSpline3D, point);
 
         public override void InsertControlPointWorldSpace(ILoopingSpline spline, int index, float3 point) =>
             s_splineBase.InsertControlPointWorldSpace(spline as ISimpleSpline3D, index, point);
@@ -225,8 +225,8 @@ namespace Crener.Spline.Test.BaseTests
     {
         private static SplineInteractionBase3DPlane s_splineBase = new SplineInteractionBase3DPlane();
 
-        public override void AddControlPoint(ILoopingSpline spline, float3 point) =>
-            s_splineBase.AddControlPoint(spline as ISpline3DPlane, point);
+        public override void AddControlPointLocalSpace(ILoopingSpline spline, float3 point) =>
+            s_splineBase.AddControlPointLocalSpace(spline as ISpline3DPlane, point);
 
         public override void InsertControlPointWorldSpace(ILoopingSpline spline, int index, float3 point) =>
             s_splineBase.InsertControlPointWorldSpace(spline as ISpline3DPlane, index, point);
@@ -260,8 +260,8 @@ namespace Crener.Spline.Test.BaseTests
     {
         private static SplineInteractionBase2D s_splineBase = new SplineInteractionBase2D();
 
-        public override void AddControlPoint(ILoopingSpline spline, float3 point) =>
-            s_splineBase.AddControlPoint(spline as ISpline2D, point);
+        public override void AddControlPointLocalSpace(ILoopingSpline spline, float3 point) =>
+            s_splineBase.AddControlPointLocalSpace(spline as ISpline2D, point);
 
         public override void InsertControlPointWorldSpace(ILoopingSpline spline, int index, float3 point) =>
             s_splineBase.InsertControlPointWorldSpace(spline as ISpline2D, index, point);
