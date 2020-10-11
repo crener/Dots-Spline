@@ -122,7 +122,7 @@ namespace Crener.Spline._3D
         /// </summary>
         /// <param name="index">segment index</param>
         /// <param name="point">location to insert</param>
-        public override void InsertControlPointWorldSpace(int index, float3 point)
+        public override void InsertControlPointLocalSpace(int index, float3 point)
         {
             if(Points.Count < 1 || index >= ControlPointCount)
             {

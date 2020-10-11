@@ -9,7 +9,7 @@ namespace Crener.Spline.Test.BaseTests.TransferableTestBases
         /// <summary>
         /// Abstraction of adding a point so that 2D and 3D can share the same tests
         /// </summary>
-        void AddControlPoint(T spline, float3 point);
+        void AddControlPointLocalSpace(T spline, float3 point);
 
         /// <summary>
         /// Abstraction of inserting a point so that 2D and 3D can share the same tests

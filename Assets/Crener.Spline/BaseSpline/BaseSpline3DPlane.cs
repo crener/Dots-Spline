@@ -44,7 +44,7 @@ namespace Crener.Spline.BaseSpline
 
         public float3 Get3DPoint(float progress, int index)
         {
-            float2 point = GetPointProgress(progress, false);
+            float2 point = SplineInterpolation(progress, index);
             return Convert2Dto3D(point, true);
         }
 
@@ -56,7 +56,7 @@ namespace Crener.Spline.BaseSpline
 
         public void InsertControlPointWorldSpace(int index, float3 point)
         {
-            float2 converted = Convert3Dto2D(point, false);
+            float2 converted = Convert3Dto2D(point, true);
             base.InsertControlPoint(index, converted);
         }
 

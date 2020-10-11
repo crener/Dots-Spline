@@ -14,13 +14,13 @@ namespace Crener.Spline.Test._3D.LinearCubic.TestAdapters
             ITestSpline testSpline = PrepareSpline();
 
             float3 a = float3.zero;
-            AddControlPoint(testSpline, a);
+            AddControlPointLocalSpace(testSpline, a);
             float3 b = new float3(2.5f, 0f, 0f);
-            AddControlPoint(testSpline, b);
+            AddControlPointLocalSpace(testSpline, b);
             float3 c = new float3(7.5f, 0f, 0f);
-            AddControlPoint(testSpline, c);
+            AddControlPointLocalSpace(testSpline, c);
             float3 d = new float3(10f, 0f, 0f);
-            AddControlPoint(testSpline, d);
+            AddControlPointLocalSpace(testSpline, d);
 
             Assert.AreEqual(4, testSpline.ControlPointCount);
             Assert.AreEqual(4, testSpline.Modes.Count);
@@ -43,7 +43,7 @@ namespace Crener.Spline.Test._3D.LinearCubic.TestAdapters
             ITestSpline testSpline = PrepareSpline();
 
             float3 a = float3.zero;
-            AddControlPoint(testSpline, a);
+            AddControlPointLocalSpace(testSpline, a);
 
             testSpline.ChangeEditMode(0, mode);
             Assert.AreEqual(SplineEditMode.Standard, testSpline.GetEditMode(0));
@@ -55,13 +55,13 @@ namespace Crener.Spline.Test._3D.LinearCubic.TestAdapters
             ITestSpline testSpline = PrepareSpline();
 
             float3 a = new float3(0f, 0f, 1f);
-            AddControlPoint(testSpline, a);
+            AddControlPointLocalSpace(testSpline, a);
             float3 b = new float3(10f, 10f, 1f);
-            AddControlPoint(testSpline, b);
+            AddControlPointLocalSpace(testSpline, b);
             float3 c = new float3(0f, 20f, 1f);
-            AddControlPoint(testSpline, c);
+            AddControlPointLocalSpace(testSpline, c);
             float3 d = new float3(20f, 30f, 1f);
-            AddControlPoint(testSpline, d);
+            AddControlPointLocalSpace(testSpline, d);
 
             float length = math.distance(a, b) + math.distance(b, c) + math.distance(c, d);
             float spline = testSpline.Length();
@@ -74,9 +74,9 @@ namespace Crener.Spline.Test._3D.LinearCubic.TestAdapters
             ITestSpline testSpline = PrepareSpline();
 
             float3 a = new float3(0f, 0f, 1f);
-            AddControlPoint(testSpline, a);
+            AddControlPointLocalSpace(testSpline, a);
             float3 b = new float3(1f, 3f, 1f);
-            AddControlPoint(testSpline, b);
+            AddControlPointLocalSpace(testSpline, b);
 
             UpdateControlPoint(testSpline,0, new float3(1f, 0f, 1f), SplinePoint.Post);
             UpdateControlPoint(testSpline,1, new float3(0f, 3f, 1f), SplinePoint.Pre);
@@ -95,9 +95,9 @@ namespace Crener.Spline.Test._3D.LinearCubic.TestAdapters
             ITestSpline testSpline = PrepareSpline();
 
             float3 a = new float3(10f, 10f, 3f);
-            AddControlPoint(testSpline, a);
+            AddControlPointLocalSpace(testSpline, a);
             float3 b = new float3(20f, 20f, 3f);
-            AddControlPoint(testSpline, b);
+            AddControlPointLocalSpace(testSpline, b);
 
             TestHelpers.CheckFloat3(a, GetProgress(testSpline,0f));
             TestHelpers.CheckFloat3(math.lerp(a, b, 0.5f), GetProgress(testSpline,0.5f));
