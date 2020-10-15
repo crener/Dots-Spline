@@ -31,12 +31,12 @@ namespace Crener.Spline.Test._3D.Linear.TestAdapters
             Assert.AreEqual(0.75f, testSpline.Times[1]);
             Assert.AreEqual(1f, testSpline.Times[2]);
 
-            ComparePoint(a, GetProgress(testSpline, 0f));
-            ComparePoint(b, GetProgress(testSpline, 0.25f));
-            ComparePoint(new float3(5f, 0f, 0f), GetProgress(testSpline, 0.5f));
-            ComparePoint(d, GetProgress(testSpline, 1f));
-            ComparePoint(d, GetProgress(testSpline, 1.5f));
-            ComparePoint(d, GetProgress(testSpline, 5f));
+            ComparePoint(a, GetProgressWorld(testSpline, 0f));
+            ComparePoint(b, GetProgressWorld(testSpline, 0.25f));
+            ComparePoint(new float3(5f, 0f, 0f), GetProgressWorld(testSpline, 0.5f));
+            ComparePoint(d, GetProgressWorld(testSpline, 1f));
+            ComparePoint(d, GetProgressWorld(testSpline, 1.5f));
+            ComparePoint(d, GetProgressWorld(testSpline, 5f));
         }
 
         [Test]

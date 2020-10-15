@@ -78,23 +78,23 @@ namespace Crener.Spline._3D
 
         private const float c_splineMidPoint = 0.5f;
 
-        public override float3 Get3DPoint(float progress)
+        public override float3 Get3DPointLocal(float progress)
         {
             float3 translation = Position;
             if(ControlPointCount == 0)
                 return translation;
             else if(ControlPointCount == 1)
-                return translation + (float3)(Forward * GetControlPoint3DLocal(0));
+                return GetControlPoint3DLocal(0);
             else if(ControlPointCount == 2 && !Looped)
             {
-                return translation + (float3)(Forward * math.lerp(GetControlPoint3DLocal(0), GetControlPoint3DLocal(1), math.clamp(progress, 0f, 1f)));
+                return math.lerp(GetControlPoint3DLocal(0), GetControlPoint3DLocal(1), math.clamp(progress, 0f, 1f));
             }
 
             progress = math.clamp(progress, 0f, 1f);
             int aIndex = FindSegmentIndex(progress);
             float pointProgress = SegmentProgress(progress, aIndex);
 
-            return translation + (float3)(Forward * SplineInterpolation(pointProgress, aIndex));
+            return SplineInterpolation(pointProgress, aIndex);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

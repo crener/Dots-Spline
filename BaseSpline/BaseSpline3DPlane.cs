@@ -36,10 +36,16 @@ namespace Crener.Spline.BaseSpline
         /// </summary>
         public override bool hasSplineEntityData => base.hasSplineEntityData && m_splineData3D.HasValue;
 
-        public float3 Get3DPoint(float progress)
+        public float3 Get3DPointWorld(float progress)
         {
             float2 point = GetPointProgress(progress, false);
             return Convert2Dto3D(point, true);
+        }
+
+        public float3 Get3DPointLocal(float progress)
+        {
+            float2 point = GetPointProgress(progress, false);
+            return Convert2Dto3D(point, false);
         }
 
         public float3 Get3DPoint(float progress, int index)
@@ -117,7 +123,7 @@ namespace Crener.Spline.BaseSpline
         /// Relieve a point on the spline
         /// </summary>
         /// <returns>point on spline</returns>
-        public override float2 Get2DPoint(float progress)
+        public override float2 Get2DPointWorld(float progress)
         {
             return GetPointProgress(progress, true);
         }

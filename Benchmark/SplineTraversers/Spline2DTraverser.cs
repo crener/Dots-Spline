@@ -30,7 +30,7 @@ namespace Crener.Spline.Benchmark.SplineTraversers
             Progress += (m_speedNorm * Time.deltaTime);
             Progress %= 1f;
 
-            float2 pos = Spline.Get2DPoint(Progress);
+            float2 pos = Spline.Get2DPointWorld(Progress);
             transform.position = new Vector3(pos.x, pos.y, 0f);
         }
 

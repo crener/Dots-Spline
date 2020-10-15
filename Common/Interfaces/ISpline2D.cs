@@ -13,11 +13,18 @@ namespace Crener.Spline.Common.Interfaces
         Spline2DData? SplineEntityData2D { get; }
 
         /// <summary>
-        /// Retrieve a point on the spline
+        /// Retrieve a point on the spline in world space
         /// </summary>
         /// <param name="progress">0 to 1 range of progress along the spline</param>
         /// <returns>point on spline</returns>
-        float2 Get2DPoint(float progress);
+        float2 Get2DPointWorld(float progress);
+        
+        /// <summary>
+        /// Retrieve a point on the spline in local space
+        /// </summary>
+        /// <param name="progress">0 to 1 range of progress along the spline</param>
+        /// <returns>point on spline</returns>
+        float2 Get2DPointLocal(float progress);
 
         /// <summary>
         /// Retrieve a point on the spline between control point index and index + 1 by progress
@@ -25,7 +32,7 @@ namespace Crener.Spline.Common.Interfaces
         /// <param name="progress">0 to 1 range of progress along the spline</param>
         /// <param name="index">index of the first control point</param>
         /// <returns>point on spline</returns>
-        float2 Get2DPoint(float progress, int index);
+        float2 Get2DPointLocal(float progress, int index);
 
         /// <summary>
         /// Adds a point to the end of the spline

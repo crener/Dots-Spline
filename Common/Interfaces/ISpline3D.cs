@@ -16,7 +16,14 @@ namespace Crener.Spline.Common.Interfaces
         /// </summary>
         /// <param name="progress">0 to 1 range of progress along the spline</param>
         /// <returns>point on spline</returns>
-        float3 Get3DPoint(float progress);
+        float3 Get3DPointWorld(float progress);
+
+        /// <summary>
+        /// Retrieve a point on the spline in local space
+        /// </summary>
+        /// <param name="progress">0 to 1 range of progress along the spline</param>
+        /// <returns>point on spline</returns>
+        float3 Get3DPointLocal(float progress);
 
         /// <summary>
         /// Retrieve a point on the spline between control point index and index + 1 by progress

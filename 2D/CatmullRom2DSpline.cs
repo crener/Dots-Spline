@@ -52,20 +52,20 @@ namespace Crener.Spline._2D
         // 0.0 for the uniform spline, 0.5 for the centripetal spline, 1.0 for the chordal spline
         private const float c_alpha = 0.5f;
 
-        public override float2 Get2DPoint(float progress)
+        public override float2 Get2DPointLocal(float progress)
         {
             if(ControlPointCount == 0)
                 return float2.zero;
             else if(progress <= 0f)
-                return ConvertToWorldSpace(GetControlPoint2DLocal(0));
+                return GetControlPoint2DLocal(0);
             else if(progress >= 1f)
-                return ConvertToWorldSpace(GetControlPoint2DLocal(math.max(0, ControlPointCount - 1)));
+                return GetControlPoint2DLocal(math.max(0, ControlPointCount - 1));
             else if(ControlPointCount == 1)
-                return ConvertToWorldSpace(GetControlPoint2DLocal(0));
+                return GetControlPoint2DLocal(0);
 
             int aIndex = FindSegmentIndex(progress);
             float pointProgress = SegmentProgress(progress, aIndex);
-            return ConvertToWorldSpace(SplineInterpolation(pointProgress, aIndex));
+            return SplineInterpolation(pointProgress, aIndex);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

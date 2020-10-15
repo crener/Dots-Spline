@@ -147,22 +147,32 @@ namespace Crener.Spline.BaseSpline
         /// </summary>
         /// <param name="progress"></param>
         /// <returns>point on spline</returns>
-        public virtual float3 Get3DPoint(float progress)
+        public virtual float3 Get3DPointWorld(float progress)
+        {
+            return ConvertToWorldSpace(Get3DPointLocal(progress));
+        }
+
+        /// <summary>
+        /// Relieve a point on the spline
+        /// </summary>
+        /// <param name="progress"></param>
+        /// <returns>point on spline</returns>
+        public virtual float3 Get3DPointLocal(float progress)
         {
             if(ControlPointCount == 0)
-                return Position;
+                return float3.zero;
             if(progress <= 0f || ControlPointCount <= 1)
-                return ConvertToWorldSpace( GetControlPoint3DLocal(0));
+                return GetControlPoint3DLocal(0);
             if(progress >= 1f)
             {
                 if(this is ILoopingSpline looped && looped.Looped)
-                    return ConvertToWorldSpace( GetControlPoint3DLocal(0));
-                return ConvertToWorldSpace(GetControlPoint3DLocal((ControlPointCount - 1)));
+                    return GetControlPoint3DLocal(0);
+                return GetControlPoint3DLocal((ControlPointCount - 1));
             }
 
             int aIndex = FindSegmentIndex(progress);
             float pointProgress = SegmentProgress(progress, aIndex);
-            return ConvertToWorldSpace( SplineInterpolation(pointProgress, aIndex));
+            return SplineInterpolation(pointProgress, aIndex);
         }
 
         protected override float LengthBetweenPoints(int a, int resolution = 64)
