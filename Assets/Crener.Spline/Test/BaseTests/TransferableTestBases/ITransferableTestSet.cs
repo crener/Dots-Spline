@@ -29,7 +29,7 @@ namespace Crener.Spline.Test.BaseTests.TransferableTestBases
         /// <summary>
         /// Abstraction of calculating a point from the spline so that 2D and 3D can share the same tests
         /// </summary>
-        float3 GetProgress(T spline, float progress);
+        float3 GetProgressWorld(T spline, float progress);
 
         void CompareProgressEquals(T spline, float progress, float3 expectedPoint, float tolerance = 0.00001f);
         void CompareProgressNotEquals(T spline, float progress, float3 expectedPoint);

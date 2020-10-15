@@ -32,7 +32,7 @@ namespace Crener.Spline._2D.Experimental
 
         private const float c_splineMidPoint = 0.5f;
 
-        public override float2 Get2DPoint(float progress)
+        public override float2 Get2DPointWorld(float progress)
         {
             if(ControlPointCount == 0)
                 return float2.zero;

@@ -693,9 +693,9 @@ namespace Crener.Spline.Test.BaseTests
             Assert.AreNotEqual(float3.zero, first, "Test likely misconfigured as the expects location has the default value");
             Assert.AreEqual(nodeAmount, testSpline.ControlPointCount);
 
-            ComparePoint(first, GetProgress(testSpline, 0f));
-            ComparePoint(first, GetProgress(testSpline, -0.5f));
-            ComparePoint(first, GetProgress(testSpline, -1f));
+            ComparePoint(first, GetProgressWorld(testSpline, 0f));
+            ComparePoint(first, GetProgressWorld(testSpline, -0.5f));
+            ComparePoint(first, GetProgressWorld(testSpline, -1f));
         }
 
         /// <summary>
@@ -721,9 +721,9 @@ namespace Crener.Spline.Test.BaseTests
             Assert.AreNotEqual(float3.zero, last, "Test likely misconfigured as the expects location has the default value");
             Assert.AreEqual(nodeAmount, testSpline.ControlPointCount);
 
-            ComparePoint(last, GetProgress(testSpline, 1f));
-            ComparePoint(last, GetProgress(testSpline, 1.5f));
-            ComparePoint(last, GetProgress(testSpline, 2f));
+            ComparePoint(last, GetProgressWorld(testSpline, 1f));
+            ComparePoint(last, GetProgressWorld(testSpline, 1.5f));
+            ComparePoint(last, GetProgressWorld(testSpline, 2f));
         }
 
         [Test]
@@ -736,7 +736,8 @@ namespace Crener.Spline.Test.BaseTests
             float3 a = float3.zero;
             InsertControlPointLocalSpace(testSpline, 12, a);
             ComparePoint(a, GetControlPoint(testSpline, 0, SplinePoint.Point));
-            ComparePoint(move, GetProgress(testSpline, 0f));
+            ComparePoint(move, GetProgressWorld(testSpline, 0f));
+            ComparePoint(a, GetProgressLocal(testSpline, 0f));
         }
 
         [Test]
@@ -752,13 +753,15 @@ namespace Crener.Spline.Test.BaseTests
             float3 move = new float3(10f, 0f, 10f);
             ((MonoBehaviour) testSpline).transform.position = move;
             ComparePoint(a, GetControlPoint(testSpline, 0, SplinePoint.Point));
-            ComparePoint(move + a, GetProgress(testSpline, 0.5f));
+            ComparePoint(a, GetProgressLocal(testSpline, 0.5f));
+            ComparePoint(move + a, GetProgressWorld(testSpline, 0.5f));
 
             a = new float3(10f);
             UpdateControlPoint(testSpline, 0, a + move, SplinePoint.Point);
             Assert.AreEqual(1, testSpline.ControlPointCount);
             ComparePoint(a, GetControlPoint(testSpline, 0, SplinePoint.Point));
-            ComparePoint(move + a, GetProgress(testSpline, 0f));
+            ComparePoint(move + a, GetProgressWorld(testSpline, 0f));
+            ComparePoint(a, GetProgressLocal(testSpline, 0f));
         }
 
         [Test]
@@ -778,11 +781,12 @@ namespace Crener.Spline.Test.BaseTests
             float3 a = new float3(20f, 3f, 4f);
             InsertControlPointLocalSpace(testSpline, 12, a);
             ComparePoint(a, GetControlPoint(testSpline, 0, SplinePoint.Point));
+            ComparePoint(a, GetProgressLocal(testSpline, 0f));
 
             if(testSpline is ISpline3DPlane)
-                ComparePoint(move + (float3)(targetRotation * new float3(a.xy, 0)), GetProgress(testSpline, 0f));
+                ComparePoint(move + (float3)(targetRotation * new float3(a.xy, 0)), GetProgressWorld(testSpline, 0f));
             else
-                ComparePoint(move + (float3)(targetRotation * a), GetProgress(testSpline, 0f));
+                ComparePoint(move + (float3)(targetRotation * a), GetProgressWorld(testSpline, 0f));
         }
 
         [Test]
@@ -842,7 +846,7 @@ namespace Crener.Spline.Test.BaseTests
             // add point
             float3 a = new float3(10f, 10f, 0f);
             InsertControlPointLocalSpace(testSpline, 12, a);
-            ComparePoint(targetRotation * a, GetProgress(testSpline, 0f));
+            ComparePoint(targetRotation * a, GetProgressWorld(testSpline, 0f));
             ComparePoint(a, GetControlPoint(testSpline, 0, SplinePoint.Point));
         }
 
@@ -855,12 +859,12 @@ namespace Crener.Spline.Test.BaseTests
             float3 a = new float3(10f, 10f, 0f);
             InsertControlPointWorldSpace(testSpline, 12, a);
             ComparePoint(a, GetControlPoint(testSpline, 0, SplinePoint.Point));
-            ComparePoint(a, GetProgress(testSpline, 0f));
+            ComparePoint(a, GetProgressWorld(testSpline, 0f));
             
             // rotate
             Quaternion targetRotation = Quaternion.Euler(0f, 90f, 0f);
             ((MonoBehaviour) testSpline).transform.rotation = targetRotation;
-            ComparePoint(targetRotation * a, GetProgress(testSpline, 0f));
+            ComparePoint(targetRotation * a, GetProgressWorld(testSpline, 0f));
             ComparePoint(a, GetControlPoint(testSpline, 0, SplinePoint.Point));
         }
 
@@ -925,8 +929,11 @@ namespace Crener.Spline.Test.BaseTests
         public override void UpdateControlPoint(ITestSpline spline, int index, float3 newPoint, SplinePoint pointType) =>
             s_splineBase.UpdateControlPoint(spline as ISimpleSpline3D, index, newPoint, pointType);
 
-        public override float3 GetProgress(ITestSpline spline, float progress) =>
-            s_splineBase.GetProgress(spline as ISimpleSpline3D, progress);
+        public override float3 GetProgressWorld(ITestSpline spline, float progress) =>
+            s_splineBase.GetProgressWorld(spline as ISimpleSpline3D, progress);
+        
+        public override float3 GetProgressLocal(ITestSpline spline, float progress) =>
+            s_splineBase.GetProgressLocal(spline as ISimpleSpline3D, progress);
 
         public override void CompareProgressEquals(ITestSpline spline, float progress, float3 expectedPoint,
             float tolerance = 0.00001f) =>
@@ -960,8 +967,11 @@ namespace Crener.Spline.Test.BaseTests
         public override void UpdateControlPoint(ITestSpline spline, int index, float3 newPoint, SplinePoint pointType) =>
             s_splineBase.UpdateControlPoint(spline as ISpline3DPlane, index, newPoint, pointType);
 
-        public override float3 GetProgress(ITestSpline spline, float progress) =>
-            s_splineBase.GetProgress(spline as ISpline3DPlane, progress);
+        public override float3 GetProgressWorld(ITestSpline spline, float progress) =>
+            s_splineBase.GetProgressWorld(spline as ISpline3DPlane, progress);
+        
+        public override float3 GetProgressLocal(ITestSpline spline, float progress) =>
+            s_splineBase.GetProgressLocal(spline as ISpline3DPlane, progress);
 
         public override void CompareProgressEquals(ITestSpline spline, float progress, float3 expectedPoint,
             float tolerance = 0.00001f) =>
@@ -995,8 +1005,11 @@ namespace Crener.Spline.Test.BaseTests
         public override void UpdateControlPoint(ITestSpline spline, int index, float3 newPoint, SplinePoint pointType) =>
             s_splineBase.UpdateControlPoint(spline as ISpline2D, index, newPoint, pointType);
 
-        public override float3 GetProgress(ITestSpline spline, float progress) =>
-            s_splineBase.GetProgress(spline as ISpline2D, progress);
+        public override float3 GetProgressWorld(ITestSpline spline, float progress) =>
+            s_splineBase.GetProgressWorld(spline as ISpline2D, progress);
+        
+        public override float3 GetProgressLocal(ITestSpline spline, float progress) =>
+            s_splineBase.GetProgressLocal(spline as ISpline2D, progress);
 
         public override void CompareProgressEquals(ITestSpline spline, float progress, float3 expectedPoint,
             float tolerance = 0.00001f) =>

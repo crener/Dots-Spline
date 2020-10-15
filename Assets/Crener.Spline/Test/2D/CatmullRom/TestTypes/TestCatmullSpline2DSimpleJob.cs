@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Crener.Spline._2D;
+using Crener.Spline._2D.Jobs;
 using Crener.Spline.Common;
 using Crener.Spline.Common.Interfaces;
 using NUnit.Framework;
@@ -30,13 +31,32 @@ namespace Crener.Spline.Test._2D.CatmullRom.TestTypes
                 }
             }
 
-            public new float2 Get2DPoint(float progress)
+            public new float2 Get2DPointLocal(float progress)
             {
                 ClearData();
                 ConvertData();
 
                 Assert.IsTrue(SplineEntityData2D.HasValue, "Failed to generate spline");
-                ISplineJob2D job = this.ExtractJob(progress);
+                ISplineJob2D job = this.ExtractJob(new SplineProgress {Progress = progress});
+                job.Execute();
+
+                LocalSpaceConversion2D conversion = new LocalSpaceConversion2D()
+                {
+                    SplinePosition = job.Result,
+                    TransformPosition = this.Position.xy
+                };
+                conversion.Execute();
+
+                return conversion.SplinePosition;
+            }
+            
+            public new float2 Get2DPointWorld(float progress)
+            {
+                ClearData();
+                ConvertData();
+
+                Assert.IsTrue(SplineEntityData2D.HasValue, "Failed to generate spline");
+                ISplineJob2D job = this.ExtractJob(new SplineProgress {Progress = progress});
                 job.Execute();
 
                 return job.Result;

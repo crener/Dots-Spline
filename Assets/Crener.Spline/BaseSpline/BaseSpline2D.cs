@@ -50,9 +50,9 @@ namespace Crener.Spline.BaseSpline
         /// Retrieve a point on the spline at a specific control point
         /// </summary>
         /// <returns>point on spline segment</returns>
-        public virtual float2 Get2DPoint(float progress, int index)
+        public virtual float2 Get2DPointLocal(float progress, int index)
         {
-            return Position.xy + SplineInterpolation(progress, index);
+            return SplineInterpolation(progress, index);
         }
 
         /// <summary>
@@ -131,28 +131,29 @@ namespace Crener.Spline.BaseSpline
             }
         }
 
-        /// <summary>
-        /// Relieve a point on the spline
-        /// </summary>
-        /// <param name="progress"></param>
-        /// <returns>point on spline</returns>
-        public virtual float2 Get2DPoint(float progress)
+        /// <inheritdoc/>
+        public virtual float2 Get2DPointWorld(float progress)
         {
-            float2 translation = Position.xy;
+            return Position.xy + Get2DPointLocal(progress);
+        }
+
+        /// <inheritdoc/>
+        public virtual float2 Get2DPointLocal(float progress)
+        {
             if(ControlPointCount == 0)
-                return translation;
+                return float2.zero;
             else if(progress <= 0f || ControlPointCount == 1)
-                return translation + GetControlPoint2DLocal(0);
+                return GetControlPoint2DLocal(0);
             else if(progress >= 1f)
             {
                 if(this is ILoopingSpline looped && looped.Looped)
-                    return translation + GetControlPoint2DLocal(0);
-                return translation + GetControlPoint2DLocal((ControlPointCount - 1));
+                    return GetControlPoint2DLocal(0);
+                return GetControlPoint2DLocal((ControlPointCount - 1));
             }
 
             int aIndex = FindSegmentIndex(progress);
             float pointProgress = SegmentProgress(progress, aIndex);
-            return translation + SplineInterpolation(pointProgress, aIndex);
+            return SplineInterpolation(pointProgress, aIndex);
         }
 
         protected override float LengthBetweenPoints(int a, int resolution = 64)
@@ -257,14 +258,14 @@ namespace Crener.Spline.BaseSpline
 
             for (int i = 0; i < SegmentPointCount - 1; i++)
             {
-                float2 f = Get2DPoint(0f, i);
+                float2 f = Get2DPointLocal(0f, i);
                 Vector3 lp = new Vector3(f.x, f.y, 0f);
                 int points = math.min((int) (pointDensity * (SegmentLength[i] * Length())), maxPointAmount);
 
                 for (int s = 1; s <= points; s++)
                 {
                     float progress = s / (float) points;
-                    float2 p = Get2DPoint(progress, i);
+                    float2 p = Get2DPointLocal(progress, i);
                     Vector3 point = new Vector3(p.x, p.y, 0f);
 
                     Gizmos.DrawLine(lp, point);
@@ -330,7 +331,7 @@ namespace Crener.Spline.BaseSpline
                 previousTime = currentTime;
 
                 double previousProgress = 0f;
-                float2 previous = Get2DPoint((float) previousProgress, i);
+                float2 previous = Get2DPointLocal((float) previousProgress, i);
                 points.Add(previous); // directly add control point
 
                 if(i > 0)
@@ -353,7 +354,7 @@ namespace Crener.Spline.BaseSpline
                     int attempts = -1;
                     while (++attempts < perPointIterationAttempts)
                     {
-                        point = Get2DPoint((float) currentProgress, i);
+                        point = Get2DPointLocal((float) currentProgress, i);
 
                         distance = math.distance(previous, point);
                         if(math.abs((sectionLengthDone + distance) - targetDistance) < 0.0000005f)

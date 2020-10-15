@@ -141,11 +141,11 @@ namespace Crener.Spline.Test._2D.Bezier
             Assert.AreEqual(length, spline.SplineEntityData2D?.Length, "unexpected length!");
 
             // make sure that points converge from left to right, otherwise ark param wouldn't be required ;)
-            float2 left1 = spline.Get2DPoint(0f);
-            float2 left2 = spline.Get2DPoint(0.1f);
+            float2 left1 = spline.Get2DPointWorld(0f);
+            float2 left2 = spline.Get2DPointWorld(0.1f);
             float left = math.distance(left1, left2);
-            float2 right1 = spline.Get2DPoint(0.9f);
-            float2 right2 = spline.Get2DPoint(1f);
+            float2 right1 = spline.Get2DPointWorld(0.9f);
+            float2 right2 = spline.Get2DPointWorld(1f);
             float right = math.distance(right1, right2);
             Assert.Greater(left, right, $"Left Delta '{left}' should be grater than right delta '{right}'");
 

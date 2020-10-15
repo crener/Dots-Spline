@@ -60,17 +60,23 @@ namespace Crener.Spline.Test.BaseTests.TransferableTestBases
 
         public float Length(float3 a, float3 b) => math.distance(a, b);
 
-        public virtual float3 GetProgress(ISpline3DPlane spline, float progress)
+        public virtual float3 GetProgressWorld(ISpline3DPlane spline, float progress)
         {
             Assert.NotNull(spline);
-            return spline.Get3DPoint(progress);
+            return spline.Get3DPointWorld(progress);
+        }
+        
+        public virtual float3 GetProgressLocal(ISpline3DPlane spline, float progress)
+        {
+            Assert.NotNull(spline);
+            return spline.Get3DPointLocal(progress);
         }
         
         public void CompareProgressEquals(ISpline3DPlane spline, float progress, float3 expectedPoint, float tolerance = 0.00001f)
         {
             Assert.NotNull(spline);
 
-            float3 point = spline.Get3DPoint(progress);
+            float3 point = spline.Get3DPointWorld(progress);
             TestHelpers.CheckFloat2(point.xy, expectedPoint.xy, tolerance);
         }
 
@@ -78,7 +84,7 @@ namespace Crener.Spline.Test.BaseTests.TransferableTestBases
         {
             Assert.NotNull(spline);
             
-            float2 point2d = spline.Get2DPoint(progress);
+            float2 point2d = spline.Get2DPointWorld(progress);
             TestHelpers.CheckFloat2(point2d, unexpectedPoint.xy);
         }
 

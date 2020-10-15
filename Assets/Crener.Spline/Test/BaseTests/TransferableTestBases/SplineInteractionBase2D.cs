@@ -12,7 +12,7 @@ namespace Crener.Spline.Test.BaseTests.TransferableTestBases
         {
             Assert.NotNull(spline);
 
-            ISpline2D spline2D = spline as ISpline2D;
+            ISpline2D spline2D = spline;
             Assert.NotNull(spline2D, $"Failed to convert to 2D spline! Spline type was: {spline.GetType().Name}");
 
             int before = spline2D.ControlPointCount;
@@ -47,30 +47,39 @@ namespace Crener.Spline.Test.BaseTests.TransferableTestBases
 
         public float Length(float3 a, float3 b) => math.distance(a.xy, b.xy);
 
-        public float3 GetProgress(ISpline2D spline, float progress)
+        public float3 GetProgressWorld(ISpline2D spline, float progress)
         {
-            ISpline2D spline2D = spline as ISpline2D;
+            ISpline2D spline2D = spline;
             Assert.NotNull(spline2D);
 
-            float2 point = spline2D.Get2DPoint(progress);
+            float2 point = spline2D.Get2DPointWorld(progress);
+            return new float3(point.x, point.y, 0f);
+        }
+        
+        public float3 GetProgressLocal(ISpline2D spline, float progress)
+        {
+            ISpline2D spline2D = spline;
+            Assert.NotNull(spline2D);
+
+            float2 point = spline2D.Get2DPointWorld(progress);
             return new float3(point.x, point.y, 0f);
         }
 
         public void CompareProgressEquals(ISpline2D spline, float progress, float3 expectedPoint, float tolerance = 0.00001f)
         {
-            ISpline2D spline2D = spline as ISpline2D;
+            ISpline2D spline2D = spline;
             Assert.NotNull(spline2D);
 
-            float2 point = spline2D.Get2DPoint(progress);
+            float2 point = spline2D.Get2DPointWorld(progress);
             TestHelpers.CheckFloat2(point, expectedPoint.xy, tolerance);
         }
 
         public void CompareProgressNotEquals(ISpline2D spline, float progress, float3 expectedPoint)
         {
-            ISpline2D spline2D = spline as ISpline2D;
+            ISpline2D spline2D = spline;
             Assert.NotNull(spline2D);
 
-            float2 point = spline2D.Get2DPoint(progress);
+            float2 point = spline2D.Get2DPointWorld(progress);
             Assert.AreNotEqual(point, expectedPoint.xy);
         }
 

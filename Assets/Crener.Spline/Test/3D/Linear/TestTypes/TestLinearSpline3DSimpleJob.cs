@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using Crener.Spline._2D.Jobs;
 using Crener.Spline._3D;
+using Crener.Spline._3D.Jobs;
 using Crener.Spline.Common;
 using Crener.Spline.Common.Interfaces;
 using NUnit.Framework;
@@ -30,13 +32,33 @@ namespace Crener.Spline.Test._3D.Linear.TestTypes
                 }
             }
 
-            public new float3 Get3DPoint(float progress)
+            public new float3 Get3DPointLocal(float progress)
             {
                 ClearData();
                 ConvertData();
 
                 Assert.IsTrue(SplineEntityData3D.HasValue, "Failed to generate spline");
-                ISplineJob3D job = this.ExtractJob(progress);
+                ISplineJob3D job = this.ExtractJob(new SplineProgress {Progress = progress});
+                job.Execute();
+
+                LocalSpaceConversion3D conversion = new LocalSpaceConversion3D()
+                {
+                    SplinePosition = job.Result,
+                    TransformPosition = this.Position,
+                    TransformRotation = this.Forward
+                };
+                conversion.Execute();
+                
+                return conversion.SplinePosition;
+            }
+            
+            public new float3 Get3DPointWorld(float progress)
+            {
+                ClearData();
+                ConvertData();
+
+                Assert.IsTrue(SplineEntityData3D.HasValue, "Failed to generate spline");
+                ISplineJob3D job = this.ExtractJob(new SplineProgress {Progress = progress});
                 job.Execute();
 
                 return job.Result;

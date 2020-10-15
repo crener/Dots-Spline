@@ -31,12 +31,12 @@ namespace Crener.Spline.Test._3DPlane.LinearCubicPlain.TestAdapters
             // b-c-d 2nd spline segment
             Assert.AreEqual(1f, testSpline.Times[1]);
 
-            ComparePoint(a, GetProgress(testSpline, -1f));
-            ComparePoint(a, GetProgress(testSpline, 0f));
-            ComparePoint(new float3(5f, 0f, 0f), GetProgress(testSpline, 0.5f));
-            ComparePoint(d, GetProgress(testSpline, 1f));
-            ComparePoint(d, GetProgress(testSpline, 1.5f));
-            ComparePoint(d, GetProgress(testSpline, 5f));
+            ComparePoint(a, GetProgressWorld(testSpline, -1f));
+            ComparePoint(a, GetProgressWorld(testSpline, 0f));
+            ComparePoint(new float3(5f, 0f, 0f), GetProgressWorld(testSpline, 0.5f));
+            ComparePoint(d, GetProgressWorld(testSpline, 1f));
+            ComparePoint(d, GetProgressWorld(testSpline, 1.5f));
+            ComparePoint(d, GetProgressWorld(testSpline, 5f));
         }
 
         [Test]

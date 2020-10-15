@@ -30,12 +30,12 @@ namespace Crener.Spline.Test._2D.Linear.TestAdapters
             Assert.AreEqual(0.75f, testSpline.Times[1]);
             Assert.AreEqual(1f, testSpline.Times[2]);
 
-            TestHelpers.CheckFloat2(a, testSpline.Get2DPoint(0f));
-            TestHelpers.CheckFloat2(new float2(2.5f, 0f), testSpline.Get2DPoint(0.25f));
-            TestHelpers.CheckFloat2(new float2(5f, 0f), testSpline.Get2DPoint(0.5f));
-            TestHelpers.CheckFloat2(new float2(10f, 0f), testSpline.Get2DPoint(1f));
-            TestHelpers.CheckFloat2(new float2(10f, 0f), testSpline.Get2DPoint(1.5f));
-            TestHelpers.CheckFloat2(new float2(10f, 0f), testSpline.Get2DPoint(5f));
+            TestHelpers.CheckFloat2(a, testSpline.Get2DPointWorld(0f));
+            TestHelpers.CheckFloat2(new float2(2.5f, 0f), testSpline.Get2DPointWorld(0.25f));
+            TestHelpers.CheckFloat2(new float2(5f, 0f), testSpline.Get2DPointWorld(0.5f));
+            TestHelpers.CheckFloat2(new float2(10f, 0f), testSpline.Get2DPointWorld(1f));
+            TestHelpers.CheckFloat2(new float2(10f, 0f), testSpline.Get2DPointWorld(1.5f));
+            TestHelpers.CheckFloat2(new float2(10f, 0f), testSpline.Get2DPointWorld(5f));
         }
 
         [Test]

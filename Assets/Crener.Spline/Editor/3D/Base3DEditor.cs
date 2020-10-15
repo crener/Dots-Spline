@@ -357,7 +357,7 @@ namespace Crener.Spline.Editor._3D
 
             for (int i = 0; i <= quantity; i++)
             {
-                HandleDrawCross(spline.Get3DPoint(i == 0 ? 0f : i / (quantity - 1f)), multiplier);
+                HandleDrawCross(spline.Get3DPointWorld(i == 0 ? 0f : i / (quantity - 1f)), multiplier);
             }
         }
 

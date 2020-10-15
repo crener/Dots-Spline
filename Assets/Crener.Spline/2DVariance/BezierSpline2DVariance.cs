@@ -105,12 +105,17 @@ namespace Crener.Spline._2DVariance
             }
         }
 
-        public float2 Get2DPoint(float progress)
+        public float2 Get2DPointWorld(float progress)
+        {
+            return ConvertToWorldSpace(GetPoint(progress, half.zero));
+        }
+
+        public float2 Get2DPointLocal(float progress)
         {
             return GetPoint(progress, half.zero);
         }
 
-        public float2 Get2DPoint(float progress, int index)
+        public float2 Get2DPointLocal(float progress, int index)
         {
             return GetPoint(progress, index, half.zero);
         }
@@ -124,9 +129,9 @@ namespace Crener.Spline._2DVariance
         public float2 GetPoint(float progress, half variance)
         {
             if(ControlPointCount == 0)
-                return Position.xy;
+                return float2.zero;
             if(ControlPointCount <= 1)
-                return ConvertToWorldSpace(GetControlPoint(0, SplinePointVariance.Point));
+                return GetControlPoint(0, SplinePointVariance.Point);
             progress = math.clamp(progress, 0f, 1f);
 
             int aIndex = FindSegmentIndex(progress);
@@ -144,7 +149,7 @@ namespace Crener.Spline._2DVariance
                 throw new IndexOutOfRangeException($"{nameof(sideProgress)} out of range: {sideProgress}");
 #endif
 
-            return ConvertToWorldSpace(CubicBezierPoint(centerProgress, sideProgress, aIndex, bIndex, variance));
+            return CubicBezierPoint(centerProgress, sideProgress, aIndex, bIndex, variance);
         }
 
         /// <summary>

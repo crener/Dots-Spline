@@ -30,11 +30,11 @@ namespace Crener.Spline.Test._3D.LinearCubic.TestAdapters
             Assert.AreEqual(0.5f, testSpline.Times[0]);
             Assert.AreEqual(1f, testSpline.Times[1]);
 
-            TestHelpers.CheckFloat3(a, GetProgress(testSpline, 0f));
-            TestHelpers.CheckFloat3(new float3(5f, 0f, 0f), GetProgress(testSpline,0.5f));
-            TestHelpers.CheckFloat3(d, GetProgress(testSpline,1f));
-            TestHelpers.CheckFloat3(d, GetProgress(testSpline,1.5f));
-            TestHelpers.CheckFloat3(d, GetProgress(testSpline,5f));
+            TestHelpers.CheckFloat3(a, GetProgressWorld(testSpline, 0f));
+            TestHelpers.CheckFloat3(new float3(5f, 0f, 0f), GetProgressWorld(testSpline,0.5f));
+            TestHelpers.CheckFloat3(d, GetProgressWorld(testSpline,1f));
+            TestHelpers.CheckFloat3(d, GetProgressWorld(testSpline,1.5f));
+            TestHelpers.CheckFloat3(d, GetProgressWorld(testSpline,5f));
         }
 
         [Test]
@@ -99,10 +99,10 @@ namespace Crener.Spline.Test._3D.LinearCubic.TestAdapters
             float3 b = new float3(20f, 20f, 3f);
             AddControlPointLocalSpace(testSpline, b);
 
-            TestHelpers.CheckFloat3(a, GetProgress(testSpline,0f));
-            TestHelpers.CheckFloat3(math.lerp(a, b, 0.5f), GetProgress(testSpline,0.5f));
-            TestHelpers.CheckFloat3(math.lerp(a, b, 0.7f), GetProgress(testSpline,0.7f));
-            TestHelpers.CheckFloat3(b, GetProgress(testSpline,1f));
+            TestHelpers.CheckFloat3(a, GetProgressWorld(testSpline,0f));
+            TestHelpers.CheckFloat3(math.lerp(a, b, 0.5f), GetProgressWorld(testSpline,0.5f));
+            TestHelpers.CheckFloat3(math.lerp(a, b, 0.7f), GetProgressWorld(testSpline,0.7f));
+            TestHelpers.CheckFloat3(b, GetProgressWorld(testSpline,1f));
         }
     }
 }

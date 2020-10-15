@@ -357,7 +357,7 @@ namespace Crener.Spline._2D
                 previousTime = currentTime;
 
                 double previousProgress = 0f;
-                float2 previous = Get2DPoint((float) previousProgress, i);
+                float2 previous = Get2DPointLocal((float) previousProgress, i);
                 points.Add(previous); // directly add control point
 
                 if(i > 0)
@@ -380,7 +380,7 @@ namespace Crener.Spline._2D
                     int attempts = -1;
                     while (++attempts < perPointIterationAttempts)
                     {
-                        point = Get2DPoint((float) currentProgress, i);
+                        point = Get2DPointLocal((float) currentProgress, i);
 
                         distance = math.distance(previous, point);
                         if(math.abs((sectionLengthDone + distance) - targetDistance) < 0.0000005f)

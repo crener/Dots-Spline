@@ -46,20 +46,20 @@ namespace Crener.Spline.Test._3DPlane
             Assert.AreEqual(2, spline.ControlPointCount);
 
             // make sure everything is where it's supposed to be
-            TestHelpers.CheckFloat3(a, spline.Get3DPoint(0f));
-            TestHelpers.CheckFloat3(b, spline.Get3DPoint(1f));
-            TestHelpers.CheckFloat2(a.xy, spline.Get2DPoint(0f));
-            TestHelpers.CheckFloat2(b.xy, spline.Get2DPoint(1f));
+            TestHelpers.CheckFloat3(a, spline.Get3DPointWorld(0f));
+            TestHelpers.CheckFloat3(b, spline.Get3DPointWorld(1f));
+            TestHelpers.CheckFloat2(a.xy, spline.Get2DPointWorld(0f));
+            TestHelpers.CheckFloat2(b.xy, spline.Get2DPointWorld(1f));
 
             // move the gameobject
             float3 pos = new float3(x, y, z);
             MoveGameobject(spline, pos);
 
             // check that the spline has moved accordingly
-            TestHelpers.CheckFloat3(a + pos, spline.Get3DPoint(0f));
-            TestHelpers.CheckFloat3(b + pos, spline.Get3DPoint(1f));
-            TestHelpers.CheckFloat2((a + pos).xy, spline.Get2DPoint(0f));
-            TestHelpers.CheckFloat2((b + pos).xy, spline.Get2DPoint(1f));
+            TestHelpers.CheckFloat3(a + pos, spline.Get3DPointWorld(0f));
+            TestHelpers.CheckFloat3(b + pos, spline.Get3DPointWorld(1f));
+            TestHelpers.CheckFloat2((a + pos).xy, spline.Get2DPointWorld(0f));
+            TestHelpers.CheckFloat2((b + pos).xy, spline.Get2DPointWorld(1f));
         }
 
         [Test]
@@ -80,25 +80,25 @@ namespace Crener.Spline.Test._3DPlane
             Assert.AreEqual(2, spline.ControlPointCount);
 
             // make sure everything is where it's supposed to be
-            TestHelpers.CheckFloat3(a, spline.Get3DPoint(0f));
-            TestHelpers.CheckFloat2(a.xy, spline.Get2DPoint(0f));
-            TestHelpers.CheckFloat3(b, spline.Get3DPoint(1f));
-            TestHelpers.CheckFloat2(b.xy, spline.Get2DPoint(1f));
+            TestHelpers.CheckFloat3(a, spline.Get3DPointWorld(0f));
+            TestHelpers.CheckFloat2(a.xy, spline.Get2DPointWorld(0f));
+            TestHelpers.CheckFloat3(b, spline.Get3DPointWorld(1f));
+            TestHelpers.CheckFloat2(b.xy, spline.Get2DPointWorld(1f));
 
             // move the gameobject
             float3 pos = new float3(x, y, z);
             MoveGameobject(spline, pos);
 
             // check that the spline has moved accordingly
-            TestHelpers.CheckFloat3(a + pos, spline.Get3DPoint(0f));
-            TestHelpers.CheckFloat3(b + pos, spline.Get3DPoint(1f));
+            TestHelpers.CheckFloat3(a + pos, spline.Get3DPointWorld(0f));
+            TestHelpers.CheckFloat3(b + pos, spline.Get3DPointWorld(1f));
             
             {
                 // rotate a little bit
                 Quaternion targetRotation = Quaternion.Euler(0f, yRotation, 0f);
                 spline.Forward = targetRotation;
-                TestHelpers.CheckFloat3(pos + ((float3)(targetRotation * a)), spline.Get3DPoint(0f));
-                TestHelpers.CheckFloat3(pos + ((float3)(targetRotation * b)), spline.Get3DPoint(1f));
+                TestHelpers.CheckFloat3(pos + ((float3)(targetRotation * a)), spline.Get3DPointWorld(0f));
+                TestHelpers.CheckFloat3(pos + ((float3)(targetRotation * b)), spline.Get3DPointWorld(1f));
             }
         }
 
@@ -109,24 +109,24 @@ namespace Crener.Spline.Test._3DPlane
 
             float3 a = new float3(10f, 5f, 0f);
             spline.AddControlPoint(a);
-            TestHelpers.CheckFloat3(a, spline.Get3DPoint(0f));
-            TestHelpers.CheckFloat2(a.xy, spline.Get2DPoint(0f));
+            TestHelpers.CheckFloat3(a, spline.Get3DPointWorld(0f));
+            TestHelpers.CheckFloat2(a.xy, spline.Get2DPointWorld(0f));
 
             {
                 // rotate a little bit
                 Quaternion targetRotation = Quaternion.Euler(0f, 90f, 0f);
                 spline.Forward = targetRotation;
 
-                TestHelpers.CheckFloat3(new float3(0f, 5f, -10f), spline.Get3DPoint(0f));
-                TestHelpers.CheckFloat2(a.xy, spline.Get2DPoint(0f));
+                TestHelpers.CheckFloat3(new float3(0f, 5f, -10f), spline.Get3DPointWorld(0f));
+                TestHelpers.CheckFloat2(a.xy, spline.Get2DPointWorld(0f));
             }
             {
                 // Go back to the original orientation
                 Quaternion targetRotation = Quaternion.Euler(0f, 0f, 0f);
                 spline.Forward = targetRotation;
 
-                TestHelpers.CheckFloat3(a, spline.Get3DPoint(0f));
-                TestHelpers.CheckFloat2(a.xy, spline.Get2DPoint(0f));
+                TestHelpers.CheckFloat3(a, spline.Get3DPointWorld(0f));
+                TestHelpers.CheckFloat2(a.xy, spline.Get2DPointWorld(0f));
             }
         }
 

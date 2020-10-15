@@ -242,8 +242,11 @@ namespace Crener.Spline.Test.BaseTests
         public override void UpdateControlPoint(IArkableSpline spline, int index, float3 newPoint, SplinePoint pointType) =>
             s_splineBase.UpdateControlPoint(spline as ISimpleSpline3D, index, newPoint, pointType);
 
-        public override float3 GetProgress(IArkableSpline spline, float progress) =>
-            s_splineBase.GetProgress(spline as ISimpleSpline3D, progress);
+        public override float3 GetProgressWorld(IArkableSpline spline, float progress) =>
+            s_splineBase.GetProgressWorld(spline as ISimpleSpline3D, progress);
+        
+        public override float3 GetProgressLocal(IArkableSpline spline, float progress) =>
+            s_splineBase.GetProgressWorld(spline as ISimpleSpline3D, progress);
 
         public override void CompareProgressEquals(IArkableSpline spline, float progress, float3 expectedPoint,
             float tolerance = 0.00001f) =>
@@ -283,8 +286,11 @@ namespace Crener.Spline.Test.BaseTests
         public override void UpdateControlPoint(IArkableSpline spline, int index, float3 newPoint, SplinePoint pointType) =>
             s_splineBase.UpdateControlPoint(spline as ISpline3DPlane, index, newPoint, pointType);
 
-        public override float3 GetProgress(IArkableSpline spline, float progress) =>
-            s_splineBase.GetProgress(spline as ISpline3DPlane, progress);
+        public override float3 GetProgressWorld(IArkableSpline spline, float progress) =>
+            s_splineBase.GetProgressWorld(spline as ISpline3DPlane, progress);
+        
+        public override float3 GetProgressLocal(IArkableSpline spline, float progress) =>
+            s_splineBase.GetProgressWorld(spline as ISpline3DPlane, progress);
 
         public override void CompareProgressEquals(IArkableSpline spline, float progress, float3 expectedPoint,
             float tolerance = 0.00001f) =>
@@ -318,8 +324,11 @@ namespace Crener.Spline.Test.BaseTests
         public override void UpdateControlPoint(IArkableSpline spline, int index, float3 newPoint, SplinePoint pointType) =>
             s_splineBase.UpdateControlPoint(spline as ISpline2D, index, newPoint, pointType);
 
-        public override float3 GetProgress(IArkableSpline spline, float progress) =>
-            s_splineBase.GetProgress(spline as ISpline2D, progress);
+        public override float3 GetProgressWorld(IArkableSpline spline, float progress) =>
+            s_splineBase.GetProgressWorld(spline as ISpline2D, progress);
+        
+        public override float3 GetProgressLocal(IArkableSpline spline, float progress) =>
+            s_splineBase.GetProgressWorld(spline as ISpline2D, progress);
 
         public override void CompareProgressEquals(IArkableSpline spline, float progress, float3 expectedPoint,
             float tolerance = 0.00001f) =>
