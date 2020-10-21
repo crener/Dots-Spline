@@ -10,7 +10,7 @@ namespace Crener.Spline._2D
     /// <summary>
     /// Simple spline which directly follows a set of points with cubic interpolation
     /// </summary>
-    [AddComponentMenu("Spline/2D/Cubic Spline")]
+    [AddComponentMenu("Spline/2D/Cubic Spline 2D")]
     public class CubicSpline2D : BaseSpline2D
     {
         public override SplineType SplineDataType
@@ -250,22 +250,7 @@ namespace Crener.Spline._2D
                 return;
             }
 
-            for (int i = 0; i < SegmentPointCount - 1; i++)
-            {
-                float2 f = Get2DPointLocal(0f, i);
-                Vector3 lp = new Vector3(f.x, f.y, 0f);
-                int points = (int) (pointDensity * (SegmentLength[i] * Length()));
-
-                for (int s = 1; s <= points; s++)
-                {
-                    float progress = s / (float) points;
-                    float2 p = Get2DPointLocal(progress, i);
-                    Vector3 point = new Vector3(p.x, p.y, 0f);
-
-                    Gizmos.DrawLine(lp, point);
-                    lp = point;
-                }
-            }
+            base.OnDrawGizmosSelected();
         }
     }
 }

@@ -11,7 +11,7 @@ namespace Crener.Spline._3DPlain
     /// <summary>
     /// Simple spline which directly follows a set of points
     /// </summary>
-    [AddComponentMenu("Spline/3D/Linear Spline Plain")]
+    [AddComponentMenu("Spline/3D/Linear Spline 3D Plain")]
     public class Linear3DPlaneSpline : BaseSpline3DPlane, ILoopingSpline
     {
         [SerializeField]

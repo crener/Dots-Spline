@@ -18,7 +18,7 @@ namespace Crener.Spline._2DVariance
     /// <summary>
     /// Spline along the XY axis with variance as defined when edited in scene
     /// </summary>
-    [AddComponentMenu("Spline/2D/Variance/Bezier Spline")]
+    [AddComponentMenu("Spline/2D/Variance/Bezier Spline 2D Variance")]
     public class BezierSpline2DVariance : MonoBehaviour, ISimpleSpline2DVariance
     {
         private static readonly Color s_handleLeft = new Color(0.06f, 0.48f, 0f);
@@ -538,8 +538,8 @@ namespace Crener.Spline._2DVariance
 #if UNITY_EDITOR
             // if this fails it is an issue and causes snapping/jumping at places where spline segments meet
             float totalLength = segmentLengths[segmentLengths.Count - 1];
-            Assert.IsTrue(Math.Abs(totalLength - 1f) < 0.00001f,
-                $"Last length point not equal to 1! Lerping using this data will be inaccurate. Actual Point: {totalLength:N}");
+            if(Math.Abs(totalLength - 1f) >= 0.00001f)
+                Assert.IsTrue(false, $"Last length point not equal to 1! Lerping using this data will be inaccurate. Actual Point: {totalLength:N}");
 #endif
 
             return segmentLengths.ToArray();

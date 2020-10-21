@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using Crener.Spline.Common;
 using Crener.Spline.Common.Interfaces;
 using Unity.Entities;
@@ -41,10 +43,15 @@ namespace Crener.Spline.BaseSpline
         public virtual int SegmentPointCount => ControlPointCount;
 
         /// <summary>
+        /// Is the data in the spline initialized
+        /// </summary>
+        protected virtual bool DataInitialized => SegmentPointCount > 0 && SegmentLength.Count >= 0;
+
+        /// <summary>
         /// Position of the spline origin in world space
         /// </summary>
         public float3 Position => trans.position;
-        
+
         /// <summary>
         /// forward direction of the spline origin
         /// </summary>
@@ -56,7 +63,7 @@ namespace Crener.Spline.BaseSpline
                 if(Forward != value) trans.rotation = value;
             }
         }
-        
+
         private Transform trans
         {
             get
@@ -67,7 +74,10 @@ namespace Crener.Spline.BaseSpline
         }
 
         private Transform m_trans = null;
-        
+        protected const int pointDensityI = 13;
+        protected const float pointDensityF = pointDensityI;
+        protected const int maxPointAmount = 15000;
+
         private void Start()
         {
             m_trans = transform;
@@ -99,11 +109,11 @@ namespace Crener.Spline.BaseSpline
             }
 
             // should never hit this point as the time segment should take care of things
-            #if UNITY_EDITOR
+#if UNITY_EDITOR
             throw new Exception($"Segment index is out of range! progress: '{progress}' could not be resolved");
-            #else
+#else
             return SegmentLength.Count - 1;
-            #endif
+#endif
         }
 
         /// <summary>
@@ -179,7 +189,66 @@ namespace Crener.Spline.BaseSpline
             ClearData();
         }
 
-        public abstract void ClearData();
+        public virtual void ClearData()
+        {
+#if UNITY_EDITOR
+            ClearPointCache();
+#endif
+        }
+
+#if UNITY_EDITOR
+        // these variables are used in editor to reduce overhead by caching the line segments that need to be rendered in scene until the data is changed
+        protected readonly List<Vector3> m_pointCache = new List<Vector3>(30);
+        private float3 m_lastTransPos = float3.zero;
+        private Quaternion m_lastForward = Quaternion.identity;
+#endif
+
+        [Conditional("UNITY_EDITOR"), MethodImpl(MethodImplOptions.AggressiveInlining)]
+        protected void AddToGizmoPointCache(Vector3 point) => m_pointCache.Add(point);
+
+        [Conditional("UNITY_EDITOR"), MethodImpl(MethodImplOptions.AggressiveInlining)]
+        protected void ClearPointCache() => m_pointCache.Clear();
+
+        protected virtual void OnDrawGizmosSelected()
+        {
+            Gizmos.color = Color.gray;
+
+            if(!DataInitialized)
+            {
+                // needs to calculate length as it might not have been saved correctly after saving
+                RecalculateLengthBias();
+            }
+
+#if UNITY_EDITOR
+            bool positionChanged = !Equals(Position, m_lastTransPos);
+            bool rotationChanged = positionChanged || !Equals(Forward, m_lastForward);
+            if(m_pointCache.Count >= 2 && !rotationChanged)
+            {
+                // There is existing point data so save the time in recalculating the points
+                for (int i = 1; i < m_pointCache.Count; i++)
+                {
+                    Gizmos.DrawLine(m_pointCache[i - 1], m_pointCache[i]);
+                }
+            }
+            else
+#endif
+            {
+#if UNITY_EDITOR
+                if(rotationChanged)
+                {
+                    m_pointCache.Clear();
+                    m_lastTransPos = Position;
+                    m_lastForward = Forward;
+                }
+#endif
+                DrawLineGizmos();
+            }
+        }
+
+        /// <summary>
+        /// Draw debug lines and populate the gizmo line cache
+        /// </summary>
+        protected abstract void DrawLineGizmos();
 
         public virtual void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
         {

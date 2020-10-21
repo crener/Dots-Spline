@@ -114,8 +114,9 @@ namespace Crener.Spline.Common.DataStructs
         public void Execute()
         {
 #if UNITY_EDITOR
-            Assert.IsFalse(Spline.Points.Length > 0, $"{nameof(Empty3DPointJob)} was used when spline had data! " +
-                                                      $"It's highly likely that a different {nameof(ISplineJob3D)} should have been used");
+            if(Spline.Points.Length > 0)
+                Assert.IsFalse(true, $"{nameof(Empty3DPointJob)} was used when spline had data! " +
+                                     $"It's highly likely that a different {nameof(ISplineJob3D)} should have been used");
 #endif
 
             m_result = float3.zero;

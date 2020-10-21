@@ -19,7 +19,7 @@ namespace Crener.Spline._2D
     /// <summary>
     /// Standard 2D spline along the XY axis
     /// </summary>
-    [AddComponentMenu("Spline/2D/Bezier Spline")]
+    [AddComponentMenu("Spline/2D/Bezier Spline 2D")]
     public class BezierSpline2DSimple : BaseSpline2D, IArkableSpline
     {
         protected const int c_floatsPerControlPoint = 3;
@@ -231,8 +231,8 @@ namespace Crener.Spline._2D
             int index = IndexMode(i, point);
 
 #if UNITY_EDITOR
-            Assert.IsTrue(index >= 0 && index < Points.Count,
-                $"Index out of range! index: {index}, point Count: {Points.Count}");
+            if(index < 0 && index > Points.Count)
+                Assert.IsTrue(false, $"Index out of range! index: {index}, point Count: {Points.Count}");
 #endif
 
             return Points[index];
