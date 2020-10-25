@@ -707,7 +707,7 @@ namespace Crener.Spline.Test._2D
         /// Progress less than 0 should return first point
         /// </summary>
         [Test]
-        public void ProgressUnder([NUnit.Framework.Range(1, 8)] int nodeAmount)
+        public void ProgressUnder([NUnit.Framework.Range(0, 8)] int nodeAmount)
         {
             const float offsetX = 2f;
             const float offsetY = 2f;
@@ -722,7 +722,6 @@ namespace Crener.Spline.Test._2D
                 testSpline.AddControlPoint(pos);
             }
             
-            Assert.AreNotEqual(float2.zero, first, "Test likely misconfigured as the expects location has the default value");
             Assert.AreEqual(nodeAmount, testSpline.ControlPointCount);
             
             Assert.AreEqual(first, testSpline.Get2DPointWorld(0f));
@@ -734,7 +733,7 @@ namespace Crener.Spline.Test._2D
         /// Progress greater than 0 should return first point
         /// </summary>
         [Test]
-        public void ProgressOver([NUnit.Framework.Range(1, 8)] int nodeAmount)
+        public void ProgressOver([NUnit.Framework.Range(0, 8)] int nodeAmount)
         {
             const float offsetX = 2f;
             const float offsetY = 2f;
@@ -749,7 +748,6 @@ namespace Crener.Spline.Test._2D
                 testSpline.AddControlPoint(pos);
             }
             
-            Assert.AreNotEqual(float2.zero, last, "Test likely misconfigured as the expects location has the default value");
             Assert.AreEqual(nodeAmount, testSpline.ControlPointCount);
             
             Assert.AreEqual(last, testSpline.Get2DPointWorld(1f));
