@@ -781,12 +781,17 @@ namespace Crener.Spline.Test.BaseTests
             float3 a = new float3(20f, 3f, 4f);
             InsertControlPointLocalSpace(testSpline, 12, a);
             ComparePoint(a, GetControlPoint(testSpline, 0, SplinePoint.Point));
-            ComparePoint(a, GetProgressLocal(testSpline, 0f));
 
             if(testSpline is ISpline3DPlane)
+            {
+                ComparePoint(targetRotation * new float3(a.xy, 0), GetProgressLocal(testSpline, 0f));
                 ComparePoint(move + (float3)(targetRotation * new float3(a.xy, 0)), GetProgressWorld(testSpline, 0f));
+            }
             else
+            {
+                ComparePoint(a, GetProgressLocal(testSpline, 0f));
                 ComparePoint(move + (float3)(targetRotation * a), GetProgressWorld(testSpline, 0f));
+            }
         }
 
         [Test]
@@ -832,6 +837,21 @@ namespace Crener.Spline.Test.BaseTests
             float3 a = new float3(20f, 3f, 4f);
             InsertControlPointWorldSpace(testSpline, 12, a);
             ComparePoint(a - move, GetControlPoint(testSpline, 0, SplinePoint.Point));
+        }
+
+        [Test]
+        public void TranslationClearOnMove()
+        {
+            ITestSpline testSpline = PrepareSpline();
+            
+            // move spline
+            float3 move = new float3(10f, 0f, 10f);
+            ((MonoBehaviour) testSpline).transform.position = move;
+
+            // add to spline
+            float3 a = new float3(20f, 3f, 4f);
+            AddControlPointLocalSpace(testSpline, a);
+            ComparePoint(a, GetControlPoint(testSpline, 0, SplinePoint.Point));
         }
 
         [Test]

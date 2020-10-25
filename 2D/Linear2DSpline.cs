@@ -10,7 +10,7 @@ namespace Crener.Spline._2D
     /// <summary>
     /// Simple spline which directly follows a set of points
     /// </summary>
-    [AddComponentMenu("Spline/2D/Linear Spline")]
+    [AddComponentMenu("Spline/2D/Linear Spline 2D")]
     public class Linear2DSpline : BaseSpline2D, ILoopingSpline
     {
         [SerializeField]

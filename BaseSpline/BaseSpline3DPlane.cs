@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using System.Numerics;
 using Crener.Spline.Common;
 using Crener.Spline.Common.DataStructs;
 using Crener.Spline.Common.Interfaces;
@@ -8,9 +7,6 @@ using Unity.Assertions;
 using Unity.Collections;
 using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.PlayerLoop;
-using Color = UnityEngine.Color;
-using Quaternion = UnityEngine.Quaternion;
 
 namespace Crener.Spline.BaseSpline
 {
@@ -174,18 +170,16 @@ namespace Crener.Spline.BaseSpline
                 Gizmos.DrawLine(topLeftPoint, bottomLeftPoint);
             }
 
-            DrawLineGizmos();
+            base.OnDrawGizmosSelected();
         }
 
-        protected virtual void DrawLineGizmos()
+        protected override void DrawLineGizmos()
         {
-            Gizmos.color = Color.gray;
-            const float pointDensity = 13;
-
             for (int i = 0; i < SegmentPointCount - 1; i++)
             {
                 float3 lp = Get3DPoint(0f, i);
-                int points = (int) (pointDensity * (SegmentLength[i] * Length()));
+                int points = (int) (pointDensityF * (SegmentLength[i] * Length()));
+                AddToGizmoPointCache(lp);
 
                 for (int s = 0; s <= points; s++)
                 {
@@ -193,6 +187,7 @@ namespace Crener.Spline.BaseSpline
                     float3 p = Get3DPoint(progress, i);
 
                     Gizmos.DrawLine(lp, p);
+                    AddToGizmoPointCache(lp);
                     lp = p;
                 }
             }

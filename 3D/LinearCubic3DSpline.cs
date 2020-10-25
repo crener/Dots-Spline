@@ -10,7 +10,7 @@ namespace Crener.Spline._3D
     /// <summary>
     /// Simple spline which directly follows a set of points
     /// </summary>
-    [AddComponentMenu("Spline/3D/Linear Cubic Spline")]
+    [AddComponentMenu("Spline/3D/Linear Cubic Spline 3D")]
     public class LinearCubic3DSpline : BaseSpline3D, ILoopingSpline, IArkableSpline
     {
         [SerializeField]

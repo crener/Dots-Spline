@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Crener.Spline.Common;
@@ -39,11 +38,6 @@ namespace Crener.Spline.BaseSpline
         /// </summary>
         public override int ControlPointCount => Points.Count;
 
-        /// <summary>
-        /// Is the data in the spline initialized
-        /// </summary>
-        protected virtual bool DataInitialized => SegmentPointCount > 0 && SegmentLength.Count >= 0;
-        
         private Spline2DData? m_splineData2D = null;
 
         /// <summary>
@@ -177,7 +171,7 @@ namespace Crener.Spline.BaseSpline
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected float2 ConvertToWorldSpace(float2 position)
         {
-            return (Position + (float3)(Forward * new float3(position, 0f))).xy;
+            return (Position + (float3) (Forward * new float3(position, 0f))).xy;
         }
 
         /// <summary>
@@ -198,7 +192,7 @@ namespace Crener.Spline.BaseSpline
         /// </summary>
         protected float2 ConvertToLocalSpace(float2 position)
         {
-            return (Position - (float3)(Quaternion.Inverse(Forward) * new float3(position, 0f))).xy;
+            return (Position - (float3) (Quaternion.Inverse(Forward) * new float3(position, 0f))).xy;
         }
 
         /// <summary>
@@ -228,6 +222,8 @@ namespace Crener.Spline.BaseSpline
 
         public override void ClearData()
         {
+            base.ClearData();
+            
             if(hasSplineEntityData) // access directly to stop possible infinite loop
             {
                 SplineEntityData2D.Value.Dispose();
@@ -244,23 +240,14 @@ namespace Crener.Spline.BaseSpline
             AddControlPoint(new float2(position.x + 2f, position.y));
         }
 
-        protected virtual void OnDrawGizmosSelected()
+        protected override void DrawLineGizmos()
         {
-            Gizmos.color = Color.gray;
-            const float pointDensity = 13;
-            const int maxPointAmount = 15000;
-
-            if(!DataInitialized)
-            {
-                // needs to calculate length as it might not have been saved correctly after saving
-                RecalculateLengthBias();
-            }
-
             for (int i = 0; i < SegmentPointCount - 1; i++)
             {
                 float2 f = Get2DPointLocal(0f, i);
                 Vector3 lp = new Vector3(f.x, f.y, 0f);
-                int points = math.min((int) (pointDensity * (SegmentLength[i] * Length())), maxPointAmount);
+                int points = math.min((int) (pointDensityF * (SegmentLength[i] * Length())), maxPointAmount);
+                AddToGizmoPointCache(lp);
 
                 for (int s = 1; s <= points; s++)
                 {
@@ -269,6 +256,7 @@ namespace Crener.Spline.BaseSpline
                     Vector3 point = new Vector3(p.x, p.y, 0f);
 
                     Gizmos.DrawLine(lp, point);
+                    AddToGizmoPointCache(point);
                     lp = point;
                 }
             }

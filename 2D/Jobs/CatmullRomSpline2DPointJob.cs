@@ -49,9 +49,9 @@ namespace Crener.Spline._2D.Jobs
 #endif
 
             if(m_splineProgress.Progress <= 0f)
-                m_result = Spline.Points[Spline.Points.Length == 1 ? 0 : 1];
+                m_result = Spline.Points[0];
             else if(m_splineProgress.Progress >= 1f)
-                m_result = Spline.Points[Spline.Points.Length - 2];
+                m_result = Spline.Points[Spline.Points.Length - 1];
             else
             {
                 int aIndex = SegmentIndex();

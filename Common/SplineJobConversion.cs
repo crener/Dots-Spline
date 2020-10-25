@@ -54,7 +54,7 @@ namespace Crener.Spline.Common
                 case SplineType.BSpline:
                 //todo
                 case SplineType.CatmullRom:
-                //todo
+                    return new CatmullRomSpline2DPointJob {Spline = spline.SplineEntityData2D.Value};
                 case SplineType.Linear: // falls over to the default by design
                 default:
                     return new LinearSpline2DPointJob {Spline = spline.SplineEntityData2D.Value};

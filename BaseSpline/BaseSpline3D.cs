@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Crener.Spline.Common;
@@ -218,7 +217,7 @@ namespace Crener.Spline.BaseSpline
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected float3 ConvertToWorldSpace(float3 position)
         {
-            return Position + (float3)(Forward * position);
+            return Position + (float3) (Forward * position);
         }
 
         /// <summary>
@@ -247,6 +246,8 @@ namespace Crener.Spline.BaseSpline
 
         public override void ClearData()
         {
+            base.ClearData();
+
             if(hasSplineEntityData) // access directly to stop possible infinite loop
             {
                 SplineEntityData3D?.Dispose();
@@ -263,16 +264,14 @@ namespace Crener.Spline.BaseSpline
             AddControlPoint(new float3(position.x + 2f, position.y, 0f));
         }
 
-        private void OnDrawGizmosSelected()
+        protected override void DrawLineGizmos()
         {
-            Gizmos.color = Color.gray;
-            const float pointDensity = 13;
-
             for (int i = 0; i < SegmentPointCount - 1; i++)
             {
                 float3 f = Get3DPoint(0f, i);
                 Vector3 lp = new Vector3(f.x, f.y, f.z);
-                int points = (int) (pointDensity * (SegmentLength[i] * Length()));
+                int points = (int) (pointDensityF * (SegmentLength[i] * Length()));
+                AddToGizmoPointCache(lp);
 
                 for (int s = 0; s <= points; s++)
                 {
@@ -281,6 +280,7 @@ namespace Crener.Spline.BaseSpline
                     Vector3 point = new Vector3(p.x, p.y, p.z);
 
                     Gizmos.DrawLine(lp, point);
+                    AddToGizmoPointCache(point);
                     lp = point;
                 }
             }
@@ -303,6 +303,7 @@ namespace Crener.Spline.BaseSpline
             {
                 pointData[i] = ConvertToWorldSpace(Points[i]);
             }
+
             if(looped) pointData[Points.Count] = pointData[0];
 
             NativeArray<float3> points = new NativeArray<float3>(pointData, Allocator.Persistent);
