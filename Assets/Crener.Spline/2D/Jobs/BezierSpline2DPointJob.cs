@@ -13,7 +13,7 @@ namespace Crener.Spline._2D.Jobs
     /// <summary>
     /// Simple way of sampling a single point from a 2D spline via <see cref="Spline2DData"/>
     /// </summary>
-    [BurstCompile]
+    [BurstCompile, BurstCompatible]
     public struct BezierSpline2DPointJob : IJob, ISplineJob2D
     {
         [ReadOnly]
@@ -39,7 +39,7 @@ namespace Crener.Spline._2D.Jobs
 
         public void Execute()
         {
-#if UNITY_EDITOR
+#if UNITY_EDITOR && NO_BURST
             if(Spline.Points.Length == 0) throw new ArgumentException($"Should be using {nameof(Empty2DPointJob)}");
             if(Spline.Points.Length == 1) throw new ArgumentException($"Should be using {nameof(SinglePoint2DPointJob)}");
 #endif
@@ -73,7 +73,7 @@ namespace Crener.Spline._2D.Jobs
 
         private float2 CubicBezierPoint(float t, int a, int b)
         {
-#if UNITY_EDITOR
+#if UNITY_EDITOR && NO_BURST
             if(b <= 0)
                 throw new ArgumentOutOfRangeException($"B is {b} which isn't within the valid point range");
 #endif

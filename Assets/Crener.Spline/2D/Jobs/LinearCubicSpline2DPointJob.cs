@@ -12,7 +12,7 @@ namespace Crener.Spline._2D.Jobs
     /// <summary>
     /// Cubic linear with no looping support
     /// </summary>
-    [BurstCompile]
+    [BurstCompile, BurstCompatible]
     public struct LinearCubicSpline2DPointJob : IJob, ISplineJob2D
     {
         [ReadOnly]
@@ -38,7 +38,7 @@ namespace Crener.Spline._2D.Jobs
 
         public void Execute()
         {
-#if UNITY_EDITOR
+#if UNITY_EDITOR && NO_BURST
             if(Spline.Points.Length == 0) throw new ArgumentException($"Should be using {nameof(Empty2DPointJob)}");
             if(Spline.Points.Length == 1) throw new ArgumentException($"Should be using {nameof(SinglePoint2DPointJob)}");
             if(Spline.Points.Length == 2) throw new ArgumentException($"Should be using {nameof(LinearSpline2DPointJob)}");
@@ -58,7 +58,7 @@ namespace Crener.Spline._2D.Jobs
                 if(time >= tempProgress) return i;
             }
 
-#if UNITY_EDITOR
+#if UNITY_EDITOR && NO_BURST
             if(seg - 1 != Spline.Points.Length - 2)
             {
                 // if the progress is greater than the spline time it should result in the last point being returned

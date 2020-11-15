@@ -1,9 +1,11 @@
+using Unity.Burst;
 using Unity.Collections;
 using Unity.Jobs;
 using Unity.Mathematics;
 
 namespace Crener.Spline._3D.Jobs
 {
+    [BurstCompile, BurstCompatible]
     public struct LocalSpaceConversion3D : IJob
     {
         [ReadOnly]

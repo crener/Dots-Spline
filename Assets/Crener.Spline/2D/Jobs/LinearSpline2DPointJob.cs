@@ -12,7 +12,7 @@ namespace Crener.Spline._2D.Jobs
     /// <summary>
     /// Simple way of sampling a single point from a 2D spline via <see cref="Spline2DData"/>
     /// </summary>
-    [BurstCompile]
+    [BurstCompile, BurstCompatible]
     public struct LinearSpline2DPointJob : IJob, ISplineJob2D
     {
         [ReadOnly]
@@ -56,7 +56,7 @@ namespace Crener.Spline._2D.Jobs
                 if(time >= SplineProgress.Progress) return i;
             }
 
-#if UNITY_EDITOR
+#if UNITY_EDITOR && NO_BURST
             if(seg - 1 != Spline.Points.Length - 2)
             {
                 // if the progress is greater than the spline time it should result in the last point being returned
@@ -80,7 +80,7 @@ namespace Crener.Spline._2D.Jobs
 
         private float2 LinearLerp(float t, int a, int b)
         {
-#if UNITY_EDITOR
+#if UNITY_EDITOR && NO_BURST
             if(b <= 0)
                 throw new ArgumentOutOfRangeException($"B is {b} which isn't within the valid point range! " +
                                                       $"Actual Range '0 - {Spline.Points.Length}', requested range '{a} - {b}'");
