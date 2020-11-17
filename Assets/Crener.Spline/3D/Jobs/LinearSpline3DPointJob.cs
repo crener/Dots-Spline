@@ -1,5 +1,4 @@
-﻿using System;
-using Crener.Spline.Common;
+﻿using Crener.Spline.Common;
 using Crener.Spline.Common.DataStructs;
 using Crener.Spline.Common.Interfaces;
 using Unity.Burst;
@@ -20,7 +19,7 @@ namespace Crener.Spline._3D.Jobs
         [ReadOnly]
         private SplineProgress m_splineProgress;
         [WriteOnly]
-        private float3 m_result;
+        private NativeReference<float3> m_result;
         
         #region Interface properties
         public SplineProgress SplineProgress
@@ -31,14 +30,24 @@ namespace Crener.Spline._3D.Jobs
 
         public float3 Result
         {
-            get => m_result;
-            set => m_result = value;
+            get => m_result.Value;
+            set => m_result.Value = value;
         }
         #endregion
 
+        public LinearSpline3DPointJob(ISpline3D spline, float progress)
+            : this(spline, new SplineProgress(progress)) { }
+
+        public LinearSpline3DPointJob(ISpline3D spline, SplineProgress progress)
+        {
+            Spline = spline.SplineEntityData3D.Value;
+            m_splineProgress = progress;
+            m_result = new NativeReference<float3>(Allocator.TempJob);
+        }
+
         public void Execute()
         {
-            m_result = Run(ref Spline, ref m_splineProgress);
+            m_result.Value = Run(ref Spline, ref m_splineProgress);
         }
 
         public static float3 Run(ref Spline3DData spline, ref SplineProgress progress)
@@ -65,6 +74,16 @@ namespace Crener.Spline._3D.Jobs
             float3 p1 = spline.Points[b];
 
             return math.lerp(p0, p1, math.clamp(t, 0f, 1f));
+        }
+
+        public void Dispose()
+        {
+            m_result.Dispose();
+        }
+
+        public JobHandle Dispose(JobHandle inputDeps)
+        {
+            return m_result.Dispose(inputDeps);
         }
     }
 }

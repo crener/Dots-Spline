@@ -1,3 +1,4 @@
+using Unity.Collections;
 using Unity.Jobs;
 using Unity.Mathematics;
 
@@ -19,7 +20,7 @@ namespace Crener.Spline.Common.Interfaces
         float2 Result { get; set; }
     }
 
-    public interface ISplineJob3D : ISplineJob
+    public interface ISplineJob3D : ISplineJob, INativeDisposable
     {
         /// <summary>
         /// resulting spline position based on the <see cref="ISplineJob.SplineProgress"/>

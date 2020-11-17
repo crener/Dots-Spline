@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using Crener.Spline._3D.Jobs;
-using Crener.Spline.Common;
+﻿using Crener.Spline._3D.Jobs;
 using Crener.Spline.Common.Interfaces;
 using Unity.Assertions;
 using Unity.Jobs;
@@ -20,22 +17,21 @@ public class test : MonoBehaviour
         Dynamic3DJob dynamic2 = new Dynamic3DJob(spline3D, progress);
         dynamic2.Execute();
         float3 manualResult = dynamic2.Result;
+        dynamic2.Dispose();
 
         // calculate the point using dynamic job
         Dynamic3DJob dynamic = new Dynamic3DJob(spline3D, progress);
         JobHandle handle = dynamic.Schedule();
         handle.Complete();
         float3 dynamicJobResult = dynamic.Result;
+        dynamic.Dispose();
         
         // calculate the point using specific job type
-        BezierSpline3DPointJob direct = new BezierSpline3DPointJob
-        {
-            Spline = spline3D.SplineEntityData3D.Value, 
-            SplineProgress = new SplineProgress(progress)
-        };
+        BezierSpline3DPointJob direct = new BezierSpline3DPointJob(spline3D, progress);
         JobHandle handle2 = direct.Schedule();
         handle2.Complete();
         float3 directJobResult = direct.Result;
+        direct.Dispose();
 
         if(handle.IsCompleted)
         {

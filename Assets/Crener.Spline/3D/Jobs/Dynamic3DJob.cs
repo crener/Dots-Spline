@@ -3,6 +3,7 @@ using Crener.Spline.Common.DataStructs;
 using Crener.Spline.Common.Interfaces;
 using Unity.Burst;
 using Unity.Collections;
+using Unity.Jobs;
 using Unity.Mathematics;
 
 namespace Crener.Spline._3D.Jobs
@@ -17,7 +18,7 @@ namespace Crener.Spline._3D.Jobs
         [ReadOnly]
         private SplineType m_type;
         [WriteOnly]
-        private float3 m_result;
+        private NativeReference<float3> m_result;
 
         #region Interface properties
         public SplineProgress SplineProgress
@@ -28,8 +29,8 @@ namespace Crener.Spline._3D.Jobs
 
         public float3 Result
         {
-            get => m_result;
-            set => m_result = value;
+            get => m_result.Value;
+            set => m_result.Value = value;
         }
         #endregion
 
@@ -41,7 +42,7 @@ namespace Crener.Spline._3D.Jobs
             m_type = spline.SplineDataType;
             Spline = spline.SplineEntityData3D.Value;
             m_splineProgress = progress;
-            m_result = default;
+            m_result = new NativeReference<float3>(Allocator.TempJob);
         }
 
         public void Execute()
@@ -49,16 +50,16 @@ namespace Crener.Spline._3D.Jobs
             switch (m_type)
             {
                 case SplineType.Empty:
-                    m_result = Empty3DPointJob.Run(ref Spline);
+                    m_result.Value = Empty3DPointJob.Run(ref Spline);
                     return;
                 case SplineType.Single:
-                    m_result = SinglePoint3DPointJob.Run(ref Spline);
+                    m_result.Value = SinglePoint3DPointJob.Run(ref Spline);
                     return;
                 case SplineType.Bezier:
-                    m_result = BezierSpline3DPointJob.Run(ref Spline, ref m_splineProgress);
+                    m_result.Value = BezierSpline3DPointJob.Run(ref Spline, ref m_splineProgress);
                     return;
                 case SplineType.CubicLinear:
-                    m_result = LinearCubicSpline3DPointJob.Run(ref Spline, ref m_splineProgress);
+                    m_result.Value = LinearCubicSpline3DPointJob.Run(ref Spline, ref m_splineProgress);
                     return;
                 case SplineType.Cubic:
                 //todo
@@ -68,9 +69,19 @@ namespace Crener.Spline._3D.Jobs
                 //todo
                 case SplineType.Linear: // falls over to the default by design
                 default:
-                    m_result = LinearSpline3DPointJob.Run(ref Spline, ref m_splineProgress);
+                    m_result.Value = LinearSpline3DPointJob.Run(ref Spline, ref m_splineProgress);
                     return;
             }
+        }
+
+        public void Dispose()
+        {
+            m_result.Dispose();
+        }
+
+        public JobHandle Dispose(JobHandle inputDeps)
+        {
+            return m_result.Dispose(inputDeps);
         }
     }
 }

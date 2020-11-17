@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Crener.Spline._2D.Jobs;
 using Crener.Spline._3D;
 using Crener.Spline._3D.Jobs;
 using Crener.Spline.Common;
@@ -41,15 +40,13 @@ namespace Crener.Spline.Test._3D.Linear.TestTypes
                 ISplineJob3D job = this.ExtractJob(new SplineProgress {Progress = progress});
                 job.Execute();
 
-                LocalSpaceConversion3D conversion = new LocalSpaceConversion3D()
-                {
-                    SplinePosition = job.Result,
-                    TransformPosition = this.Position,
-                    TransformRotation = this.Forward
-                };
+                LocalSpaceConversion3D conversion = new LocalSpaceConversion3D(this.Position, this.Forward, job.Result);
                 conversion.Execute();
                 
-                return conversion.SplinePosition;
+                float3 pos = conversion.SplinePosition.Value;
+                conversion.Dispose();
+                job.Dispose();
+                return pos;
             }
             
             public override float3 Get3DPointWorld(float progress)
@@ -61,7 +58,9 @@ namespace Crener.Spline.Test._3D.Linear.TestTypes
                 ISplineJob3D job = this.ExtractJob(new SplineProgress {Progress = progress});
                 job.Execute();
 
-                return job.Result;
+                float3 jobResult = job.Result;
+                job.Dispose();
+                return jobResult;
             }
 
             public int ExpectedControlPointCount(int controlPoints) => controlPoints;

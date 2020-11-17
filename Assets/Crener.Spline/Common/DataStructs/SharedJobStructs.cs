@@ -1,6 +1,4 @@
-using System;
 using Crener.Spline.Common.Interfaces;
-using Unity.Assertions;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Jobs;
@@ -85,28 +83,39 @@ namespace Crener.Spline.Common.DataStructs
     [BurstCompile,BurstCompatible]
     public struct Empty2DPointJob : IJob, ISplineJob2D
     {
-        [ReadOnly]
-        private SplineProgress m_splineProgress;
         [WriteOnly]
-        private float2 m_result;
+        private NativeReference<float2> m_result;
 
         #region Interface properties
+        /// <summary>
+        /// this is really pointless but required for the interface as this job doesn't require this data
+        /// </summary>
         public SplineProgress SplineProgress
         {
-            get => m_splineProgress;
-            set => m_splineProgress = value;
+            get => default;
+            set { }
         }
 
         public float2 Result
         {
-            get => m_result;
-            set => m_result = value;
+            get => m_result.Value;
+            set => m_result.Value = value;
         }
         #endregion
 
         public void Execute()
         {
-            m_result = float2.zero;
+            m_result.Value = float2.zero;
+        }
+
+        public void Dispose()
+        {
+            m_result.Dispose();
+        }
+
+        public JobHandle Dispose(JobHandle inputDeps)
+        {
+            return m_result.Dispose(inputDeps);
         }
     }
 
@@ -121,7 +130,7 @@ namespace Crener.Spline.Common.DataStructs
         [ReadOnly]
         private SplineProgress m_splineProgress;
         [WriteOnly]
-        private float2 m_result;
+        private NativeReference<float2> m_result;
 
         #region Interface properties
         public SplineProgress SplineProgress
@@ -132,10 +141,20 @@ namespace Crener.Spline.Common.DataStructs
 
         public float2 Result
         {
-            get => m_result;
-            set => m_result = value;
+            get => m_result.Value;
+            set => m_result.Value = value;
         }
         #endregion
+
+        public SinglePoint2DPointJob(ISpline2D spline, float progress)
+            : this(spline, new SplineProgress(progress)) { }
+
+        public SinglePoint2DPointJob(ISpline2D spline, SplineProgress progress)
+        {
+            Spline = spline.SplineEntityData2D.Value;
+            m_splineProgress = progress;
+            m_result = new NativeReference<float2>(Allocator.TempJob);
+        }
 
         public void Execute()
         {
@@ -151,7 +170,17 @@ namespace Crener.Spline.Common.DataStructs
             }
 #endif
 
-            m_result = Spline.Points[0];
+            m_result.Value = Spline.Points[0];
+        }
+
+        public void Dispose()
+        {
+            m_result.Dispose();
+        }
+
+        public JobHandle Dispose(JobHandle inputDeps)
+        {
+            return m_result.Dispose(inputDeps);
         }
     }
     
@@ -167,24 +196,31 @@ namespace Crener.Spline.Common.DataStructs
     {
         [ReadOnly]
         public Spline3DData Spline;
-        [ReadOnly]
-        private SplineProgress m_splineProgress;
         [WriteOnly]
-        private float3 m_result;
+        private NativeReference<float3> m_result;
 
         #region Interface properties
+        /// <summary>
+        /// this is really pointless but required for the interface as this job doesn't require this data
+        /// </summary>
         public SplineProgress SplineProgress
         {
-            get => m_splineProgress;
-            set => m_splineProgress = value;
+            get => default;
+            set { }
         }
 
         public float3 Result
         {
-            get => m_result;
-            set => m_result = value;
+            get => m_result.Value;
+            set => m_result.Value = value;
         }
         #endregion
+
+        public Empty3DPointJob(ISpline3D spline)
+        {
+            Spline = spline.SplineEntityData3D.Value;
+            m_result = new NativeReference<float3>(Allocator.TempJob);
+        }
 
         public void Execute()
         {
@@ -194,7 +230,7 @@ namespace Crener.Spline.Common.DataStructs
                                      $"It's highly likely that a different {nameof(ISplineJob3D)} should have been used");
 #endif
 
-            m_result = float3.zero;
+            m_result.Value = float3.zero;
         }
 
         public static float3 Run(ref Spline3DData Spline)
@@ -207,6 +243,16 @@ namespace Crener.Spline.Common.DataStructs
 #endif
 
             return float3.zero;
+        }
+
+        public void Dispose()
+        {
+            m_result.Dispose();
+        }
+
+        public JobHandle Dispose(JobHandle inputDeps)
+        {
+            return m_result.Dispose(inputDeps);
         }
     }
 
@@ -221,7 +267,7 @@ namespace Crener.Spline.Common.DataStructs
         [ReadOnly]
         private SplineProgress m_splineProgress;
         [WriteOnly]
-        private float3 m_result;
+        private NativeReference<float3> m_result;
 
         #region Interface properties
         public SplineProgress SplineProgress
@@ -232,14 +278,24 @@ namespace Crener.Spline.Common.DataStructs
 
         public float3 Result
         {
-            get => m_result;
-            set => m_result = value;
+            get => m_result.Value;
+            set => m_result.Value = value;
         }
         #endregion
 
+        public SinglePoint3DPointJob(ISpline3D spline, float progress)
+            : this(spline, new SplineProgress(progress)) { }
+
+        public SinglePoint3DPointJob(ISpline3D spline, SplineProgress progress)
+        {
+            Spline = spline.SplineEntityData3D.Value;
+            m_splineProgress = progress;
+            m_result = new NativeReference<float3>(Allocator.TempJob);
+        }
+
         public void Execute()
         {
-            m_result = Run(ref Spline);
+            m_result.Value = Run(ref Spline);
         }
 
         public static float3 Run(ref Spline3DData Spline)
@@ -257,6 +313,16 @@ namespace Crener.Spline.Common.DataStructs
 #endif
 
             return Spline.Points[0];
+        }
+
+        public void Dispose()
+        {
+            m_result.Dispose();
+        }
+
+        public JobHandle Dispose(JobHandle inputDeps)
+        {
+            return m_result.Dispose(inputDeps);
         }
     }
     

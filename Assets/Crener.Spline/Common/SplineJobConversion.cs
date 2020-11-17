@@ -83,31 +83,18 @@ namespace Crener.Spline.Common
         /// <param name="spline">spline to generate a job from</param>
         /// <param name="progress">progress to use when initializing job</param>
         /// <returns>spline point retrieval job</returns>
-        public static ISplineJob3D ExtractJob(this ISpline3D spline, SplineProgress progress)
-        {
-            ISplineJob3D splineJob = ExtractJob(spline);
-            splineJob.SplineProgress = progress;
-
-            return splineJob;
-        }
-
-        /// <summary>
-        /// Create a spline job from this spline
-        /// </summary>
-        /// <param name="spline">spline to generate a job from</param>
-        /// <returns>spline point retrieval job</returns>
-        public static ISplineJob3D ExtractJob(this ISpline3D spline)
+        public static ISplineJob3D ExtractJob(this ISpline3D spline, SplineProgress progress = default)
         {
             switch (spline.SplineDataType)
             {
                 case SplineType.Empty:
-                    return new Empty3DPointJob();
+                    return new Empty3DPointJob(spline);
                 case SplineType.Single:
-                    return new SinglePoint3DPointJob {Spline = spline.SplineEntityData3D.Value};
+                    return new SinglePoint3DPointJob(spline, progress);
                 case SplineType.Bezier:
-                    return new BezierSpline3DPointJob {Spline = spline.SplineEntityData3D.Value};
+                    return new BezierSpline3DPointJob(spline, progress);
                 case SplineType.CubicLinear:
-                    return new LinearCubicSpline3DPointJob {Spline = spline.SplineEntityData3D.Value};
+                    return new LinearCubicSpline3DPointJob(spline, progress);
                 case SplineType.Cubic:
                 //todo
                 case SplineType.BSpline:
@@ -116,7 +103,7 @@ namespace Crener.Spline.Common
                 //todo
                 case SplineType.Linear: // falls over to the default by design
                 default:
-                    return new LinearSpline3DPointJob {Spline = spline.SplineEntityData3D.Value};
+                    return new LinearSpline3DPointJob(spline, progress);
             }
         }
         #endregion 3D
