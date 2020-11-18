@@ -16,9 +16,9 @@ namespace Crener.Spline._3D.Jobs
         
         public NativeReference<float3> SplinePosition;
 
-        public LocalSpaceConversion3D(float3 position, Quaternion forward, float3 worldSpacePosition)
+        public LocalSpaceConversion3D(float3 position, Quaternion forward, float3 worldSpacePosition, Allocator allocator = Allocator.None)
         {
-            SplinePosition = new NativeReference<float3>(Allocator.TempJob);
+            SplinePosition = new NativeReference<float3>(allocator);
             SplinePosition.Value = worldSpacePosition;
             TransformPosition = position;
             TransformRotation = forward;

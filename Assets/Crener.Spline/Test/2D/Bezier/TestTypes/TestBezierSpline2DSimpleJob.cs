@@ -4,6 +4,7 @@ using Crener.Spline._2D.Jobs;
 using Crener.Spline.Common;
 using Crener.Spline.Common.Interfaces;
 using NUnit.Framework;
+using Unity.Collections;
 using Unity.Mathematics;
 
 namespace Crener.Spline.Test._2D.Bezier.TestTypes
@@ -37,17 +38,16 @@ namespace Crener.Spline.Test._2D.Bezier.TestTypes
                 ConvertData();
 
                 Assert.IsTrue(SplineEntityData2D.HasValue, "Failed to generate spline");
-                ISplineJob2D job = this.ExtractJob(new SplineProgress {Progress = progress});
+                ISplineJob2D job = this.ExtractJob(progress, Allocator.TempJob);
                 job.Execute();
 
-                LocalSpaceConversion2D conversion = new LocalSpaceConversion2D()
-                {
-                    SplinePosition = job.Result,
-                    TransformPosition = this.Position.xy
-                };
+                LocalSpaceConversion2D conversion = new LocalSpaceConversion2D(this.Position.xy, job.Result, Allocator.TempJob);
                 conversion.Execute();
 
-                return conversion.SplinePosition;
+                float2 result = conversion.SplinePosition.Value;
+                job.Dispose();
+                conversion.Dispose();
+                return result;
             }
             
             public new float2 Get2DPointWorld(float progress)
@@ -56,10 +56,12 @@ namespace Crener.Spline.Test._2D.Bezier.TestTypes
                 ConvertData();
 
                 Assert.IsTrue(SplineEntityData2D.HasValue, "Failed to generate spline");
-                ISplineJob2D job = this.ExtractJob(new SplineProgress {Progress = progress});
+                ISplineJob2D job = this.ExtractJob(progress, Allocator.TempJob);
                 job.Execute();
 
-                return job.Result;
+                float2 result = job.Result;
+                job.Dispose();
+                return result;
             }
 
             public override float2 GetControlPoint2DLocal(int i) => SplineEntityData2D.Value.Points[i];

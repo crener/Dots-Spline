@@ -4,7 +4,7 @@ using Unity.Mathematics;
 
 namespace Crener.Spline.Common.Interfaces
 {
-    public interface ISplineJob : IJob
+    public interface ISplineJob : IJob, INativeDisposable
     {
         /// <summary>
         /// The progress along the spline
@@ -20,7 +20,7 @@ namespace Crener.Spline.Common.Interfaces
         float2 Result { get; set; }
     }
 
-    public interface ISplineJob3D : ISplineJob, INativeDisposable
+    public interface ISplineJob3D : ISplineJob
     {
         /// <summary>
         /// resulting spline position based on the <see cref="ISplineJob.SplineProgress"/>

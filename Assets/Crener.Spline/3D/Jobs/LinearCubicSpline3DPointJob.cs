@@ -35,14 +35,14 @@ namespace Crener.Spline._3D.Jobs
         }
         #endregion
 
-        public LinearCubicSpline3DPointJob(ISpline3D spline, float progress)
-            : this(spline, new SplineProgress(progress)) { }
+        public LinearCubicSpline3DPointJob(ISpline3D spline, float progress, Allocator allocator = Allocator.None)
+            : this(spline, new SplineProgress(progress), allocator) { }
 
-        public LinearCubicSpline3DPointJob(ISpline3D spline, SplineProgress progress)
+        public LinearCubicSpline3DPointJob(ISpline3D spline, SplineProgress progress, Allocator allocator = Allocator.None)
         {
             Spline = spline.SplineEntityData3D.Value;
             m_splineProgress = progress;
-            m_result = new NativeReference<float3>(Allocator.TempJob);
+            m_result = new NativeReference<float3>(allocator);
         }
         
         public void Execute()

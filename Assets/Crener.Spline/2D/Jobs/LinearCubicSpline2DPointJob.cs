@@ -1,5 +1,4 @@
-﻿using System;
-using Crener.Spline.Common;
+﻿using Crener.Spline.Common;
 using Crener.Spline.Common.DataStructs;
 using Crener.Spline.Common.Interfaces;
 using Unity.Burst;
@@ -20,7 +19,7 @@ namespace Crener.Spline._2D.Jobs
         [ReadOnly]
         private SplineProgress m_splineProgress;
         [WriteOnly]
-        private float2 m_result;
+        private NativeReference<float2> m_result;
         
         #region Interface properties
         public SplineProgress SplineProgress
@@ -28,13 +27,23 @@ namespace Crener.Spline._2D.Jobs
             get => m_splineProgress;
             set => m_splineProgress = value;
         }
-
+        
         public float2 Result
         {
-            get => m_result;
-            set => m_result = value;
+            get => m_result.Value;
+            set => m_result.Value = value;
         }
         #endregion
+
+        public LinearCubicSpline2DPointJob(ISpline2D spline, float progress, Allocator allocator = Allocator.None)
+            : this(spline, new SplineProgress(progress), allocator) { }
+        
+        public LinearCubicSpline2DPointJob(ISpline2D spline, SplineProgress splineProgress, Allocator allocator = Allocator.None)
+        {
+            Spline = spline.SplineEntityData2D.Value;
+            m_splineProgress = splineProgress;
+            m_result = new NativeReference<float2>(allocator);
+        }
 
         public void Execute()
         {
@@ -45,7 +54,7 @@ namespace Crener.Spline._2D.Jobs
 #endif
 
             int aIndex = SegmentIndex();
-            m_result = LinearLerp(SegmentProgress(aIndex), aIndex);
+            m_result.Value = LinearLerp(SegmentProgress(aIndex), aIndex);
         }
 
         private int SegmentIndex()
@@ -120,6 +129,16 @@ namespace Crener.Spline._2D.Jobs
             float2 pp1 = math.lerp(p1, i1, t);
 
             return math.lerp(pp0, pp1, t);
+        }
+
+        public void Dispose()
+        {
+            m_result.Dispose();
+        }
+
+        public JobHandle Dispose(JobHandle inputDeps)
+        {
+            return m_result.Dispose(inputDeps);
         }
     }
 }

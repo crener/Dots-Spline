@@ -103,6 +103,11 @@ namespace Crener.Spline.Common.DataStructs
         }
         #endregion
 
+        public Empty2DPointJob(Allocator allocator = Allocator.None)
+        {
+            m_result = new NativeReference<float2>(allocator);
+        }
+
         public void Execute()
         {
             m_result.Value = float2.zero;
@@ -127,16 +132,14 @@ namespace Crener.Spline.Common.DataStructs
     {
         [ReadOnly]
         public Spline2DData Spline;
-        [ReadOnly]
-        private SplineProgress m_splineProgress;
         [WriteOnly]
         private NativeReference<float2> m_result;
 
         #region Interface properties
         public SplineProgress SplineProgress
         {
-            get => m_splineProgress;
-            set => m_splineProgress = value;
+            get => default(SplineProgress);
+            set { }
         }
 
         public float2 Result
@@ -146,14 +149,10 @@ namespace Crener.Spline.Common.DataStructs
         }
         #endregion
 
-        public SinglePoint2DPointJob(ISpline2D spline, float progress)
-            : this(spline, new SplineProgress(progress)) { }
-
-        public SinglePoint2DPointJob(ISpline2D spline, SplineProgress progress)
+        public SinglePoint2DPointJob(ISpline2D spline, Allocator allocator = Allocator.None)
         {
             Spline = spline.SplineEntityData2D.Value;
-            m_splineProgress = progress;
-            m_result = new NativeReference<float2>(Allocator.TempJob);
+            m_result = new NativeReference<float2>(allocator);
         }
 
         public void Execute()
@@ -216,10 +215,10 @@ namespace Crener.Spline.Common.DataStructs
         }
         #endregion
 
-        public Empty3DPointJob(ISpline3D spline)
+        public Empty3DPointJob(ISpline3D spline, Allocator allocator = Allocator.None)
         {
             Spline = spline.SplineEntityData3D.Value;
-            m_result = new NativeReference<float3>(Allocator.TempJob);
+            m_result = new NativeReference<float3>(allocator);
         }
 
         public void Execute()
@@ -264,16 +263,14 @@ namespace Crener.Spline.Common.DataStructs
     {
         [ReadOnly]
         public Spline3DData Spline;
-        [ReadOnly]
-        private SplineProgress m_splineProgress;
         [WriteOnly]
         private NativeReference<float3> m_result;
 
         #region Interface properties
         public SplineProgress SplineProgress
         {
-            get => m_splineProgress;
-            set => m_splineProgress = value;
+            get => default;
+            set { }
         }
 
         public float3 Result
@@ -283,14 +280,10 @@ namespace Crener.Spline.Common.DataStructs
         }
         #endregion
 
-        public SinglePoint3DPointJob(ISpline3D spline, float progress)
-            : this(spline, new SplineProgress(progress)) { }
-
-        public SinglePoint3DPointJob(ISpline3D spline, SplineProgress progress)
+        public SinglePoint3DPointJob(ISpline3D spline, Allocator allocator = Allocator.None)
         {
             Spline = spline.SplineEntityData3D.Value;
-            m_splineProgress = progress;
-            m_result = new NativeReference<float3>(Allocator.TempJob);
+            m_result = new NativeReference<float3>(allocator);
         }
 
         public void Execute()

@@ -1,5 +1,6 @@
 using Crener.Spline._3D.Jobs;
 using NUnit.Framework;
+using Unity.Collections;
 using Unity.Mathematics;
 
 namespace Crener.Spline.Test._3D.Linear.TestTypes
@@ -17,10 +18,10 @@ namespace Crener.Spline.Test._3D.Linear.TestTypes
                 ConvertData();
 
                 Assert.IsTrue(SplineEntityData3D.HasValue, "Failed to generate spline");
-                Dynamic3DJob job = new Dynamic3DJob(this, progress);
+                Dynamic3DJob job = new Dynamic3DJob(this, progress, Allocator.Temp);
                 job.Execute();
 
-                LocalSpaceConversion3D conversion = new LocalSpaceConversion3D(this.Position, this.Forward, job.Result);
+                LocalSpaceConversion3D conversion = new LocalSpaceConversion3D(Position, Forward, job.Result, Allocator.Temp);
                 conversion.Execute();
                 
                 float3 pos = conversion.SplinePosition.Value;
@@ -35,7 +36,7 @@ namespace Crener.Spline.Test._3D.Linear.TestTypes
                 ConvertData();
 
                 Assert.IsTrue(SplineEntityData3D.HasValue, "Failed to generate spline");
-                Dynamic3DJob job = new Dynamic3DJob(this, progress);
+                Dynamic3DJob job = new Dynamic3DJob(this, progress, Allocator.Temp);
                 job.Execute();
 
                 float3 jobResult = job.Result;

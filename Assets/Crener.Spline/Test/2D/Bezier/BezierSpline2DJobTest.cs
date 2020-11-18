@@ -4,6 +4,7 @@ using Crener.Spline.Common.DataStructs;
 using Crener.Spline.Test._2D.Bezier.TestAdapters;
 using Crener.Spline.Test.Helpers;
 using NUnit.Framework;
+using Unity.Collections;
 using Unity.Mathematics;
 
 namespace Crener.Spline.Test._2D.Bezier
@@ -29,16 +30,19 @@ namespace Crener.Spline.Test._2D.Bezier
             Assert.AreEqual(1f, bezierSpline.Times[0]);
             Assert.AreEqual(1f, data.Time[0]);
             
-            BezierSpline2DPointJob job = new BezierSpline2DPointJob()
-            {
-                Spline = data,
-                SplineProgress = new SplineProgress() { Progress = -0.5f }
-            };
+            BezierSpline2DPointJob job = new BezierSpline2DPointJob(bezierSpline, -0.5f, Allocator.Temp);
 
-            CheckFloatJob(a, job, -0.5f);
-            CheckFloatJob(a, job, 0f);
-            CheckFloatJob(new float2(0.5f, 0f), job, 0.5f);
-            CheckFloatJob(b, job, 5f);
+            try
+            {
+                CheckFloatJob(a, job, -0.5f);
+                CheckFloatJob(a, job, 0f);
+                CheckFloatJob(new float2(0.5f, 0f), job, 0.5f);
+                CheckFloatJob(b, job, 5f);
+            }
+            finally
+            {
+                job.Dispose();
+            }
         }
 
         [Test]
@@ -64,19 +68,22 @@ namespace Crener.Spline.Test._2D.Bezier
             Assert.AreEqual(1f, bezierSpline.Times[1]);
             Assert.AreEqual(1f, data.Time[1]);
 
-            BezierSpline2DPointJob job = new BezierSpline2DPointJob()
-            {
-                Spline = data,
-                SplineProgress = new SplineProgress() { Progress = -0.5f }
-            };
+            BezierSpline2DPointJob job = new BezierSpline2DPointJob(bezierSpline, -0.5f, Allocator.Temp);
 
-            CheckFloatJob(a, job, -0.5f);
-            CheckFloatJob(a, job, 0f);
-            CheckFloatJob(new float2(0.5f, 0f), job, 0.25f);
-            CheckFloatJob(new float2(1f, 0f), job, 0.5f);
-            //CheckFloatJob(new float2(1.2f, 0f), job, 0.6f);
-            CheckFloatJob(new float2(2f, 0f), job, 1f);
-            CheckFloatJob(new float2(2f, 0f), job, 5f);
+            try
+            {
+                CheckFloatJob(a, job, -0.5f);
+                CheckFloatJob(a, job, 0f);
+                CheckFloatJob(new float2(0.5f, 0f), job, 0.25f);
+                CheckFloatJob(new float2(1f, 0f), job, 0.5f);
+                //CheckFloatJob(new float2(1.2f, 0f), job, 0.6f);
+                CheckFloatJob(new float2(2f, 0f), job, 1f);
+                CheckFloatJob(new float2(2f, 0f), job, 5f);
+            }
+            finally
+            {
+                job.Dispose();
+            }
         }
 
         [Test]
@@ -105,18 +112,21 @@ namespace Crener.Spline.Test._2D.Bezier
             Assert.AreEqual(0.75f, data.Time[1]);
             Assert.AreEqual(1f, bezierSpline.Times[2]);
 
-            BezierSpline2DPointJob job = new BezierSpline2DPointJob()
-            {
-                Spline = data,
-                SplineProgress = new SplineProgress() { Progress = -0.5f }
-            };
+            BezierSpline2DPointJob job = new BezierSpline2DPointJob(bezierSpline, -0.5f, Allocator.Temp);
 
-            CheckFloatJob(a, job, -0.5f);
-            CheckFloatJob(a, job, 0f);
-            CheckFloatJob(new float2(2.5f, 0f), job, 0.25f);
-            CheckFloatJob(new float2(5f, 0f), job, 0.5f);
-            CheckFloatJob(new float2(10f, 0f), job, 1f);
-            CheckFloatJob(new float2(10f, 0f), job, 5f);
+            try
+            {
+                CheckFloatJob(a, job, -0.5f);
+                CheckFloatJob(a, job, 0f);
+                CheckFloatJob(new float2(2.5f, 0f), job, 0.25f);
+                CheckFloatJob(new float2(5f, 0f), job, 0.5f);
+                CheckFloatJob(new float2(10f, 0f), job, 1f);
+                CheckFloatJob(new float2(10f, 0f), job, 5f);
+            }
+            finally
+            {
+                job.Dispose();
+            }
         }
 
         /// <summary>

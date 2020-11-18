@@ -1,5 +1,4 @@
-﻿using System;
-using Crener.Spline.Common;
+﻿using Crener.Spline.Common;
 using Crener.Spline.Common.DataStructs;
 using Crener.Spline.Common.Interfaces;
 using Unity.Assertions;
@@ -21,7 +20,7 @@ namespace Crener.Spline._2D.Jobs
         [ReadOnly]
         private SplineProgress m_splineProgress;
         [WriteOnly]
-        private float2 m_result;
+        private NativeReference<float2> m_result;
 
         #region Interface properties
         public SplineProgress SplineProgress
@@ -29,14 +28,25 @@ namespace Crener.Spline._2D.Jobs
             get => m_splineProgress;
             set => m_splineProgress = value;
         }
-
+        
         public float2 Result
         {
-            get => m_result;
-            set => m_result = value;
+            get => m_result.Value;
+            set => m_result.Value = value;
         }
         #endregion
 
+        public CatmullRomSpline2DPointJob(ISpline2D spline, float progress, Allocator allocator = Allocator.None)
+            : this(spline, new SplineProgress(progress), allocator) { }
+        
+        public CatmullRomSpline2DPointJob(ISpline2D spline, SplineProgress splineProgress, Allocator allocator = Allocator.None) 
+            : this()
+        {
+            Spline = spline.SplineEntityData2D.Value;
+            m_splineProgress = splineProgress;
+            m_result = new NativeReference<float2>(allocator);
+        }
+        
         // 0.0 for the uniform spline, 0.5 for the centripetal spline, 1.0 for the chordal spline
         private const float c_alpha = 0.5f;
 
@@ -49,13 +59,13 @@ namespace Crener.Spline._2D.Jobs
 #endif
 
             if(m_splineProgress.Progress <= 0f)
-                m_result = Spline.Points[0];
+                m_result.Value = Spline.Points[0];
             else if(m_splineProgress.Progress >= 1f)
-                m_result = Spline.Points[Spline.Points.Length - 1];
+                m_result.Value = Spline.Points[Spline.Points.Length - 1];
             else
             {
                 int aIndex = SegmentIndex();
-                m_result = SplineInterpolation(SegmentProgress(aIndex), aIndex);
+                m_result.Value = SplineInterpolation(SegmentProgress(aIndex), aIndex);
             }
         }
 
@@ -182,6 +192,16 @@ namespace Crener.Spline._2D.Jobs
             float b = math.pow(a, c_alpha * 0.5f);
 
             return (b + t);
+        }
+
+        public void Dispose()
+        {
+            m_result.Dispose();
+        }
+
+        public JobHandle Dispose(JobHandle inputDeps)
+        {
+            return m_result.Dispose(inputDeps);
         }
     }
 }

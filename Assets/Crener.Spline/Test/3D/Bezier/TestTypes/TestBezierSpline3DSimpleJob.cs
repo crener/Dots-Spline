@@ -4,6 +4,7 @@ using Crener.Spline._3D.Jobs;
 using Crener.Spline.Common;
 using Crener.Spline.Common.Interfaces;
 using NUnit.Framework;
+using Unity.Collections;
 using Unity.Mathematics;
 
 namespace Crener.Spline.Test._3D.Bezier.TestTypes
@@ -37,10 +38,10 @@ namespace Crener.Spline.Test._3D.Bezier.TestTypes
                 ConvertData();
 
                 Assert.IsTrue(SplineEntityData3D.HasValue, "Failed to generate spline");
-                ISplineJob3D job = this.ExtractJob(new SplineProgress {Progress = progress});
+                ISplineJob3D job = this.ExtractJob(progress, Allocator.Temp);
                 job.Execute();
 
-                LocalSpaceConversion3D conversion = new LocalSpaceConversion3D(this.Position, this.Forward, job.Result);
+                LocalSpaceConversion3D conversion = new LocalSpaceConversion3D(Position, Forward, job.Result, Allocator.Temp);
                 conversion.Execute();
                 
                 float3 pos = conversion.SplinePosition.Value;
@@ -55,7 +56,7 @@ namespace Crener.Spline.Test._3D.Bezier.TestTypes
                 ConvertData();
 
                 Assert.IsTrue(SplineEntityData3D.HasValue, "Failed to generate spline");
-                ISplineJob3D job = this.ExtractJob(new SplineProgress(progress));
+                ISplineJob3D job = this.ExtractJob(progress, Allocator.Temp);
                 job.Execute();
 
                 float3 jobResult = job.Result;
