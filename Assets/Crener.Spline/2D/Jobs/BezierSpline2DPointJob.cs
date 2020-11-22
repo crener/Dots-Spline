@@ -48,49 +48,31 @@ namespace Crener.Spline._2D.Jobs
 
         public void Execute()
         {
+            m_result.Value = Run(ref Spline, ref m_splineProgress);
+        }
+
+        public static float2 Run(ref Spline2DData spline, ref SplineProgress progress)
+        {
 #if UNITY_EDITOR && NO_BURST
             if(Spline.Points.Length == 0) throw new ArgumentException($"Should be using {nameof(Empty2DPointJob)}");
             if(Spline.Points.Length == 1) throw new ArgumentException($"Should be using {nameof(SinglePoint2DPointJob)}");
 #endif
 
-            int aIndex = SegmentIndex();
-            m_result.Value = CubicBezierPoint(SegmentProgress(aIndex), aIndex, aIndex + 1);
+            int aIndex = SplineHelperMethods.SegmentIndex(ref spline, ref progress);
+            return CubicBezierPoint(ref spline,SplineHelperMethods.SegmentProgress(ref spline, ref progress, aIndex), aIndex, aIndex + 1);
         }
 
-        private int SegmentIndex()
-        {
-            int seg = Spline.Time.Length;
-            for (int i = 0; i < seg; i++)
-            {
-                float time = Spline.Time[i];
-                if(time >= m_splineProgress.Progress) return i;
-            }
-
-            return seg - 1;
-        }
-
-        private float SegmentProgress(int index)
-        {
-            if(index == 0) return m_splineProgress.Progress / Spline.Time[0];
-            if(Spline.Time.Length <= 1) return m_splineProgress.Progress;
-
-            float aLn = Spline.Time[index - 1];
-            float bLn = Spline.Time[index];
-
-            return (m_splineProgress.Progress - aLn) / (bLn - aLn);
-        }
-
-        private float2 CubicBezierPoint(float t, int a, int b)
+        private static float2 CubicBezierPoint(ref Spline2DData spline, float t, int a, int b)
         {
 #if UNITY_EDITOR && NO_BURST
             if(b <= 0)
                 throw new ArgumentOutOfRangeException($"B is {b} which isn't within the valid point range");
 #endif
 
-            float2 p0 = Spline.Points[(a * 3)];
-            float2 p1 = Spline.Points[(a * 3) + 1];
-            float2 p2 = Spline.Points[(b * 3) - 1];
-            float2 p3 = Spline.Points[(b * 3)];
+            float2 p0 = spline.Points[(a * 3)];
+            float2 p1 = spline.Points[(a * 3) + 1];
+            float2 p2 = spline.Points[(b * 3) - 1];
+            float2 p3 = spline.Points[(b * 3)];
 
             return BezierMath.CubicBezierPoint(t, p0, p1, p2, p3);
         }

@@ -32,7 +32,7 @@ namespace Crener.Spline.Test._2D.Bezier.TestTypes
                 }
             }
 
-            public new float2 Get2DPointLocal(float progress)
+            public new virtual float2 Get2DPointLocal(float progress)
             {
                 ClearData();
                 ConvertData();
@@ -50,7 +50,7 @@ namespace Crener.Spline.Test._2D.Bezier.TestTypes
                 return result;
             }
             
-            public new float2 Get2DPointWorld(float progress)
+            public new virtual float2 Get2DPointWorld(float progress)
             {
                 ClearData();
                 ConvertData();

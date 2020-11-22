@@ -58,8 +58,8 @@ namespace Crener.Spline._3D.Jobs
             if(spline.Points.Length == 2) throw new ArgumentException($"Should be using {nameof(LinearSpline3DPointJob)}");
 #endif
 
-            int aIndex = SplineHelperMethods.SegmentIndex3D(ref spline, ref progress);
-            return LinearLerp(ref spline, SplineHelperMethods.SegmentProgress3DClamp(ref spline, ref progress, aIndex), aIndex);
+            int aIndex = SplineHelperMethods.SegmentIndex(ref spline, ref progress);
+            return LinearLerp(ref spline, SplineHelperMethods.SegmentProgressClamp(ref spline, ref progress, aIndex), aIndex);
         }
         
         private static float3 LinearLerp(ref Spline3DData spline, float t, int a)

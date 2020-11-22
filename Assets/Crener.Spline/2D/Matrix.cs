@@ -2,6 +2,12 @@ using Unity.Mathematics;
 
 namespace Crener.Spline._2D
 {
+    /// <summary>
+    /// Matrix required by the <see cref="CubicSpline2D"/>
+    /// </summary>
+    /// <remarks>
+    /// This can likely be optimised further
+    /// </remarks>
     internal class Matrix
     {
         private readonly int m_maxOrder;

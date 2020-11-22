@@ -58,8 +58,8 @@ namespace Crener.Spline._3D.Jobs
             if(Spline.Points.Length == 1) throw new ArgumentException($"Should be using {nameof(SinglePoint3DPointJob)}");
 #endif
 
-            int aIndex = SplineHelperMethods.SegmentIndex3D(ref Spline, ref m_splineProgress);
-            return CubicBezierPoint(ref Spline, SplineHelperMethods.SegmentProgress3D(ref Spline, ref m_splineProgress, aIndex), aIndex, aIndex + 1);
+            int aIndex = SplineHelperMethods.SegmentIndex(ref Spline, ref m_splineProgress);
+            return CubicBezierPoint(ref Spline, SplineHelperMethods.SegmentProgress(ref Spline, ref m_splineProgress, aIndex), aIndex, aIndex + 1);
         }
 
         private static float3 CubicBezierPoint(ref Spline3DData Spline, float t, int a, int b)

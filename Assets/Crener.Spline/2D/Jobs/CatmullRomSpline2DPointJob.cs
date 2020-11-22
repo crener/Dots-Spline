@@ -52,66 +52,40 @@ namespace Crener.Spline._2D.Jobs
 
         public void Execute()
         {
+            m_result.Value = Run(ref Spline, ref m_splineProgress);
+        }
+
+        public static float2 Run(ref Spline2DData spline, ref SplineProgress progress)
+        {
 #if UNITY_EDITOR && NO_BURST
             if(Spline.Points.Length == 0) throw new ArgumentException($"Should be using {nameof(Empty2DPointJob)}");
             if(Spline.Points.Length == 1) throw new ArgumentException($"Should be using {nameof(SinglePoint2DPointJob)}");
             if(Spline.Points.Length == 2) throw new ArgumentException($"Should be using {nameof(LinearSpline2DPointJob)}");
 #endif
 
-            if(m_splineProgress.Progress <= 0f)
-                m_result.Value = Spline.Points[0];
-            else if(m_splineProgress.Progress >= 1f)
-                m_result.Value = Spline.Points[Spline.Points.Length - 1];
+            if(progress.Progress <= 0f)
+                return spline.Points[0];
+            else if(progress.Progress >= 1f)
+                return spline.Points[spline.Points.Length - 1];
             else
             {
-                int aIndex = SegmentIndex();
-                m_result.Value = SplineInterpolation(SegmentProgress(aIndex), aIndex);
+                int aIndex = SplineHelperMethods.SegmentIndex(ref spline, ref progress);
+                return SplineInterpolation(ref spline, SplineHelperMethods.SegmentProgress(ref spline, ref progress, aIndex), aIndex);
             }
         }
 
-        private int SegmentIndex()
-        {
-            int seg = Spline.Time.Length;
-            for (int i = 0; i < seg; i++)
-            {
-                float time = Spline.Time[i];
-                if(time >= SplineProgress.Progress) return i;
-            }
-
-#if UNITY_EDITOR && NO_BURST
-            if(seg - 1 != Spline.Points.Length - 2)
-            {
-                // if the progress is greater than the spline time it should result in the last point being returned
-                throw new IndexOutOfRangeException("Spline time has less data than expected for the requested point range!");
-            }
-#endif
-
-            return seg - 1;
-        }
-
-        private float SegmentProgress(int index)
-        {
-            if(index == 0) return SplineProgress.Progress / Spline.Time[0];
-            if(Spline.Time.Length <= 1) return SplineProgress.Progress;
-
-            float aLn = Spline.Time[index - 1];
-            float bLn = Spline.Time[index];
-
-            return (SplineProgress.Progress - aLn) / (bLn - aLn);
-        }
-
-        private float2 SplineInterpolation(float progress, int a)
+        private static float2 SplineInterpolation(ref Spline2DData spline, float progress, int a)
         {
             float2 p0, p1, p2, p3;
             // not looped
-            if(Spline.Points.Length == 3)
+            if(spline.Points.Length == 3)
             {
                 // 3 points require 2 of the points at the start and end to be fabricated
-                if(progress == 0f) return Spline.Points[a];
-                if(progress == 1f) return Spline.Points[(a + 1) % Spline.Points.Length];
+                if(progress == 0f) return spline.Points[a];
+                if(progress == 1f) return spline.Points[(a + 1) % spline.Points.Length];
 
-                p1 = Spline.Points[a];
-                p2 = Spline.Points[(a + 1) % Spline.Points.Length];
+                p1 = spline.Points[a];
+                p2 = spline.Points[(a + 1) % spline.Points.Length];
 
                 float2 delta = p2 - p1;
                 float angle = math.atan2(delta.y, delta.x) - (math.PI / 2);
@@ -120,7 +94,7 @@ namespace Crener.Spline._2D.Jobs
                 {
                     // need to create a fake point for p0
                     p0 = new float2(p1.x + math.sin(angle), p1.y - math.cos(angle));
-                    p3 = Spline.Points[2];
+                    p3 = spline.Points[2];
                 }
                 else
                 {
@@ -129,7 +103,7 @@ namespace Crener.Spline._2D.Jobs
 #endif
 
                     // need to create a fake point for p3
-                    p0 = Spline.Points[(a - 1) % Spline.Points.Length];
+                    p0 = spline.Points[(a - 1) % spline.Points.Length];
                     p3 = new float2(p2.x + math.sin(-angle), p2.y + math.cos(-angle));
                 }
             }
@@ -137,24 +111,24 @@ namespace Crener.Spline._2D.Jobs
             {
                 if(a == 0)
                 {
-                    p1 = Spline.Points[a];
-                    p2 = Spline.Points[(a + 1) % Spline.Points.Length];
-                    p3 = Spline.Points[(a + 2) % Spline.Points.Length];
+                    p1 = spline.Points[a];
+                    p2 = spline.Points[(a + 1) % spline.Points.Length];
+                    p3 = spline.Points[(a + 2) % spline.Points.Length];
 
                     float2 delta = p2 - p1;
                     float angle = math.atan2(delta.y, delta.x) - (math.PI / 2);
                     float size = math.max(math.length(delta) * 0.5f, float.Epsilon);
                     p0 = new float2(p1.x + (math.sin(angle) * size), p1.y - (math.cos(angle) * size));
                 }
-                else if(a == Spline.Points.Length - 2)
+                else if(a == spline.Points.Length - 2)
                 {
-                    p1 = Spline.Points[a];
+                    p1 = spline.Points[a];
                     if(progress <= 0f) return p1;
 
-                    p2 = Spline.Points[(a + 1) % Spline.Points.Length];
+                    p2 = spline.Points[(a + 1) % spline.Points.Length];
                     if(progress >= 1f) return p2;
 
-                    p0 = Spline.Points[(a - 1) % Spline.Points.Length];
+                    p0 = spline.Points[(a - 1) % spline.Points.Length];
 
                     float2 delta = p2 - p1;
                     float angle = math.atan2(delta.y, delta.x) - (math.PI / 2);
@@ -163,10 +137,10 @@ namespace Crener.Spline._2D.Jobs
                 }
                 else
                 {
-                    p0 = Spline.Points[(a - 1) % Spline.Points.Length];
-                    p1 = Spline.Points[a];
-                    p2 = Spline.Points[(a + 1) % Spline.Points.Length];
-                    p3 = Spline.Points[(a + 2) % Spline.Points.Length];
+                    p0 = spline.Points[(a - 1) % spline.Points.Length];
+                    p1 = spline.Points[a];
+                    p2 = spline.Points[(a + 1) % spline.Points.Length];
+                    p3 = spline.Points[(a + 2) % spline.Points.Length];
                 }
             }
 
@@ -186,7 +160,7 @@ namespace Crener.Spline._2D.Jobs
             return (end - t) / (end - start) * b1 + (t - start) / (end - start) * b2;
         }
 
-        float GetT(float t, float2 p0, float2 p1)
+        private static float GetT(float t, float2 p0, float2 p1)
         {
             float a = math.pow((p1.x - p0.x), 2.0f) + math.pow((p1.y - p0.y), 2.0f);
             float b = math.pow(a, c_alpha * 0.5f);

@@ -8,13 +8,110 @@ namespace Crener.Spline.Common.DataStructs
 {
     public static class SplineHelperMethods
     {
+        #region 2D Helpers
+        
         /// <summary>
         /// Calculates the index that's responsible for the first point
         /// </summary>
         /// <param name="spline">source spline data</param>
         /// <param name="progress">desired progress along the spline</param>
         [BurstCompatible]
-        public static int SegmentIndex3D(ref Spline3DData spline, ref SplineProgress progress)
+        public static int SegmentIndex(ref Spline2DData spline, ref SplineProgress progress)
+        {
+            int seg = spline.Time.Length;
+            for (int i = 0; i < seg; i++)
+            {
+                float time = spline.Time[i];
+                if(time >= progress.Progress) return i;
+            }
+
+#if UNITY_EDITOR && NO_BURST
+            if(seg - 1 != Spline.Points.Length - 2)
+            {
+                // if the progress is greater than the spline time it should result in the last point being returned
+                throw new IndexOutOfRangeException("Spline time has less data than expected for the requested point range!");
+            }
+#endif
+
+            return seg - 1;
+        }
+        
+        /// <summary>
+        /// Calculates the index that's responsible for the first point
+        /// </summary>
+        /// <param name="spline">source spline data</param>
+        /// <param name="progress">desired progress along the spline</param>
+        [BurstCompatible]
+        public static int SegmentIndexClamp(ref Spline2DData spline, ref SplineProgress progress)
+        {
+            int seg = spline.Time.Length;
+            float tempProgress = math.clamp(progress.Progress, 0f, 1f);
+            for (int i = 0; i < seg; i++)
+            {
+                float time = spline.Time[i];
+                if(time >= tempProgress) return i;
+            }
+
+#if UNITY_EDITOR && NO_BURST
+            if(seg - 1 != Spline.Points.Length - 2)
+            {
+                // if the progress is greater than the spline time it should result in the last point being returned
+                throw new IndexOutOfRangeException("Spline time has less data than expected for the requested point range!");
+            }
+#endif
+
+            return seg - 1;
+        }
+        
+        /// <summary>
+        /// Calculate the progress between two points
+        /// </summary>
+        /// <param name="spline">source spline data</param>
+        /// <param name="progress">desired progress along the spline</param>
+        /// <param name="index">index of the first point in the spline</param>
+        [BurstCompatible]
+        public static float SegmentProgress(ref Spline2DData spline, ref SplineProgress progress, int index)
+        {
+            if(index == 0) return progress.Progress / spline.Time[0];
+            if(spline.Time.Length <= 1) return progress.Progress;
+
+            float aLn = spline.Time[index - 1];
+            float bLn = spline.Time[index];
+
+            return (progress.Progress - aLn) / (bLn - aLn);
+        }
+
+        /// <summary>
+        /// Calculate the progress between two points
+        /// </summary>
+        /// <param name="spline">source spline data</param>
+        /// <param name="progress">desired progress along the spline</param>
+        /// <param name="index">index of the first point in the spline</param>
+        [BurstCompatible]
+        public static float SegmentProgressClamp(ref Spline2DData spline, ref SplineProgress progress, int index)
+        {
+            float tempProgress = math.clamp(progress.Progress, 0f, 1f);
+            
+            if(index == 0) return tempProgress / spline.Time[0];
+            if(spline.Time.Length <= 1) return tempProgress;
+
+            float aLn = spline.Time[index - 1];
+            float bLn = spline.Time[index];
+
+            return (tempProgress - aLn) / (bLn - aLn);
+        }
+        
+        #endregion
+        
+        #region 3D helpers
+        
+        /// <summary>
+        /// Calculates the index that's responsible for the first point
+        /// </summary>
+        /// <param name="spline">source spline data</param>
+        /// <param name="progress">desired progress along the spline</param>
+        [BurstCompatible]
+        public static int SegmentIndex(ref Spline3DData spline, ref SplineProgress progress)
         {
             int seg = spline.Time.Length;
             for (int i = 0; i < seg; i++)
@@ -41,7 +138,7 @@ namespace Crener.Spline.Common.DataStructs
         /// <param name="progress">desired progress along the spline</param>
         /// <param name="index">index of the first point in the spline</param>
         [BurstCompatible]
-        public static float SegmentProgress3D(ref Spline3DData spline, ref SplineProgress progress, int index)
+        public static float SegmentProgress(ref Spline3DData spline, ref SplineProgress progress, int index)
         {
             //float tempProgress = math.clamp(progress.Progress, 0f, 1f);
 
@@ -61,7 +158,7 @@ namespace Crener.Spline.Common.DataStructs
         /// <param name="progress">desired progress along the spline</param>
         /// <param name="index">index of the first point in the spline</param>
         [BurstCompatible]
-        public static float SegmentProgress3DClamp(ref Spline3DData spline, ref SplineProgress progress, int index)
+        public static float SegmentProgressClamp(ref Spline3DData spline, ref SplineProgress progress, int index)
         {
             float tempProgress = math.clamp(progress.Progress, 0f, 1f);
 
@@ -73,6 +170,8 @@ namespace Crener.Spline.Common.DataStructs
 
             return (tempProgress - aLn) / (bLn - aLn);
         }
+        
+        #endregion 3D Helpers
     }
     
     #region Spline 2D Jobs 
@@ -110,7 +209,12 @@ namespace Crener.Spline.Common.DataStructs
 
         public void Execute()
         {
-            m_result.Value = float2.zero;
+            m_result.Value = Run();
+        }
+
+        public static float2 Run()
+        {
+            return float2.zero;
         }
 
         public void Dispose()
@@ -157,6 +261,11 @@ namespace Crener.Spline.Common.DataStructs
 
         public void Execute()
         {
+            m_result.Value = Run(ref Spline);
+        }
+
+        public static float2 Run(ref Spline2DData Spline)
+        {
 #if UNITY_EDITOR && NO_BURST
             if(Spline.Points.Length != 1)
             {
@@ -168,8 +277,8 @@ namespace Crener.Spline.Common.DataStructs
                 Assert.IsTrue(false, text);
             }
 #endif
-
-            m_result.Value = Spline.Points[0];
+            
+            return Spline.Points[0];
         }
 
         public void Dispose()
@@ -223,13 +332,7 @@ namespace Crener.Spline.Common.DataStructs
 
         public void Execute()
         {
-#if UNITY_EDITOR && NO_BURST
-            if(Spline.Points.Length > 0)
-                Assert.IsFalse(true, $"{nameof(Empty3DPointJob)} was used when spline had data! " +
-                                     $"It's highly likely that a different {nameof(ISplineJob3D)} should have been used");
-#endif
-
-            m_result.Value = float3.zero;
+            m_result.Value = Run(ref Spline);
         }
 
         public static float3 Run(ref Spline3DData Spline)

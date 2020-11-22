@@ -47,60 +47,31 @@ namespace Crener.Spline._2D.Jobs
 
         public void Execute()
         {
+            m_result.Value = Run(ref Spline, ref m_splineProgress);
+        }
+
+        public static float2 Run(ref Spline2DData spline, ref SplineProgress progress)
+        {
 #if UNITY_EDITOR && NO_BURST
             if(Spline.Points.Length == 0) throw new ArgumentException($"Should be using {nameof(Empty2DPointJob)}");
             if(Spline.Points.Length == 1) throw new ArgumentException($"Should be using {nameof(SinglePoint2DPointJob)}");
             if(Spline.Points.Length == 2) throw new ArgumentException($"Should be using {nameof(LinearSpline2DPointJob)}");
 #endif
 
-            int aIndex = SegmentIndex();
-            m_result.Value = LinearLerp(SegmentProgress(aIndex), aIndex);
+            int aIndex = SplineHelperMethods.SegmentIndexClamp(ref spline, ref progress);
+            return LinearLerp(ref spline, SplineHelperMethods.SegmentProgressClamp(ref spline, ref progress, aIndex), aIndex);
         }
 
-        private int SegmentIndex()
+        private static float2 LinearLerp(ref Spline2DData spline, float t, int a)
         {
-            int seg = Spline.Time.Length;
-            float tempProgress = math.clamp(SplineProgress.Progress, 0f, 1f);
-            for (int i = 0; i < seg; i++)
-            {
-                float time = Spline.Time[i];
-                if(time >= tempProgress) return i;
-            }
-
-#if UNITY_EDITOR && NO_BURST
-            if(seg - 1 != Spline.Points.Length - 2)
-            {
-                // if the progress is greater than the spline time it should result in the last point being returned
-                throw new IndexOutOfRangeException("Spline time has less data than expected for the requested point range!");
-            }
-#endif
-
-            return seg - 1;
-        }
-
-        private float SegmentProgress(int index)
-        {
-            float tempProgress = math.clamp(SplineProgress.Progress, 0f, 1f);
-            
-            if(index == 0) return tempProgress / Spline.Time[0];
-            if(Spline.Time.Length <= 1) return tempProgress;
-
-            float aLn = Spline.Time[index - 1];
-            float bLn = Spline.Time[index];
-
-            return (tempProgress - aLn) / (bLn - aLn);
-        }
-
-        private float2 LinearLerp(float t, int a)
-        {
-            float2 p0 = Spline.Points[a];
-            float2 p1 = Spline.Points[(a + 1) % Spline.Points.Length];
-            float2 p2 = Spline.Points[(a + 2) % Spline.Points.Length];
+            float2 p0 = spline.Points[a];
+            float2 p1 = spline.Points[(a + 1) % spline.Points.Length];
+            float2 p2 = spline.Points[(a + 2) % spline.Points.Length];
 
             float2 i0, i1;
             const float splineMidPoint = 0.5f;
 
-            if(Spline.Points.Length > 3)
+            if(spline.Points.Length > 3)
             {
                 // todo add an extra segment for the first and last segment of the spline so it doesn't get stretched
                 if(a == 0)
@@ -108,7 +79,7 @@ namespace Crener.Spline._2D.Jobs
                     i0 = math.lerp(p0, p1, t);
                     i1 = math.lerp(p1, p2, splineMidPoint);
                 }
-                else if(a == Spline.Points.Length - 3)
+                else if(a == spline.Points.Length - 3)
                 {
                     i0 = math.lerp(p0, p1, splineMidPoint);
                     i1 = math.lerp(p1, p2, t);
