@@ -1,9 +1,10 @@
+using Unity.Collections;
 using Unity.Jobs;
 using Unity.Mathematics;
 
 namespace Crener.Spline.Common.Interfaces
 {
-    public interface ISplineJob : IJob
+    public interface ISplineJob : IJob, INativeDisposable
     {
         /// <summary>
         /// The progress along the spline

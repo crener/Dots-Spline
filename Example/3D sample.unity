@@ -791,6 +791,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1293263844}
   - component: {fileID: 1293263845}
+  - component: {fileID: 1293263846}
   m_Layer: 0
   m_Name: Bezier Spline (1)
   m_TagString: Untagged
@@ -843,6 +844,18 @@ MonoBehaviour:
   PointEdit: 0000000000000000
   arkParameterization: 0
   arkLength: 0.1
+--- !u!114 &1293263846
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1293263843}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 821ba016cf3c6324982b416455d27786, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1295795600
 GameObject:
   m_ObjectHideFlags: 0

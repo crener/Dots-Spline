@@ -1,5 +1,4 @@
-﻿using System;
-using Crener.Spline.Common;
+﻿using Crener.Spline.Common;
 using Crener.Spline.Common.DataStructs;
 using Crener.Spline.Common.Interfaces;
 using Crener.Spline.Common.Math;
@@ -13,7 +12,7 @@ namespace Crener.Spline._3D.Jobs
     /// <summary>
     /// Simple way of sampling a single point from a 2D spline via <see cref="Spline3DData"/>
     /// </summary>
-    [BurstCompile]
+    [BurstCompile, BurstCompatible]
     public struct BezierSpline3DPointJob : IJob, ISplineJob3D
     {
         [ReadOnly]
@@ -21,7 +20,7 @@ namespace Crener.Spline._3D.Jobs
         [ReadOnly]
         private SplineProgress m_splineProgress;
         [WriteOnly]
-        private float3 m_result;
+        private NativeReference<float3> m_result;
         
         #region Interface properties
         public SplineProgress SplineProgress
@@ -32,48 +31,40 @@ namespace Crener.Spline._3D.Jobs
 
         public float3 Result
         {
-            get => m_result;
-            set => m_result = value;
+            get => m_result.Value;
+            set => m_result.Value = value;
         }
         #endregion
+        
+        public BezierSpline3DPointJob(ISpline3D spline, float progress, Allocator allocator = Allocator.None)
+            : this(spline, new SplineProgress(progress), allocator) { }
+
+        public BezierSpline3DPointJob(ISpline3D spline, SplineProgress progress, Allocator allocator = Allocator.None)
+        {
+            Spline = spline.SplineEntityData3D.Value;
+            m_splineProgress = progress;
+            m_result = new NativeReference<float3>(allocator);
+        }
 
         public void Execute()
         {
-#if UNITY_EDITOR
+            m_result.Value = Run(ref Spline, ref m_splineProgress);
+        }
+
+        public static float3 Run(ref Spline3DData Spline, ref SplineProgress m_splineProgress)
+        {
+#if UNITY_EDITOR && NO_BURST
             if(Spline.Points.Length == 0) throw new ArgumentException($"Should be using {nameof(Empty3DPointJob)}");
             if(Spline.Points.Length == 1) throw new ArgumentException($"Should be using {nameof(SinglePoint3DPointJob)}");
 #endif
 
-            int aIndex = SegmentIndex();
-            m_result = CubicBezierPoint(SegmentProgress(aIndex), aIndex, aIndex + 1);
+            int aIndex = SplineHelperMethods.SegmentIndex(ref Spline, ref m_splineProgress);
+            return CubicBezierPoint(ref Spline, SplineHelperMethods.SegmentProgress(ref Spline, ref m_splineProgress, aIndex), aIndex, aIndex + 1);
         }
 
-        private int SegmentIndex()
+        private static float3 CubicBezierPoint(ref Spline3DData Spline, float t, int a, int b)
         {
-            int seg = Spline.Time.Length;
-            for (int i = 0; i < seg; i++)
-            {
-                float time = Spline.Time[i];
-                if(time >= m_splineProgress.Progress) return i;
-            }
-
-            return seg - 1;
-        }
-
-        private float SegmentProgress(int index)
-        {
-            if(index == 0) return m_splineProgress.Progress / Spline.Time[0];
-            if(Spline.Time.Length <= 1) return m_splineProgress.Progress;
-
-            float aLn = Spline.Time[index - 1];
-            float bLn = Spline.Time[index];
-
-            return (m_splineProgress.Progress - aLn) / (bLn - aLn);
-        }
-
-        private float3 CubicBezierPoint(float t, int a, int b)
-        {
-#if UNITY_EDITOR
+#if UNITY_EDITOR && NO_BURST
             if(b <= 0)
                 throw new ArgumentOutOfRangeException($"B is {b} which isn't within the valid point range");
 #endif
@@ -84,6 +75,16 @@ namespace Crener.Spline._3D.Jobs
             float3 p3 = Spline.Points[(b * 3)];
 
             return BezierMath.CubicBezierPoint(t, p0, p1, p2, p3);
+        }
+
+        public void Dispose()
+        {
+            m_result.Dispose();
+        }
+
+        public JobHandle Dispose(JobHandle inputDeps)
+        {
+            return m_result.Dispose(inputDeps);
         }
     }
 }

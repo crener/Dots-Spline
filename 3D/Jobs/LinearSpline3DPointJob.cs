@@ -1,5 +1,4 @@
-﻿using System;
-using Crener.Spline.Common;
+﻿using Crener.Spline.Common;
 using Crener.Spline.Common.DataStructs;
 using Crener.Spline.Common.Interfaces;
 using Unity.Burst;
@@ -12,7 +11,7 @@ namespace Crener.Spline._3D.Jobs
     /// <summary>
     /// Simple way of sampling a single point from a 2D spline via <see cref="Spline2DData"/>
     /// </summary>
-    [BurstCompile]
+    [BurstCompile, BurstCompatible]
     public struct LinearSpline3DPointJob : IJob, ISplineJob3D
     {
         [ReadOnly]
@@ -20,7 +19,7 @@ namespace Crener.Spline._3D.Jobs
         [ReadOnly]
         private SplineProgress m_splineProgress;
         [WriteOnly]
-        private float3 m_result;
+        private NativeReference<float3> m_result;
         
         #region Interface properties
         public SplineProgress SplineProgress
@@ -31,65 +30,60 @@ namespace Crener.Spline._3D.Jobs
 
         public float3 Result
         {
-            get => m_result;
-            set => m_result = value;
+            get => m_result.Value;
+            set => m_result.Value = value;
         }
         #endregion
 
+        public LinearSpline3DPointJob(ISpline3D spline, float progress, Allocator allocator = Allocator.None)
+            : this(spline, new SplineProgress(progress), allocator) { }
+
+        public LinearSpline3DPointJob(ISpline3D spline, SplineProgress progress, Allocator allocator = Allocator.None)
+        {
+            Spline = spline.SplineEntityData3D.Value;
+            m_splineProgress = progress;
+            m_result = new NativeReference<float3>(allocator);
+        }
+
         public void Execute()
         {
-            #if UNITY_EDITOR
-            if(Spline.Points.Length == 0) throw new ArgumentException($"Should be using {nameof(Empty2DPointJob)}");
-            if(Spline.Points.Length == 1) throw new ArgumentException($"Should be using {nameof(SinglePoint2DPointJob)}");
-            #endif
-
-            int aIndex = SegmentIndex();
-            m_result = LinearLerp(SegmentProgress(aIndex), aIndex, aIndex + 1);
+            m_result.Value = Run(ref Spline, ref m_splineProgress);
         }
 
-        private int SegmentIndex()
+        public static float3 Run(ref Spline3DData spline, ref SplineProgress progress)
         {
-            int seg = Spline.Time.Length;
-            for (int i = 0; i < seg; i++)
-            {
-                float time = Spline.Time[i];
-                if(time >= SplineProgress.Progress) return i;
-            }
-
-#if UNITY_EDITOR
-            if(seg - 1 != Spline.Points.Length - 2)
-            {
-                // if the progress is greater than the spline time it should result in the last point being returned
-                throw new IndexOutOfRangeException("Spline time has less data than expected for the requested point range!");
-            }
+#if UNITY_EDITOR && NO_BURST
+            if(spline.Points.Length == 0) throw new ArgumentException($"Should be using {nameof(Empty3DPointJob)}");
+            if(spline.Points.Length == 1) throw new ArgumentException($"Should be using {nameof(SinglePoint3DPointJob)}");
+            if(spline.Points.Length == 2) throw new ArgumentException($"Should be using {nameof(LinearSpline3DPointJob)}");
 #endif
 
-            return seg - 1;
+            int aIndex = SplineHelperMethods.SegmentIndex(ref spline, ref progress);
+            return LinearLerp(ref spline, SplineHelperMethods.SegmentProgress(ref spline, ref progress, aIndex), aIndex, aIndex + 1);
         }
 
-        private float SegmentProgress(int index)
+        private static float3 LinearLerp(ref Spline3DData spline, float t, int a, int b)
         {
-            if(index == 0) return SplineProgress.Progress / Spline.Time[0];
-            if(Spline.Time.Length <= 1) return SplineProgress.Progress;
-
-            float aLn = Spline.Time[index - 1];
-            float bLn = Spline.Time[index];
-
-            return (SplineProgress.Progress - aLn) / (bLn - aLn);
-        }
-
-        private float3 LinearLerp(float t, int a, int b)
-        {
-#if UNITY_EDITOR
+#if UNITY_EDITOR && NO_BURST
             if(b <= 0)
                 throw new ArgumentOutOfRangeException($"B is {b} which isn't within the valid point range! " +
-                                                      $"Actual Range '0 - {Spline.Points.Length}', requested range '{a} - {b}'");
+                                                      $"Actual Range '0 - {spline.Points.Length}', requested range '{a} - {b}'");
 #endif
 
-            float3 p0 = Spline.Points[a];
-            float3 p1 = Spline.Points[b];
+            float3 p0 = spline.Points[a];
+            float3 p1 = spline.Points[b];
 
             return math.lerp(p0, p1, math.clamp(t, 0f, 1f));
+        }
+
+        public void Dispose()
+        {
+            m_result.Dispose();
+        }
+
+        public JobHandle Dispose(JobHandle inputDeps)
+        {
+            return m_result.Dispose(inputDeps);
         }
     }
 }

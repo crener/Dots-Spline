@@ -8,6 +8,7 @@ using Crener.Spline.Test._2D.Bezier.TestAdapters;
 using Crener.Spline.Test._2D.Bezier.TestTypes;
 using Crener.Spline.Test.Helpers;
 using NUnit.Framework;
+using Unity.Collections;
 using Unity.Mathematics;
 
 namespace Crener.Spline.Test._2D.Bezier
@@ -388,19 +389,14 @@ namespace Crener.Spline.Test._2D.Bezier
             switch (spline.SplineDataType)
             {
                 case SplineType.Bezier:
-                    BezierSpline2DPointJob bzSpline = new BezierSpline2DPointJob
-                    {
-                        Spline = spline.SplineEntityData2D.Value,
-                        SplineProgress = new SplineProgress {Progress = progress}
-                    };
+                    BezierSpline2DPointJob bzSpline = new BezierSpline2DPointJob(spline, progress, Allocator.Temp);
                     bzSpline.Execute();
-                    return bzSpline.Result;
+                    
+                    float2 result = bzSpline.Result;
+                    bzSpline.Dispose();
+                    return result;
                 case SplineType.Linear:
-                    LinearSpline2DPointJob pSpline = new LinearSpline2DPointJob
-                    {
-                        Spline = spline.SplineEntityData2D.Value,
-                        SplineProgress = new SplineProgress {Progress = progress}
-                    };
+                    LinearSpline2DPointJob pSpline = new LinearSpline2DPointJob(spline, progress, Allocator.Temp);
                     pSpline.Execute();
                     return pSpline.Result;
                 default:

@@ -1,10 +1,10 @@
 using System.Collections.Generic;
-using Crener.Spline._2D.Jobs;
 using Crener.Spline._3D;
 using Crener.Spline._3D.Jobs;
 using Crener.Spline.Common;
 using Crener.Spline.Common.Interfaces;
 using NUnit.Framework;
+using Unity.Collections;
 using Unity.Mathematics;
 
 namespace Crener.Spline.Test._3D.Bezier.TestTypes
@@ -29,39 +29,39 @@ namespace Crener.Spline.Test._3D.Bezier.TestTypes
 
                     Assert.IsTrue(SplineEntityData3D.HasValue, "Failed to generate spline");
                     return SplineEntityData3D.Value.Length;
-                }
+                } 
             }
 
-            public new float3 Get3DPointLocal(float progress)
+            public override float3 Get3DPointLocal(float progress)
             {
                 ClearData();
                 ConvertData();
 
                 Assert.IsTrue(SplineEntityData3D.HasValue, "Failed to generate spline");
-                ISplineJob3D job = this.ExtractJob(new SplineProgress {Progress = progress});
+                ISplineJob3D job = this.ExtractJob(progress, Allocator.Temp);
                 job.Execute();
 
-                LocalSpaceConversion3D conversion = new LocalSpaceConversion3D()
-                {
-                    SplinePosition = job.Result,
-                    TransformPosition = this.Position,
-                    TransformRotation = this.Forward
-                };
+                LocalSpaceConversion3D conversion = new LocalSpaceConversion3D(Position, Forward, job.Result, Allocator.Temp);
                 conversion.Execute();
                 
-                return conversion.SplinePosition;
+                float3 pos = conversion.SplinePosition.Value;
+                conversion.Dispose();
+                job.Dispose();
+                return pos;
             }
             
-            public new float3 Get3DPointWorld(float progress)
+            public override float3 Get3DPointWorld(float progress)
             {
                 ClearData();
                 ConvertData();
 
                 Assert.IsTrue(SplineEntityData3D.HasValue, "Failed to generate spline");
-                ISplineJob3D job = this.ExtractJob(new SplineProgress {Progress = progress});
+                ISplineJob3D job = this.ExtractJob(progress, Allocator.Temp);
                 job.Execute();
 
-                return job.Result;
+                float3 jobResult = job.Result;
+                job.Dispose();
+                return jobResult;
             }
 
             public override float3 GetControlPoint3DLocal(int i) => SplineEntityData3D.Value.Points[i];

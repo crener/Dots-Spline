@@ -1,12 +1,12 @@
 {
   "name": "com.crener.dots-spline",
-  "version": "0.9.3",
+  "version": "0.10.0",
   "displayName": "DOTS Spline",
   "description": "Editor friendly unity splines",
   "unity": "2020.1",
   "dependencies": {
-    "com.unity.entities": "0.14.0-preview.19",
-    "com.unity.test-framework": "1.1.16"
+    "com.unity.entities": "0.16.0-preview.21",
+    "com.unity.test-framework": "1.1.18"
  },
  "keywords": [
     "dots",
