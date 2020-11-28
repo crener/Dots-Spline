@@ -16,7 +16,7 @@ namespace Crener.Spline._2D.Jobs
         [ReadOnly]
         private SplineType m_type;
         [WriteOnly]
-        private NativeReference<float2> m_result;
+        public NativeReference<float2> NativeResult;
 
         #region Interface properties
         public SplineProgress SplineProgress
@@ -27,8 +27,8 @@ namespace Crener.Spline._2D.Jobs
 
         public float2 Result
         {
-            get => m_result.Value;
-            set => m_result.Value = value;
+            get => NativeResult.Value;
+            set => NativeResult.Value = value;
         }
         #endregion
 
@@ -40,7 +40,7 @@ namespace Crener.Spline._2D.Jobs
             m_type = spline.SplineDataType;
             Spline = spline.SplineEntityData2D.Value;
             m_splineProgress = progress;
-            m_result = new NativeReference<float2>(allocator);
+            NativeResult = new NativeReference<float2>(allocator);
         }
 
         public void Execute()
@@ -48,19 +48,19 @@ namespace Crener.Spline._2D.Jobs
             switch (m_type)
             {
                 case SplineType.Empty:
-                    m_result.Value =  Empty2DPointJob.Run();
+                    NativeResult.Value =  Empty2DPointJob.Run();
                     return;
                 case SplineType.Single:
-                    m_result.Value = SinglePoint2DPointJob.Run(ref Spline);
+                    NativeResult.Value = SinglePoint2DPointJob.Run(ref Spline);
                     return;
                 case SplineType.Bezier:
-                    m_result.Value = BezierSpline2DPointJob.Run(ref Spline, ref m_splineProgress);
+                    NativeResult.Value = BezierSpline2DPointJob.Run(ref Spline, ref m_splineProgress);
                     return;
                 case SplineType.CubicLinear:
-                    m_result.Value =  LinearCubicSpline2DPointJob.Run(ref Spline, ref m_splineProgress);
+                    NativeResult.Value =  LinearCubicSpline2DPointJob.Run(ref Spline, ref m_splineProgress);
                     return;
                 case SplineType.CatmullRom:
-                    m_result.Value = CatmullRomSpline2DPointJob.Run(ref Spline, ref m_splineProgress);
+                    NativeResult.Value = CatmullRomSpline2DPointJob.Run(ref Spline, ref m_splineProgress);
                     return;
                 case SplineType.Cubic:
                 //todo
@@ -68,19 +68,19 @@ namespace Crener.Spline._2D.Jobs
                 //todo
                 case SplineType.Linear: // falls over to the default by design
                 default:
-                    m_result.Value = LinearSpline2DPointJob.Run(ref Spline, ref m_splineProgress);
+                    NativeResult.Value = LinearSpline2DPointJob.Run(ref Spline, ref m_splineProgress);
                     return;
             }
         }
 
         public void Dispose()
         {
-            m_result.Dispose();
+            NativeResult.Dispose();
         }
 
         public JobHandle Dispose(JobHandle inputDeps)
         {
-            return m_result.Dispose(inputDeps);
+            return NativeResult.Dispose(inputDeps);
         }
     }
 }
