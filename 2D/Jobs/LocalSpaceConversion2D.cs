@@ -13,11 +13,28 @@ namespace Crener.Spline._2D.Jobs
         
         public NativeReference<float2> SplinePosition;
 
-        public LocalSpaceConversion2D(float2 trans, float2 splineWorldPosition, Allocator allocator = Allocator.None) : this()
+        /// <summary>
+        /// Job setup when directly converting data from another job
+        /// </summary>
+        /// <param name="trans">position of the center of the local space transform position</param>
+        /// <param name="splineWorldPosition">world space position to convert</param>
+        /// <param name="allocator">allocator for the world space position reference</param>
+        public LocalSpaceConversion2D(float2 trans, float2 splineWorldPosition, Allocator allocator = Allocator.None)
         {
             TransformPosition = trans;
             SplinePosition = new NativeReference<float2>(allocator);
             SplinePosition.Value = splineWorldPosition;
+        }
+        
+        /// <summary>
+        /// Job setup when directly converting data from another job
+        /// </summary>
+        /// <param name="trans">position of the center of the local space transform position</param>
+        /// <param name="worldSpacePosition">world space position to convert</param>
+        public LocalSpaceConversion2D(float2 trans, NativeReference<float2> worldSpacePosition)
+        {
+            TransformPosition = trans;
+            SplinePosition = worldSpacePosition;
         }
 
         public void Execute()
