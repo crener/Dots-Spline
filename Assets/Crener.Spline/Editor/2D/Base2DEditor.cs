@@ -298,7 +298,8 @@ namespace Crener.Spline.Editor._2D
 
             for (int i = 0; i <= quantity; i++)
             {
-                HandleDrawPlus(spline.Get2DPointWorld(i == 0 ? 0f : i / (quantity - 1f)), multiplier);
+                float progress = i == 0 ? 0f : i / (quantity - 1f);
+                HandleDrawPlus(spline.Get2DPointWorld(progress), multiplier);
             }
         }
 
