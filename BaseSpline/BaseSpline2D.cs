@@ -130,6 +130,11 @@ namespace Crener.Spline.BaseSpline
         {
             return Position.xy + Get2DPointLocal(progress);
         }
+        
+        public virtual float2 Get2DPointWorld(float progress, int index)
+        {
+            return Position.xy + Get2DPointLocal(progress, index);
+        }
 
         /// <inheritdoc/>
         public virtual float2 Get2DPointLocal(float progress)
@@ -244,7 +249,7 @@ namespace Crener.Spline.BaseSpline
         {
             for (int i = 0; i < SegmentPointCount - 1; i++)
             {
-                float2 f = Get2DPointLocal(0f, i);
+                float2 f = Get2DPointWorld(0f, i);
                 Vector3 lp = new Vector3(f.x, f.y, 0f);
                 int points = math.min((int) (pointDensityF * (SegmentLength[i] * Length())), maxPointAmount);
                 AddToGizmoPointCache(lp);
@@ -252,7 +257,7 @@ namespace Crener.Spline.BaseSpline
                 for (int s = 1; s <= points; s++)
                 {
                     float progress = s / (float) points;
-                    float2 p = Get2DPointLocal(progress, i);
+                    float2 p = Get2DPointWorld(progress, i);
                     Vector3 point = new Vector3(p.x, p.y, 0f);
 
                     Gizmos.DrawLine(lp, point);
