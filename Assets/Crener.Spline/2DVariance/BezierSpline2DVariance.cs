@@ -109,6 +109,11 @@ namespace Crener.Spline._2DVariance
         {
             return ConvertToWorldSpace(GetPoint(progress, half.zero));
         }
+        
+        public virtual float2 Get2DPointWorld(float progress, int index)
+        {
+            return Position.xy + Get2DPointLocal(progress, index);
+        }
 
         public float2 Get2DPointLocal(float progress)
         {

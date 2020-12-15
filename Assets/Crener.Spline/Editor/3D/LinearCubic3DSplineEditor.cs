@@ -100,6 +100,18 @@ namespace Crener.Spline.Editor._3D
                 }
             }
 
+            if(!(spline is ILoopingSpline) || !((ILoopingSpline) spline).Looped)
+            {
+                if(math.distance(splinePoint, spline.GetControlPoint3DWorld(0)) <= 0.00001f)
+                {
+                    index = 0;
+                }
+                else if(math.distance(splinePoint, spline.GetControlPoint3DWorld(spline.ControlPointCount - 1)) <= 0.00001f)
+                {
+                    index = spline.ControlPointCount;
+                }
+            }
+
             // convert the spline point and mouse position into the new point position
             if(!splinePoint.Equals(float3.zero))
             {

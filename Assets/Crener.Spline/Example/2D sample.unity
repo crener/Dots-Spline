@@ -1309,14 +1309,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SegmentLength:
-  - 0.8766726
+  - 0.876562
   - 1
-  LengthCache: 29.825745
+  LengthCache: 29.799015
   Points:
   - x: -9.783965
     y: 16.638672
-  - x: -2.811573
-    y: 28.399601
+  - x: -2.5323524
+    y: 28.399603
   - x: 11.496378
     y: 19.09305
   - x: 13.399606
@@ -1628,7 +1628,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1775453984}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 14.67, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 526519236}

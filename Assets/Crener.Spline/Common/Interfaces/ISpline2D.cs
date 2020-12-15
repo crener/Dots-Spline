@@ -18,6 +18,14 @@ namespace Crener.Spline.Common.Interfaces
         /// <param name="progress">0 to 1 range of progress along the spline</param>
         /// <returns>point on spline</returns>
         float2 Get2DPointWorld(float progress);
+
+        /// <summary>
+        /// Retrieve a point on the spline in world space between control point index and index + 1 by progress
+        /// </summary>
+        /// <param name="progress">0 to 1 range of progress along the spline</param>
+        /// <param name="index">index of the first control point</param>
+        /// <returns>point on spline</returns>
+        float2 Get2DPointWorld(float progress, int index);
         
         /// <summary>
         /// Retrieve a point on the spline in local space

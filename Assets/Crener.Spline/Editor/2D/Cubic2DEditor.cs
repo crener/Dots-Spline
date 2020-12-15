@@ -83,7 +83,7 @@ namespace Crener.Spline.Editor._2D
                 for (int s = 0; s <= 64; s++)
                 {
                     float progress = s / 64f;
-                    float2 p = spline.Get2DPointLocal(progress, i - 1);
+                    float2 p = spline.Get2DPointWorld(progress, i - 1);
 
                     float dist = math.distance(mouse, p);
                     if(bestDistance > dist)
@@ -97,6 +97,18 @@ namespace Crener.Spline.Editor._2D
                         }
                         else index = i;
                     }
+                }
+            }
+
+            if(!(spline is ILoopingSpline) || !((ILoopingSpline) spline).Looped)
+            {
+                if(math.distance(bestPoint, spline.GetControlPoint2DWorld(0)) <= 0.00001f)
+                {
+                    index = 0;
+                }
+                else if(math.distance(bestPoint, spline.GetControlPoint2DWorld(spline.ControlPointCount - 1)) <= 0.00001f)
+                {
+                    index = spline.ControlPointCount - 1;
                 }
             }
 
