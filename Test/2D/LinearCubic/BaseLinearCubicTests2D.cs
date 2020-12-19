@@ -75,7 +75,7 @@ namespace Crener.Spline.Test._2D.LinearCubic
         public override IArkableSpline CreateNewSpline()
         {
             GameObject game = new GameObject();
-            IArkableSpline spline = game.AddComponent<MeaninglessTestWrapper2.TestLinearCubic2DSplineSimple>();
+            IArkableSpline spline = game.AddComponent<MeaninglessTestWrapper.TestLinearCubic2DSplineSimpleJob>();
 
             return spline;
         }

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Crener.Spline.Common;
@@ -395,7 +394,7 @@ namespace Crener.Spline.BaseSpline
             if(ControlPointCount >= 2)
             {
                 // add final control point
-                points.Add(Points[Points.Count - 1]);
+                points.Add(Points[Points.Count - 1] + Position);
             }
 
             times.Add(1f);
