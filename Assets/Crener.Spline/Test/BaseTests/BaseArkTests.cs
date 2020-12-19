@@ -1,7 +1,6 @@
 using Crener.Spline.Common;
 using Crener.Spline.Common.Interfaces;
 using Crener.Spline.Test.BaseTests.TransferableTestBases;
-using Crener.Spline.Test.Helpers;
 using NUnit.Framework;
 using Unity.Mathematics;
 using UnityEngine;
@@ -220,6 +219,56 @@ namespace Crener.Spline.Test.BaseTests
             Assert.AreEqual(1, count);
 
             CompareProgressEquals(testSpline, 0f, a + move);
+            CompareProgressEquals(testSpline, 1f, a + move);
+        }
+
+        [Test]
+        public void Translation2()
+        {
+            IArkableSpline testSpline = PrepareSpline();
+            GameObject parent = new GameObject("Parent");
+            ((MonoBehaviour) testSpline).transform.parent = parent.transform;
+            parent.transform.position = new float3(-20f, 0f, 0f);
+
+            float3 move = new float3(10f, 0f, 10f);
+            ((MonoBehaviour) testSpline).transform.position = move;
+
+            float3 a = new float3(80);
+            AddControlPointLocalSpace(testSpline, a);
+
+            ChangeArking(testSpline, true);
+            testSpline.ArkLength = 1f;
+            int count = SplineSegmentPointCount(testSpline);
+            Assert.AreEqual(1, count);
+
+            CompareProgressEquals(testSpline, 0f, a + move);
+        }
+
+        [Test]
+        public void Translation3()
+        {
+            IArkableSpline testSpline = PrepareSpline();
+            GameObject parent = new GameObject("Parent");
+            ((MonoBehaviour) testSpline).transform.parent = parent.transform;
+            parent.transform.position = new float3(-20f, 0f, 0f);
+
+            float3 move = new float3(10f, 0f, 10f);
+            ((MonoBehaviour) testSpline).transform.position = move;
+
+            float3 a = new float3(80);
+            AddControlPointLocalSpace(testSpline, a);
+            float3 b = new float3(60);
+            AddControlPointLocalSpace(testSpline, b);
+            float3 c = new float3(100);
+            AddControlPointLocalSpace(testSpline, c);
+
+            ChangeArking(testSpline, true);
+            testSpline.ArkLength = 1f;
+            int count = SplineSegmentPointCount(testSpline);
+            Assert.GreaterOrEqual(count, math.abs(80 - 60) + math.abs(60 - 100));
+
+            CompareProgressEquals(testSpline, 0f, a + move);
+            CompareProgressEquals(testSpline, 1f, c + move);
         }
     }
 
@@ -233,7 +282,7 @@ namespace Crener.Spline.Test.BaseTests
         public override void InsertControlPointWorldSpace(IArkableSpline spline, int index, float3 point) =>
             s_splineBase.InsertControlPointWorldSpace(spline as ISimpleSpline3D, index, point);
 
-        public override void InsertControlPointLocalSpace(IArkableSpline spline, int index, float3 point) => 
+        public override void InsertControlPointLocalSpace(IArkableSpline spline, int index, float3 point) =>
             s_splineBase.InsertControlPointWorldSpace(spline as ISimpleSpline3D, index, point);
 
         public override float3 GetControlPoint(IArkableSpline spline, int index, SplinePoint pointType) =>
@@ -244,7 +293,7 @@ namespace Crener.Spline.Test.BaseTests
 
         public override float3 GetProgressWorld(IArkableSpline spline, float progress) =>
             s_splineBase.GetProgressWorld(spline as ISimpleSpline3D, progress);
-        
+
         public override float3 GetProgressLocal(IArkableSpline spline, float progress) =>
             s_splineBase.GetProgressWorld(spline as ISimpleSpline3D, progress);
 
@@ -259,7 +308,7 @@ namespace Crener.Spline.Test.BaseTests
             s_splineBase.ComparePoint(expected, actual, tolerance);
 
         public override float Length(float3 a, float3 b) => s_splineBase.Length(a, b);
-        
+
         protected override int SplineSegmentPointCount(ISpline spline)
         {
             ISpline3D spline3D = (spline as ISpline3D);
@@ -288,7 +337,7 @@ namespace Crener.Spline.Test.BaseTests
 
         public override float3 GetProgressWorld(IArkableSpline spline, float progress) =>
             s_splineBase.GetProgressWorld(spline as ISpline3DPlane, progress);
-        
+
         public override float3 GetProgressLocal(IArkableSpline spline, float progress) =>
             s_splineBase.GetProgressWorld(spline as ISpline3DPlane, progress);
 
@@ -315,7 +364,7 @@ namespace Crener.Spline.Test.BaseTests
         public override void InsertControlPointWorldSpace(IArkableSpline spline, int index, float3 point) =>
             s_splineBase.InsertControlPointWorldSpace(spline as ISpline2D, index, point);
 
-        public override void InsertControlPointLocalSpace(IArkableSpline spline, int index, float3 point) => 
+        public override void InsertControlPointLocalSpace(IArkableSpline spline, int index, float3 point) =>
             s_splineBase.InsertControlPointWorldSpace(spline as ISpline2D, index, point);
 
         public override float3 GetControlPoint(IArkableSpline spline, int index, SplinePoint pointType) =>
@@ -326,7 +375,7 @@ namespace Crener.Spline.Test.BaseTests
 
         public override float3 GetProgressWorld(IArkableSpline spline, float progress) =>
             s_splineBase.GetProgressWorld(spline as ISpline2D, progress);
-        
+
         public override float3 GetProgressLocal(IArkableSpline spline, float progress) =>
             s_splineBase.GetProgressWorld(spline as ISpline2D, progress);
 

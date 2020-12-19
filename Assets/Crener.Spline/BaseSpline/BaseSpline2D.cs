@@ -313,8 +313,9 @@ namespace Crener.Spline.BaseSpline
             double splineCompleted = 0f;
             List<float2> points = new List<float2>((int) (splineLength / normalizedArkLength * 1.3f));
             List<float> times = new List<float>(points.Count);
-
-            const int perPointIterationAttempts = 100; // lower values = fast, high values = high precision but longer generation times
+            
+            const double minSearchSize = 0.005;
+            const int perPointIterationAttempts = (int)(0.5 / minSearchSize); // lower values = fast, high values = high precision but longer generation times
 
             for (int i = 0; i < SegmentLength.Count; i++)
             {
@@ -324,7 +325,7 @@ namespace Crener.Spline.BaseSpline
                 previousTime = currentTime;
 
                 double previousProgress = 0f;
-                float2 previous = Get2DPointLocal((float) previousProgress, i);
+                float2 previous = Get2DPointWorld((float) previousProgress, i);
                 points.Add(previous); // directly add control point
 
                 if(i > 0)
@@ -337,8 +338,8 @@ namespace Crener.Spline.BaseSpline
                 for (int j = 0; j < pointCount - 1; j++)
                 {
                     // binary search to get best case distance from (expected) previous point
-                    double currentProgress = 0.5f;
-                    double currentSize = 0.5f;
+                    double currentProgress = 0.5;
+                    double currentSize = 0.5;
 
                     float distance = normalizedArkLength;
                     float targetDistance = normalizedArkLength * (j + 1);
@@ -347,7 +348,7 @@ namespace Crener.Spline.BaseSpline
                     int attempts = -1;
                     while (++attempts < perPointIterationAttempts)
                     {
-                        point = Get2DPointLocal((float) currentProgress, i);
+                        point = Get2DPointWorld((float) currentProgress, i);
 
                         distance = math.distance(previous, point);
                         if(math.abs((sectionLengthDone + distance) - targetDistance) < 0.0000005f)
@@ -375,7 +376,7 @@ namespace Crener.Spline.BaseSpline
             if(ControlPointCount >= 2)
             {
                 // add final control point
-                points.Add(Points[Points.Count - 1]);
+                points.Add(Points[Points.Count - 1] + Position.xy);
             }
 
             times.Add(1f);
