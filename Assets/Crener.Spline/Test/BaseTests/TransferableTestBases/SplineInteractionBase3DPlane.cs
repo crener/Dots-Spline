@@ -77,7 +77,7 @@ namespace Crener.Spline.Test.BaseTests.TransferableTestBases
             Assert.NotNull(spline);
 
             float3 point = spline.Get3DPointWorld(progress);
-            TestHelpers.CheckFloat2(point.xy, expectedPoint.xy, tolerance);
+            TestHelpers.CheckFloat2(expectedPoint.xy, point.xy, tolerance);
         }
 
         public void CompareProgressNotEquals(ISpline3DPlane spline, float progress, float3 unexpectedPoint)
@@ -85,7 +85,7 @@ namespace Crener.Spline.Test.BaseTests.TransferableTestBases
             Assert.NotNull(spline);
             
             float2 point2d = spline.Get2DPointWorld(progress);
-            TestHelpers.CheckFloat2(point2d, unexpectedPoint.xy);
+            TestHelpers.CheckNotFloat2(unexpectedPoint.xy, point2d);
         }
 
         public void ComparePoint(float3 expected, float3 actual, float tolerance = 0.00001f)

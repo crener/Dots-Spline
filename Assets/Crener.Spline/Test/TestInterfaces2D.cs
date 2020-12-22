@@ -9,7 +9,7 @@ namespace Crener.Spline.Test
         IReadOnlyList<float2> ControlPoints { get; }
     }
     
-    public interface ISimpleTestSpline : ISimpleSpline2D, ITestSpline2D { }
+    public interface ISimpleTestSpline2D : ISimpleSpline2D, ITestSpline2D { }
     
-    public interface IVarianceTestSpline : ISimpleSpline2DVariance, ISimpleTestSpline { }
+    public interface IVarianceTestSpline2D : ISimpleSpline2DVariance, ISimpleTestSpline2D { }
 }

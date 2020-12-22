@@ -1,7 +1,6 @@
 using Crener.Spline.Common;
 using Crener.Spline.Common.Interfaces;
 using Crener.Spline.Test.BaseTests.TransferableTestBases;
-using Crener.Spline.Test.Helpers;
 using NUnit.Framework;
 using Unity.Mathematics;
 
@@ -188,7 +187,7 @@ namespace Crener.Spline.Test.BaseTests
 
     public abstract class BaseLoopingTests3D : BaseLoopingTests
     {
-        private static SplineInteractionBase3D s_splineBase = new SplineInteractionBase3D();
+        protected static SplineInteractionBase3D s_splineBase = new SplineInteractionBase3D();
 
         public override void AddControlPointLocalSpace(ILoopingSpline spline, float3 point) =>
             s_splineBase.AddControlPointLocalSpace(spline as ISimpleSpline3D, point);

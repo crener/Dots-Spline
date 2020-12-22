@@ -13,7 +13,7 @@ namespace Crener.Spline.Test._2D.LinearCubic.TestTypes
         /// <summary>
         /// override of <see cref="BezierSpline2DSimple"/> which implements the spline test interface
         /// </summary>
-        public class TestLinearCubic2DSplineSimple : LinearCubic2DSpline, ISimpleTestSpline
+        public class TestLinearCubic2DSpline2DSimple : LinearCubic2DSpline, ISimpleTestSpline2D
         {
             public IReadOnlyList<float2> ControlPoints => Points;
             public IReadOnlyList<float> Times => SegmentLength;

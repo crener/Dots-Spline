@@ -14,7 +14,7 @@ namespace Crener.Spline.Test._2D.LinearCubic.TestTypes
     /// </summary>
     public class MeaninglessTestWrapper
     {
-        public class TestLinearCubic2DSplineSimpleJob : LinearCubic2DSpline, ISimpleTestSpline
+        public class TestLinearCubic2DSpline2DSimpleJob : LinearCubic2DSpline, ISimpleTestSpline2D
         {
             public IReadOnlyList<float2> ControlPoints => SplineEntityData2D.Value.Points.ToArray();
             public IReadOnlyList<float> Times => SplineEntityData2D.Value.Time.ToArray();

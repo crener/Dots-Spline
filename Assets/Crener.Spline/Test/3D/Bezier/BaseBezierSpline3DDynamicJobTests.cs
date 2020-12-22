@@ -1,7 +1,5 @@
-using Crener.Spline.Common.Interfaces;
 using Crener.Spline.Test._3D.Bezier.TestAdapters;
 using Crener.Spline.Test._3D.Bezier.TestTypes;
-using Crener.Spline.Test.BaseTests;
 using UnityEngine;
 
 namespace Crener.Spline.Test._3D.Bezier
@@ -9,7 +7,7 @@ namespace Crener.Spline.Test._3D.Bezier
     /// <summary>
     /// Tests Point to point implementation of basic 3D spline functionality
     /// </summary>
-    public class BaseBezierDynamicJobTests3D : BezierBaseTest3DAdapter
+    public class DynamicJobBezierSpline3D : BezierBaseTest3DAdapter
     {
         public override ITestSpline CreateNewSpline()
         {
@@ -21,7 +19,7 @@ namespace Crener.Spline.Test._3D.Bezier
     }
     
     /*
-    public class LoopingBezierDynamicJobTests3D : BaseLoopingTests3D
+    public class DynamicJobLoopingBezierSpline3D : BaseLoopingTests3D
     {
         public override ILoopingSpline CreateNewSpline()
         {

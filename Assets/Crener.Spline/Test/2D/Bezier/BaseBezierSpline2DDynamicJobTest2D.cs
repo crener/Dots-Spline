@@ -12,10 +12,10 @@ namespace Crener.Spline.Test._2D.Bezier
     /// </summary>
     public class BaseBezierSpline2DDynamicJobTest2D : BezierBaseTest2DAdapter
     {
-        protected override ISimpleTestSpline CreateNewSpline()
+        protected override ISimpleTestSpline2D CreateNewSpline()
         {
             GameObject game = new GameObject();
-            MeaninglessTestWrapper3.TestBezierSpline2DDynamicJob testBezierSpline = game.AddComponent<MeaninglessTestWrapper3.TestBezierSpline2DDynamicJob>();
+            MeaninglessTestWrapper3.TestBezierSpline2D2DDynamicJob testBezierSpline = game.AddComponent<MeaninglessTestWrapper3.TestBezierSpline2D2DDynamicJob>();
             Assert.IsNotNull(testBezierSpline);
 
             TestHelpers.ClearSpline(testBezierSpline);

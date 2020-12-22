@@ -13,7 +13,7 @@ namespace Crener.Spline.Test.Variance.TestTypes
         /// <summary>
         /// override of <see cref="BezierSpline2DVariance"/> which implements the spline test interface
         /// </summary>
-        public class TestBezierSpline2DVarianceJob : BezierSpline2DVariance, IVarianceTestSpline
+        public class TestBezierSpline2D2DVarianceJob : BezierSpline2DVariance, IVarianceTestSpline2D
         {
             public IReadOnlyList<float2> ControlPoints => Points;
             public IReadOnlyList<float> Times

@@ -9,12 +9,12 @@ namespace Crener.Spline.Test._2D.Cubic
     /// </summary>
     public class BaseCubicTests2D : CubicBaseTest2DAdapter
     {
-        protected override ISimpleTestSpline CreateNewSpline()
+        protected override ISimpleTestSpline2D CreateNewSpline()
         {
             GameObject game = new GameObject();
-            ISimpleTestSpline spline = game.AddComponent<MeaninglessTestWrapper.TestCubicSpline2DSimple>();
+            ISimpleTestSpline2D spline2D = game.AddComponent<MeaninglessTestWrapper.TestCubicSpline2D2DSimple>();
 
-            return spline;
+            return spline2D;
         }
     }
 }

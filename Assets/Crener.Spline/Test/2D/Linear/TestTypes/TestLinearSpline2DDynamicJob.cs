@@ -11,7 +11,7 @@ namespace Crener.Spline.Test._2D.Linear.TestTypes
     /// </summary>
     public class MeaninglessTestWrapper3
     {
-        public class TestLinearSpline2DDynamicJob : MeaninglessTestWrapper.TestLinearSpline2DSimple
+        public class TestLinearSpline2D2DDynamicJob : MeaninglessTestWrapper.TestLinearSpline2D2DSimple
         {
             public override float2 Get2DPointLocal(float progress)
             {

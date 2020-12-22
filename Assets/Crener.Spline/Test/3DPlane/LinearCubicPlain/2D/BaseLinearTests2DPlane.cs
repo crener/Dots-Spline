@@ -4,12 +4,12 @@ using Crener.Spline.Test._3DPlane.LinearCubicPlain.TestTypes;
 using Crener.Spline.Test.BaseTests;
 using UnityEngine;
 
-namespace Crener.Spline.Test._3DPlane.LinearCubicPlain
+namespace Crener.Spline.Test._3DPlane.LinearCubicPlain._2D
 {
     /// <summary>
     /// Tests Point to point implementation of basic 2D spline functionality
     /// </summary>
-    public class BaseLinearCubicTests3DPlane : LinearCubicBaseTest3DPlaneAdapter
+    public class BaseLinearCubicPlane2D : LinearCubicBaseTest2DPlaneAdapter
     {
         public override ITestSpline CreateNewSpline()
         {
@@ -20,23 +20,12 @@ namespace Crener.Spline.Test._3DPlane.LinearCubicPlain
         }
     }
     
-    public class LoopingLinearCubicTests3DPlane : BaseLoopingTests3DPlane
+    public class BaseLoopingLinearCubicPlane2D : BaseLoopingTests2D
     {
         public override ILoopingSpline CreateNewSpline()
         {
             GameObject game = new GameObject();
             ILoopingSpline spline = game.AddComponent<MeaninglessTestWrapper.TestLinearCubicSpline3DPlaneSimple>();
-
-            return spline;
-        }
-    }
-    
-    public class LinearCubic3DPlaneTests : Base3DPlaneTests
-    {
-        protected override ISpline3DPlaneEditor CreateNewSpline()
-        {
-            GameObject game = new GameObject();
-            ISpline3DPlaneEditor spline = game.AddComponent<MeaninglessTestWrapper.TestLinearCubicSpline3DPlaneSimple>();
 
             return spline;
         }

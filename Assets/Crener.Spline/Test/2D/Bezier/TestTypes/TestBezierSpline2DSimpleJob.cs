@@ -14,7 +14,7 @@ namespace Crener.Spline.Test._2D.Bezier.TestTypes
     /// </summary>
     public class MeaninglessTestWrapper2
     {
-        public class TestBezierSpline2DSimpleJob : BezierSpline2DSimple, ISimpleTestSpline
+        public class TestBezierSpline2D2DSimpleJob : BezierSpline2DSimple, ISimpleTestSpline2D
         {
             public IReadOnlyList<float2> ControlPoints => SplineEntityData2D.Value.Points.ToArray();
             public IReadOnlyList<float> Times => SplineEntityData2D.Value.Time.ToArray();

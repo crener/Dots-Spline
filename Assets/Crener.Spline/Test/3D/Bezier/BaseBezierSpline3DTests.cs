@@ -3,8 +3,6 @@ using Crener.Spline.Common.Interfaces;
 using Crener.Spline.Test._3D.Bezier.TestAdapters;
 using Crener.Spline.Test._3D.Bezier.TestTypes;
 using Crener.Spline.Test.BaseTests;
-using Crener.Spline.Test.Helpers;
-using NUnit.Framework;
 using UnityEngine;
 
 namespace Crener.Spline.Test._3D.Bezier
@@ -12,7 +10,7 @@ namespace Crener.Spline.Test._3D.Bezier
     /// <summary>
     /// Override for testing <see cref="BezierSpline2DSimple"/>
     /// </summary>
-    public class BaseBezierSpline3DTests : BezierBaseTest3DAdapter
+    public class BaseBezierSpline3D : BezierBaseTest3DAdapter
     {
         public override ITestSpline CreateNewSpline()
         {
@@ -23,7 +21,7 @@ namespace Crener.Spline.Test._3D.Bezier
         }
     }
     
-    public class ArkBezierSplineTests3D : BaseArkTests3D
+    public class BaseArkBezierSpline3D : BaseArkTests3D
     {
         public override IArkableSpline CreateNewSpline()
         {
