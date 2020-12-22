@@ -13,7 +13,7 @@ namespace Crener.Spline.Test._2D.Bezier.TestTypes
         /// <summary>
         /// override of <see cref="BezierSpline2DSimple"/> which implements the spline test interface
         /// </summary>
-        public class TestBezierSpline2DSimple : BezierSpline2DSimple, ISimpleTestSpline
+        public class TestBezierSpline2D2DSimple : BezierSpline2DSimple, ISimpleTestSpline2D
         {
             public IReadOnlyList<float2> ControlPoints => Points;
             public IReadOnlyList<float> Times => SegmentLength;

@@ -328,7 +328,6 @@ namespace Crener.Spline.Test.BaseTests
             Assert.AreEqual(0f, testSpline.Length());
 
             CompareProgressEquals(testSpline, 0.5f, float3.zero);
-            CompareProgressNotEquals(testSpline, 0.5f, float3.zero);
         }
 
         [Test]
@@ -347,7 +346,7 @@ namespace Crener.Spline.Test.BaseTests
             Assert.AreEqual(1, testSpline.Times.Count);
             Assert.AreEqual(1f, testSpline.Times[0]);
 
-            CompareProgressNotEquals(testSpline, 0.5f, new float3(0.5f, 0f, 0f));
+            CompareProgressEquals(testSpline, 0.5f, new float3(0.5f, 0f, 0f));
         }
 
         [Test]
@@ -367,8 +366,8 @@ namespace Crener.Spline.Test.BaseTests
 
             Assert.AreEqual(testSpline.ExpectedTimeCount(testSpline.ControlPointCount), testSpline.Times.Count);
 
-            CompareProgressNotEquals(testSpline, 0f, a);
-            CompareProgressNotEquals(testSpline, 0.5f, new float3(1f, 0f, 0f));
+            CompareProgressEquals(testSpline, 0f, a);
+            CompareProgressEquals(testSpline, 0.5f, new float3(1f, 0f, 0f));
             //TestHelpers.CheckFloat3(c * 0.77f, spline.GetPoint(0.77f)); // fails due to bezier point bunching issues
         }
 
@@ -383,7 +382,7 @@ namespace Crener.Spline.Test.BaseTests
             Assert.AreEqual(testSpline.ExpectedControlPointCount(1), testSpline.ControlPointCount);
             Assert.AreEqual(0f, testSpline.Length());
 
-            CompareProgressNotEquals(testSpline, 0.5f, new float3(3f, 3f, 1f));
+            CompareProgressEquals(testSpline, 0.5f, new float3(3f, 3f, 1f));
         }
 
         [Test]
@@ -400,23 +399,23 @@ namespace Crener.Spline.Test.BaseTests
             Assert.AreEqual(2, testSpline.Modes.Count);
             Assert.AreEqual(testSpline.ExpectedTimeCount(1), testSpline.Times.Count);
             
-            CompareProgressNotEquals(testSpline, 0f, a);
+            CompareProgressEquals(testSpline, 0f, a);
             ComparePoint(a, GetControlPoint(testSpline, 0, SplinePoint.Point));
-            CompareProgressNotEquals(testSpline, 1f, b);
+            CompareProgressEquals(testSpline, 1f, b);
             ComparePoint(b, GetControlPoint(testSpline, 1, SplinePoint.Point));
 
             //update 0 point position
             float3 a2 = new float3(-1f, -1f, 1f);
             UpdateControlPoint(testSpline, 0, a2, SplinePoint.Point);
 
-            CompareProgressNotEquals(testSpline, 0f, a2);
+            CompareProgressEquals(testSpline, 0f, a2);
             ComparePoint(a2, GetControlPoint(testSpline, 0, SplinePoint.Point));
 
             //update 1 point position
             float3 b2 = new float3(2f, 2f, 1f);
             UpdateControlPoint(testSpline, 1, b2, SplinePoint.Point);
 
-            CompareProgressNotEquals(testSpline, 1f, b2);
+            CompareProgressEquals(testSpline, 1f, b2);
             ComparePoint(b2, GetControlPoint(testSpline, 1, SplinePoint.Point));
         }
 
@@ -436,17 +435,17 @@ namespace Crener.Spline.Test.BaseTests
             Assert.AreEqual(3, testSpline.Modes.Count);
             Assert.AreEqual(testSpline.ExpectedTimeCount(testSpline.ControlPointCount), testSpline.Times.Count);
             
-            CompareProgressNotEquals(testSpline, 0f, a);
+            CompareProgressEquals(testSpline, 0f, a);
             ComparePoint(a, GetControlPoint(testSpline, 0, SplinePoint.Point));
-            CompareProgressNotEquals(testSpline, 0.5f, b);
+            CompareProgressEquals(testSpline, 0.5f, b);
             ComparePoint(b, GetControlPoint(testSpline, 1, SplinePoint.Point));
-            CompareProgressNotEquals(testSpline, 1f, c);
+            CompareProgressEquals(testSpline, 1f, c);
             ComparePoint(c, GetControlPoint(testSpline, 2, SplinePoint.Point));
 
             //update 0 point position
             float3 a2 = new float3(0f, 1f, 1f);
             UpdateControlPoint(testSpline, 0, a2, SplinePoint.Point);
-            CompareProgressNotEquals(testSpline, 0f, a2);
+            CompareProgressEquals(testSpline, 0f, a2);
             ComparePoint(a2, GetControlPoint(testSpline, 0, SplinePoint.Point));
 
             //update 1 point position
@@ -457,7 +456,7 @@ namespace Crener.Spline.Test.BaseTests
             //update 2 point position
             float3 c2 = new float3(2f, 1f, 1f);
             UpdateControlPoint(testSpline, 2, c2, SplinePoint.Point);
-            CompareProgressNotEquals(testSpline, 1f, c2);
+            CompareProgressEquals(testSpline, 1f, c2);
             ComparePoint(c2, GetControlPoint(testSpline, 2, SplinePoint.Point));
         }
 
@@ -494,9 +493,9 @@ namespace Crener.Spline.Test.BaseTests
             Assert.AreEqual(2, testSpline.ControlPointCount);
             Assert.AreEqual(2, testSpline.Modes.Count);
             Assert.AreEqual(testSpline.ExpectedTimeCount(testSpline.ControlPointCount), testSpline.Times.Count);
-            CompareProgressNotEquals(testSpline, 0f, a);
+            CompareProgressEquals(testSpline, 0f, a);
             ComparePoint(a, GetControlPoint(testSpline, 0, SplinePoint.Point));
-            CompareProgressNotEquals(testSpline, 1f, b);
+            CompareProgressEquals(testSpline, 1f, b);
             ComparePoint(b, GetControlPoint(testSpline, 1, SplinePoint.Point));
 
             //insert point
@@ -540,13 +539,13 @@ namespace Crener.Spline.Test.BaseTests
             Assert.AreEqual(1, testSpline.ControlPointCount);
             Assert.AreEqual(1, testSpline.Modes.Count);
             Assert.AreEqual(1, testSpline.Times.Count);
-            CompareProgressNotEquals(testSpline, 0f, a);
+            CompareProgressEquals(testSpline, 0f, a);
             ComparePoint(a, GetControlPoint(testSpline, 0, SplinePoint.Point));
 
             float3 b = new float3(10f, 0f, 1f);
             InsertControlPointWorldSpace(testSpline, 1000, b);
 
-            CompareProgressNotEquals(testSpline, 1f, b);
+            CompareProgressEquals(testSpline, 1f, b);
             ComparePoint(b, GetControlPoint(testSpline, 1, SplinePoint.Point));
 
             Assert.AreEqual(2, testSpline.ControlPointCount);
@@ -569,7 +568,7 @@ namespace Crener.Spline.Test.BaseTests
             Assert.AreEqual(1, testSpline.ControlPointCount);
             Assert.AreEqual(1, testSpline.Modes.Count);
             Assert.AreEqual(1, testSpline.Times.Count);
-            CompareProgressNotEquals(testSpline, 0f, a);
+            CompareProgressEquals(testSpline, 0f, a);
             ComparePoint(a, GetControlPoint(testSpline, 0, SplinePoint.Point));
         }
 
@@ -588,9 +587,9 @@ namespace Crener.Spline.Test.BaseTests
             Assert.AreEqual(2, testSpline.ControlPointCount);
             Assert.AreEqual(2, testSpline.Modes.Count);
             Assert.AreEqual(testSpline.ExpectedTimeCount(testSpline.ControlPointCount), testSpline.Times.Count);
-            CompareProgressNotEquals(testSpline, 0f, a);
+            CompareProgressEquals(testSpline, 0f, a);
             ComparePoint(a, GetControlPoint(testSpline, 0, SplinePoint.Point));
-            CompareProgressNotEquals(testSpline, 1f, b);
+            CompareProgressEquals(testSpline, 1f, b);
             ComparePoint(b, GetControlPoint(testSpline, 1, SplinePoint.Point));
 
             //insert point
@@ -618,9 +617,9 @@ namespace Crener.Spline.Test.BaseTests
             Assert.AreEqual(2, testSpline.Modes.Count);
             Assert.AreEqual(testSpline.ExpectedTimeCount(testSpline.ControlPointCount), testSpline.Times.Count);
 
-            CompareProgressNotEquals(testSpline, 0f, a);
+            CompareProgressEquals(testSpline, 0f, a);
             ComparePoint(a, GetControlPoint(testSpline, 0, SplinePoint.Point));
-            CompareProgressNotEquals(testSpline, 1f, b);
+            CompareProgressEquals(testSpline, 1f, b);
             ComparePoint(b, GetControlPoint(testSpline, 1, SplinePoint.Point));
 
             //insert point
@@ -642,9 +641,9 @@ namespace Crener.Spline.Test.BaseTests
 
             Assert.AreEqual(0, testSpline.ControlPointCount);
 
-            CompareProgressNotEquals(testSpline, 0f, float3.zero);
-            CompareProgressNotEquals(testSpline, 1f, float3.zero);
-            CompareProgressNotEquals(testSpline, 0.5f, float3.zero);
+            CompareProgressEquals(testSpline, 0f, float3.zero);
+            CompareProgressEquals(testSpline, 1f, float3.zero);
+            CompareProgressEquals(testSpline, 0.5f, float3.zero);
         }
 
         [Test]
@@ -765,36 +764,6 @@ namespace Crener.Spline.Test.BaseTests
         }
 
         [Test]
-        public void TranslationRotation()
-        {
-            ITestSpline testSpline = PrepareSpline();
-            
-            // move spline
-            float3 move = new float3(10f, 0f, 10f);
-            ((MonoBehaviour) testSpline).transform.position = move;
-            
-            // rotate spline
-            Quaternion targetRotation = Quaternion.Euler(0f, 90f, 0f);
-            ((MonoBehaviour) testSpline).transform.rotation = targetRotation;
-
-            // add to spline
-            float3 a = new float3(20f, 3f, 4f);
-            InsertControlPointLocalSpace(testSpline, 12, a);
-            ComparePoint(a, GetControlPoint(testSpline, 0, SplinePoint.Point));
-
-            if(testSpline is ISpline3DPlane)
-            {
-                ComparePoint(targetRotation * new float3(a.xy, 0), GetProgressLocal(testSpline, 0f));
-                ComparePoint(move + (float3)(targetRotation * new float3(a.xy, 0)), GetProgressWorld(testSpline, 0f));
-            }
-            else
-            {
-                ComparePoint(a, GetProgressLocal(testSpline, 0f));
-                ComparePoint(move + (float3)(targetRotation * a), GetProgressWorld(testSpline, 0f));
-            }
-        }
-
-        [Test]
         public void TranslationAddLocal()
         {
             ITestSpline testSpline = PrepareSpline();
@@ -855,6 +824,50 @@ namespace Crener.Spline.Test.BaseTests
         }
 
         [Test]
+        public void MultiMidPoint([NUnit.Framework.Range(1, 12)] int points)
+        {
+            ITestSpline testSpline = PrepareSpline();
+
+            for (int i = 0; i < points; i++)
+            {
+                AddControlPointLocalSpace(testSpline, new float3(i));
+            }
+
+            // todo figure out how to get catmull to like this test set
+            // catmull has issues with long straights
+            Assume.That(testSpline.SplineDataType != SplineType.CatmullRom);
+
+            Assert.AreEqual(points, testSpline.ControlPointCount);
+            Assert.AreEqual(testSpline.ExpectedTimeCount(testSpline.ControlPointCount), testSpline.Times.Count);
+
+            CompareProgressEquals(testSpline, 0.5f, new float3((points - 1) / 2f));
+        }
+
+        [Test]
+        public void MultiMidPointOffset([NUnit.Framework.Range(1, 12)] int points)
+        {
+            ITestSpline testSpline = PrepareSpline();
+            const float offset = 200f;
+
+            for (int i = 0; i < points; i++)
+            {
+                AddControlPointLocalSpace(testSpline, new float3(offset + i));
+            }
+
+            // todo figure out how to get catmull to like this test set
+            // catmull has issues with long straights
+            Assume.That(testSpline.SplineDataType != SplineType.CatmullRom);
+
+            Assert.AreEqual(points, testSpline.ControlPointCount);
+            Assert.AreEqual(testSpline.ExpectedTimeCount(testSpline.ControlPointCount), testSpline.Times.Count);
+
+            CompareProgressEquals(testSpline, 0.5f, new float3(offset + (points - 1) / 2f), 0.00005f);
+        }
+    }
+
+    public abstract class BaseFunctionalityRotationTests : BaseFunctionalityTests
+    {
+        [Test]
         public void RotationPrePoint()
         {
             ITestSpline testSpline = PrepareSpline();
@@ -889,48 +902,48 @@ namespace Crener.Spline.Test.BaseTests
         }
 
         [Test]
-        public void MultiMidPoint([NUnit.Framework.Range(1, 12)] int points)
+        public void TranslationRotation()
         {
             ITestSpline testSpline = PrepareSpline();
+            
+            // move spline
+            float3 move = new float3(10f, 0f, 10f);
+            ((MonoBehaviour) testSpline).transform.position = move;
+            
+            // rotate spline
+            Quaternion targetRotation = Quaternion.Euler(0f, 90f, 0f);
+            ((MonoBehaviour) testSpline).transform.rotation = targetRotation;
 
-            for (int i = 0; i < points; i++)
+            // add to spline
+            float3 a = new float3(20f, 3f, 4f);
+            InsertControlPointLocalSpace(testSpline, 12, a);
+            ComparePoint(a, GetControlPoint(testSpline, 0, SplinePoint.Point));
+
+            if(testSpline is ISpline3DPlane)
             {
-                AddControlPointLocalSpace(testSpline, new float3(i));
+                float3 rotation = targetRotation * new float3(a.xy, 0);
+                Debug.Log($"GameObject Rotation: {rotation:N5}");
+                Debug.Log("");
+
+                float3 world = GetProgressWorld(testSpline, 0f);
+                Debug.Log($"WorldPos: {world:N5}");
+                ComparePoint(move + rotation, world);
+                Debug.Log("");
+
+                float3 local = GetProgressLocal(testSpline, 0f);
+                Debug.Log($"LocalPos: {local:N5}");
+                ComparePoint(rotation, local);
+                Debug.Log("");
             }
-
-            // todo figure out how to get catmull to like this test set
-            // catmull has issues with long straights
-            Assume.That(testSpline.SplineDataType != SplineType.CatmullRom);
-
-            Assert.AreEqual(points, testSpline.ControlPointCount);
-            Assert.AreEqual(testSpline.ExpectedTimeCount(testSpline.ControlPointCount), testSpline.Times.Count);
-
-            CompareProgressNotEquals(testSpline, 0.5f, new float3((points - 1) / 2f));
-        }
-
-        [Test]
-        public void MultiMidPointOffset([NUnit.Framework.Range(1, 12)] int points)
-        {
-            ITestSpline testSpline = PrepareSpline();
-            const float offset = 200f;
-
-            for (int i = 0; i < points; i++)
+            else
             {
-                AddControlPointLocalSpace(testSpline, new float3(offset + i));
+                ComparePoint(a, GetProgressLocal(testSpline, 0f));
+                ComparePoint(move + (float3)(targetRotation * a), GetProgressWorld(testSpline, 0f));
             }
-
-            // todo figure out how to get catmull to like this test set
-            // catmull has issues with long straights
-            Assume.That(testSpline.SplineDataType != SplineType.CatmullRom);
-
-            Assert.AreEqual(points, testSpline.ControlPointCount);
-            Assert.AreEqual(testSpline.ExpectedTimeCount(testSpline.ControlPointCount), testSpline.Times.Count);
-
-            CompareProgressEquals(testSpline, 0.5f, new float3(offset + (points - 1) / 2f), 0.00005f);
         }
     }
 
-    public abstract class BaseFunctionalityTests3D : BaseFunctionalityTests
+    public abstract class BaseFunctionalityTests3D : BaseFunctionalityRotationTests
     {
         private static SplineInteractionBase3D s_splineBase = new SplineInteractionBase3D();
 
@@ -968,7 +981,7 @@ namespace Crener.Spline.Test.BaseTests
         public override float Length(float3 a, float3 b) => s_splineBase.Length(a, b);
     }
 
-    public abstract class BaseFunctionalityTests3DPlane : BaseFunctionalityTests3D
+    public abstract class BaseFunctionalityTests3DPlane : BaseFunctionalityRotationTests
     {
         private static SplineInteractionBase3DPlane s_splineBase = new SplineInteractionBase3DPlane();
 
@@ -1001,7 +1014,45 @@ namespace Crener.Spline.Test.BaseTests
             s_splineBase.CompareProgressNotEquals(spline as ISpline3DPlane, progress, expectedPoint);
 
         public override void ComparePoint(float3 expected, float3 actual, float tolerance = 0.00001f) =>
-            s_splineBase.ComparePoint(actual, expected, tolerance);
+            s_splineBase.ComparePoint(expected, actual, tolerance);
+
+        public override float Length(float3 a, float3 b) => s_splineBase.Length(a, b);
+    }
+    
+    public abstract class BaseFunctionalityTests2DPlane : BaseFunctionalityTests
+    {
+        private static SplineInteractionBase3DPlane s_splineBase = new SplineInteractionBase3DPlane();
+
+        public override void AddControlPointLocalSpace(ITestSpline spline, float3 point) =>
+            s_splineBase.AddControlPointLocalSpace(spline as ISpline3DPlane, point);
+
+        public override void InsertControlPointWorldSpace(ITestSpline spline, int index, float3 point) =>
+            s_splineBase.InsertControlPointWorldSpace(spline as ISpline3DPlane, index, point);
+
+        public override void InsertControlPointLocalSpace(ITestSpline spline, int index, float3 point) => 
+            s_splineBase.InsertControlPointLocalSpace(spline as ISpline3DPlane, index, point);
+
+        public override float3 GetControlPoint(ITestSpline spline, int index, SplinePoint pointType) =>
+            s_splineBase.GetControlPoint(spline as ISpline3DPlane, index, pointType);
+
+        public override void UpdateControlPoint(ITestSpline spline, int index, float3 newPoint, SplinePoint pointType) =>
+            s_splineBase.UpdateControlPoint(spline as ISpline3DPlane, index, newPoint, pointType);
+
+        public override float3 GetProgressWorld(ITestSpline spline, float progress) =>
+            s_splineBase.GetProgressWorld(spline as ISpline3DPlane, progress);
+        
+        public override float3 GetProgressLocal(ITestSpline spline, float progress) =>
+            s_splineBase.GetProgressLocal(spline as ISpline3DPlane, progress);
+
+        public override void CompareProgressEquals(ITestSpline spline, float progress, float3 expectedPoint,
+            float tolerance = 0.00001f) =>
+            s_splineBase.CompareProgressEquals(spline as ISpline3DPlane, progress, expectedPoint, tolerance);
+
+        public override void CompareProgressNotEquals(ITestSpline spline, float progress, float3 expectedPoint) =>
+            s_splineBase.CompareProgressNotEquals(spline as ISpline3DPlane, progress, expectedPoint);
+
+        public override void ComparePoint(float3 expected, float3 actual, float tolerance = 0.00001f) =>
+            s_splineBase.ComparePoint(expected, actual, tolerance);
 
         public override float Length(float3 a, float3 b) => s_splineBase.Length(a, b);
     }

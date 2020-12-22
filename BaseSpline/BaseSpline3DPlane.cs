@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using Crener.Spline.Common;
 using Crener.Spline.Common.DataStructs;
@@ -19,7 +18,8 @@ namespace Crener.Spline.BaseSpline
         {
             get
             {
-                if(!hasSplineEntityData) ConvertData3D();
+                if(!m_splineData3D.HasValue) // access directly to stop infinite loop
+                    ConvertData3D();
                 return m_splineData3D;
             }
             protected set => m_splineData3D = value;
@@ -30,15 +30,15 @@ namespace Crener.Spline.BaseSpline
         /// <summary>
         /// true if Spline Entity Data has been initialized, calling <see cref="SplineEntityData3D"/> directly will automatically generate data
         /// </summary>
-        public override bool hasSplineEntityData => base.hasSplineEntityData && m_splineData3D.HasValue;
+        public new bool hasSplineEntityData => base.hasSplineEntityData && m_splineData3D.HasValue;
 
-        public float3 Get3DPointWorld(float progress)
+        public virtual float3 Get3DPointWorld(float progress)
         {
             float2 point = GetPointProgress(progress, false);
             return Convert2Dto3D(point, true);
         }
 
-        public float3 Get3DPointLocal(float progress)
+        public virtual float3 Get3DPointLocal(float progress)
         {
             float2 point = GetPointProgress(progress, false);
             return Convert2Dto3D(point, false);
@@ -193,6 +193,17 @@ namespace Crener.Spline.BaseSpline
             }
         }
 
+        public override void ClearData()
+        {
+            base.ClearData();
+            
+            if(m_splineData3D.HasValue) // access directly to stop infinite loop
+            {
+                SplineEntityData3D.Value.Dispose();
+                SplineEntityData3D = null;
+            }
+        }
+
         protected virtual Spline3DData ConvertData3D()
         {
             ClearData();
@@ -203,16 +214,15 @@ namespace Crener.Spline.BaseSpline
                 return SplineEntityData3D.Value;
             }
 
-            float3[] pointData;
-            if(this is ILoopingSpline loopSpline && loopSpline.Looped)
+            bool looped = this is ILoopingSpline loopSpline && loopSpline.Looped;
+            float3[] pointData = new float3[Points.Count + (looped ? 1 : 0)];
+
+            for (int i = 0; i < Points.Count; i++)
             {
-                // add an extra point to the end of the array
-                pointData = new float3[Points.Count + 1];
-                float3[] originalData = Points.Select(p => Convert2Dto3D(p)).ToArray();
-                Array.Copy(originalData, pointData, Points.Count);
-                pointData[Points.Count] = Convert2Dto3D(Points[0]);
+                pointData[i] = Convert2Dto3D(Points[i]);
             }
-            else pointData = Points.Select(p => Convert2Dto3D(p)).ToArray();
+
+            if(looped) pointData[Points.Count] = pointData[0];
 
             NativeArray<float3> points = new NativeArray<float3>(pointData, Allocator.Persistent);
             NativeArray<float> time = new NativeArray<float>(SegmentLength.ToArray(), Allocator.Persistent);

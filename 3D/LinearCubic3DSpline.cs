@@ -63,8 +63,9 @@ namespace Crener.Spline._3D
             {
                 if(ControlPointCount == 0) return SplineType.Empty;
                 if(ControlPointCount == 1) return SplineType.Single;
-                if(ControlPointCount == 2) return SplineType.Linear;
-                return ArkParameterization ? SplineType.Linear : SplineType.CubicLinear;
+                if(ArkParameterization) return SplineType.Linear;
+                if(ControlPointCount == 2 && !Looped) return SplineType.Linear;
+                return SplineType.CubicLinear;
             }
         }
         public override int SegmentPointCount

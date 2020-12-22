@@ -11,7 +11,7 @@ namespace Crener.Spline.Test._2D.CatmullRom.TestTypes
     /// </summary>
     public class MeaninglessTestWrapper3
     {
-        public class TestCatmullSpline2DDynamicJob : MeaninglessTestWrapper2.TestCatmullSpline2DSimpleJob
+        public class TestCatmullSpline2D2DDynamicJob : MeaninglessTestWrapper2.TestCatmullSpline2D2DSimpleJob
         {
             public new float2 Get2DPointLocal(float progress)
             {

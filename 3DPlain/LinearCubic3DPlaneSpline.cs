@@ -63,8 +63,10 @@ namespace Crener.Spline._3DPlain
             {
                 if(ControlPointCount == 0) return SplineType.Empty;
                 if(ControlPointCount == 1) return SplineType.Single;
+                if(ArkParameterization) return SplineType.Linear;
                 if(ControlPointCount == 2 && !Looped) return SplineType.Linear;
-                return ArkParameterization ? SplineType.Linear : SplineType.CubicLinear;
+                //return looped ? SplineType.CubicLinearLooped : SplineType.CubicLinear;
+                return SplineType.CubicLinear;
             }
         }
 

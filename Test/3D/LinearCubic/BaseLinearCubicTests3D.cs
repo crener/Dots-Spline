@@ -9,7 +9,7 @@ namespace Crener.Spline.Test._3D.LinearCubic
     /// <summary>
     /// Tests Point to point implementation of basic 2D spline functionality
     /// </summary>
-    public class BaseLinearCubicTests3D : LinearCubicBaseTest3DAdapter
+    public class BaseLinearCubic3D : LinearCubicBaseTest3DAdapter
     {
         public override ITestSpline CreateNewSpline()
         {
@@ -20,7 +20,7 @@ namespace Crener.Spline.Test._3D.LinearCubic
         }
     }
     
-    public class LoopingLinearCubicTests3D : BaseLoopingTests3D
+    public class BaseLoopingLinearCubic3D : BaseLoopingTests3D
     {
         public override ILoopingSpline CreateNewSpline()
         {

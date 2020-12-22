@@ -11,7 +11,7 @@ namespace Crener.Spline.Test._2D.Bezier.TestTypes
     /// </summary>
     public class MeaninglessTestWrapper3
     {
-        public class TestBezierSpline2DDynamicJob : MeaninglessTestWrapper2.TestBezierSpline2DSimpleJob
+        public class TestBezierSpline2D2DDynamicJob : MeaninglessTestWrapper2.TestBezierSpline2D2DSimpleJob
         {
             public override float2 Get2DPointLocal(float progress)
             {

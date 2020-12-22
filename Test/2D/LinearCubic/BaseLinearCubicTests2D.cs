@@ -14,12 +14,12 @@ namespace Crener.Spline.Test._2D.LinearCubic
     /// </summary>
     public class BaseLinearCubicTests2D : LinearCubicBaseTest2DAdapter
     {
-        protected override ISimpleTestSpline CreateNewSpline()
+        protected override ISimpleTestSpline2D CreateNewSpline()
         {
             GameObject game = new GameObject();
-            ISimpleTestSpline spline = game.AddComponent<MeaninglessTestWrapper2.TestLinearCubic2DSplineSimple>();
+            ISimpleTestSpline2D spline2D = game.AddComponent<MeaninglessTestWrapper2.TestLinearCubic2DSpline2DSimple>();
 
-            return spline;
+            return spline2D;
         }
 
 
@@ -29,31 +29,31 @@ namespace Crener.Spline.Test._2D.LinearCubic
         [Test]
         public void Circle()
         {
-            ISimpleTestSpline testSpline = PrepareSpline();
+            ISimpleTestSpline2D testSpline2D = PrepareSpline();
 
             float2 topLeft = new float2(1f, 2f);
             float2 bottomLeft = new float2(1f, 1f);
             float2 bottomRight = new float2(2f, 1f);
             float2 topRight = new float2(2f, 2f);
-            testSpline.AddControlPoint(topLeft);
-            testSpline.AddControlPoint(bottomLeft);
-            testSpline.AddControlPoint(bottomRight);
-            testSpline.AddControlPoint(topRight);
+            testSpline2D.AddControlPoint(topLeft);
+            testSpline2D.AddControlPoint(bottomLeft);
+            testSpline2D.AddControlPoint(bottomRight);
+            testSpline2D.AddControlPoint(topRight);
 
-            Assert.AreEqual(4, testSpline.ControlPointCount);
-            Assert.AreEqual(3, testSpline.SegmentPointCount);
+            Assert.AreEqual(4, testSpline2D.ControlPointCount);
+            Assert.AreEqual(3, testSpline2D.SegmentPointCount);
 
-            TestHelpers.CheckFloat2(topLeft, testSpline.Get2DPointWorld(0f));
-            TestHelpers.CheckFloat2(topLeft, testSpline.Get2DPointWorld(-0.1f));
-            TestHelpers.CheckFloat2(topRight, testSpline.Get2DPointWorld(1f));
-            TestHelpers.CheckFloat2(topRight, testSpline.Get2DPointWorld(1.1f));
+            TestHelpers.CheckFloat2(topLeft, testSpline2D.Get2DPointWorld(0f));
+            TestHelpers.CheckFloat2(topLeft, testSpline2D.Get2DPointWorld(-0.1f));
+            TestHelpers.CheckFloat2(topRight, testSpline2D.Get2DPointWorld(1f));
+            TestHelpers.CheckFloat2(topRight, testSpline2D.Get2DPointWorld(1.1f));
 
-            (testSpline as ILoopingSpline).Looped = true;
-            Assert.AreEqual(4, testSpline.ControlPointCount);
-            Assert.AreEqual(5, testSpline.SegmentPointCount);
+            (testSpline2D as ILoopingSpline).Looped = true;
+            Assert.AreEqual(4, testSpline2D.ControlPointCount);
+            Assert.AreEqual(5, testSpline2D.SegmentPointCount);
 
-            Assert.AreNotEqual(topLeft, testSpline.Get2DPointWorld(-1f));
-            Assert.AreNotEqual(topRight, testSpline.Get2DPointWorld(2f));
+            Assert.AreNotEqual(topLeft, testSpline2D.Get2DPointWorld(-1f));
+            Assert.AreNotEqual(topRight, testSpline2D.Get2DPointWorld(2f));
         }
 
         //todo test that 3 or 4 point looped spline doesn't touch any point directly
@@ -64,7 +64,7 @@ namespace Crener.Spline.Test._2D.LinearCubic
         public override ILoopingSpline CreateNewSpline()
         {
             GameObject game = new GameObject();
-            ILoopingSpline spline = game.AddComponent<MeaninglessTestWrapper2.TestLinearCubic2DSplineSimple>();
+            ILoopingSpline spline = game.AddComponent<MeaninglessTestWrapper2.TestLinearCubic2DSpline2DSimple>();
 
             return spline;
         }
@@ -75,7 +75,7 @@ namespace Crener.Spline.Test._2D.LinearCubic
         public override IArkableSpline CreateNewSpline()
         {
             GameObject game = new GameObject();
-            IArkableSpline spline = game.AddComponent<MeaninglessTestWrapper.TestLinearCubic2DSplineSimpleJob>();
+            IArkableSpline spline = game.AddComponent<MeaninglessTestWrapper.TestLinearCubic2DSpline2DSimpleJob>();
 
             return spline;
         }

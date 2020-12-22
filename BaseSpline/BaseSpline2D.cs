@@ -280,9 +280,10 @@ namespace Crener.Spline.BaseSpline
             bool looped = this is ILoopingSpline loopSpline && loopSpline.Looped;
             float2[] pointData = new float2[Points.Count + (looped ? 1 : 0)];
 
+            float3 position = Position;
             for (int i = 0; i < Points.Count; i++)
             {
-                pointData[i] = Position.xy + Points[i];
+                pointData[i] = position.xy + Points[i];
             }
 
             if(looped) pointData[Points.Count] = pointData[0];

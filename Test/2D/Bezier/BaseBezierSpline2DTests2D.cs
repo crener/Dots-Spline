@@ -14,10 +14,10 @@ namespace Crener.Spline.Test._2D.Bezier
     /// </summary>
     public class BaseBezierSpline2DTests2D : BezierBaseTest2DAdapter
     {
-        protected override ISimpleTestSpline CreateNewSpline()
+        protected override ISimpleTestSpline2D CreateNewSpline()
         {
             GameObject game = new GameObject();
-            MeaninglessTestWrapper.TestBezierSpline2DSimple testBezierSpline = game.AddComponent<MeaninglessTestWrapper.TestBezierSpline2DSimple>();
+            MeaninglessTestWrapper.TestBezierSpline2D2DSimple testBezierSpline = game.AddComponent<MeaninglessTestWrapper.TestBezierSpline2D2DSimple>();
             Assert.IsNotNull(testBezierSpline);
 
             TestHelpers.ClearSpline(testBezierSpline);
@@ -32,7 +32,7 @@ namespace Crener.Spline.Test._2D.Bezier
         public override IArkableSpline CreateNewSpline()
         {
             GameObject game = new GameObject();
-            MeaninglessTestWrapper.TestBezierSpline2DSimple testBezierSpline = game.AddComponent<MeaninglessTestWrapper.TestBezierSpline2DSimple>();
+            MeaninglessTestWrapper.TestBezierSpline2D2DSimple testBezierSpline = game.AddComponent<MeaninglessTestWrapper.TestBezierSpline2D2DSimple>();
 
             return testBezierSpline;
         }

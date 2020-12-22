@@ -24,8 +24,8 @@ namespace Crener.Spline.Test._2D.Bezier
         [Test]
         public void SplineTypeTest()
         {
-            MeaninglessTestWrapper2.TestBezierSpline2DSimpleJob spline =
-                (MeaninglessTestWrapper2.TestBezierSpline2DSimpleJob) CreateSpline();
+            MeaninglessTestWrapper2.TestBezierSpline2D2DSimpleJob spline =
+                (MeaninglessTestWrapper2.TestBezierSpline2D2DSimpleJob) CreateSpline();
 
             spline.ArkParameterization = false;
             Assert.IsFalse(spline.ArkParameterization);
@@ -47,8 +47,8 @@ namespace Crener.Spline.Test._2D.Bezier
         [Test]
         public void ConvertedLength()
         {
-            MeaninglessTestWrapper2.TestBezierSpline2DSimpleJob spline =
-                (MeaninglessTestWrapper2.TestBezierSpline2DSimpleJob) CreateSpline();
+            MeaninglessTestWrapper2.TestBezierSpline2D2DSimpleJob spline =
+                (MeaninglessTestWrapper2.TestBezierSpline2D2DSimpleJob) CreateSpline();
 
             spline.AddControlPoint(new float2(10, 10));
             spline.AddControlPoint(new float2(20, 10));
@@ -67,8 +67,8 @@ namespace Crener.Spline.Test._2D.Bezier
         [Test]
         public void ConvertedDataLength()
         {
-            MeaninglessTestWrapper2.TestBezierSpline2DSimpleJob spline =
-                (MeaninglessTestWrapper2.TestBezierSpline2DSimpleJob) CreateSpline();
+            MeaninglessTestWrapper2.TestBezierSpline2D2DSimpleJob spline =
+                (MeaninglessTestWrapper2.TestBezierSpline2D2DSimpleJob) CreateSpline();
 
             spline.AddControlPoint(new float2(10, 10));
             spline.AddControlPoint(new float2(20, 10));
@@ -94,8 +94,8 @@ namespace Crener.Spline.Test._2D.Bezier
         [Test]
         public void ConvertedDataRecalculated()
         {
-            MeaninglessTestWrapper2.TestBezierSpline2DSimpleJob spline =
-                (MeaninglessTestWrapper2.TestBezierSpline2DSimpleJob) CreateSpline();
+            MeaninglessTestWrapper2.TestBezierSpline2D2DSimpleJob spline =
+                (MeaninglessTestWrapper2.TestBezierSpline2D2DSimpleJob) CreateSpline();
 
             spline.AddControlPoint(new float2(10, 10));
             spline.AddControlPoint(new float2(20, 10));
@@ -126,8 +126,8 @@ namespace Crener.Spline.Test._2D.Bezier
         [Test]
         public void ConvertedSpline()
         {
-            MeaninglessTestWrapper2.TestBezierSpline2DSimpleJob spline =
-                (MeaninglessTestWrapper2.TestBezierSpline2DSimpleJob) CreateSpline();
+            MeaninglessTestWrapper2.TestBezierSpline2D2DSimpleJob spline =
+                (MeaninglessTestWrapper2.TestBezierSpline2D2DSimpleJob) CreateSpline();
 
             const float length = 10f;
             const float subDivision = 0.1f;
@@ -181,8 +181,8 @@ namespace Crener.Spline.Test._2D.Bezier
         [Test]
         public void ConvertedSpline3PointComparison()
         {
-            MeaninglessTestWrapper2.TestBezierSpline2DSimpleJob spline =
-                (MeaninglessTestWrapper2.TestBezierSpline2DSimpleJob) CreateSpline();
+            MeaninglessTestWrapper2.TestBezierSpline2D2DSimpleJob spline =
+                (MeaninglessTestWrapper2.TestBezierSpline2D2DSimpleJob) CreateSpline();
 
             const float length = 10f;
             const float subDivision = length / 2f;
@@ -216,8 +216,8 @@ namespace Crener.Spline.Test._2D.Bezier
         [Test]
         public void ConvertedSpline4PointComparison()
         {
-            MeaninglessTestWrapper2.TestBezierSpline2DSimpleJob spline =
-                (MeaninglessTestWrapper2.TestBezierSpline2DSimpleJob) CreateSpline();
+            MeaninglessTestWrapper2.TestBezierSpline2D2DSimpleJob spline =
+                (MeaninglessTestWrapper2.TestBezierSpline2D2DSimpleJob) CreateSpline();
 
             const float length = 10f;
             const float subDivision = length / 3f;
@@ -256,8 +256,8 @@ namespace Crener.Spline.Test._2D.Bezier
         [Test]
         public void Points()
         {
-            MeaninglessTestWrapper2.TestBezierSpline2DSimpleJob spline =
-                (MeaninglessTestWrapper2.TestBezierSpline2DSimpleJob) CreateSpline();
+            MeaninglessTestWrapper2.TestBezierSpline2D2DSimpleJob spline =
+                (MeaninglessTestWrapper2.TestBezierSpline2D2DSimpleJob) CreateSpline();
 
             const float subDivision = 0.2f;
 
@@ -305,8 +305,8 @@ namespace Crener.Spline.Test._2D.Bezier
 
         public void PointTest(float2 a, float2 b)
         {
-            MeaninglessTestWrapper2.TestBezierSpline2DSimpleJob spline =
-                (MeaninglessTestWrapper2.TestBezierSpline2DSimpleJob) CreateSpline();
+            MeaninglessTestWrapper2.TestBezierSpline2D2DSimpleJob spline =
+                (MeaninglessTestWrapper2.TestBezierSpline2D2DSimpleJob) CreateSpline();
 
             const float subDivision = 0.1f;
 
@@ -333,8 +333,8 @@ namespace Crener.Spline.Test._2D.Bezier
         [Test]
         public void ArkDistance()
         {
-            MeaninglessTestWrapper2.TestBezierSpline2DSimpleJob spline =
-                (MeaninglessTestWrapper2.TestBezierSpline2DSimpleJob) CreateSpline();
+            MeaninglessTestWrapper2.TestBezierSpline2D2DSimpleJob spline =
+                (MeaninglessTestWrapper2.TestBezierSpline2D2DSimpleJob) CreateSpline();
 
             const float length = 10f;
             const float subDivision = 0.1f;
@@ -366,8 +366,8 @@ namespace Crener.Spline.Test._2D.Bezier
         [Test]
         public void ArkParameterizationDistanceChange()
         {
-            MeaninglessTestWrapper2.TestBezierSpline2DSimpleJob spline =
-                (MeaninglessTestWrapper2.TestBezierSpline2DSimpleJob) CreateSpline();
+            MeaninglessTestWrapper2.TestBezierSpline2D2DSimpleJob spline =
+                (MeaninglessTestWrapper2.TestBezierSpline2D2DSimpleJob) CreateSpline();
 
             spline.AddControlPoint(new float2(10f, 10f));
             spline.AddControlPoint(new float2(20f, 10f));
@@ -407,8 +407,8 @@ namespace Crener.Spline.Test._2D.Bezier
         [Test]
         public void PointGeneration()
         {
-            MeaninglessTestWrapper2.TestBezierSpline2DSimpleJob spline =
-                (MeaninglessTestWrapper2.TestBezierSpline2DSimpleJob) CreateSpline();
+            MeaninglessTestWrapper2.TestBezierSpline2D2DSimpleJob spline =
+                (MeaninglessTestWrapper2.TestBezierSpline2D2DSimpleJob) CreateSpline();
 
             float2 a = new float2(0f, 60f);
             float2 b = new float2(100f, 60f);
@@ -434,8 +434,8 @@ namespace Crener.Spline.Test._2D.Bezier
         [Test]
         public void PointGeneration2()
         {
-            MeaninglessTestWrapper2.TestBezierSpline2DSimpleJob spline =
-                (MeaninglessTestWrapper2.TestBezierSpline2DSimpleJob) CreateSpline();
+            MeaninglessTestWrapper2.TestBezierSpline2D2DSimpleJob spline =
+                (MeaninglessTestWrapper2.TestBezierSpline2D2DSimpleJob) CreateSpline();
 
             float2 a = new float2(0f, 0f);
             float2 b = new float2(100f, 100f);

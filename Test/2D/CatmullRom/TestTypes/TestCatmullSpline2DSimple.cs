@@ -13,7 +13,7 @@ namespace Crener.Spline.Test._2D.CatmullRom.TestTypes
         /// <summary>
         /// override of <see cref="BezierSpline2DSimple"/> which implements the spline test interface
         /// </summary>
-        public class TestCatmullSpline2DSimple : CatmullRom2DSpline, ISimpleTestSpline
+        public class TestCatmullSpline2D2DSimple : CatmullRom2DSpline, ISimpleTestSpline2D
         {
             public IReadOnlyList<float2> ControlPoints => Points;
             public IReadOnlyList<float> Times => SegmentLength;

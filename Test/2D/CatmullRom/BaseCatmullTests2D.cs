@@ -9,12 +9,12 @@ namespace Crener.Spline.Test._2D.CatmullRom
     /// </summary>
     public class BaseCatmullTests2D : CatmullBaseTest2DAdapter
     {
-        protected override ISimpleTestSpline CreateNewSpline()
+        protected override ISimpleTestSpline2D CreateNewSpline()
         {
             GameObject game = new GameObject();
-            ISimpleTestSpline spline = game.AddComponent <MeaninglessTestWrapper.TestCatmullSpline2DSimple>();
+            ISimpleTestSpline2D spline2D = game.AddComponent <MeaninglessTestWrapper.TestCatmullSpline2D2DSimple>();
 
-            return spline;
+            return spline2D;
         }
     }
 }

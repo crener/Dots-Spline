@@ -9,7 +9,7 @@ namespace Crener.Spline.Test._3D.Linear
     /// <summary>
     /// Tests Point to point implementation of basic 3D spline functionality
     /// </summary>
-    public class BaseLinearDynamicJobTests3D : LinearBaseTest3DAdapter
+    public class DynamicJobLinear3D : LinearBaseTest3DAdapter
     {
         public override ITestSpline CreateNewSpline()
         {
@@ -20,7 +20,7 @@ namespace Crener.Spline.Test._3D.Linear
         }
     }
     
-    public class LoopingLinearDynamicJobTests3D : BaseLoopingTests3D
+    public class DynamicJobLoopingLinear3D : BaseLoopingTests3D
     {
         public override ILoopingSpline CreateNewSpline()
         {

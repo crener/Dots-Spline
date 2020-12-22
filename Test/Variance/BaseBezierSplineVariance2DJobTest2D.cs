@@ -7,10 +7,10 @@ namespace Crener.Spline.Test.Variance
 {
     public class BaseBezierSplineVariance2DJobTest2D : BaseVarianceTests2D
     {
-        protected override IVarianceTestSpline CreateVarianceSpline()
+        protected override IVarianceTestSpline2D CreateVarianceSpline()
         {
             GameObject game = new GameObject();
-            MeaninglessTestWrapper.TestBezierSpline2DVariance spline = game.AddComponent<MeaninglessTestWrapper.TestBezierSpline2DVariance>();
+            MeaninglessTestWrapper.TestBezierSpline2D2DVariance spline = game.AddComponent<MeaninglessTestWrapper.TestBezierSpline2D2DVariance>();
             Assert.IsNotNull(spline);
 
             ClearSpline(spline);
@@ -19,7 +19,7 @@ namespace Crener.Spline.Test.Variance
             return spline;
         }
 
-        protected override ISimpleTestSpline CreateNewSpline()
+        protected override ISimpleTestSpline2D CreateNewSpline()
         {
             return CreateVarianceSpline();
         }

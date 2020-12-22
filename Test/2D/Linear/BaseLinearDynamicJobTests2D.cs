@@ -11,12 +11,12 @@ namespace Crener.Spline.Test._2D.Linear
     /// </summary>
     public class BaseLinearDynamicJobTests2D : LinearBaseTest2DAdapter
     {
-        protected override ISimpleTestSpline CreateNewSpline()
+        protected override ISimpleTestSpline2D CreateNewSpline()
         {
             GameObject game = new GameObject();
-            ISimpleTestSpline spline = game.AddComponent<MeaninglessTestWrapper3.TestLinearSpline2DDynamicJob>();
+            ISimpleTestSpline2D spline2D = game.AddComponent<MeaninglessTestWrapper3.TestLinearSpline2D2DDynamicJob>();
 
-            return spline;
+            return spline2D;
         }
     }
     
@@ -25,7 +25,7 @@ namespace Crener.Spline.Test._2D.Linear
         public override ILoopingSpline CreateNewSpline()
         {
             GameObject game = new GameObject();
-            ILoopingSpline spline = game.AddComponent<MeaninglessTestWrapper3.TestLinearSpline2DDynamicJob>();
+            ILoopingSpline spline = game.AddComponent<MeaninglessTestWrapper3.TestLinearSpline2D2DDynamicJob>();
 
             return spline;
         }

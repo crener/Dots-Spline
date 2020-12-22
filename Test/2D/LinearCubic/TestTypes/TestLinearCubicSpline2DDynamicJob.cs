@@ -11,7 +11,7 @@ namespace Crener.Spline.Test._2D.LinearCubic.TestTypes
     /// </summary>
     public class MeaninglessTestWrapper3
     {
-        public class TestLinearCubic2DSplineDynamicJob : MeaninglessTestWrapper.TestLinearCubic2DSplineSimpleJob
+        public class TestLinearCubic2DSpline2DDynamicJob : MeaninglessTestWrapper.TestLinearCubic2DSpline2DSimpleJob
         {
 
             public new float2 Get2DPointLocal(float progress)

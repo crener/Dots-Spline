@@ -1,16 +1,15 @@
 using Crener.Spline.Common.Interfaces;
-using Crener.Spline.Test._3D.Linear.TestAdapters;
 using Crener.Spline.Test._3DPlane.LinearPlain.TestAdapters;
 using Crener.Spline.Test._3DPlane.LinearPlain.TestTypes;
 using Crener.Spline.Test.BaseTests;
 using UnityEngine;
 
-namespace Crener.Spline.Test._3DPlane.LinearPlain
+namespace Crener.Spline.Test._3DPlane.LinearPlain._2D
 {
     /// <summary>
     /// Tests Point to point implementation of basic 2D spline functionality
     /// </summary>
-    public class BaseLinearTests3DPlane : LinearBaseTest3DPlaneAdapter
+    public class BaseLinearPlane2D : LinearBaseTest2DPlaneAdapter
     {
         public override ITestSpline CreateNewSpline()
         {
@@ -21,7 +20,7 @@ namespace Crener.Spline.Test._3DPlane.LinearPlain
         }
     }
     
-    public class LoopingLinearTests3DPlane : BaseLoopingTests3DPlane
+    public class BaseLoopingLinearPlane2D : BaseLoopingTests3DPlane
     {
         public override ILoopingSpline CreateNewSpline()
         {
@@ -32,7 +31,7 @@ namespace Crener.Spline.Test._3DPlane.LinearPlain
         }
     }
     
-    public class Linear3DPlaneTests : Base3DPlaneTests
+    public class BasePlaneLinearPlane2D : Base3DPlaneTests
     {
         protected override ISpline3DPlaneEditor CreateNewSpline()
         {
