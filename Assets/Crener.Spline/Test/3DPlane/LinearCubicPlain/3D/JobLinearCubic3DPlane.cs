@@ -42,7 +42,7 @@ namespace Crener.Spline.Test._3DPlane.LinearCubicPlain._3D
         }
     }
     
-    /*public class JobArkLinearCubicPlane3D : BaseArkTests3DPlane
+    public class JobArkLinearCubicPlane3D : BaseArkTests3DPlane
     {
         public override IArkableSpline CreateNewSpline()
         {
@@ -51,5 +51,5 @@ namespace Crener.Spline.Test._3DPlane.LinearCubicPlain._3D
 
             return spline;
         }
-    }*/
+    }
 }

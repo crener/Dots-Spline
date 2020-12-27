@@ -30,4 +30,15 @@ namespace Crener.Spline.Test._3DPlane.LinearCubicPlain._3D
             return spline;
         }
     }
+    
+    public class DynamicJobArkLinearCubicPlane3D : BaseArkTests3DPlane
+    {
+        public override IArkableSpline CreateNewSpline()
+        {
+            GameObject game = new GameObject();
+            IArkableSpline spline = game.AddComponent<MeaninglessTestWrapper3.TestLinearCubicSpline3DPlaneDynamicJob>();
+
+            return spline;
+        }
+    }
 }

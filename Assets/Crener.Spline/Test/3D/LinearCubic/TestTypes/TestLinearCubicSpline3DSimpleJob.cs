@@ -32,7 +32,7 @@ namespace Crener.Spline.Test._3D.LinearCubic.TestTypes
                 }
             }
 
-            public override float3 Get3DPointLocal(float progress)
+            public new float3 Get3DPointLocal(float progress)
             {
                 ClearData();
                 ConvertData();
@@ -50,7 +50,7 @@ namespace Crener.Spline.Test._3D.LinearCubic.TestTypes
                 return pos;
             }
             
-            public override float3 Get3DPointWorld(float progress)
+            public new float3 Get3DPointWorld(float progress)
             {
                 ClearData();
                 ConvertData();

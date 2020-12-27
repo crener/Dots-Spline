@@ -18,7 +18,7 @@ namespace Crener.Spline.Test._3DPlane.LinearCubicPlain.TestTypes
         /// </summary>
         public class TestLinearCubicSpline3DPlaneSimpleJob : MeaninglessTestWrapper.TestLinearCubicSpline3DPlaneSimple, ISimpleTestSpline3D
         {
-            public override float3 Get3DPointLocal(float progress)
+            public new float3 Get3DPointLocal(float progress)
             {
                 ClearData();
                 ConvertData3D();
@@ -36,7 +36,7 @@ namespace Crener.Spline.Test._3DPlane.LinearCubicPlain.TestTypes
                 return pos;
             }
             
-            public override float3 Get3DPointWorld(float progress)
+            public new float3 Get3DPointWorld(float progress)
             {
                 ClearData();
                 ConvertData3D();
@@ -50,7 +50,7 @@ namespace Crener.Spline.Test._3DPlane.LinearCubicPlain.TestTypes
                 return jobResult;
             }
             
-            public override float2 Get2DPointLocal(float progress)
+            public new float2 Get2DPointLocal(float progress)
             {
                 ClearData();
                 ConvertData();
@@ -68,7 +68,7 @@ namespace Crener.Spline.Test._3DPlane.LinearCubicPlain.TestTypes
                 return pos;
             }
             
-            public override float2 Get2DPointWorld(float progress)
+            public new float2 Get2DPointWorld(float progress)
             {
                 ClearData();
                 ConvertData();

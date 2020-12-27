@@ -22,7 +22,7 @@ namespace Crener.Spline.BaseSpline
         {
             get
             {
-                if(!hasSplineEntityData) ConvertData();
+                if(!m_splineData2D.HasValue) ConvertData();
                 return m_splineData2D;
             }
             protected set => m_splineData2D = value;
@@ -155,7 +155,7 @@ namespace Crener.Spline.BaseSpline
             return SplineInterpolation(pointProgress, aIndex);
         }
 
-        protected override float LengthBetweenPoints(int a, int resolution = 64)
+        protected override float LengthBetweenPoints(int a, int resolution = LengthSampleCount)
         {
             float currentLength = 0;
 
@@ -229,7 +229,7 @@ namespace Crener.Spline.BaseSpline
         {
             base.ClearData();
             
-            if(hasSplineEntityData) // access directly to stop possible infinite loop
+            if(m_splineData2D.HasValue) // access directly to stop possible infinite loop
             {
                 SplineEntityData2D.Value.Dispose();
                 SplineEntityData2D = null;
@@ -251,7 +251,7 @@ namespace Crener.Spline.BaseSpline
             {
                 float2 f = Get2DPointWorld(0f, i);
                 Vector3 lp = new Vector3(f.x, f.y, 0f);
-                int points = math.min((int) (pointDensityF * (SegmentLength[i] * Length())), maxPointAmount);
+                int points = math.min((int) (PointDensityF * (SegmentLength[i] * Length())), MaxPointAmount);
                 AddToGizmoPointCache(lp);
 
                 for (int s = 1; s <= points; s++)
@@ -306,81 +306,81 @@ namespace Crener.Spline.BaseSpline
         /// Convert the spline into smaller linear segments with an equal distance between each point (see: <see cref="arkLength"/>)
         /// </summary>
         /// <returns>Linear spline data</returns>
-        protected virtual Spline2DData SplineArkConversion(float arkLength)
+        protected Spline2DData SplineArkConversion(float arkLength)
         {
-            float previousTime = 0;
-            float normalizedArkLength = math.max(0.001f, arkLength);
             float splineLength = Length();
-            double splineCompleted = 0f;
-            List<float2> points = new List<float2>((int) (splineLength / normalizedArkLength * 1.3f));
-            List<float> times = new List<float>(points.Count);
-            
-            const double minSearchSize = 0.005;
-            const int perPointIterationAttempts = (int)(0.5 / minSearchSize); // lower values = fast, high values = high precision but longer generation times
+            int expectedPoints = (int) (splineLength / math.max(0.001f, arkLength));
+            float targetSegmentSize = splineLength / expectedPoints;
+            List<float2> points = new List<float2>(expectedPoints + 2);
+            List<float> times = new List<float>(expectedPoints + 1);
 
-            for (int i = 0; i < SegmentLength.Count; i++)
+            const float distanceTolerance = 0.00005f;
+            const float loopTolerance = float.Epsilon * 3f;
+
+            double creepDistanceCovered = 0;
+            double progress = 0;
+            float2 previous = Get2DPointWorld(0f);
+            points.Add(previous); // directly add the first point
+
+            double searchSegmentIterationSize = (double) 1 / expectedPoints;
+            double creepSearchSize = searchSegmentIterationSize / 10;
+            double creepMin = progress;
+            double creepMax = progress + creepSearchSize;
+            float2 lastCreepTest = previous;
+
+            do
             {
-                float currentTime = SegmentLength[i];
-                float sectionLength = Length() * currentTime;
-                float pointCount = ((currentTime - previousTime) * sectionLength) / normalizedArkLength;
-                previousTime = currentTime;
-
-                double previousProgress = 0f;
-                float2 previous = Get2DPointWorld((float) previousProgress, i);
-                points.Add(previous); // directly add control point
-
-                if(i > 0)
+                // creep along the spline until the distance is greater than what we are searching for
+                float2 creepTest = Get2DPointWorld((float) creepMax);
+                if(math.distance(previous, creepTest) - targetSegmentSize > 0)
                 {
-                    times.Add((float) splineCompleted / splineLength);
-                }
-
-                double sectionLengthDone = 0f;
-
-                for (int j = 0; j < pointCount - 1; j++)
-                {
-                    // binary search to get best case distance from (expected) previous point
-                    double currentProgress = 0.5;
-                    double currentSize = 0.5;
-
-                    float distance = normalizedArkLength;
-                    float targetDistance = normalizedArkLength * (j + 1);
-
-                    float2 point = previous;
-                    int attempts = -1;
-                    while (++attempts < perPointIterationAttempts)
+                    // binary search through the spline to get the next point
+                    double searchSize = searchSegmentIterationSize / 2;
+                    double searchCurrent = creepMin + ((creepMax - creepMin) / 2);
+                    float2 testLocation;
+                    do
                     {
-                        point = Get2DPointWorld((float) currentProgress, i);
+                        testLocation = Get2DPointWorld((float) searchCurrent);
+                        float distance = math.distance(previous, testLocation);
+                        float delta = distance - targetSegmentSize;
 
-                        distance = math.distance(previous, point);
-                        if(math.abs((sectionLengthDone + distance) - targetDistance) < 0.0000005f)
+                        if(math.abs(delta) < distanceTolerance)
                             break;
 
-                        currentSize /= 2;
-                        if(distance > normalizedArkLength)
-                        {
-                            if(currentProgress <= previousProgress) currentProgress = previousProgress;
-                            else currentProgress -= currentSize;
-                        }
-                        else currentProgress += currentSize;
+                        searchSize /= 2;
+                        if(delta > 0) searchCurrent -= searchSize;
+                        else searchCurrent += searchSize;
                     }
+                    while (searchSize > loopTolerance);
 
-                    sectionLengthDone += distance;
-                    splineCompleted += distance;
-                    points.Add(point);
-                    times.Add((float) splineCompleted / splineLength);
+                    creepDistanceCovered += math.distance(lastCreepTest, testLocation);
+                    points.Add(testLocation);
+                    previous = testLocation;
+                    progress = searchCurrent;
 
-                    previous = point;
-                    previousProgress = currentProgress;
+                    times.Add(((float) creepDistanceCovered) / splineLength);
+                    
+                    creepMin = progress;
+                    creepMax = progress + creepSearchSize;
+                    lastCreepTest = testLocation;
+                }
+                else
+                {
+                    creepDistanceCovered += math.distance(lastCreepTest, creepTest);
+                    creepMin = creepMax;
+                    creepMax += creepSearchSize;
+
+                    lastCreepTest = creepTest;
                 }
             }
+            while (progress <= 1 && creepMax < 1.2);
 
-            if(ControlPointCount >= 2)
+            // make sure that the last point is really the last one in the source spline
+            if(times[times.Count - 1] != 1f)
             {
-                // add final control point
-                points.Add(Points[Points.Count - 1] + Position.xy);
+                points.Add(Get2DPointWorld(1f));
+                times.Add(1f);
             }
-
-            times.Add(1f);
 
             return new Spline2DData
             {

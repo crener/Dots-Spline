@@ -178,7 +178,7 @@ namespace Crener.Spline.BaseSpline
             for (int i = 0; i < SegmentPointCount - 1; i++)
             {
                 float3 lp = Get3DPoint(0f, i);
-                int points = (int) (pointDensityF * (SegmentLength[i] * Length()));
+                int points = (int) (PointDensityF * (SegmentLength[i] * Length()));
                 AddToGizmoPointCache(lp);
 
                 for (int s = 0; s <= points; s++)

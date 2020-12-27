@@ -316,13 +316,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SegmentLength:
-  - 0.22105691
-  - 0.37280634
-  - 0.49859425
-  - 0.63094735
-  - 0.7301338
+  - 0.12619586
+  - 0.25883156
+  - 0.36877573
+  - 0.48445815
+  - 0.57115144
+  - 0.7032095
+  - 0.87113047
   - 1
-  LengthCache: 48.832535
+  LengthCache: 55.86965
   Points:
   - x: -7.779175
     y: 7.9449625
@@ -348,8 +350,8 @@ MonoBehaviour:
   - x: -1.7481475
     y: 12.8056135
     z: 3.7245655
-  looped: 0
-  arkParameterization: 0
+  looped: 1
+  arkParameterization: 1
   arkLength: 0.1
 --- !u!4 &272471558
 Transform:
@@ -358,13 +360,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 272471556}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: -0, y: 0.3516306, z: -0, w: 0.93613887}
   m_LocalPosition: {x: 15.99, y: -10.73, z: 36.56}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 635739486}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 41.174, z: 0}
 --- !u!1 &387974471
 GameObject:
   m_ObjectHideFlags: 0
@@ -1009,13 +1011,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2000592281}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.7, z: -69.4}
+  m_LocalRotation: {x: -0, y: 0.08534111, z: -0, w: 0.99635184}
+  m_LocalPosition: {x: 13.15, y: 19.9, z: -67.25}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1295795601}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 9.791, z: 0}
 --- !u!114 &2000592283
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1029,17 +1031,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SegmentLength:
-  - 0.35332423
-  - 0.6769343
+  - 0.42789733
+  - 0.7065323
   - 1
-  LengthCache: 3.1469178
+  LengthCache: 26.018457
   Points:
-  - x: 6.0150976
-    y: 10.154583
+  - x: -14.714127
+    y: 17.482803
+  - x: -5.1158423
+    y: 15.064048
+  - x: -5.904622
+    y: 10.593234
   - x: 7.000007
     y: 9.779396
   - x: 7.969704
     y: 10.859104
-  looped: 1
+  looped: 0
   arkParameterization: 0
   arkLength: 0.1

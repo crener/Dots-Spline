@@ -37,7 +37,7 @@ namespace Crener.Spline.Test._2D.Bezier.TestAdapters
             TestHelpers.CheckFloat2(new float2(10f, 0f), testSpline2D.Get2DPointWorld(1.5f));
             TestHelpers.CheckFloat2(new float2(10f, 0f), testSpline2D.Get2DPointWorld(5f));
         }
-        
+
         [Test]
         public void PointCreation()
         {
@@ -126,9 +126,9 @@ namespace Crener.Spline.Test._2D.Bezier.TestAdapters
             float2 b = new float2(1f, 3f);
             testSpline2D.AddControlPoint(b);
 
-            testSpline2D.UpdateControlPointLocal(0, new float2(1f,0f),SplinePoint.Post );
-            testSpline2D.UpdateControlPointLocal(1, new float2(0f,3f),SplinePoint.Pre );
-            
+            testSpline2D.UpdateControlPointLocal(0, new float2(1f, 0f), SplinePoint.Post);
+            testSpline2D.UpdateControlPointLocal(1, new float2(0f, 3f), SplinePoint.Pre);
+
             float length = math.distance(a, b);
             Assert.Greater(testSpline2D.Length(), length);
         }
