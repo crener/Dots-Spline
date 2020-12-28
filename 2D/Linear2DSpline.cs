@@ -45,7 +45,7 @@ namespace Crener.Spline._2D
             return math.lerp(start, end, t);
         }
 
-        protected override float LengthBetweenPoints(int a, int resolution = 64)
+        protected override float LengthBetweenPoints(int a, int resolution = LengthSampleCount)
         {
             float2 start = Points[a % ControlPointCount];
             float2 end = Points[(a + 1) % ControlPointCount];

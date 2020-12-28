@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using Crener.Spline.Common;
 using Crener.Spline.Common.Interfaces;
 using Crener.Spline.Test.BaseTests.TransferableTestBases;
@@ -18,7 +20,7 @@ namespace Crener.Spline.Test.BaseTests
             {
                 if(spline.ControlPointCount == 0) Assert.AreEqual(SplineType.Empty, spline.SplineDataType);
                 else if(spline.ControlPointCount == 1) Assert.AreEqual(SplineType.Single, spline.SplineDataType);
-                else if(spline.ControlPointCount > 2) Assert.AreEqual(SplineType.Linear, spline.SplineDataType);
+                else if(spline.ControlPointCount >= 2) Assert.AreEqual(SplineType.Linear, spline.SplineDataType);
             }
         }
 
@@ -26,6 +28,12 @@ namespace Crener.Spline.Test.BaseTests
         /// The amount of points in the spline data computed from ark parameterized 
         /// </summary>
         protected abstract int SplineSegmentPointCount(ISpline spline);
+
+        /// <summary>
+        /// Return an enumerator that goes over all points in the Arked spline
+        /// </summary>
+        /// <param name="spline">target spline</param>
+        protected abstract IEnumerable<float3> PointData(ISpline spline);
 
         /// <summary>
         /// ensures that the segment count increases after ark parametrisation is enabled 
@@ -53,6 +61,124 @@ namespace Crener.Spline.Test.BaseTests
             int arkCount = SplineSegmentPointCount(testSpline);
 
             Assert.Greater(arkCount, normalCount);
+        }
+
+        /// <summary>
+        /// Make sure that the ark length setting is actually being respected
+        /// This specific test ensures the minimum amount of points in a spline is valid
+        /// </summary>
+        [Test]
+        public void ArkLengthConsistencyMin()
+        {
+            IArkableSpline testSpline = PrepareSpline();
+            const float pointLength = 0.5f;
+
+            float3 a = new float3(10);
+            AddControlPointLocalSpace(testSpline, a);
+            float3 b = new float3(20);
+            AddControlPointLocalSpace(testSpline, b);
+
+            testSpline.ArkLength = pointLength;
+            ChangeArking(testSpline, true);
+
+            ArkDistanceCheck(testSpline);
+
+            float3[] pointData = PointData(testSpline).ToArray();
+            ComparePoint(a, pointData[0]);
+            ComparePoint(b, pointData[pointData.Length - 1]);
+        }
+
+        /// <summary>
+        /// Make sure that the ark length setting is actually being respected
+        /// This specific test ensures the Long splines are accurate
+        /// </summary>
+        [Test]
+        public void ArkLengthConsistencyLong()
+        {
+            IArkableSpline testSpline = PrepareSpline();
+            const float pointLength = 0.6f;
+
+            float3 a = new float3(1);
+            AddControlPointLocalSpace(testSpline, a);
+            float3 b = new float3(5);
+            AddControlPointLocalSpace(testSpline, b);
+            float3 c = new float3(300);
+            AddControlPointLocalSpace(testSpline, c);
+
+            testSpline.ArkLength = pointLength;
+            ChangeArking(testSpline, true);
+
+            ArkDistanceCheck(testSpline);
+
+            float3[] pointData = PointData(testSpline).ToArray();
+            ComparePoint(a, pointData[0]);
+            ComparePoint(c, pointData[pointData.Length - 1]);
+        }
+
+        /// <summary>
+        /// Make sure that the ark length setting is actually being respected
+        /// This specific test ensures the splines with many control points close together work correctly
+        /// </summary>
+        [Test]
+        public void ArkLengthConsistencyManyPoints()
+        {
+            IArkableSpline testSpline = PrepareSpline();
+            const float pointLength = 0.6f;
+
+            float3 a = new float3(0);
+            AddControlPointLocalSpace(testSpline, a);
+            float3 b = new float3(5);
+            AddControlPointLocalSpace(testSpline, b);
+            float3 c = new float3(5.5);
+            AddControlPointLocalSpace(testSpline, c);
+            float3 d = new float3(6);
+            AddControlPointLocalSpace(testSpline, d);
+            float3 e = new float3(6.1);
+            AddControlPointLocalSpace(testSpline, e);
+            float3 f = new float3(7);
+            AddControlPointLocalSpace(testSpline, f);
+            float3 g = new float3(26);
+            AddControlPointLocalSpace(testSpline, g);
+
+            testSpline.ArkLength = pointLength;
+            ChangeArking(testSpline, true);
+
+            ArkDistanceCheck(testSpline);
+
+            float3[] pointData = PointData(testSpline).ToArray();
+            ComparePoint(a, pointData[0]);
+            ComparePoint(g, pointData[pointData.Length - 1]);
+        }
+
+        private void ArkDistanceCheck(IArkableSpline testSpline)
+        {
+            float3[] pointData = PointData(testSpline).ToArray();
+            Assert.GreaterOrEqual(pointData.Length, 2, "Need at least 2 points for this test to run!!");
+            List<float> distances = new List<float>(pointData.Length - 1);
+
+            // calculate averages
+            float3 last = pointData[0];
+            for (int i = 1; i < pointData.Length - 1; i++) // note last point is skipped as it's a buffer point with large splines
+            {
+                distances.Add(Length(pointData[i], last));
+                last = pointData[i];
+            }
+
+            // make sure that the spline distance is roughly equal for all points, cause otherwise this setting is a bit fucked
+            float average = distances.Sum() / distances.Count;
+            float tolerance = testSpline.ArkLength / 10f;
+            for (int i = 0; i < distances.Count; i++)
+            {
+                float pointDistance = distances[i];
+                float averageDelta = math.abs(pointDistance - average);
+                Assert.LessOrEqual(averageDelta, tolerance,
+                    $"Points {i} => {i + 1} have a large distance between them compared to the average which means that the spline approximation " +
+                    $"is inaccurate");
+            }
+
+            // last point is tested separately as it is used as the remainder in longer splines
+            float lastPointLength = Length(pointData[pointData.Length - 2], pointData[pointData.Length - 1]);
+            Assert.LessOrEqual(lastPointLength, average + tolerance);
         }
 
         /// <summary>
@@ -122,7 +248,8 @@ namespace Crener.Spline.Test.BaseTests
             AddControlPointLocalSpace(testSpline, a);
             AddControlPointLocalSpace(testSpline, b);
 
-            testSpline.ArkLength = 5f;
+            const float arkLength = 5f;
+            testSpline.ArkLength = arkLength;
             testSpline.ArkParameterization = false;
             int originalCount = SplineSegmentPointCount(testSpline);
 
@@ -131,8 +258,8 @@ namespace Crener.Spline.Test.BaseTests
             Assert.AreEqual(originalCount, count, "This value shouldn't have changed");
 
             ChangeArking(testSpline, true);
-            count = SplineSegmentPointCount(testSpline);
-            Assert.AreEqual((int) math.ceil(Length(a, b) / 5f) + 1, count);
+            int newCount = SplineSegmentPointCount(testSpline);
+            Assert.Greater(newCount, count);
         }
 
         [Test]
@@ -146,12 +273,14 @@ namespace Crener.Spline.Test.BaseTests
             AddControlPointLocalSpace(testSpline, b);
 
             int originalCount = SplineSegmentPointCount(testSpline);
-            testSpline.ArkLength = 5f;
+
+            const float arkLength = 5f;
+            testSpline.ArkLength = arkLength;
             testSpline.ArkParameterization = false;
 
             ChangeArking(testSpline, true);
             int count = SplineSegmentPointCount(testSpline);
-            Assert.AreEqual((int) math.ceil(Length(a, b) / 5f) + 1, count);
+            Assert.Greater(count, originalCount);
 
             ChangeArking(testSpline, false);
             count = SplineSegmentPointCount(testSpline);
@@ -172,11 +301,10 @@ namespace Crener.Spline.Test.BaseTests
 
             ChangeArking(testSpline, true);
             int count = SplineSegmentPointCount(testSpline);
-            Assert.AreEqual((int) math.ceil(Length(a, b) / 5f) + 1, count);
 
             testSpline.ArkLength = 2.5f;
-            count = SplineSegmentPointCount(testSpline);
-            Assert.AreEqual((int) math.ceil(Length(a, b) / 2.5f) + 1, count);
+            int newCount = SplineSegmentPointCount(testSpline);
+            Assert.Greater(newCount, count);
         }
 
         /// <summary>
@@ -317,6 +445,12 @@ namespace Crener.Spline.Test.BaseTests
 
             return spline3D.SplineEntityData3D.Value.Points.Length;
         }
+
+        protected override IEnumerable<float3> PointData(ISpline spline)
+        {
+            ISpline3D spline3D = (spline as ISpline3D);
+            return spline3D.SplineEntityData3D.Value.Points;
+        }
     }
 
     public abstract class BaseArkTests3DPlane : BaseArkTests3D
@@ -398,6 +532,16 @@ namespace Crener.Spline.Test.BaseTests
             Assert.NotNull(spline3D.SplineEntityData2D, "spline failed to generate data");
 
             return spline3D.SplineEntityData2D.Value.Points.Length;
+        }
+
+        protected override IEnumerable<float3> PointData(ISpline spline)
+        {
+            ISpline2D spline3D = (spline as ISpline2D);
+
+            foreach (float2 point in spline3D.SplineEntityData2D.Value.Points)
+            {
+                yield return new float3(point, 0f);
+            }
         }
     }
 }

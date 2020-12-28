@@ -58,7 +58,7 @@ namespace Crener.Spline.Test.BaseTests.TransferableTestBases
             spline3D.UpdateControlPointWorld(index, newPoint, pointType);
         }
 
-        public float Length(float3 a, float3 b) => math.distance(a, b);
+        public float Length(float3 a, float3 b) => math.distance(a.xy, b.xy);
 
         public virtual float3 GetProgressWorld(ISpline3DPlane spline, float progress)
         {

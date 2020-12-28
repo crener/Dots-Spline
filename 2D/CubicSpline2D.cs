@@ -60,7 +60,7 @@ namespace Crener.Spline._2D
         
         protected override void RecalculateLengthBias()
         {
-            const int res = 512;
+            const int res = LengthSampleCount;
 
             ClearData();
             SegmentLength.Clear();

@@ -76,7 +76,7 @@ namespace Crener.Spline._2D.Experimental
 
             if(ControlPointCount == 2)
             {
-                LengthCache = LengthBetweenPoints(0, 128);
+                LengthCache = LengthBetweenPoints(0);
                 SegmentLength.Add(1f);
                 return;
             }

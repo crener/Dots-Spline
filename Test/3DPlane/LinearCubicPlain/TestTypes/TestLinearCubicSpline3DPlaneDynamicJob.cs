@@ -16,7 +16,7 @@ namespace Crener.Spline.Test._3DPlane.LinearCubicPlain.TestTypes
         /// </summary>
         public class TestLinearCubicSpline3DPlaneDynamicJob : MeaninglessTestWrapper.TestLinearCubicSpline3DPlaneSimple, ISimpleTestSpline3D
         {
-            public override float3 Get3DPointLocal(float progress)
+            public new float3 Get3DPointLocal(float progress)
             {
                 ClearData();
                 ConvertData();
@@ -25,7 +25,7 @@ namespace Crener.Spline.Test._3DPlane.LinearCubicPlain.TestTypes
                 Dynamic3DJob job = new Dynamic3DJob(this, progress, Allocator.TempJob);
                 job.Execute();
 
-                LocalSpaceConversion3D conversion = new LocalSpaceConversion3D(Position, Forward, job.Result, Allocator.TempJob);
+                LocalSpaceConversion3D conversion = new LocalSpaceConversion3D(Position, quaternion.identity, job.Result, Allocator.TempJob);
                 conversion.Execute();
                 
                 float3 pos = conversion.SplinePosition.Value;
@@ -34,7 +34,7 @@ namespace Crener.Spline.Test._3DPlane.LinearCubicPlain.TestTypes
                 return pos;
             }
             
-            public override float3 Get3DPointWorld(float progress)
+            public new float3 Get3DPointWorld(float progress)
             {
                 ClearData();
                 ConvertData();
@@ -48,7 +48,7 @@ namespace Crener.Spline.Test._3DPlane.LinearCubicPlain.TestTypes
                 return jobResult;
             }
             
-            public override float2 Get2DPointLocal(float progress)
+            public new float2 Get2DPointLocal(float progress)
             {
                 ClearData();
                 ConvertData();
@@ -66,7 +66,7 @@ namespace Crener.Spline.Test._3DPlane.LinearCubicPlain.TestTypes
                 return pos;
             }
             
-            public override float2 Get2DPointWorld(float progress)
+            public new float2 Get2DPointWorld(float progress)
             {
                 ClearData();
                 ConvertData();

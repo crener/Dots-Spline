@@ -50,21 +50,21 @@ namespace Crener.Spline.BaseSpline
         /// <summary>
         /// Position of the spline origin in world space
         /// </summary>
-        public float3 Position => trans.position;
+        public float3 Position => Trans.position;
 
         /// <summary>
         /// forward direction of the spline origin
         /// </summary>
         public Quaternion Forward
         {
-            get => trans.rotation;
+            get => Trans.rotation;
             set
             {
-                if(Forward != value) trans.rotation = value;
+                if(Forward != value) Trans.rotation = value;
             }
         }
 
-        private Transform trans
+        private Transform Trans
         {
             get
             {
@@ -74,9 +74,10 @@ namespace Crener.Spline.BaseSpline
         }
 
         private Transform m_trans = null;
-        protected const int pointDensityI = 13;
-        protected const float pointDensityF = pointDensityI;
-        protected const int maxPointAmount = 15000;
+        protected const int PointDensityI = 13;
+        protected const float PointDensityF = PointDensityI;
+        protected const int MaxPointAmount = 15000;
+        protected const int LengthSampleCount = 256;
 
         private void Start()
         {
@@ -97,7 +98,7 @@ namespace Crener.Spline.BaseSpline
             // just needed for interface, is overriden when required
         }
 
-        protected abstract float LengthBetweenPoints(int a, int resolution = 64);
+        protected abstract float LengthBetweenPoints(int a, int resolution = LengthSampleCount);
 
         protected int FindSegmentIndex(float progress)
         {
@@ -150,11 +151,13 @@ namespace Crener.Spline.BaseSpline
                 return;
             }
 
+            const int sampleCount = 128;
+
             // calculate the distance that the entire spline covers
             float currentLength = 0f;
             for (int a = 0; a < SegmentPointCount - 1; a++)
             {
-                float length = LengthBetweenPoints(a, 128);
+                float length = LengthBetweenPoints(a, sampleCount);
                 currentLength += length;
             }
 
@@ -170,7 +173,7 @@ namespace Crener.Spline.BaseSpline
             float segmentCount = 0f;
             for (int a = 0; a < SegmentPointCount - 1; a++)
             {
-                float length = LengthBetweenPoints(a, 128);
+                float length = LengthBetweenPoints(a, sampleCount);
                 segmentCount = (length / LengthCache) + segmentCount;
                 SegmentLength.Add(segmentCount);
             }

@@ -176,7 +176,7 @@ namespace Crener.Spline._3D
             base.RecalculateLengthBias();
         }
 
-        protected override float LengthBetweenPoints(int a, int resolution = 64)
+        protected override float LengthBetweenPoints(int a, int resolution = LengthSampleCount)
         {
             if(ControlPointCount <= 1) return 0f;
             if(ControlPointCount == 2) return math.distance(GetControlPoint3DLocal(0), GetControlPoint3DLocal(1));

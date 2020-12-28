@@ -338,7 +338,7 @@ namespace Crener.Spline._2D
         /// Convert the spline into smaller linear segments with an equal distance between each point (see: <see cref="arkLength"/>)
         /// </summary>
         /// <returns>Linear spline data</returns>
-        protected override Spline2DData SplineArkConversion(float length)
+        /*protected override Spline2DData SplineArkConversion(float length)
         {
             float previousTime = 0;
             float normalizedArkLength = math.max(0.001f, length);
@@ -419,6 +419,6 @@ namespace Crener.Spline._2D
                 Points = new NativeArray<float2>(points.ToArray(), Allocator.Persistent),
                 Time = new NativeArray<float>(times.ToArray(), Allocator.Persistent)
             };
-        }
+        }*/
     }
 }

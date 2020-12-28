@@ -29,8 +29,10 @@ namespace Crener.Spline._3D.Jobs
         public LocalSpaceConversion3D(float3 position, Quaternion forward, float3 worldSpacePosition, Allocator allocator = Allocator.None)
         : this(position, forward)
         {
-            SplinePosition = new NativeReference<float3>(allocator);
-            SplinePosition.Value = worldSpacePosition;
+            SplinePosition = new NativeReference<float3>(allocator, NativeArrayOptions.UninitializedMemory)
+            {
+                Value = worldSpacePosition
+            };
         }
         
         /// <summary>
@@ -44,12 +46,7 @@ namespace Crener.Spline._3D.Jobs
         {
             SplinePosition = worldSpacePosition;
         }
-
-        /// <summary>
-        /// default 
-        /// </summary>
-        /// <param name="position"></param>
-        /// <param name="forward"></param>
+        
         private LocalSpaceConversion3D(float3 position, Quaternion forward)
         {
             TransformPosition = position;

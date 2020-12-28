@@ -1,5 +1,7 @@
+using Crener.Spline._3D.Jobs;
 using Crener.Spline.Common;
 using Crener.Spline.Common.Interfaces;
+using Unity.Collections;
 using Unity.Mathematics;
 using UnityEditor;
 using UnityEngine;
@@ -366,11 +368,21 @@ namespace Crener.Spline.Editor._3D
             Handles.color = Color.red;
             const float multiplier = 0.3f;
 
+            // use the jobs as they support all the possible settings that a spline can have
+            Dynamic3DJob job = new Dynamic3DJob(spline, 0f, Allocator.Temp);
+
             for (int i = 0; i <= quantity; i++)
             {
                 float progress = i == 0 ? 0f : i / (quantity - 1f);
-                HandleDrawCross(spline.Get3DPointWorld(progress), multiplier);
+                SplineProgress jobSplineProgress = job.SplineProgress;
+                jobSplineProgress.Progress = progress;
+                job.SplineProgress = jobSplineProgress;
+
+                job.Execute();
+                HandleDrawCross(job.Result, multiplier);
             }
+
+            job.Dispose();
         }
 
         protected static void HandleDrawCross(Vector3 location, float sizeMultiplier = 1f)
