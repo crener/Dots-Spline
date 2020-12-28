@@ -1,4 +1,4 @@
-using System.Linq;
+using System.Collections.Generic;
 using Crener.Spline.Common;
 using Crener.Spline.Common.DataStructs;
 using Crener.Spline.Common.Interfaces;
@@ -100,9 +100,10 @@ namespace Crener.Spline.BaseSpline
             base.MoveControlPoints(Convert3Dto2D(delta, false));
         }
 
-        protected float3 Convert2Dto3D(float2 point, bool translate = true)
+        protected float3 Convert2Dto3D(float2 point, bool translate = true, bool rotate = true)
         {
-            float3 convertedPoint = (Forward * new float3(point, 0f));
+            float3 convertedPoint = new float3(point, 0f);
+            if(rotate) convertedPoint = Forward * convertedPoint;
             if(translate) convertedPoint += Position;
             return convertedPoint;
         }
@@ -155,10 +156,10 @@ namespace Crener.Spline.BaseSpline
                 topRight.y = math.max(cp.y, topRight.y);
             }
 
-            // drag the outer rect
+            // draw the outer rect
             {
                 const float margin = 2f;
-                Gizmos.color = new Color(0.3f, 0.3f, 0.3f);
+                Gizmos.color = new Color(0.35f, 0.35f, 0.35f);
                 float3 bottomLeftPoint = Convert2Dto3D(bottomLeft - margin),
                     topLeftPoint = Convert2Dto3D(new float2(bottomLeft.x - margin, topRight.y + margin)),
                     topRightPoint = Convert2Dto3D(topRight + margin),
@@ -242,16 +243,87 @@ namespace Crener.Spline.BaseSpline
         /// Convert the spline into smaller linear segments with an equal distance between each point (see: <see cref="arkLength"/>)
         /// </summary>
         /// <returns>Linear spline data</returns>
-        protected virtual Spline3DData SplineArkConversion3D(float arkLength)
+        protected Spline3DData SplineArkConversion3D(float arkLength)
         {
-            // yes, getting the data from here is kinda cheating but... but it's kinda clean ;)
-            Spline2DData spline2D = SplineEntityData2D.Value;
+            float splineLength = Length();
+            int expectedPoints = (int) (splineLength / math.max(0.001f, arkLength));
+            float targetSegmentSize = splineLength / expectedPoints;
+            List<float3> points = new List<float3>(expectedPoints + 2);
+            List<float> times = new List<float>(expectedPoints + 1);
 
+            const float distanceTolerance = 0.00005f;
+            const float loopTolerance = float.Epsilon * 3f;
+
+            double creepDistanceCovered = 0;
+            double progress = 0;
+            float3 previous = Get3DPointWorld(0f);
+            points.Add(previous); // directly add the first point
+
+            double searchSegmentIterationSize = (double) 1 / expectedPoints;
+            double creepSearchSize = searchSegmentIterationSize / 10;
+            double creepMin = progress;
+            double creepMax = progress + creepSearchSize;
+            float3 lastCreepTest = previous;
+
+            do
+            {
+                // creep along the spline until the distance is greater than what we are searching for
+                float3 creepTest = Get3DPointWorld((float) creepMax);
+                if(math.distance(previous, creepTest) - targetSegmentSize > 0)
+                {
+                    // binary search through the spline to get the next point
+                    double searchSize = searchSegmentIterationSize / 2;
+                    double searchCurrent = creepMin + ((creepMax - creepMin) / 2);
+                    float3 testLocation;
+                    do
+                    {
+                        testLocation = Get3DPointWorld((float) searchCurrent);
+                        float distance = math.distance(previous, testLocation);
+                        float delta = distance - targetSegmentSize;
+
+                        if(math.abs(delta) < distanceTolerance)
+                            break;
+
+                        searchSize /= 2;
+                        if(delta > 0) searchCurrent -= searchSize;
+                        else searchCurrent += searchSize;
+                    }
+                    while (searchSize > loopTolerance);
+
+                    creepDistanceCovered += math.distance(lastCreepTest, testLocation);
+                    points.Add(testLocation);
+                    previous = testLocation;
+                    progress = searchCurrent;
+
+                    times.Add(((float) creepDistanceCovered) / splineLength);
+                    
+                    creepMin = progress;
+                    creepMax = progress + creepSearchSize;
+                    lastCreepTest = testLocation;
+                }
+                else
+                {
+                    creepDistanceCovered += math.distance(lastCreepTest, creepTest);
+                    creepMin = creepMax;
+                    creepMax += creepSearchSize;
+
+                    lastCreepTest = creepTest;
+                }
+            }
+            while (progress <= 1 && creepMax < 1.2);
+
+            // make sure that the last point is really the last one in the source spline
+            if(times[times.Count - 1] != 1f)
+            {
+                points.Add(Get3DPointWorld(1f));
+                times.Add(1f);
+            }
+            
             return new Spline3DData
             {
-                Length = Length(),
-                Points = new NativeArray<float3>(spline2D.Points.Select(p => Convert2Dto3D(p)).ToArray(), Allocator.Persistent),
-                Time = new NativeArray<float>(spline2D.Time.ToArray(), Allocator.Persistent)
+                Length = splineLength,
+                Points = new NativeArray<float3>(points.ToArray(), Allocator.Persistent),
+                Time = new NativeArray<float>(times.ToArray(), Allocator.Persistent)
             };
         }
     }

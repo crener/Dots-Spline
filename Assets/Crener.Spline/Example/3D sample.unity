@@ -694,25 +694,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SegmentLength:
-  - 0.16981183
+  - 0.16981186
   - 0.3542826
-  - 0.56614876
-  - 0.7879402
+  - 0.5661488
+  - 0.78794014
   - 1
   LengthCache: 22.487617
   Points:
-  - x: -6.870357
-    y: 15.166754
-  - x: -2.7258258
-    y: 17.332037
-  - x: 0.1110518
-    y: 14.363853
-  - x: -0.2542131
-    y: 9.683107
-  - x: -6.8381915
-    y: 9.305786
+  - x: -13.3430395
+    y: 2.0857112
+  - x: -9.198508
+    y: 4.2509947
+  - x: -6.3616304
+    y: 1.2828109
+  - x: -6.7268953
+    y: -3.3979356
+  - x: -13.310874
+    y: -3.7752569
   looped: 1
-  arkParameterization: 0
+  arkParameterization: 1
   arkLength: 0.1
 --- !u!4 &683743493
 Transform:
@@ -721,13 +721,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 683743491}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.86, y: 3.87, z: 0.96}
+  m_LocalRotation: {x: -0.0041708085, y: -0.25182033, z: 0.014272649, w: -0.96765983}
+  m_LocalPosition: {x: -6.82, y: 16.78, z: 7.04}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1295795601}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0.874, y: -330.837, z: -1.463}
 --- !u!1 &850266195
 GameObject:
   m_ObjectHideFlags: 0
@@ -886,7 +886,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1295795600}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -4.93, y: 0, z: -0.4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 172778283}

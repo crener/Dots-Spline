@@ -402,7 +402,7 @@ namespace Crener.Spline.BaseSpline
             
             return new Spline3DData
             {
-                Length = Length(),
+                Length = splineLength,
                 Points = new NativeArray<float3>(points.ToArray(), Allocator.Persistent),
                 Time = new NativeArray<float>(times.ToArray(), Allocator.Persistent)
             };

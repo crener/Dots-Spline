@@ -25,7 +25,7 @@ namespace Crener.Spline.Test._3DPlane.LinearCubicPlain.TestTypes
                 Dynamic3DJob job = new Dynamic3DJob(this, progress, Allocator.TempJob);
                 job.Execute();
 
-                LocalSpaceConversion3D conversion = new LocalSpaceConversion3D(Position, Forward, job.Result, Allocator.TempJob);
+                LocalSpaceConversion3D conversion = new LocalSpaceConversion3D(Position, quaternion.identity, job.Result, Allocator.TempJob);
                 conversion.Execute();
                 
                 float3 pos = conversion.SplinePosition.Value;

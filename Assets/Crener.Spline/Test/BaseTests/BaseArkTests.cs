@@ -380,9 +380,6 @@ namespace Crener.Spline.Test.BaseTests
             ((MonoBehaviour) testSpline).transform.parent = parent.transform;
             parent.transform.position = new float3(-20f, 0f, 0f);
 
-            // todo fix this as it really fucks up spline planes
-            Assume.That(!(testSpline is ISpline3DPlane));
-
             float3 move = new float3(10f, 0f, 10f);
             ((MonoBehaviour) testSpline).transform.position = move;
 

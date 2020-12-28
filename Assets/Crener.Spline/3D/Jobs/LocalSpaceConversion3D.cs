@@ -46,12 +46,7 @@ namespace Crener.Spline._3D.Jobs
         {
             SplinePosition = worldSpacePosition;
         }
-
-        /// <summary>
-        /// default 
-        /// </summary>
-        /// <param name="position"></param>
-        /// <param name="forward"></param>
+        
         private LocalSpaceConversion3D(float3 position, Quaternion forward)
         {
             TransformPosition = position;

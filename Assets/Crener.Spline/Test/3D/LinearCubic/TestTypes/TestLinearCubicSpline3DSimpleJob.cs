@@ -66,7 +66,7 @@ namespace Crener.Spline.Test._3D.LinearCubic.TestTypes
 
             public int ExpectedControlPointCount(int controlPoints) => controlPoints;
 
-            public int ExpectedTimeCount(int controlPoints)
+            public int ExpectedTimeCount(int controlPoints) 
             {
                 if(ControlPointCount <= 2) return math.max(1, controlPoints - 1);
                 return math.max(1, controlPoints - 2);

@@ -901,7 +901,6 @@ namespace Crener.Spline.Test.BaseTests
             ComparePoint(a, GetControlPoint(testSpline, 0, SplinePoint.Point));
         }
 
-        /* // todo figure out how to fix this!!!
         [Test]
         public void TranslationRotation()
         {
@@ -943,7 +942,7 @@ namespace Crener.Spline.Test.BaseTests
                 ComparePoint(a, GetProgressLocal(testSpline, 0f));
                 ComparePoint(move + (float3) (targetRotation * a), GetProgressWorld(testSpline, 0f));
             }
-        }*/
+        }
     }
 
     public abstract class BaseFunctionalityTests3D : BaseFunctionalityRotationTests

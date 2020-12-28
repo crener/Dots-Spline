@@ -5,6 +5,7 @@ using Crener.Spline.Common.Interfaces;
 using NUnit.Framework;
 using Unity.Collections;
 using Unity.Mathematics;
+using UnityEngine;
 
 namespace Crener.Spline.Test._3DPlane.LinearCubicPlain.TestTypes
 {
@@ -27,7 +28,7 @@ namespace Crener.Spline.Test._3DPlane.LinearCubicPlain.TestTypes
                 ISplineJob3D job = ((ISpline3D)this).ExtractJob(progress, Allocator.TempJob);
                 job.Execute();
 
-                LocalSpaceConversion3D conversion = new LocalSpaceConversion3D(Position, Forward, job.Result, Allocator.TempJob);
+                LocalSpaceConversion3D conversion = new LocalSpaceConversion3D(Position, Quaternion.identity, job.Result, Allocator.TempJob);
                 conversion.Execute();
                 
                 float3 pos = conversion.SplinePosition.Value;
