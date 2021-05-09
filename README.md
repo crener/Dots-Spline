@@ -9,3 +9,5 @@ How to install
 3. Add package from Git URL
 4. Fill in the text as "https://github.com/crener/Dots-Spline.git#Release" for latest release package
 5. Press "Add" and wait
+
+Note: Unity will **NOT** update the package automatically as fixes and changes are made so you'll have to re-enter the git URL each time you want to update (No need to remove and add the package just pasting the URL will search and update)! 
